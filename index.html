@@ -1,11 +1,14 @@
-l<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>WS Gestão - Pro</title>
+
+<!-- Manifest e tema -->
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#ff6600">
+
 <style>
 :root {
     --primary: #ff6600;
@@ -262,13 +265,11 @@ window.onload = ()=>{
     renderizarAgenda();
 };
 
-// REGISTRA SERVICE WORKER PARA INSTALAÇÃO COMO APP
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("sw.js")
-      .then(() => console.log("App pronto pra instalar"))
-      .catch(err => console.log("Erro SW:", err));
-  });
+// REGISTRO DO SERVICE WORKER
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js')
+    .then(()=>console.log('Service Worker registrado!'))
+    .catch(err=>console.log('Erro ao registrar SW:', err));
 }
 </script>
 
