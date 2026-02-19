@@ -1,0 +1,21 @@
+{
+  "name": "WS Gestão - Pro",
+  "short_name": "WSGestão",
+  "description": "App de gestão de clientes e agenda",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#121212",
+  "theme_color": "#ff6600",
+  "icons": [
+    {
+      "src": "https://raw.githubusercontent.com/Welintons/Wsinfor/main/Gemini_Generated_Image_bqf58fbqf58fbqf5.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://raw.githubusercontent.com/Welintons/Wsinfor/main/Gemini_Generated_Image_bqf58fbqf58fbqf5.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
