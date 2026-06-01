@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>WS Chat | Sistema</title>
+    <style>
+        :root { --bg: #050505; --primary: #00d4ff; }
+        body { background: var(--bg); color: #fff; font-family: sans-serif; }
+        nav { display: flex; gap: 20px; padding: 20px; border-bottom: 1px solid #333; }
+        .tab { cursor: pointer; color: #888; font-weight: bold; }
+        .tab.ativo { color: var(--primary); }
+        .content { display: none; padding: 20px; }
+        .content.ativo { display: block; }
+        input { width: 100%; padding: 10px; margin: 10px 0; border-radius: 6px; background: #111; border: 1px solid #444; color: white; }
+        button { background: var(--primary); border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="tab ativo" onclick="mudarTab('dash', this)">Dashboard</div>
+    <div class="tab" onclick="mudarTab('amigos', this)">Adicionar Amigos</div>
+    <div class="tab" onclick="mudarTab('chat', this)">Chat</div>
+</nav>
+
+<div id="dash" class="content ativo">
+    <h2 id="boasVindas">Carregando...</h2>
+    <p>Bem-vindo à nossa rede privada.</p>
+</div>
+
+<div id="amigos" class="content">
+    <h3>Buscar por E-mail</h3>
+    <input id="emailBusca" placeholder="Ex: amigo@email.com">
+    <button onclick="buscarAmigo()">Pesquisar e Adicionar</button>
+    <div id="resultadoBusca"></div>
+</div>
+
+<div id="chat" class="content">
+    <h3>Chat Local</h3>
+    <div id="chatBox" style="height: 200px; background: #111; overflow-y: scroll; padding: 10px;"></div>
+    <input id="msgInput" placeholder="Mensagem...">
+    <button onclick="enviar()">Enviar</button>
+</div>
+
+<script type="module">
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+    const supabase = createClient("https://vqwklgrnknnhgurjvywz.supabase.co", "sb_publishable_mInPXc-URRgK5w7qJuNVPw_fo-9J9Uv");
+
+    let usuarioAtual = null;
+
+    async function init() {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) window.location.href = "index.html";
+        
+        const { data } = await supabase.from('usuarios').select('*').eq('id', session.user.id).single();
+        usuarioAtual = data;
+        document.getElementById('boasVindas').innerText = `Olá, ${usuarioAtual.nome}!`;
+    }
+
+    window.mudarTab = (id, btn) => {
+        document.querySelectorAll('.content').forEach(c => c.classList.remove('ativo'));
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('ativo'));
+        document.getElementById(id).classList.add('ativo');
+        btn.classList.add('ativo');
+    };
+
+    window.buscarAmigo = async () => {
+        const email = document.getElementById('emailBusca').value;
+        const { data } = await supabase.from('usuarios').select('id, nome').eq('email', email).single();
+        if (data) {
+            await supabase.from('amigos').insert([{ user_id: usuarioAtual.id, amigo_id: data.id }]);
+            alert(data.nome + " adicionado aos amigos!");
+        } else { alert("Usuário não encontrado."); }
+    };
+
+    window.enviar = async () => {
+        const msg = document.getElementById('msgInput').value;
+        await supabase.from('chat').insert([{ remetente_id: usuarioAtual.id, nome_remetente: usuarioAtual.nome, mensagem: msg }]);
+        document.getElementById('msgInput').value = '';
+    };
+
+    init();
+</script>
+</body>
+</html>
