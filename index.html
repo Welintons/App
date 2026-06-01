@@ -3,317 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WS Agenda Cliente</title>
+    <title>WS Chat | Conectividade</title>
     <style>
-        :root {
-            --bg-body: #050505;
-            --bg-card: rgba(20, 20, 20, 0.7);
-            --glass: rgba(255, 255, 255, 0.03);
-            --primary-color: #00d4ff; 
-            --primary-hover: #00a8cc;
-            --text-main: #ffffff;
-            --text-muted: #9ca3af;
-            --border-color: rgba(255, 255, 255, 0.1);
-            
-            --success-bg: rgba(22, 163, 74, 0.15); 
-            --success-text: #4ade80; 
-            --danger-bg: rgba(220, 38, 38, 0.15); 
-            --danger-text: #f87171;
-            --warning-bg: rgba(202, 138, 4, 0.15); 
-            --warning-text: #facc15; 
-            
-            --radius-md: 12px; 
-            --radius-lg: 18px; 
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', -apple-system, sans-serif; }
+        :root { --bg: #050505; --card: rgba(20, 20, 20, 0.8); --primary: #00d4ff; --text: #ffffff; }
+        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
+        .box { background: var(--card); padding: 40px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); width: 100%; max-width: 450px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         
-        body { background: var(--bg-body); background-image: radial-gradient(circle at 50% -20%, #1a1a2e, #050505); color: var(--text-main); padding-bottom: 40px; min-height: 100vh; }
-
-        header { padding: 45px 20px 55px; text-align: center; }
-        header h1 { font-size: 32px; margin-bottom: 5px; letter-spacing: -1px; background: linear-gradient(to right, #ffffff, var(--primary-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        header p { color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; font-size: 12px; }
-
-        .container { max-width: 500px; margin: auto; padding: 0 15px; }
-
-        .tabs { display: flex; background: var(--glass); backdrop-filter: blur(10px); border: 1px solid var(--border-color); border-radius: var(--radius-lg); margin-top: -30px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5); overflow: hidden; margin-bottom: 25px; padding: 5px; }
-        .tab-btn { flex: 1; background: transparent; color: var(--text-muted); border-radius: 14px; padding: 14px 5px; font-size: 14px; font-weight: 600; border: none; cursor: pointer; transition: all 0.3s; }
-        .tab-btn:hover { color: #fff; }
-        .tab-btn.ativo { color: #000; background: var(--primary-color); box-shadow: 0 0 15px rgba(0, 212, 255, 0.3); }
-
-        .conteudo-aba { display: none; animation: fadeIn 0.4s ease; }
-        .conteudo-aba.ativo { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        .card { background: var(--bg-card); backdrop-filter: blur(15px); border-radius: var(--radius-lg); padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); border: 1px solid var(--border-color); }
-        h2 { margin-bottom: 15px; font-size: 18px; color: var(--text-main); display: flex; align-items: center; gap: 8px; font-weight: 600; }
-
-        /* GRID DINÂMICA DE HORÁRIOS (Agora com 3 colunas para caber até as 15h) */
-        .agenda { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 15px; }
-        .horario { text-align: center; padding: 12px; border-radius: var(--radius-md); font-weight: bold; cursor: pointer; user-select: none; transition: all 0.3s ease; border: 1px solid var(--border-color); background: var(--glass); color: #fff; font-size: 15px; }
-        .livre:hover { border-color: var(--primary-color); box-shadow: 0 0 10px rgba(0, 212, 255, 0.2); transform: translateY(-2px); }
-        .ocupado { background: var(--danger-bg); color: var(--danger-text); border-color: transparent; cursor: not-allowed; opacity: 0.4; }
-        .selecionado { background: var(--primary-color); color: #000; border-color: var(--primary-color); transform: scale(1.02); box-shadow: 0 0 15px rgba(0, 212, 255, 0.4); }
-
-        form { display: flex; flex-direction: column; gap: 12px; }
-        input, textarea { width: 100%; padding: 15px; border-radius: var(--radius-md); border: 1px solid var(--border-color); background: rgba(0, 0, 0, 0.5); color: #fff; font-size: 15px; transition: all 0.3s; }
-        input::placeholder, textarea::placeholder { color: #6b7280; }
-        input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); opacity: 0.7; cursor: pointer; }
-        input:focus, textarea:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 12px rgba(0, 212, 255, 0.2); background: rgba(0, 0, 0, 0.8); }
-        textarea { resize: vertical; min-height: 90px; }
-
-        .btn-acao { width: 100%; padding: 16px; margin-top: 5px; background: var(--primary-color); color: #000; border: none; border-radius: var(--radius-md); font-size: 16px; font-weight: 800; cursor: pointer; transition: all 0.3s; }
-        .btn-acao:hover { background: var(--primary-hover); box-shadow: 0 0 20px rgba(0, 212, 255, 0.4); transform: translateY(-2px); }
-        .btn-acao:disabled { background: var(--text-muted); cursor: not-allowed; opacity: 0.8; box-shadow: none; transform: none; }
-
-        .status { margin-top: 20px; padding: 18px; border-radius: var(--radius-md); background: rgba(0,0,0,0.4); border-left: 5px solid var(--primary-color); color: var(--text-main); font-size: 15px; line-height: 1.6; border-right: 1px solid var(--border-color); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); }
-        .resultado-destaque { font-weight: bold; color: var(--primary-color); background: rgba(0, 212, 255, 0.1); padding: 4px 8px; border-radius: 6px; }
-
-        .grid-produtos { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 20px; }
-        .produto-card { background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: var(--radius-md); overflow: hidden; display: flex; flex-direction: column; transition: all 0.3s; }
-        .produto-card:hover { transform: translateY(-4px); border-color: var(--primary-color); box-shadow: 0 10px 20px rgba(0, 212, 255, 0.15); }
-        .produto-img { background: rgba(255,255,255,0.02); height: 120px; display: flex; align-items: center; justify-content: center; font-size: 45px; border-bottom: 1px solid var(--border-color); }
-        .produto-info { padding: 15px 12px; display: flex; flex-direction: column; flex: 1; text-align: center; }
-        .produto-titulo { font-size: 14px; font-weight: bold; color: var(--text-main); margin-bottom: 5px; line-height: 1.3; }
-        .produto-preco { font-size: 16px; font-weight: 900; color: var(--primary-color); margin-bottom: 15px; margin-top: auto; }
-        .btn-comprar { background: transparent; color: var(--primary-color); border: 1px solid var(--primary-color); padding: 10px; border-radius: 8px; font-size: 13px; font-weight: bold; text-decoration: none; display: block; transition: all 0.3s; }
-        .btn-comprar:hover { background: var(--primary-color); color: #000; }
+        h1 { color: var(--primary); margin-bottom: 20px; font-size: 28px; }
+        .intro-text { color: #ccc; font-size: 15px; line-height: 1.6; margin-bottom: 30px; text-align: justify; }
+        
+        input { width: 100%; padding: 14px; margin-bottom: 12px; border-radius: 10px; border: 1px solid #444; background: #111; color: white; outline: none; }
+        input:focus { border-color: var(--primary); }
+        button { width: 100%; padding: 14px; background: var(--primary); border: none; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 10px; color: #000; transition: 0.3s; }
+        button:hover { filter: brightness(1.2); }
+        
+        .hidden { display: none; }
+        .link { color: var(--primary); font-size: 14px; margin-top: 20px; cursor: pointer; text-decoration: underline; }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>WS TECH</h1>
-        <p>Soluções em Alta Performance</p>
-    </header>
-
-    <div class="container">
+    <!-- TELA DE LOGIN -->
+    <div id="telaLogin" class="box">
+        <h1>WS CHAT</h1>
+        <div class="intro-text">
+            <p><strong>Bem-vindo à nossa mini rede social!</strong></p>
+            <p>Este sistema é o ponto de encontro exclusivo da nossa comunidade. Aqui, você tem acesso direto aos serviços, consegue acompanhar ordens de serviço em tempo real e ficar por dentro de todas as novidades.</p>
+            <p><em>Sua experiência agora está organizada, rápida e conectada.</em></p>
+        </div>
         
-        <nav class="tabs">
-            <button type="button" class="tab-btn ativo" id="navAgendar" onclick="trocarAba('abaAgendar', 'navAgendar')">📅 Agendar</button>
-            <button type="button" class="tab-btn" id="navConsultar" onclick="trocarAba('abaConsultar', 'navConsultar')">🔍 Consultar</button>
-            <button type="button" class="tab-btn" id="navLoja" onclick="trocarAba('abaLoja', 'navLoja')">🛒 Loja</button>
-        </nav>
+        <input type="email" id="emailL" placeholder="Seu E-mail">
+        <input type="password" id="senhaL" placeholder="Senha">
+        <button onclick="fazerLogin()">ACESSAR SISTEMA</button>
+        <p class="link" onclick="mostrarTela('telaCadastro')">Quero fazer meu cadastro</p>
+    </div>
 
-        <div id="abaAgendar" class="conteudo-aba ativo">
-            <div class="card">
-                <h2>1. Data e Hora</h2>
-                <input type="date" id="dataAtendimento" required>
-                <div class="agenda" id="horarios">
-                    <p style="grid-column: span 3; text-align: center; color: var(--text-muted); font-size: 14px; padding: 10px;">Selecione uma data para ver a disponibilidade.</p>
-                </div>
-            </div>
-            <div class="card">
-                <h2>2. Seus Dados</h2>
-                <form id="form">
-                    <input id="nome" type="text" placeholder="Seu nome completo" required>
-                    <input id="whatsapp" type="text" placeholder="WhatsApp (Apenas números)" maxlength="15" required>
-                    <input id="aparelho" type="text" placeholder="Qual o aparelho ou serviço?" required>
-                    <textarea id="defeito" placeholder="Descreva o defeito ou o que precisa ser feito..." required></textarea>
-                    <button type="submit" class="btn-acao" id="btnAgendar">Confirmar Agendamento</button>
-                </form>
-            </div>
-        </div>
-
-        <div id="abaConsultar" class="conteudo-aba">
-            <div class="card">
-                <h2>Consultar Serviço</h2>
-                <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 15px;">Digite o número da sua Ordem de Serviço (OS).</p>
-                <input id="osBusca" type="text" placeholder="Número da sua OS (Ex: 12)">
-                <button type="button" class="btn-acao" id="btnBuscar" style="margin-top: 15px;">Buscar OS</button>
-                <div class="status" id="resultado" style="display:none"></div>
-            </div>
-        </div>
-
-        <div id="abaLoja" class="conteudo-aba">
-            <div class="card">
-                <h2>Produtos & Serviços</h2>
-                <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 5px;">Confira nossas soluções e acessórios.</p>
-                <div class="grid-produtos" id="vitrineProdutos">
-                    <p style="grid-column: span 2; text-align: center; padding: 20px; color: var(--text-muted);">Atualizando vitrine...</p>
-                </div>
-            </div>
-        </div>
-
+    <!-- TELA DE CADASTRO -->
+    <div id="telaCadastro" class="box hidden">
+        <h1>Novo Cadastro</h1>
+        <input type="text" id="nomeC" placeholder="Nome Completo">
+        <input type="tel" id="zapC" placeholder="WhatsApp">
+        <input type="email" id="emailC" placeholder="E-mail">
+        <input type="password" id="senhaC" placeholder="Senha">
+        <button onclick="fazerCadastro()">FINALIZAR CADASTRO</button>
+        <p class="link" onclick="mostrarTela('telaLogin')">Já sou cadastrado, voltar</p>
     </div>
 
     <script type="module">
-        import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm"; 
-        
-        const supabaseUrl = "https://gbcasddvbcpurkadvegu.supabase.co"; 
-        const supabaseKey = "sb_publishable_YA15vytC5buv0ejQ8fJRPg_WUn6NGjs"; 
-        const supabase = createClient(supabaseUrl, supabaseKey); 
-        
-        let horarioSelecionado = null; 
-        let dataSelecionada = null; 
+        import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+        const supabase = createClient("https://vqwklgrnknnhgurjvywz.supabase.co", "sb_publishable_mInPXc-URRgK5w7qJuNVPw_fo-9J9Uv");
 
-        const numeroEmpresa = "5588994377744";
+        window.mostrarTela = (id) => {
+            document.getElementById('telaLogin').classList.add('hidden');
+            document.getElementById('telaCadastro').classList.add('hidden');
+            document.getElementById(id).classList.remove('hidden');
+        };
 
-        const inputWhatsapp = document.getElementById('whatsapp');
-        inputWhatsapp.addEventListener('input', function (e) {
-            let x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
-            e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
-        });
-
-        const inputData = document.getElementById("dataAtendimento");
-        
-        // Ajuste de fuso horário para garantir a data correta no calendário
-        const hoje = new Date();
-        const deslocamento = hoje.getTimezoneOffset() * 60000;
-        const dataLocal = new Date(hoje.getTime() - deslocamento).toISOString().split('T')[0];
-        inputData.setAttribute('min', dataLocal);
-
-        window.trocarAba = function(abaId, navId) {
-            document.querySelectorAll('.conteudo-aba').forEach(el => el.classList.remove('ativo'));
-            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('ativo'));
-            document.getElementById(abaId).classList.add('ativo');
-            document.getElementById(navId).classList.add('ativo');
-
-            if (abaId === 'abaLoja') {
-                carregarProdutos();
+        window.fazerLogin = async () => {
+            const { error } = await supabase.auth.signInWithPassword({
+                email: document.getElementById('emailL').value,
+                password: document.getElementById('senhaL').value
+            });
+            if (error) {
+                alert("Erro: " + error.message);
+            } else {
+                window.location.href = "sistema.html";
             }
-        }
+        };
 
-        async function carregarProdutos() {
-            const vitrine = document.getElementById('vitrineProdutos');
+        window.fazerCadastro = async () => {
+            const { data, error } = await supabase.auth.signUp({
+                email: document.getElementById('emailC').value,
+                password: document.getElementById('senhaC').value
+            });
+            if (error) { alert(error.message); return; }
             
-            const { data, error } = await supabase.from('produtos').select('*').eq('status', 'ativo').order('id', { ascending: false });
-
-            if (error || !data || data.length === 0) {
-                vitrine.innerHTML = '<p style="grid-column: span 2; text-align: center; color: var(--text-muted); padding: 20px;">Novidades chegando em breve!</p>';
-                return;
-            }
-
-            vitrine.innerHTML = ''; 
-
-            data.forEach(prod => {
-                const mensagem = encodeURIComponent(`Olá, vi o item "${prod.nome}" na vitrine do seu site e tenho interesse!`);
-                const linkCompra = `https://wa.me/${numeroEmpresa}?text=${mensagem}`;
-
-                const card = document.createElement('div');
-                card.className = 'produto-card';
-                card.innerHTML = `
-                    <div class="produto-img">${prod.icone}</div>
-                    <div class="produto-info">
-                        <div class="produto-titulo">${prod.nome}</div>
-                        <div class="produto-preco">R$ ${prod.preco}</div>
-                        <a href="${linkCompra}" target="_blank" class="btn-comprar">Tenho Interesse</a>
-                    </div>
-                `;
-                vitrine.appendChild(card);
-            });
-        }
-        
-        // ==========================================
-        // NOVA LÓGICA INTELIGENTE DE HORÁRIOS
-        // ==========================================
-        async function carregarHorarios(data) { 
-            const container = document.getElementById("horarios");
-            container.innerHTML = "<div style='grid-column: span 3; text-align: center; font-size: 14px; color: var(--primary-color); padding: 10px;'>Consultando disponibilidade...</div>";
-            horarioSelecionado = null;
-
-            // 1. Puxa os agendamentos já salvos nesse dia
-            const { data: agendamentos } = await supabase.from("agendamentos").select("hora").eq("data", data); 
-            const marcados = agendamentos?.map(a => a.hora) || []; 
-
-            // 2. Trava de Segurança: Máximo de 3 clientes por dia
-            if (marcados.length >= 3) {
-                container.innerHTML = "<div style='grid-column: span 3; text-align: center; color: var(--danger-text); background: var(--danger-bg); padding: 12px; border-radius: 8px; font-weight: bold;'>❌ Agenda lotada (3/3). Escolha outra data.</div>";
-                return;
-            }
-
-            // 3. Define a janela de trabalho permitida (Das 08h às 15h)
-            const todosHorarios = ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00'];
-            container.innerHTML = "";
-
-            // 4. Calcula o distanciamento de 3 horas
-            todosHorarios.forEach(hora => {
-                const minAtual = parseInt(hora.split(':')[0]) * 60 + parseInt(hora.split(':')[1]);
-                let bloqueado = false;
-
-                for (let hMarcado of marcados) {
-                    const minMarcado = parseInt(hMarcado.split(':')[0]) * 60 + parseInt(hMarcado.split(':')[1]);
-                    // Se a diferença for menor que 180 minutos (3 horas), bloqueia o horário
-                    if (Math.abs(minAtual - minMarcado) < 180) { 
-                        bloqueado = true;
-                        break;
-                    }
-                }
-
-                // 5. Desenha o botão na tela
-                const div = document.createElement("div");
-                div.className = `horario ${bloqueado ? 'ocupado' : 'livre'}`;
-                div.dataset.hora = hora;
-                div.innerText = hora;
-
-                if (!bloqueado) {
-                    div.onclick = () => {
-                        document.querySelectorAll('.horario').forEach(x => x.classList.remove('selecionado'));
-                        div.classList.add('selecionado');
-                        horarioSelecionado = hora;
-                    };
-                }
-                container.appendChild(div);
-            });
-        } 
-
-        inputData.addEventListener("change", (e) => { 
-            dataSelecionada = e.target.value; 
-            carregarHorarios(dataSelecionada); 
-        }); 
-
-        const form = document.getElementById("form"); 
-        const btnAgendar = document.getElementById("btnAgendar");
-
-        form.onsubmit = async (e) => { 
-            e.preventDefault(); 
-            if (!dataSelecionada) { alert("Selecione uma data no calendário."); return; }
-            if (!horarioSelecionado) { alert("Selecione um horário disponível."); return; }
-
-            const numZap = inputWhatsapp.value.replace(/\D/g, '');
-            if(numZap.length < 10) { alert("WhatsApp inválido."); return; }
-
-            btnAgendar.innerText = "Verificando disponibilidade...";
-            btnAgendar.disabled = true;
-
-            const { data: checagem } = await supabase.from("agendamentos").select("id").eq("data", dataSelecionada).eq("hora", horarioSelecionado);
-            if (checagem && checagem.length > 0) {
-                alert("⚠️ Ops! Alguém acabou de reservar esse horário. Escolha outro.");
-                carregarHorarios(dataSelecionada);
-                btnAgendar.innerText = "Confirmar Agendamento"; btnAgendar.disabled = false;
-                return;
-            }
-
-            btnAgendar.innerText = "Salvando agendamento...";
-            const dados = { nome: document.getElementById("nome").value, whatsapp: document.getElementById("whatsapp").value, aparelho: document.getElementById("aparelho").value, defeito: document.getElementById("defeito").value, data: dataSelecionada, hora: horarioSelecionado, status: "Em análise técnica" }; 
-            const { data, error } = await supabase.from("agendamentos").insert([dados]).select(); 
-
-            btnAgendar.innerText = "Confirmar Agendamento"; btnAgendar.disabled = false;
-
-            if (!error && data && data.length > 0) { 
-                alert(`✅ AGENDAMENTO CONFIRMADO!\n\nSua OS: ${data[0].id}`); 
-                carregarHorarios(dataSelecionada); 
-                form.reset(); 
-                window.trocarAba('abaConsultar', 'navConsultar'); 
-                document.getElementById('osBusca').value = data[0].id;
-            } else { alert("❌ ERRO DO SUPABASE: " + (error ? error.message : "Erro desconhecido")); } 
-        }; 
-
-        const btnBuscar = document.getElementById("btnBuscar"); 
-        const osBuscaInput = document.getElementById("osBusca");
-
-        btnBuscar.onclick = async () => { 
-            const os = osBuscaInput.value.trim(); 
-            const res = document.getElementById("resultado"); 
-            if(!os) { alert("Digite a OS."); return; }
-            btnBuscar.innerText = "Buscando...";
-            const { data, error } = await supabase.from("agendamentos").select("*").eq("id", os).single(); 
-            btnBuscar.innerText = "Buscar OS"; res.style.display = "block"; 
-            if (data) { 
-                res.innerHTML = `<strong>📋 OS:</strong> ${data.id}<br><br><strong>👤 Cliente:</strong> ${data.nome}<br><strong>🛠️ Aparelho:</strong> ${data.aparelho}<br><strong>📅 Data:</strong> ${data.data.split('-').reverse().join('/')} às ${data.hora}<br><hr style="margin: 12px 0; border: 0; border-top: 1px solid rgba(255,255,255,0.1);"><strong>STATUS:</strong> <span class="resultado-destaque">${data.status}</span>`; 
-                osBuscaInput.value = '';
-            } else { res.innerHTML = "❌ <strong>OS não encontrada.</strong>"; } 
-        }; 
+            // Salva nome e zap na tabela 'usuarios'
+            await supabase.from('usuarios').insert([{
+                id: data.user.id,
+                nome: document.getElementById('nomeC').value,
+                whatsapp: document.getElementById('zapC').value
+            }]);
+            
+            alert("Cadastro realizado! Agora faça seu login.");
+            mostrarTela('telaLogin');
+        };
     </script>
 </body>
 </html>
