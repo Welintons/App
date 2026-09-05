@@ -1,93 +1,884 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WS Chat | Conectividade</title>
-    <style>
-        :root { --bg: #050505; --card: rgba(20, 20, 20, 0.8); --primary: #00d4ff; --text: #ffffff; }
-        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
-        .box { background: var(--card); padding: 40px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); width: 100%; max-width: 450px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        
-        h1 { color: var(--primary); margin-bottom: 20px; font-size: 28px; }
-        .intro-text { color: #ccc; font-size: 15px; line-height: 1.6; margin-bottom: 30px; text-align: justify; }
-        
-        input { width: 100%; padding: 14px; margin-bottom: 12px; border-radius: 10px; border: 1px solid #444; background: #111; color: white; outline: none; }
-        input:focus { border-color: var(--primary); }
-        button { width: 100%; padding: 14px; background: var(--primary); border: none; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 10px; color: #000; transition: 0.3s; }
-        button:hover { filter: brightness(1.2); }
-        
-        .hidden { display: none; }
-        .link { color: var(--primary); font-size: 14px; margin-top: 20px; cursor: pointer; text-decoration: underline; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel Mila - WS SOLUÇÕES</title>
+
+<!-- SUPABASE CLIENT JS -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial, sans-serif;
+}
+
+:root{
+    --roxo:#8b5cf6;
+    --roxo-escuro:#6d28d9;
+    --fundo:#f5f3ff;
+    --branco:#ffffff;
+    --texto:#222222;
+    --cinza:#6b7280;
+    --borda:#dddddd;
+    --hover-dia:#ddd6fe;
+    --bg-dia:#f3f4f6;
+}
+
+body{
+    background:var(--fundo);
+    color:var(--texto);
+    transition:background .3s ease, color .3s ease;
+}
+
+/* MODO NOTURNO COMPLETO */
+body.noturno{
+    --fundo:#121212;
+    --branco:#1e1e1e;
+    --texto:#f3f4f6;
+    --cinza:#9ca3af;
+    --borda:#374151;
+    --hover-dia:#374151;
+    --bg-dia:#2a2a2a;
+}
+
+/* TOPO */
+header{
+    background:linear-gradient(135deg,var(--roxo-escuro),var(--roxo));
+    color:white;
+    padding:18px;
+    display:flex;
+    justify-space:space-between;
+    align-items:center;
+    box-shadow:0 3px 10px rgba(0,0,0,.15);
+}
+
+.logo{
+    font-size:22px;
+    font-weight:bold;
+}
+
+.subtitulo{
+    font-size:12px;
+    opacity:.85;
+    margin-top:3px;
+}
+
+.btn-noturno{
+    border:none;
+    background:rgba(255,255,255,.18);
+    color:white;
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    font-size:20px;
+    cursor:pointer;
+}
+
+/* MENU */
+nav{
+    display:flex;
+    gap:8px;
+    padding:10px;
+    background:var(--branco);
+    overflow-x:auto;
+}
+
+nav button{
+    border:none;
+    padding:10px 14px;
+    border-radius:10px;
+    background:#ede9fe;
+    color:var(--roxo-escuro);
+    font-weight:bold;
+    cursor:pointer;
+    white-space: nowrap;
+}
+
+body.noturno nav button{
+    background:#312e81;
+    color:#c4b5fd;
+}
+
+nav button.ativo, body.noturno nav button.ativo{
+    background:var(--roxo);
+    color:white;
+}
+
+/* CONTEÚDO */
+main{
+    padding:15px;
+    max-width:1100px;
+    margin:auto;
+}
+
+.secao{
+    display:none;
+}
+
+.secao.ativa{
+    display:block;
+}
+
+.titulo{
+    margin-bottom:15px;
+}
+
+.titulo h2{
+    color:var(--roxo);
+}
+
+.titulo p{
+    color:var(--cinza);
+    font-size:14px;
+}
+
+/* CARDS */
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:12px;
+    margin-bottom:20px;
+}
+
+.card{
+    background:var(--branco);
+    padding:18px;
+    border-radius:15px;
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
+}
+
+.card h3{
+    color:var(--cinza);
+    font-size:14px;
+    margin-bottom:8px;
+}
+
+.card strong{
+    font-size:24px;
+    color:var(--roxo);
+}
+
+/* FORMULÁRIOS */
+.formulario{
+    background:var(--branco);
+    padding:18px;
+    border-radius:15px;
+    margin-bottom:20px;
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
+}
+
+.formulario h3{
+    margin-bottom:15px;
+    color:var(--roxo);
+}
+
+input,
+select,
+textarea{
+    width:100%;
+    padding:12px;
+    border:1px solid var(--borda);
+    background:var(--branco);
+    color:var(--texto);
+    border-radius:9px;
+    margin-bottom:10px;
+    outline:none;
+}
+
+textarea{
+    min-height:80px;
+    resize:vertical;
+}
+
+.btn{
+    border:none;
+    padding:12px 18px;
+    border-radius:10px;
+    background:var(--roxo);
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+    width: 100%;
+}
+
+.btn-excluir{
+    border:none;
+    padding:6px 10px;
+    border-radius:6px;
+    background:#ef4444;
+    color:white;
+    font-size:12px;
+    cursor:pointer;
+    margin-top:8px;
+}
+
+.btn:hover{
+    background:var(--roxo-escuro);
+}
+
+/* LISTAS */
+.lista{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.item{
+    background:var(--branco);
+    padding:15px;
+    border-radius:12px;
+    box-shadow:0 2px 8px rgba(0,0,0,.07);
+}
+
+.item strong{
+    color:var(--roxo);
+}
+
+.item small{
+    display:block;
+    color:var(--cinza);
+    margin-top:5px;
+}
+
+/* AGENDA */
+.agenda-item{
+    display:flex;
+    justify-space:space-between;
+    align-items:center;
+    gap:10px;
+}
+
+.hora{
+    background:var(--roxo);
+    color:white;
+    padding:8px 10px;
+    border-radius:8px;
+    font-weight:bold;
+    text-align:center;
+}
+
+/* CALENDÁRIO */
+.calendario{
+    background:var(--branco);
+    padding:15px;
+    border-radius:15px;
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
+}
+
+.cal-topo{
+    display:flex;
+    justify-space:space-between;
+    align-items:center;
+    margin-bottom:15px;
+}
+
+.cal-topo button{
+    border:none;
+    background:var(--roxo);
+    color:white;
+    width:35px;
+    height:35px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.cal-grid{
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
+    gap:5px;
+}
+
+.dia-semana{
+    text-align:center;
+    font-weight:bold;
+    color:var(--cinza);
+    font-size:12px;
+    padding:5px;
+}
+
+.dia{
+    min-height:45px;
+    padding:7px;
+    border-radius:8px;
+    background:var(--bg-dia);
+    cursor:pointer;
+    font-size:13px;
+}
+
+.dia:hover{
+    background:var(--hover-dia);
+}
+
+.dia.tem-agendamento{
+    background:var(--roxo);
+    color:white;
+    font-weight:bold;
+}
+
+/* RESPONSIVO */
+@media(max-width:600px){
+    header{ padding:15px; }
+    .logo{ font-size:19px; }
+    main{ padding:10px; }
+    .grid{ grid-template-columns:repeat(2,1fr); }
+}
+</style>
 </head>
+
 <body>
 
-    <!-- TELA DE LOGIN -->
-    <div id="telaLogin" class="box">
-        <h1>WS CHAT</h1>
-        <div class="intro-text">
-            <p><strong>Bem-vindo à nossa mini rede social!</strong></p>
-            <p>Este sistema é o ponto de encontro exclusivo da nossa comunidade. Aqui, você tem acesso direto aos serviços, consegue acompanhar ordens de serviço em tempo real e ficar por dentro de todas as novidades.</p>
-            <p><em>Sua experiência agora está organizada, rápida e conectada.</em></p>
+<header>
+    <div>
+        <div class="logo">WS SOLUÇÕES</div>
+        <div class="subtitulo">Painel da Mila • Assistente</div>
+    </div>
+    <button class="btn-noturno" id="btnNoturno" onclick="alternarNoturno()">🌙</button>
+</header>
+
+<nav>
+    <button class="ativo" onclick="abrirSecao('inicio',this)">🏠 Início</button>
+    <button onclick="abrirSecao('clientes',this)">👥 Clientes</button>
+    <button onclick="abrirSecao('agenda',this)">📅 Agenda</button>
+    <button onclick="abrirSecao('servicos',this)">🛠️ Serviços / Garantias</button>
+    <button onclick="abrirSecao('financeiro',this)">💰 Financeiro</button>
+</nav>
+
+<main>
+
+<!-- INÍCIO -->
+<section id="inicio" class="secao ativa">
+    <div class="titulo">
+        <h2>Olá, Mila 👋</h2>
+        <p>Painel de Atendimento WS SOLUÇÕES</p>
+    </div>
+
+    <div class="grid">
+        <div class="card">
+            <h3>Clientes</h3>
+            <strong id="totalClientes">0</strong>
         </div>
-        
-        <input type="email" id="emailL" placeholder="Seu E-mail">
-        <input type="password" id="senhaL" placeholder="Senha">
-        <button onclick="fazerLogin()">ACESSAR SISTEMA</button>
-        <p class="link" onclick="mostrarTela('telaCadastro')">Quero fazer meu cadastro</p>
+        <div class="card">
+            <h3>Agendamentos</h3>
+            <strong id="totalAgendamentos">0</strong>
+        </div>
+        <div class="card">
+            <h3>Serviços Ativos</h3>
+            <strong id="totalServicos">0</strong>
+        </div>
+        <div class="card">
+            <h3>Saldo em Caixa</h3>
+            <strong id="totalCaixa">R$ 0,00</strong>
+        </div>
     </div>
 
-    <!-- TELA DE CADASTRO -->
-    <div id="telaCadastro" class="box hidden">
-        <h1>Novo Cadastro</h1>
-        <input type="text" id="nomeC" placeholder="Nome Completo">
-        <input type="tel" id="zapC" placeholder="WhatsApp">
-        <input type="email" id="emailC" placeholder="E-mail">
-        <input type="password" id="senhaC" placeholder="Senha">
-        <button onclick="fazerCadastro()">FINALIZAR CADASTRO</button>
-        <p class="link" onclick="mostrarTela('telaLogin')">Já sou cadastrado, voltar</p>
+    <div class="formulario">
+        <h3>Próximos Agendamentos</h3>
+        <div id="proximos" class="lista">
+            <div class="item">Carregando dados...</div>
+        </div>
+    </div>
+</section>
+
+<!-- CLIENTES -->
+<section id="clientes" class="secao">
+    <div class="titulo">
+        <h2>👥 Clientes</h2>
+        <p>Cadastro e Histórico de Clientes</p>
     </div>
 
-    <script type="module">
-        import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
-        const supabase = createClient("https://vqwklgrnknnhgurjvywz.supabase.co", "sb_publishable_mInPXc-URRgK5w7qJuNVPw_fo-9J9Uv");
+    <div class="formulario">
+        <h3>Novo Cliente</h3>
+        <input id="clienteNome" type="text" placeholder="Nome completo">
+        <input id="clienteWhatsapp" type="text" placeholder="WhatsApp / Telefone">
+        <input id="clienteCidade" type="text" placeholder="Cidade / Bairro">
+        <textarea id="clienteObservacoes" placeholder="Observações adicionais"></textarea>
+        <button class="btn" onclick="salvarCliente()">+ Cadastrar Cliente</button>
+    </div>
 
-        window.mostrarTela = (id) => {
-            document.getElementById('telaLogin').classList.add('hidden');
-            document.getElementById('telaCadastro').classList.add('hidden');
-            document.getElementById(id).classList.remove('hidden');
-        };
+    <div id="listaClientes" class="lista"></div>
+</section>
 
-        window.fazerLogin = async () => {
-            const { error } = await supabase.auth.signInWithPassword({
-                email: document.getElementById('emailL').value,
-                password: document.getElementById('senhaL').value
-            });
-            if (error) {
-                alert("Erro: " + error.message);
-            } else {
-                window.location.href = "sistema.html";
-            }
-        };
+<!-- AGENDA -->
+<section id="agenda" class="secao">
+    <div class="titulo">
+        <h2>📅 Agenda</h2>
+        <p>Controle de Horários e Atendimentos</p>
+    </div>
 
-        window.fazerCadastro = async () => {
-            const { data, error } = await supabase.auth.signUp({
-                email: document.getElementById('emailC').value,
-                password: document.getElementById('senhaC').value
-            });
-            if (error) { alert(error.message); return; }
-            
-            // Salva nome e zap na tabela 'usuarios'
-            await supabase.from('usuarios').insert([{
-                id: data.user.id,
-                nome: document.getElementById('nomeC').value,
-                whatsapp: document.getElementById('zapC').value
-            }]);
-            
-            alert("Cadastro realizado! Agora faça seu login.");
-            mostrarTela('telaLogin');
-        };
-    </script>
+    <div class="formulario">
+        <h3>Novo Agendamento</h3>
+        <input id="agendaNome" type="text" placeholder="Nome do Cliente">
+        <input id="agendaWhatsapp" type="text" placeholder="WhatsApp">
+        <input id="agendaAparelho" type="text" placeholder="Aparelho / Modelo">
+        <input id="agendaData" type="date">
+        <input id="agendaHora" type="time">
+        <textarea id="agendaDefeito" placeholder="Defeito relatado / Observações"></textarea>
+        <select id="agendaStatus">
+            <option value="Pendente">Pendente</option>
+            <option value="Confirmado">Confirmado</option>
+            <option value="Concluído">Concluído</option>
+        </select>
+        <button class="btn" onclick="salvarAgendamento()">+ Agendar Horário</button>
+    </div>
+
+    <div class="calendario">
+        <div class="cal-topo">
+            <button onclick="mesAnterior()">‹</button>
+            <strong id="mesAno"></strong>
+            <button onclick="mesProximo()">›</button>
+        </div>
+        <div class="cal-grid" id="calendario"></div>
+    </div>
+
+    <br>
+    <div id="listaAgenda" class="lista"></div>
+</section>
+
+<!-- SERVIÇOS E GARANTIAS -->
+<section id="servicos" class="secao">
+    <div class="titulo">
+        <h2>🛠️ Serviços e Garantias</h2>
+        <p>Ordens de Serviço e Prazos de Garantia</p>
+    </div>
+
+    <div class="formulario">
+        <h3>Nova Ordem de Serviço</h3>
+        <input id="servicoCliente" type="text" placeholder="Nome do Cliente">
+        <input id="servicoWhatsapp" type="text" placeholder="WhatsApp">
+        <input id="servicoAparelho" type="text" placeholder="Aparelho (ex: iPhone 11)">
+        <input id="servicoNome" type="text" placeholder="Serviço (ex: Troca de Tela)">
+        <textarea id="servicoLaudo" placeholder="Laudo Técnico / Observações"></textarea>
+        <input id="servicoValor" type="number" step="0.01" placeholder="Valor (R$)">
+        <input id="servicoGarantia" type="number" placeholder="Garantia em Dias (padrão: 90)" value="90">
+        <select id="servicoStatus">
+            <option value="Em Andamento">Em Andamento</option>
+            <option value="Aguardando Peça">Aguardando Peça</option>
+            <option value="Pronto">Pronto / Concluído</option>
+            <option value="Entregue com Garantia">Entregue com Garantia</option>
+        </select>
+        <button class="btn" onclick="salvarServico()">+ Abrir Serviço / OS</button>
+    </div>
+
+    <div id="listaServicos" class="lista"></div>
+</section>
+
+<!-- FINANCEIRO -->
+<section id="financeiro" class="secao">
+    <div class="titulo">
+        <h2>💰 Financeiro / Caixa</h2>
+        <p>Controle de Entradas e Saídas da Assistência</p>
+    </div>
+
+    <div class="formulario">
+        <h3>Nova Movimentação</h3>
+        <input id="finDescricao" type="text" placeholder="Descrição (ex: Recebimento OS 102 ou Compra de Peça)">
+        <select id="finTipo">
+            <option value="Entrada">Entrada (+)</option>
+            <option value="Saída">Saída (-)</option>
+        </select>
+        <input id="finValor" type="number" step="0.01" placeholder="Valor (R$)">
+        <select id="finForma">
+            <option value="PIX">PIX</option>
+            <option value="Cartão de Crédito">Cartão de Crédito</option>
+            <option value="Cartão de Débito">Cartão de Débito</option>
+            <option value="Dinheiro">Dinheiro</option>
+        </select>
+        <button class="btn" onclick="salvarFinanceiro()">+ Registrar No Caixa</button>
+    </div>
+
+    <div id="listaFinanceiro" class="lista"></div>
+</section>
+
+</main>
+
+<script>
+// ==============================
+// CONFIGURAÇÃO CONECTADA
+// ==============================
+const SUPABASE_URL = "https://xcncqpjxghujwbyklhel.supabase.co";
+const SUPABASE_KEY = "sb_publishable_xJqknenrg3H20jeGum1bkg_Ir-GLZsl";
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let clientes = [];
+let agendamentos = [];
+let servicos = [];
+let financeiro = [];
+let dataCalendario = new Date();
+
+// CARREGAR DADOS DO SUPABASE
+async function carregarDados() {
+    const { data: resClientes } = await supabase.from('clientes').select('*');
+    const { data: resAgendamentos } = await supabase.from('agendamentos').select('*');
+    const { data: resServicos } = await supabase.from('servicos').select('*');
+    const { data: resFinanceiro } = await supabase.from('financeiro').select('*');
+
+    clientes = resClientes || [];
+    agendamentos = resAgendamentos || [];
+    servicos = resServicos || [];
+    financeiro = resFinanceiro || [];
+
+    atualizarDashboard();
+    renderizarClientes();
+    renderizarAgenda();
+    renderizarCalendario();
+    renderizarServicos();
+    renderizarFinanceiro();
+}
+
+// ==============================
+// MODO NOTURNO
+// ==============================
+function alternarNoturno(){
+    document.body.classList.toggle("noturno");
+    const ativo = document.body.classList.contains("noturno");
+    localStorage.setItem("modoNoturnoMila", ativo ? "1" : "0");
+    document.getElementById("btnNoturno").textContent = ativo ? "☀️" : "🌙";
+}
+
+if(localStorage.getItem("modoNoturnoMila") === "1"){
+    document.body.classList.add("noturno");
+    document.getElementById("btnNoturno").textContent = "☀️";
+}
+
+// ==============================
+// NAVEGAÇÃO
+// ==============================
+function abrirSecao(id, botao){
+    document.querySelectorAll(".secao").forEach(s => s.classList.remove("ativa"));
+    document.getElementById(id).classList.add("ativa");
+    document.querySelectorAll("nav button").forEach(b => b.classList.remove("ativo"));
+    botao.classList.add("ativo");
+
+    if(id === "inicio") atualizarDashboard();
+    if(id === "clientes") renderizarClientes();
+    if(id === "agenda") { renderizarAgenda(); renderizarCalendario(); }
+    if(id === "servicos") renderizarServicos();
+    if(id === "financeiro") renderizarFinanceiro();
+}
+
+// ==============================
+// CLIENTES
+// ==============================
+async function salvarCliente(){
+    const nome = document.getElementById("clienteNome").value.trim();
+    const whatsapp = document.getElementById("clienteWhatsapp").value.trim();
+    const cidade = document.getElementById("clienteCidade").value.trim();
+    const observacoes = document.getElementById("clienteObservacoes").value.trim();
+
+    if(!nome){ alert("Digite o nome do cliente."); return; }
+
+    const { error } = await supabase.from('clientes').insert([{ nome, whatsapp, cidade, observacoes }]);
+    if(error){ alert("Erro ao salvar cliente: " + error.message); return; }
+
+    document.getElementById("clienteNome").value="";
+    document.getElementById("clienteWhatsapp").value="";
+    document.getElementById("clienteCidade").value="";
+    document.getElementById("clienteObservacoes").value="";
+
+    await carregarDados();
+}
+
+async function deletarCliente(id){
+    const { error } = await supabase.from('clientes').delete().eq('id', id);
+    if(error){ alert("Erro ao deletar: " + error.message); return; }
+    await carregarDados();
+}
+
+function renderizarClientes(){
+    const lista = document.getElementById("listaClientes");
+    lista.innerHTML="";
+
+    if(clientes.length === 0){
+        lista.innerHTML = `<div class="item">Nenhum cliente cadastrado.</div>`;
+        return;
+    }
+
+    clientes.forEach(c => {
+        lista.innerHTML += `
+            <div class="item">
+                <strong>${c.nome}</strong>
+                <small>📱 ${c.whatsapp || "Sem WhatsApp"}</small>
+                <small>📍 ${c.cidade || "Sem localização"}</small>
+                ${c.observacoes ? `<small>📝 ${c.observacoes}</small>` : ''}
+                <button class="btn-excluir" onclick="deletarCliente(${c.id})">Excluir</button>
+            </div>
+        `;
+    });
+}
+
+// ==============================
+// AGENDAMENTOS
+// ==============================
+async function salvarAgendamento(){
+    const nome = document.getElementById("agendaNome").value.trim();
+    const whatsapp = document.getElementById("agendaWhatsapp").value.trim();
+    const aparelho = document.getElementById("agendaAparelho").value.trim();
+    const data = document.getElementById("agendaData").value;
+    const hora = document.getElementById("agendaHora").value;
+    const defeito = document.getElementById("agendaDefeito").value.trim();
+    const status = document.getElementById("agendaStatus").value;
+
+    if(!nome || !data || !hora){ alert("Preencha nome, data e hora."); return; }
+
+    const { error } = await supabase.from('agendamentos').insert([{
+        nome, whatsapp, aparelho, data, hora, defeito, status
+    }]);
+
+    if(error){ alert("Erro ao agendar: " + error.message); return; }
+
+    document.getElementById("agendaNome").value="";
+    document.getElementById("agendaWhatsapp").value="";
+    document.getElementById("agendaAparelho").value="";
+    document.getElementById("agendaData").value="";
+    document.getElementById("agendaHora").value="";
+    document.getElementById("agendaDefeito").value="";
+
+    await carregarDados();
+}
+
+async function deletarAgendamento(id){
+    const { error } = await supabase.from('agendamentos').delete().eq('id', id);
+    if(error){ alert("Erro ao deletar: " + error.message); return; }
+    await carregarDados();
+}
+
+function renderizarAgenda(){
+    const lista = document.getElementById("listaAgenda");
+    lista.innerHTML="";
+
+    if(agendamentos.length === 0){
+        lista.innerHTML = `<div class="item">Nenhum agendamento.</div>`;
+        return;
+    }
+
+    const ordenados = [...agendamentos].sort((a,b) => (a.data+a.hora).localeCompare(b.data+b.hora));
+
+    ordenados.forEach(a => {
+        lista.innerHTML += `
+            <div class="item agenda-item">
+                <div>
+                    <strong>${a.nome}</strong>
+                    <small>📅 ${a.data.split('-').reverse().join('/')}</small>
+                    <small>📱 ${a.whatsapp || "Sem whats"} | 📱 ${a.aparelho || "Aparelho N/I"}</small>
+                    <small>📝 Defeito: ${a.defeito || "Não detalhado"}</small>
+                    <small>Status: <b>${a.status}</b></small>
+                    <button class="btn-excluir" onclick="deletarAgendamento(${a.id})">Excluir</button>
+                </div>
+                <div class="hora">${a.hora}</div>
+            </div>
+        `;
+    });
+}
+
+// CALENDÁRIO
+function renderizarCalendario(){
+    const calendario = document.getElementById("calendario");
+    calendario.innerHTML="";
+
+    const ano = dataCalendario.getFullYear();
+    const mes = dataCalendario.getMonth();
+
+    const nomesMeses = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+    document.getElementById("mesAno").textContent = `${nomesMeses[mes]} ${ano}`;
+
+    const diasSemana = ["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
+    diasSemana.forEach(dia => { calendario.innerHTML += `<div class="dia-semana">${dia}</div>`; });
+
+    const primeiroDia = new Date(ano,mes,1).getDay();
+    const totalDias = new Date(ano,mes+1,0).getDate();
+
+    for(let i=0;i<primeiroDia;i++){ calendario.innerHTML += `<div></div>`; }
+
+    for(let dia=1;dia<=totalDias;dia++){
+        const data = `${ano}-${String(mes+1).padStart(2,"0")}-${String(dia).padStart(2,"0")}`;
+        const tem = agendamentos.some(a => a.data === data);
+
+        calendario.innerHTML += `
+            <div class="dia ${tem ? "tem-agendamento" : ""}" onclick="mostrarDia('${data}')">
+                ${dia}
+            </div>
+        `;
+    }
+}
+
+function mesAnterior(){ dataCalendario.setMonth(dataCalendario.getMonth()-1); renderizarCalendario(); }
+function mesProximo(){ dataCalendario.setMonth(dataCalendario.getMonth()+1); renderizarCalendario(); }
+
+function mostrarDia(data){
+    const lista = agendamentos.filter(a => a.data === data);
+    if(lista.length === 0){ alert("Nenhum agendamento neste dia."); return; }
+
+    let texto = `Agendamentos (${data.split('-').reverse().join('/')}):\n\n`;
+    lista.forEach(a => { texto += `${a.hora} - ${a.nome} (${a.aparelho})\n`; });
+    alert(texto);
+}
+
+// ==============================
+// SERVIÇOS E GARANTIAS
+// ==============================
+async function salvarServico(){
+    const cliente = document.getElementById("servicoCliente").value.trim();
+    const whatsapp = document.getElementById("servicoWhatsapp").value.trim();
+    const aparelho = document.getElementById("servicoAparelho").value.trim();
+    const servico = document.getElementById("servicoNome").value.trim();
+    const laudo_tecnico = document.getElementById("servicoLaudo").value.trim();
+    const valor = document.getElementById("servicoValor").value;
+    const garantia_dias = document.getElementById("servicoGarantia").value || 90;
+    const status = document.getElementById("servicoStatus").value;
+
+    if(!cliente || !servico){ alert("Preencha cliente e serviço."); return; }
+
+    const { error } = await supabase.from('servicos').insert([{
+        cliente, whatsapp, aparelho, servico, laudo_tecnico,
+        valor: valor ? parseFloat(valor) : 0,
+        garantia_dias: parseInt(garantia_dias),
+        status
+    }]);
+
+    if(error){ alert("Erro ao registrar serviço: " + error.message); return; }
+
+    document.getElementById("servicoCliente").value="";
+    document.getElementById("servicoWhatsapp").value="";
+    document.getElementById("servicoAparelho").value="";
+    document.getElementById("servicoNome").value="";
+    document.getElementById("servicoLaudo").value="";
+    document.getElementById("servicoValor").value="";
+
+    await carregarDados();
+}
+
+async function deletarServico(id){
+    const { error } = await supabase.from('servicos').delete().eq('id', id);
+    if(error){ alert("Erro ao deletar: " + error.message); return; }
+    await carregarDados();
+}
+
+function renderizarServicos(){
+    const lista = document.getElementById("listaServicos");
+    lista.innerHTML="";
+
+    if(servicos.length === 0){
+        lista.innerHTML = `<div class="item">Nenhum serviço ou O.S. aberta.</div>`;
+        return;
+    }
+
+    servicos.forEach(s => {
+        lista.innerHTML += `
+            <div class="item">
+                <strong>OS/Serviço: ${s.servico}</strong>
+                <small>👤 Cliente: ${s.cliente} (${s.whatsapp || "Sem Whats"})</small>
+                <small>📱 Aparelho: ${s.aparelho || "Não informado"}</small>
+                <small>📋 Laudo: ${s.laudo_tecnico || "Pendente"}</small>
+                <small>🛡️ Garantia: <b>${s.garantia_dias} dias</b></small>
+                <small>💵 Valor: R$ ${Number(s.valor || 0).toFixed(2).replace(".",",")}</small>
+                <small>Status: <b>${s.status}</b></small>
+                <button class="btn-excluir" onclick="deletarServico(${s.id})">Excluir OS</button>
+            </div>
+        `;
+    });
+}
+
+// ==============================
+// FINANCEIRO
+// ==============================
+async function salvarFinanceiro(){
+    const descricao = document.getElementById("finDescricao").value.trim();
+    const tipo = document.getElementById("finTipo").value;
+    const valor = document.getElementById("finValor").value;
+    const forma_pagamento = document.getElementById("finForma").value;
+
+    if(!descricao || !valor){ alert("Preencha a descrição e o valor."); return; }
+
+    const { error } = await supabase.from('financeiro').insert([{
+        descricao, tipo, valor: parseFloat(valor), forma_pagamento
+    }]);
+
+    if(error){ alert("Erro ao salvar caixa: " + error.message); return; }
+
+    document.getElementById("finDescricao").value="";
+    document.getElementById("finValor").value="";
+
+    await carregarDados();
+}
+
+async function deletarFinanceiro(id){
+    const { error } = await supabase.from('financeiro').delete().eq('id', id);
+    if(error){ alert("Erro ao deletar: " + error.message); return; }
+    await carregarDados();
+}
+
+function renderizarFinanceiro(){
+    const lista = document.getElementById("listaFinanceiro");
+    lista.innerHTML="";
+
+    if(financeiro.length === 0){
+        lista.innerHTML = `<div class="item">Nenhuma movimentação no caixa.</div>`;
+        return;
+    }
+
+    financeiro.forEach(f => {
+        const cor = f.tipo === "Entrada" ? "green" : "red";
+        const sinal = f.tipo === "Entrada" ? "+" : "-";
+
+        lista.innerHTML += `
+            <div class="item">
+                <strong style="color:${cor}">${sinal} R$ ${Number(f.valor).toFixed(2).replace(".",",")} (${f.tipo})</strong>
+                <small>📝 ${f.descricao}</small>
+                <small>💳 Forma: ${f.forma_pagamento}</small>
+                <small>📅 Data: ${new Date(f.created_at).toLocaleDateString('pt-BR')}</small>
+                <button class="btn-excluir" onclick="deletarFinanceiro(${f.id})">Excluir</button>
+            </div>
+        `;
+    });
+}
+
+// ==============================
+// DASHBOARD
+// ==============================
+function atualizarDashboard(){
+    document.getElementById("totalClientes").textContent = clientes.length;
+    document.getElementById("totalAgendamentos").textContent = agendamentos.length;
+    document.getElementById("totalServicos").textContent = servicos.length;
+
+    // Calcular saldo do caixa
+    const totalEntradas = financeiro.filter(f => f.tipo === "Entrada").reduce((acc, f) => acc + Number(f.valor), 0);
+    const totalSaidas = financeiro.filter(f => f.tipo === "Saída").reduce((acc, f) => acc + Number(f.valor), 0);
+    const saldo = totalEntradas - totalSaidas;
+
+    document.getElementById("totalCaixa").textContent = `R$ ${saldo.toFixed(2).replace(".",",")}`;
+
+    const proximos = document.getElementById("proximos");
+    proximos.innerHTML="";
+
+    const lista = [...agendamentos]
+        .sort((a,b) => (a.data+a.hora).localeCompare(b.data+b.hora))
+        .slice(0,5);
+
+    if(lista.length === 0){
+        proximos.innerHTML = `<div class="item">Nenhum atendimento cadastrado.</div>`;
+        return;
+    }
+
+    lista.forEach(a => {
+        proximos.innerHTML += `
+            <div class="item agenda-item">
+                <div>
+                    <strong>${a.nome}</strong>
+                    <small>${a.data.split('-').reverse().join('/')} • ${a.aparelho || 'Aparelho N/I'}</small>
+                </div>
+                <div class="hora">${a.hora}</div>
+            </div>
+        `;
+    });
+}
+
+// INICIALIZAÇÃO
+carregarDados();
+</script>
+
 </body>
 </html>
