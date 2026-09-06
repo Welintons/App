@@ -1,288 +1,3975 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WS Admin - Gerenciamento</title>
-    <style>
-        :root {
-            --bg-body: #f1f5f9; --bg-card: #ffffff; --primary-color: #0f172a; --primary-hover: #1e293b;
-            --text-main: #0f172a; --text-muted: #64748b; --border-color: #e2e8f0;
-            --success: #16a34a; --warning: #ca8a04; --danger: #dc2626; --radius-md: 8px;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, sans-serif; }
-        body { background: var(--bg-body); color: var(--text-main); }
+<title>Painel WS SOLUÇÕES</title>
 
-        /* TELA DE LOGIN */
-        #tela-login { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background: var(--primary-color); color: white; padding: 20px; }
-        .login-box { background: white; color: var(--text-main); padding: 30px; border-radius: var(--radius-md); width: 100%; max-width: 400px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
-        .login-box h2 { margin-bottom: 20px; color: var(--primary-color); }
-        .login-box input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid var(--border-color); border-radius: var(--radius-md); font-size: 16px; }
-        .btn-login { width: 100%; padding: 12px; background: var(--primary-color); color: white; border: none; border-radius: var(--radius-md); font-size: 16px; font-weight: bold; cursor: pointer; }
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-        /* HEADER E CONTAINER GERAL */
-        #tela-admin { display: none; padding-bottom: 40px; }
-        header { background: var(--primary-color); color: white; padding: 20px; text-align: center; }
-        .container { max-width: 800px; margin: auto; padding: 20px; }
+<style>
+:root{
+    --roxo:#7c3aed;
+    --roxo2:#6d28d9;
+    --roxo3:#4c1d95;
 
-        /* MENU DE ABAS DO ADMIN */
-        .admin-tabs { display: flex; gap: 10px; margin-bottom: 25px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px; }
-        .tab-btn { background: transparent; border: none; padding: 10px 15px; font-size: 16px; font-weight: bold; color: var(--text-muted); cursor: pointer; border-radius: var(--radius-md); transition: 0.2s; }
-        .tab-btn:hover { background: #e2e8f0; }
-        .tab-btn.ativo { background: var(--primary-color); color: white; }
-        
-        .conteudo-admin { display: none; animation: fadeIn 0.3s; }
-        .conteudo-admin.ativo { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    --fundo:#f5f3ff;
+    --card:#ffffff;
+    --texto:#1f2937;
+    --texto2:#6b7280;
+    --borda:#e5e7eb;
 
-        .controles-topo { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .btn-recarregar { background: white; border: 1px solid var(--border-color); padding: 8px 15px; border-radius: var(--radius-md); cursor: pointer; font-weight: bold; }
+    --verde:#16a34a;
+    --vermelho:#dc2626;
+    --azul:#2563eb;
+    --amarelo:#d97706;
+}
 
-        /* CARDS DE ORDEM DE SERVIÇO */
-        .os-card { background: var(--bg-card); border-radius: var(--radius-md); padding: 20px; margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border-left: 5px solid var(--primary-color); }
-        .os-header { display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 10px; }
-        .os-numero { font-size: 18px; font-weight: bold; color: var(--primary-color); }
-        .os-info p { margin-bottom: 6px; font-size: 15px; }
-        .os-info span { font-weight: bold; }
-        .os-acoes { margin-top: 15px; padding-top: 15px; border-top: 1px dashed var(--border-color); display: flex; flex-direction: column; gap: 10px; }
-        .linha-status { display: flex; gap: 10px; }
-        .select-status { flex: 1; padding: 10px; border-radius: var(--radius-md); border: 1px solid var(--border-color); font-size: 15px; font-weight: bold; }
-        .btn-salvar { background: var(--primary-color); color: white; border: none; padding: 10px 15px; border-radius: var(--radius-md); font-weight: bold; cursor: pointer; }
-        .btn-whatsapp { background: #25D366; color: white; text-decoration: none; padding: 10px; border-radius: var(--radius-md); text-align: center; font-weight: bold; }
-        .btn-excluir { background: transparent; color: var(--danger); border: 1px solid var(--danger); padding: 10px; border-radius: var(--radius-md); font-weight: bold; cursor: pointer; }
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
 
-        /* SESSÃO DA LOJA (PRODUTOS) */
-        .form-produto { background: white; padding: 20px; border-radius: var(--radius-md); margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border: 1px solid var(--border-color); }
-        .form-produto h3 { margin-bottom: 15px; color: var(--primary-color); }
-        .linha-form { display: flex; gap: 10px; margin-bottom: 15px; }
-        .form-produto input { flex: 1; padding: 12px; border: 1px solid var(--border-color); border-radius: var(--radius-md); font-size: 15px; }
-        .btn-add-produto { background: var(--success); color: white; border: none; padding: 12px; border-radius: var(--radius-md); font-weight: bold; cursor: pointer; width: 100%; font-size: 16px; }
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:var(--fundo);
+    color:var(--texto);
+    min-height:100vh;
+}
 
-        .grid-produtos { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
-        .prod-card { background: white; border: 1px solid var(--border-color); border-radius: var(--radius-md); text-align: center; padding: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-        .prod-icon { font-size: 40px; margin-bottom: 10px; }
-        .prod-nome { font-weight: bold; margin-bottom: 5px; font-size: 15px; }
-        .prod-preco { color: var(--success); font-weight: 900; margin-bottom: 15px; font-size: 16px; }
-        .btn-del-prod { background: var(--danger); color: white; border: none; padding: 8px; border-radius: var(--radius-md); font-size: 13px; font-weight: bold; cursor: pointer; width: 100%; }
+button,
+input,
+select{
+    font-family:inherit;
+}
 
-        .mensagem-vazia { text-align: center; color: var(--text-muted); padding: 40px; background: white; border-radius: var(--radius-md); }
-    </style>
+button{
+    cursor:pointer;
+}
+
+header{
+    background:linear-gradient(
+        135deg,
+        var(--roxo3),
+        var(--roxo)
+    );
+
+    color:white;
+    padding:16px;
+
+    position:sticky;
+    top:0;
+    z-index:100;
+
+    box-shadow:
+        0 3px 12px rgba(0,0,0,.15);
+}
+
+.header{
+    max-width:1100px;
+    margin:auto;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo h1{
+    font-size:20px;
+}
+
+.logo span{
+    font-size:12px;
+    opacity:.85;
+}
+
+.header-actions{
+    display:flex;
+    gap:7px;
+}
+
+.icon{
+    width:40px;
+    height:40px;
+
+    border:0;
+    border-radius:10px;
+
+    background:rgba(255,255,255,.15);
+    color:white;
+
+    font-size:18px;
+}
+
+nav{
+    max-width:1100px;
+    margin:15px auto;
+
+    padding:0 15px;
+
+    display:flex;
+    gap:8px;
+
+    overflow-x:auto;
+}
+
+nav button{
+    border:1px solid var(--borda);
+
+    background:var(--card);
+    color:var(--texto2);
+
+    border-radius:10px;
+
+    padding:11px 17px;
+
+    font-weight:bold;
+
+    white-space:nowrap;
+}
+
+nav button.active{
+    background:var(--roxo);
+    color:white;
+    border-color:var(--roxo);
+}
+
+.container{
+    max-width:1100px;
+    margin:auto;
+    padding:0 15px 40px;
+}
+
+.page{
+    display:none;
+}
+
+.page.active{
+    display:block;
+}
+
+.titulo{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    gap:10px;
+    margin-bottom:16px;
+}
+
+.titulo h2{
+    font-size:22px;
+}
+
+.titulo p{
+    font-size:13px;
+    color:var(--texto2);
+    margin-top:3px;
+}
+
+/* =========================
+   BOTÕES
+========================= */
+
+.btn{
+    border:0;
+    border-radius:9px;
+
+    padding:11px 15px;
+
+    font-weight:bold;
+}
+
+.roxo{
+    background:var(--roxo);
+    color:white;
+}
+
+.verde{
+    background:var(--verde);
+    color:white;
+}
+
+.vermelho{
+    background:var(--vermelho);
+    color:white;
+}
+
+.cinza{
+    background:#e5e7eb;
+    color:#374151;
+}
+
+.pequeno{
+    padding:8px 11px;
+    font-size:12px;
+}
+
+/* =========================
+   DATA
+========================= */
+
+.seletor-data{
+    background:var(--card);
+
+    border:1px solid var(--borda);
+    border-radius:14px;
+
+    padding:12px;
+
+    display:flex;
+    align-items:center;
+
+    gap:8px;
+
+    margin-bottom:18px;
+}
+
+.seletor-data button{
+    width:42px;
+    height:42px;
+
+    border:0;
+    border-radius:10px;
+
+    background:#ede9fe;
+    color:var(--roxo3);
+
+    font-size:18px;
+}
+
+.data-centro{
+    flex:1;
+    text-align:center;
+}
+
+.data-centro strong{
+    display:block;
+    font-size:16px;
+}
+
+.data-centro span{
+    color:var(--texto2);
+    font-size:12px;
+}
+
+.data-input{
+    margin-top:9px;
+
+    width:100%;
+
+    border:1px solid var(--borda);
+    border-radius:9px;
+
+    padding:9px;
+
+    color:var(--texto);
+    background:var(--card);
+}
+
+/* =========================
+   OS
+========================= */
+
+.os-dia{
+    margin-bottom:20px;
+}
+
+.os-dia-header{
+    background:var(--roxo3);
+    color:white;
+
+    padding:14px 16px;
+
+    border-radius:12px 12px 0 0;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.os-dia-header span{
+    font-size:12px;
+    opacity:.85;
+}
+
+.os-list{
+    display:flex;
+    flex-direction:column;
+
+    gap:8px;
+
+    margin-top:8px;
+}
+
+.os{
+    background:var(--card);
+
+    border:1px solid var(--borda);
+    border-radius:12px;
+
+    padding:14px;
+
+    display:flex;
+
+    gap:12px;
+
+    transition:.2s;
+}
+
+.os.concluida{
+    opacity:.65;
+    background:#f0fdf4;
+}
+
+.os.concluida .os-cliente{
+    text-decoration:line-through;
+}
+
+.check{
+    width:23px;
+    height:23px;
+
+    min-width:23px;
+
+    margin-top:2px;
+
+    accent-color:var(--roxo);
+}
+
+.os-conteudo{
+    flex:1;
+    min-width:0;
+}
+
+.os-linha{
+    display:flex;
+    justify-content:space-between;
+
+    gap:10px;
+}
+
+.os-cliente{
+    font-weight:bold;
+    font-size:15px;
+}
+
+.os-hora{
+    color:var(--roxo);
+    font-weight:bold;
+    white-space:nowrap;
+}
+
+.os-info{
+    margin-top:5px;
+
+    color:var(--texto2);
+
+    font-size:13px;
+
+    line-height:1.5;
+}
+
+.status{
+    display:inline-block;
+
+    padding:4px 9px;
+
+    border-radius:20px;
+
+    font-size:11px;
+
+    font-weight:bold;
+
+    margin-top:7px;
+}
+
+.s-aguardando{
+    background:#fef3c7;
+    color:#92400e;
+}
+
+.s-confirmado{
+    background:#dbeafe;
+    color:#1d4ed8;
+}
+
+.s-andamento{
+    background:#ede9fe;
+    color:#6d28d9;
+}
+
+.s-concluido{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.s-cancelado{
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+.os-acoes{
+    display:flex;
+
+    gap:7px;
+
+    margin-top:10px;
+
+    flex-wrap:wrap;
+}
+
+.vazio{
+    background:var(--card);
+
+    border:1px dashed var(--borda);
+
+    border-radius:14px;
+
+    padding:35px 20px;
+
+    text-align:center;
+
+    color:var(--texto2);
+}
+
+/* =========================
+   FINANCEIRO
+========================= */
+
+.finance-cards{
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:12px;
+
+    margin-bottom:18px;
+}
+
+.finance-card{
+    background:var(--card);
+
+    border:1px solid var(--borda);
+    border-radius:12px;
+
+    padding:16px;
+}
+
+.finance-card small{
+    color:var(--texto2);
+}
+
+.finance-card strong{
+    display:block;
+
+    margin-top:6px;
+
+    font-size:21px;
+}
+
+.entrada{
+    color:var(--verde);
+}
+
+.saida{
+    color:var(--vermelho);
+}
+
+.saldo{
+    color:var(--roxo);
+}
+
+.finance-list{
+    display:flex;
+
+    flex-direction:column;
+
+    gap:8px;
+}
+
+.finance-item{
+    background:var(--card);
+
+    border:1px solid var(--borda);
+    border-radius:12px;
+
+    padding:14px;
+}
+
+.finance-top{
+    display:flex;
+
+    justify-content:space-between;
+
+    gap:10px;
+}
+
+.finance-descricao{
+    font-weight:bold;
+}
+
+.finance-valor{
+    font-weight:bold;
+
+    white-space:nowrap;
+}
+
+.finance-meta{
+    color:var(--texto2);
+
+    font-size:12px;
+
+    margin-top:5px;
+}
+
+.finance-acoes{
+    display:flex;
+
+    gap:7px;
+
+    margin-top:10px;
+}
+
+/* =========================
+   CLIENTES
+========================= */
+
+.clientes{
+    display:flex;
+
+    flex-direction:column;
+
+    gap:8px;
+}
+
+.cliente{
+    background:var(--card);
+
+    border:1px solid var(--borda);
+    border-radius:12px;
+
+    padding:15px;
+}
+
+.cliente-nome{
+    font-weight:bold;
+}
+
+.cliente-info{
+    margin-top:5px;
+
+    color:var(--texto2);
+
+    font-size:13px;
+}
+
+/* ==================================================
+   MODAL DE DETALHES DA OS
+================================================== */
+
+.modal{
+    display:none;
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.65);
+
+    z-index:500;
+
+    padding:15px;
+
+    align-items:center;
+    justify-content:center;
+}
+
+.modal.show{
+    display:flex;
+}
+
+/*
+    Modal grande, mas centralizado.
+*/
+
+.modal-os{
+    width:100%;
+
+    max-width:700px;
+
+    max-height:92vh;
+
+    background:var(--card);
+
+    border-radius:18px;
+
+    overflow:hidden;
+
+    box-shadow:
+        0 20px 60px rgba(0,0,0,.35);
+
+    display:flex;
+
+    flex-direction:column;
+}
+
+.modal-os-header{
+    background:
+        linear-gradient(
+            135deg,
+            var(--roxo3),
+            var(--roxo)
+        );
+
+    color:white;
+
+    padding:17px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+}
+
+.modal-os-header h3{
+    font-size:19px;
+}
+
+.fechar{
+    width:40px;
+    height:40px;
+
+    border:0;
+
+    border-radius:10px;
+
+    background:rgba(255,255,255,.15);
+
+    color:white;
+
+    font-size:23px;
+}
+
+.modal-os-body{
+    padding:18px;
+
+    overflow-y:auto;
+}
+
+/* STATUS NO TOPO */
+
+.status-box{
+    background:
+        linear-gradient(
+            135deg,
+            #f5f3ff,
+            #ede9fe
+        );
+
+    border:1px solid #ddd6fe;
+
+    border-radius:14px;
+
+    padding:15px;
+
+    margin-bottom:18px;
+}
+
+.status-box-titulo{
+    font-size:12px;
+
+    font-weight:bold;
+
+    color:var(--roxo3);
+
+    margin-bottom:10px;
+}
+
+.status-botoes{
+    display:grid;
+
+    grid-template-columns:
+        repeat(5,1fr);
+
+    gap:7px;
+}
+
+.status-btn{
+    border:2px solid transparent;
+
+    border-radius:10px;
+
+    padding:10px 5px;
+
+    background:white;
+
+    font-size:11px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:.15s;
+}
+
+.status-btn:hover{
+    transform:translateY(-1px);
+}
+
+.status-btn.selected{
+    border-color:var(--roxo);
+
+    box-shadow:
+        0 0 0 2px
+        rgba(124,58,237,.12);
+
+    background:#faf5ff;
+}
+
+.status-btn .emoji{
+    display:block;
+
+    font-size:19px;
+
+    margin-bottom:5px;
+}
+
+/* DETALHES */
+
+.detalhe-titulo{
+    font-size:25px;
+
+    font-weight:bold;
+
+    margin-bottom:10px;
+}
+
+.detalhe-subtitulo{
+    color:var(--texto2);
+
+    font-size:13px;
+
+    margin-bottom:18px;
+}
+
+.detalhes-grid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:10px;
+}
+
+.detalhe-item{
+    border:1px solid var(--borda);
+
+    border-radius:12px;
+
+    padding:14px;
+}
+
+.detalhe-item.full{
+    grid-column:1/-1;
+}
+
+.detalhe-label{
+    display:block;
+
+    color:var(--texto2);
+
+    font-size:11px;
+
+    font-weight:bold;
+
+    margin-bottom:6px;
+}
+
+.detalhe-valor{
+    font-size:15px;
+
+    font-weight:bold;
+
+    line-height:1.5;
+
+    word-break:break-word;
+}
+
+.modal-os-footer{
+    border-top:1px solid var(--borda);
+
+    padding:13px 18px;
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:8px;
+
+    background:var(--card);
+}
+
+/* =========================
+   MODAL FINANCEIRO
+========================= */
+
+.modal-financeiro{
+    width:calc(100% - 30px);
+
+    max-width:500px;
+
+    background:var(--card);
+
+    border-radius:16px;
+
+    padding:20px;
+}
+
+.modal-financeiro h3{
+    margin-bottom:18px;
+}
+
+.form-group{
+    margin-bottom:14px;
+}
+
+.form-group label{
+    display:block;
+
+    font-size:13px;
+
+    font-weight:bold;
+
+    margin-bottom:5px;
+}
+
+.form-group input,
+.form-group select{
+    width:100%;
+
+    padding:12px;
+
+    border:1px solid var(--borda);
+
+    border-radius:9px;
+
+    background:var(--card);
+
+    color:var(--texto);
+}
+
+.modal-buttons{
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:8px;
+
+    margin-top:18px;
+}
+
+/* =========================
+   TOAST
+========================= */
+
+.toast{
+    position:fixed;
+
+    bottom:20px;
+    right:20px;
+
+    background:#111827;
+
+    color:white;
+
+    padding:13px 17px;
+
+    border-radius:10px;
+
+    z-index:1000;
+
+    display:none;
+
+    font-size:13px;
+
+    max-width:320px;
+}
+
+.toast.show{
+    display:block;
+}
+
+/* =========================
+   DARK
+========================= */
+
+body.dark{
+    --fundo:#111827;
+    --card:#1f2937;
+    --texto:#f9fafb;
+    --texto2:#9ca3af;
+    --borda:#374151;
+}
+
+body.dark .cinza{
+    background:#374151;
+    color:white;
+}
+
+body.dark .seletor-data button{
+    background:#312e81;
+    color:white;
+}
+
+body.dark .os.concluida{
+    background:#17251b;
+}
+
+body.dark .status-box{
+    background:#292451;
+    border-color:#4338ca;
+}
+
+body.dark .status-btn{
+    background:#111827;
+    color:white;
+}
+
+body.dark .status-btn.selected{
+    background:#312e81;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:650px){
+
+    .finance-cards{
+        grid-template-columns:1fr;
+    }
+
+    .os-linha{
+        flex-direction:column;
+
+        gap:3px;
+    }
+
+    .titulo{
+        align-items:flex-start;
+    }
+
+    .titulo .btn{
+        padding:9px 10px;
+
+        font-size:12px;
+    }
+
+    .modal{
+        padding:8px;
+    }
+
+    .modal-os{
+        max-height:96vh;
+
+        border-radius:15px;
+    }
+
+    .modal-os-body{
+        padding:14px;
+    }
+
+    .status-botoes{
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+    .status-btn:last-child{
+        grid-column:1/-1;
+    }
+
+    .detalhes-grid{
+        grid-template-columns:1fr;
+    }
+
+    .detalhe-item.full{
+        grid-column:auto;
+    }
+
+    .detalhe-titulo{
+        font-size:22px;
+    }
+
+    .modal-os-footer{
+        flex-direction:column;
+    }
+
+    .modal-os-footer button{
+        width:100%;
+    }
+
+    .finance-top{
+        flex-direction:column;
+    }
+
+    .finance-valor{
+        font-size:17px;
+    }
+
+    .seletor-data button{
+        width:38px;
+        height:38px;
+    }
+}
+</style>
 </head>
+
 <body>
 
-    <div id="tela-login">
-        <div class="login-box">
-            <h2>WS Admin</h2>
-            <p style="margin-bottom: 15px; color: #64748b;">Digite a senha de acesso</p>
-            <input type="password" id="senha" placeholder="Sua senha">
-            <button class="btn-login" onclick="fazerLogin()">Entrar no Painel</button>
-        </div>
+<header>
+
+<div class="header">
+
+    <div class="logo">
+        <h1>WS SOLUÇÕES</h1>
+        <span>Painel administrativo</span>
     </div>
 
-    <div id="tela-admin">
-        <header>
-            <h1>⚙️ Painel de Controle</h1>
-        </header>
+    <div class="header-actions">
 
-        <div class="container">
-            
-            <nav class="admin-tabs">
-                <button class="tab-btn ativo" id="btn-aba-os" onclick="mudarAba('aba-os', 'btn-aba-os')">📋 Ordens de Serviço</button>
-                <button class="tab-btn" id="btn-aba-loja" onclick="mudarAba('aba-loja', 'btn-aba-loja')">🛒 Vitrine da Loja</button>
-            </nav>
+        <button
+            class="icon"
+            id="temaBtn"
+            onclick="alternarTema()"
+        >
+            🌙
+        </button>
 
-            <div id="aba-os" class="conteudo-admin ativo">
-                <div class="controles-topo">
-                    <h3>Últimos Agendamentos</h3>
-                    <button class="btn-recarregar" onclick="carregarAgendamentos()">🔄 Atualizar</button>
-                </div>
-                <div id="lista-os">
-                    <div class="mensagem-vazia">Carregando dados...</div>
-                </div>
-            </div>
+        <button
+            class="icon"
+            onclick="carregarTudo()"
+        >
+            ↻
+        </button>
 
-            <div id="aba-loja" class="conteudo-admin">
-                
-                <div class="form-produto">
-                    <h3>➕ Adicionar Novo Item</h3>
-                    <form id="formAddProduto">
-                        <div class="linha-form">
-                            <input type="text" id="prodNome" placeholder="Nome (Ex: Reparo de Placa, Montagem de Móveis)" required>
-                        </div>
-                        <div class="linha-form">
-                            <input type="text" id="prodPreco" placeholder="Preço (Ex: 80,00 ou A partir de R$ 50)" required>
-                            <input type="text" id="prodIcone" placeholder="Emoji (Ex: 💻, 🪛, 🔌)" required style="max-width: 150px;">
-                        </div>
-                        <button type="submit" class="btn-add-produto" id="btnSalvarProd">Cadastrar na Vitrine</button>
-                    </form>
-                </div>
-
-                <div class="controles-topo">
-                    <h3>Seus Itens Ativos</h3>
-                    <button class="btn-recarregar" onclick="carregarProdutosAdmin()">🔄 Atualizar</button>
-                </div>
-                <div class="grid-produtos" id="lista-produtos">
-                    <div class="mensagem-vazia" style="grid-column: 1 / -1;">Carregando vitrine...</div>
-                </div>
-
-            </div>
-
-        </div>
     </div>
 
-    <script type="module">
-        import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm"; 
-        
-        const supabaseUrl = "https://gbcasddvbcpurkadvegu.supabase.co"; 
-        const supabaseKey = "sb_publishable_YA15vytC5buv0ejQ8fJRPg_WUn6NGjs"; 
-        const supabase = createClient(supabaseUrl, supabaseKey); 
+</div>
 
-        // LOGIN
-        window.fazerLogin = function() {
-            if (document.getElementById('senha').value === 'admin123') {
-                document.getElementById('tela-login').style.display = 'none';
-                document.getElementById('tela-admin').style.display = 'block';
-                carregarAgendamentos();
-                carregarProdutosAdmin(); // Puxa os produtos assim que logar
-            } else { alert('❌ Senha incorreta!'); }
-        }
+</header>
 
-        // ALTERAR ABAS DO ADMIN
-        window.mudarAba = function(idAba, idBtn) {
-            document.querySelectorAll('.conteudo-admin').forEach(aba => aba.classList.remove('ativo'));
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('ativo'));
-            document.getElementById(idAba).classList.add('ativo');
-            document.getElementById(idBtn).classList.add('ativo');
-        }
 
-        // ==========================================
-        // LÓGICA DAS ORDENS DE SERVIÇO (MANTIDA)
-        // ==========================================
-        window.carregarAgendamentos = async function() {
-            const containerLista = document.getElementById('lista-os');
-            containerLista.innerHTML = '<div class="mensagem-vazia">Atualizando lista...</div>';
-            const { data, error } = await supabase.from("agendamentos").select("*").order("id", { ascending: false });
+<nav>
 
-            if (error) { containerLista.innerHTML = `<div class="mensagem-vazia">Erro: ${error.message}</div>`; return; }
-            if (!data || data.length === 0) { containerLista.innerHTML = '<div class="mensagem-vazia">Nenhum agendamento encontrado.</div>'; return; }
+<button
+    class="active"
+    onclick="abrirPagina('inicio',this)"
+>
+    🏠 Início
+</button>
 
-            containerLista.innerHTML = '';
-            data.forEach(os => {
-                const numeroZap = os.whatsapp.replace(/\D/g, '');
-                const card = document.createElement('div');
-                card.className = 'os-card';
-                card.innerHTML = `
-                    <div class="os-header">
-                        <div class="os-numero">OS #${os.id}</div>
-                        <div class="os-data">📅 ${os.data.split('-').reverse().join('/')} às ${os.hora}</div>
+<button
+    onclick="abrirPagina('financeiro',this)"
+>
+    💰 Financeiro
+</button>
+
+<button
+    onclick="abrirPagina('clientes',this)"
+>
+    👥 Clientes
+</button>
+
+</nav>
+
+
+<div class="container">
+
+
+<!-- ==================================================
+     INÍCIO
+================================================== -->
+
+<section
+    id="inicio"
+    class="page active"
+>
+
+<div class="titulo">
+
+    <div>
+        <h2>Minhas OS</h2>
+
+        <p>
+            Checklist diário das ordens de serviço
+        </p>
+    </div>
+
+</div>
+
+
+<!-- DATA -->
+
+<div class="seletor-data">
+
+    <button onclick="mudarDia(-1)">
+        ◀
+    </button>
+
+
+    <div class="data-centro">
+
+        <strong id="diaSelecionado">
+            Hoje
+        </strong>
+
+        <span id="diaSemana">
+            -
+        </span>
+
+
+        <input
+            type="date"
+            id="dataEscolhida"
+            class="data-input"
+            onchange="selecionarData()"
+        >
+
+    </div>
+
+
+    <button onclick="mudarDia(1)">
+        ▶
+    </button>
+
+</div>
+
+
+<div id="listaOS">
+
+    <div class="vazio">
+        Carregando OS...
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- ==================================================
+     FINANCEIRO
+================================================== -->
+
+<section
+    id="financeiro"
+    class="page"
+>
+
+<div class="titulo">
+
+    <div>
+
+        <h2>Financeiro</h2>
+
+        <p>
+            Entradas, saídas e saldo
+        </p>
+
+    </div>
+
+
+    <button
+        class="btn roxo"
+        onclick="abrirNovoFinanceiro()"
+    >
+        + Lançamento
+    </button>
+
+</div>
+
+
+<div class="finance-cards">
+
+    <div class="finance-card">
+
+        <small>
+            Entradas
+        </small>
+
+        <strong
+            class="entrada"
+            id="totalEntradas"
+        >
+            R$ 0,00
+        </strong>
+
+    </div>
+
+
+    <div class="finance-card">
+
+        <small>
+            Saídas
+        </small>
+
+        <strong
+            class="saida"
+            id="totalSaidas"
+        >
+            R$ 0,00
+        </strong>
+
+    </div>
+
+
+    <div class="finance-card">
+
+        <small>
+            Saldo
+        </small>
+
+        <strong
+            class="saldo"
+            id="saldo"
+        >
+            R$ 0,00
+        </strong>
+
+    </div>
+
+</div>
+
+
+<div
+    id="listaFinanceiro"
+    class="finance-list"
+>
+
+    <div class="vazio">
+        Carregando financeiro...
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- ==================================================
+     CLIENTES
+================================================== -->
+
+<section
+    id="clientes"
+    class="page"
+>
+
+<div class="titulo">
+
+    <div>
+
+        <h2>Clientes</h2>
+
+        <p>
+            Clientes cadastrados
+        </p>
+
+    </div>
+
+</div>
+
+
+<div
+    id="listaClientes"
+    class="clientes"
+>
+
+    <div class="vazio">
+        Carregando clientes...
+    </div>
+
+</div>
+
+</section>
+
+</div>
+
+
+<!-- ==================================================
+     MODAL DETALHES OS
+================================================== -->
+
+<div
+    id="modalOS"
+    class="modal"
+>
+
+<div class="modal-os">
+
+
+    <div class="modal-os-header">
+
+        <h3>
+            Detalhes da OS
+        </h3>
+
+        <button
+            class="fechar"
+            onclick="fecharOS()"
+        >
+            ×
+        </button>
+
+    </div>
+
+
+    <div
+        id="detalhesOS"
+        class="modal-os-body"
+    >
+    </div>
+
+
+    <div class="modal-os-footer">
+
+        <button
+            class="btn cinza"
+            onclick="fecharOS()"
+        >
+            Fechar
+        </button>
+
+
+        <button
+            id="btnWhatsOS"
+            class="btn verde"
+            style="display:none"
+        >
+            WhatsApp
+        </button>
+
+
+        <button
+            id="btnSalvarStatus"
+            class="btn roxo"
+        >
+            Salvar status
+        </button>
+
+    </div>
+
+</div>
+
+</div>
+
+
+<!-- ==================================================
+     MODAL FINANCEIRO
+================================================== -->
+
+<div
+    id="modalFinanceiro"
+    class="modal"
+>
+
+<div class="modal-financeiro">
+
+    <h3 id="tituloFinanceiro">
+        Nova movimentação
+    </h3>
+
+
+    <input
+        type="hidden"
+        id="financeId"
+    >
+
+
+    <div class="form-group">
+
+        <label>
+            Tipo
+        </label>
+
+        <select id="financeTipo">
+
+            <option value="entrada">
+                Entrada
+            </option>
+
+            <option value="saida">
+                Saída
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <div class="form-group">
+
+        <label>
+            Descrição
+        </label>
+
+        <input
+            id="financeDescricao"
+            type="text"
+            placeholder="Ex: Pagamento de cliente"
+        >
+
+    </div>
+
+
+    <div class="form-group">
+
+        <label>
+            Valor
+        </label>
+
+        <input
+            id="financeValor"
+            type="number"
+            step="0.01"
+            min="0"
+            placeholder="0,00"
+        >
+
+    </div>
+
+
+    <div class="form-group">
+
+        <label>
+            Data
+        </label>
+
+        <input
+            id="financeData"
+            type="date"
+        >
+
+    </div>
+
+
+    <div class="modal-buttons">
+
+        <button
+            class="btn cinza"
+            onclick="fecharFinanceiro()"
+        >
+            Cancelar
+        </button>
+
+        <button
+            class="btn roxo"
+            onclick="salvarFinanceiro()"
+        >
+            Salvar
+        </button>
+
+    </div>
+
+</div>
+
+</div>
+
+
+<div
+    id="toast"
+    class="toast"
+></div>
+
+
+<script>
+
+/* ==================================================
+   SUPABASE
+================================================== */
+
+const SUPABASE_URL =
+"https://xcncqpjxghujwbyklhel.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_xJqknenrg3H20jeGum1bkg_Ir-GLZsl";
+
+const supabaseClient =
+window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+
+
+/* ==================================================
+   VARIÁVEIS
+================================================== */
+
+let agendamentos = [];
+
+let movimentacoes = [];
+
+let clientes = [];
+
+let dataAtualSelecionada =
+    obterDataHoje();
+
+let osAbertaId = null;
+
+let statusSelecionado = null;
+
+
+/* ==================================================
+   INICIAR
+================================================== */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    async function(){
+
+        carregarTema();
+
+
+        document.getElementById(
+            "dataEscolhida"
+        ).value =
+            dataAtualSelecionada;
+
+
+        atualizarTituloData();
+
+
+        await carregarTudo();
+
+
+        iniciarRealtime();
+
+    }
+);
+
+
+/* ==================================================
+   CARREGAR TUDO
+================================================== */
+
+async function carregarTudo(){
+
+    await Promise.all([
+
+        carregarAgendamentos(),
+
+        carregarFinanceiro(),
+
+        carregarClientes()
+
+    ]);
+
+}
+
+
+/* ==================================================
+   AGENDAMENTOS
+================================================== */
+
+async function carregarAgendamentos(){
+
+    const {data,error} =
+        await supabaseClient
+        .from("agendamentos")
+        .select("*")
+        .order("hora",{ascending:true});
+
+
+    if(error){
+
+        console.error(error);
+
+        mostrarToast(
+            "Erro ao carregar OS."
+        );
+
+        return;
+    }
+
+
+    agendamentos =
+        data || [];
+
+
+    renderizarOS();
+
+}
+
+
+/* ==================================================
+   RENDERIZAR OS DO DIA
+================================================== */
+
+function renderizarOS(){
+
+    const container =
+        document.getElementById(
+            "listaOS"
+        );
+
+
+    const osDoDia =
+        agendamentos.filter(
+            os =>
+                os.data ===
+                dataAtualSelecionada
+        );
+
+
+    if(!osDoDia.length){
+
+        container.innerHTML = `
+
+            <div class="vazio">
+
+                <div
+                    style="
+                    font-size:40px;
+                    margin-bottom:10px
+                    "
+                >
+                    📋
+                </div>
+
+                <strong>
+                    Nenhuma OS para este dia.
+                </strong>
+
+                <p
+                    style="
+                    margin-top:7px;
+                    font-size:13px
+                    "
+                >
+                    Escolha outra data acima
+                    para consultar as OS.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    const concluidas =
+        osDoDia.filter(
+            x =>
+                x.status ===
+                "concluido"
+        ).length;
+
+
+    let html = `
+
+        <div class="os-dia">
+
+            <div class="os-dia-header">
+
+                <strong>
+                    📅
+                    ${formatarDataBR(
+                        dataAtualSelecionada
+                    )}
+                </strong>
+
+                <span>
+                    ${concluidas}/${osDoDia.length}
+                    concluídas
+                </span>
+
+            </div>
+
+            <div class="os-list">
+
+    `;
+
+
+    osDoDia.forEach(os => {
+
+        const concluida =
+            os.status ===
+            "concluido";
+
+
+        const telefone =
+            somenteNumeros(
+                os.whatsapp || ""
+            );
+
+
+        html += `
+
+            <div
+                class="
+                    os
+                    ${
+                        concluida
+                        ? "concluida"
+                        : ""
+                    }
+                "
+            >
+
+                <input
+                    class="check"
+                    type="checkbox"
+                    ${
+                        concluida
+                        ? "checked"
+                        : ""
+                    }
+                    onchange="
+                        marcarConcluida(
+                            ${os.id},
+                            this.checked
+                        )
+                    "
+                >
+
+
+                <div class="os-conteudo">
+
+                    <div class="os-linha">
+
+                        <div class="os-cliente">
+
+                            ${escapeHTML(
+                                os.nome ||
+                                "Cliente"
+                            )}
+
+                        </div>
+
+
+                        <div class="os-hora">
+
+                            ${formatarHora(
+                                os.hora
+                            )}
+
+                        </div>
+
                     </div>
+
+
                     <div class="os-info">
-                        <p><span>👤 Cliente:</span> ${os.nome}</p>
-                        <p><span>🛠️ Aparelho:</span> ${os.aparelho}</p>
-                        <p><span>📱 WhatsApp:</span> ${os.whatsapp}</p>
-                        <p><span>📝 Defeito:</span> ${os.defeito}</p>
+
+                        <strong>
+
+                            ${escapeHTML(
+                                os.aparelho ||
+                                "Serviço"
+                            )}
+
+                        </strong>
+
+
+                        ${
+                            os.defeito
+                            ?
+                            `
+                            <br>
+                            ${escapeHTML(
+                                os.defeito
+                            )}
+                            `
+                            :
+                            ""
+                        }
+
+
+                        <br>
+
+
+                        <span
+                            class="
+                                status
+                                s-${
+                                    normalizarStatus(
+                                        os.status
+                                    )
+                                }
+                            "
+                        >
+
+                            ${textoStatus(
+                                os.status
+                            )}
+
+                        </span>
+
                     </div>
+
+
                     <div class="os-acoes">
-                        <div class="linha-status">
-                            <select class="select-status" id="status-${os.id}">
-                                <option value="Em análise técnica" ${os.status === 'Em análise técnica' ? 'selected' : ''}>Em análise técnica</option>
-                                <option value="Aguardando Aprovação" ${os.status === 'Aguardando Aprovação' ? 'selected' : ''}>Aguardando Aprovação</option>
-                                <option value="Aguardando Peça" ${os.status === 'Aguardando Peça' ? 'selected' : ''}>Aguardando Peça</option>
-                                <option value="Na Bancada (Reparo)" ${os.status === 'Na Bancada (Reparo)' ? 'selected' : ''}>Na Bancada (Reparo)</option>
-                                <option value="Pronto para Retirada" ${os.status === 'Pronto para Retirada' ? 'selected' : ''}>Pronto para Retirada</option>
-                                <option value="Entregue" ${os.status === 'Entregue' ? 'selected' : ''}>Entregue</option>
-                                <option value="Cancelado" ${os.status === 'Cancelado' ? 'selected' : ''}>Cancelado</option>
-                            </select>
-                            <button class="btn-salvar" onclick="atualizarStatus(${os.id})">💾 Salvar</button>
-                        </div>
-                        <a href="https://wa.me/55${numeroZap}?text=Ol%C3%A1%20${os.nome}!%20Aqui%20%C3%A9%20da%20WS%20sobre%20a%20OS%20${os.id}." target="_blank" class="btn-whatsapp">💬 Chamar no WhatsApp</a>
-                        <button class="btn-excluir" onclick="deletarOS(${os.id})">🗑️ Apagar OS</button>
+
+                        <button
+                            class="
+                                btn
+                                cinza
+                                pequeno
+                            "
+                            onclick="
+                                abrirDetalhesOS(
+                                    ${os.id}
+                                )
+                            "
+                        >
+                            👁️ Detalhes
+                        </button>
+
+
+                        ${
+                            telefone
+                            ?
+                            `
+                            <button
+                                class="
+                                    btn
+                                    verde
+                                    pequeno
+                                "
+                                onclick="
+                                    abrirWhatsApp(
+                                        '${telefone}'
+                                    )
+                                "
+                            >
+                                WhatsApp
+                            </button>
+                            `
+                            :
+                            ""
+                        }
+
                     </div>
-                `;
-                containerLista.appendChild(card);
-            });
-        }
 
-        window.atualizarStatus = async function(idOS) {
-            const selectElement = document.getElementById(`status-${idOS}`);
-            const novoStatus = selectElement.value;
-            selectElement.disabled = true;
-            const { error } = await supabase.from("agendamentos").update({ status: novoStatus }).eq("id", idOS);
-            selectElement.disabled = false;
-            if (!error) alert(`✅ OS #${idOS} atualizada para: "${novoStatus}"`);
-        }
+                </div>
 
-        window.deletarOS = async function(idOS) {
-            if (confirm(`⚠️ ATENÇÃO!\nTem certeza que deseja APAGAR a OS #${idOS}?`)) {
-                await supabase.from("agendamentos").delete().eq("id", idOS);
-                carregarAgendamentos(); 
-            }
-        }
+            </div>
 
-        // ==========================================
-        // NOVA LÓGICA DA VITRINE (PRODUTOS)
-        // ==========================================
-        
-        // 1. Cadastrar Produto
-        document.getElementById('formAddProduto').onsubmit = async function(e) {
-            e.preventDefault();
-            const btn = document.getElementById('btnSalvarProd');
-            btn.innerText = "Salvando..."; btn.disabled = true;
+        `;
 
-            const dadosProduto = {
-                nome: document.getElementById('prodNome').value,
-                preco: document.getElementById('prodPreco').value,
-                icone: document.getElementById('prodIcone').value,
-                status: 'ativo'
+    });
+
+
+    html += `
+            </div>
+        </div>
+    `;
+
+
+    container.innerHTML =
+        html;
+
+}
+
+
+/* ==================================================
+   CHECKBOX
+================================================== */
+
+async function marcarConcluida(
+    id,
+    checked
+){
+
+    const status =
+        checked
+        ? "concluido"
+        : "aguardando";
+
+
+    const {error} =
+        await supabaseClient
+        .from("agendamentos")
+        .update({
+            status
+        })
+        .eq("id",id);
+
+
+    if(error){
+
+        console.error(error);
+
+        mostrarToast(
+            "Erro ao atualizar OS."
+        );
+
+        await carregarAgendamentos();
+
+        return;
+    }
+
+
+    const os =
+        agendamentos.find(
+            x => x.id === id
+        );
+
+
+    if(os){
+
+        os.status =
+            status;
+
+    }
+
+
+    renderizarOS();
+
+
+    mostrarToast(
+        checked
+        ? "OS concluída ✅"
+        : "OS voltou para aguardando."
+    );
+
+}
+
+
+/* ==================================================
+   ABRIR DETALHES
+================================================== */
+
+function abrirDetalhesOS(id){
+
+    const os =
+        agendamentos.find(
+            x => x.id === id
+        );
+
+
+    if(!os)
+        return;
+
+
+    osAbertaId =
+        id;
+
+
+    statusSelecionado =
+        normalizarStatus(
+            os.status
+        );
+
+
+    const telefone =
+        somenteNumeros(
+            os.whatsapp || ""
+        );
+
+
+    document.getElementById(
+        "detalhesOS"
+    ).innerHTML = `
+
+        <!-- STATUS -->
+
+        <div class="status-box">
+
+            <div class="status-box-titulo">
+
+                STATUS DA ORDEM DE SERVIÇO
+
+            </div>
+
+
+            <div class="status-botoes">
+
+
+                <button
+                    class="
+                        status-btn
+                        ${
+                            statusSelecionado ===
+                            "aguardando"
+                            ? "selected"
+                            : ""
+                        }
+                    "
+                    onclick="
+                        selecionarStatus(
+                            'aguardando'
+                        )
+                    "
+                    id="statusBtn-aguardando"
+                >
+
+                    <span class="emoji">
+                        🟡
+                    </span>
+
+                    Aguardando
+
+                </button>
+
+
+                <button
+                    class="
+                        status-btn
+                        ${
+                            statusSelecionado ===
+                            "confirmado"
+                            ? "selected"
+                            : ""
+                        }
+                    "
+                    onclick="
+                        selecionarStatus(
+                            'confirmado'
+                        )
+                    "
+                    id="statusBtn-confirmado"
+                >
+
+                    <span class="emoji">
+                        🔵
+                    </span>
+
+                    Confirmado
+
+                </button>
+
+
+                <button
+                    class="
+                        status-btn
+                        ${
+                            statusSelecionado ===
+                            "andamento"
+                            ? "selected"
+                            : ""
+                        }
+                    "
+                    onclick="
+                        selecionarStatus(
+                            'andamento'
+                        )
+                    "
+                    id="statusBtn-andamento"
+                >
+
+                    <span class="emoji">
+                        🟣
+                    </span>
+
+                    Em andamento
+
+                </button>
+
+
+                <button
+                    class="
+                        status-btn
+                        ${
+                            statusSelecionado ===
+                            "concluido"
+                            ? "selected"
+                            : ""
+                        }
+                    "
+                    onclick="
+                        selecionarStatus(
+                            'concluido'
+                        )
+                    "
+                    id="statusBtn-concluido"
+                >
+
+                    <span class="emoji">
+                        🟢
+                    </span>
+
+                    Concluído
+
+                </button>
+
+
+                <button
+                    class="
+                        status-btn
+                        ${
+                            statusSelecionado ===
+                            "cancelado"
+                            ? "selected"
+                            : ""
+                        }
+                    "
+                    onclick="
+                        selecionarStatus(
+                            'cancelado'
+                        )
+                    "
+                    id="statusBtn-cancelado"
+                >
+
+                    <span class="emoji">
+                        🔴
+                    </span>
+
+                    Cancelado
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- DADOS -->
+
+        <div class="detalhe-titulo">
+
+            ${escapeHTML(
+                os.nome ||
+                "Cliente"
+            )}
+
+        </div>
+
+
+        <div class="detalhe-subtitulo">
+
+            Ordem de serviço #${os.id}
+
+        </div>
+
+
+        <div class="detalhes-grid">
+
+
+            <div class="detalhe-item">
+
+                <span class="detalhe-label">
+                    APARELHO / SERVIÇO
+                </span>
+
+                <div class="detalhe-valor">
+
+                    ${escapeHTML(
+                        os.aparelho ||
+                        "-"
+                    )}
+
+                </div>
+
+            </div>
+
+
+            <div class="detalhe-item">
+
+                <span class="detalhe-label">
+                    HORÁRIO
+                </span>
+
+                <div class="detalhe-valor">
+
+                    ${formatarHora(
+                        os.hora
+                    )}
+
+                </div>
+
+            </div>
+
+
+            <div class="detalhe-item">
+
+                <span class="detalhe-label">
+                    DATA
+                </span>
+
+                <div class="detalhe-valor">
+
+                    ${formatarDataCompleta(
+                        os.data
+                    )}
+
+                </div>
+
+            </div>
+
+
+            <div class="detalhe-item">
+
+                <span class="detalhe-label">
+                    WHATSAPP
+                </span>
+
+                <div class="detalhe-valor">
+
+                    ${escapeHTML(
+                        os.whatsapp ||
+                        "-"
+                    )}
+
+                </div>
+
+            </div>
+
+
+            <div class="detalhe-item full">
+
+                <span class="detalhe-label">
+                    DEFEITO / DESCRIÇÃO
+                </span>
+
+                <div class="detalhe-valor">
+
+                    ${escapeHTML(
+                        os.defeito ||
+                        "Nenhuma descrição informada."
+                    )}
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    `;
+
+
+    const btnWhats =
+        document.getElementById(
+            "btnWhatsOS"
+        );
+
+
+    if(telefone){
+
+        btnWhats.style.display =
+            "block";
+
+
+        btnWhats.onclick =
+            function(){
+
+                abrirWhatsApp(
+                    telefone
+                );
+
             };
 
-            const { error } = await supabase.from('produtos').insert([dadosProduto]);
-            
-            btn.innerText = "Cadastrar na Vitrine"; btn.disabled = false;
+    }else{
 
-            if (error) {
-                alert("❌ Erro ao adicionar o produto.");
-            } else {
-                document.getElementById('formAddProduto').reset();
-                carregarProdutosAdmin(); // Atualiza a lista na hora
-                alert("✅ Item adicionado à vitrine do cliente!");
+        btnWhats.style.display =
+            "none";
+
+    }
+
+
+    document.getElementById(
+        "modalOS"
+    ).classList.add("show");
+
+}
+
+
+/* ==================================================
+   SELECIONAR STATUS
+================================================== */
+
+function selecionarStatus(status){
+
+    statusSelecionado =
+        status;
+
+
+    document
+        .querySelectorAll(
+            ".status-btn"
+        )
+        .forEach(
+            btn =>
+                btn.classList.remove(
+                    "selected"
+                )
+        );
+
+
+    const botao =
+        document.getElementById(
+            "statusBtn-" +
+            status
+        );
+
+
+    if(botao){
+
+        botao.classList.add(
+            "selected"
+        );
+
+    }
+
+}
+
+
+/* ==================================================
+   SALVAR STATUS
+================================================== */
+
+async function salvarStatusOS(){
+
+    if(!osAbertaId)
+        return;
+
+
+    if(!statusSelecionado){
+
+        mostrarToast(
+            "Selecione um status."
+        );
+
+        return;
+    }
+
+
+    const {error} =
+        await supabaseClient
+        .from("agendamentos")
+        .update({
+            status:
+                statusSelecionado
+        })
+        .eq(
+            "id",
+            osAbertaId
+        );
+
+
+    if(error){
+
+        console.error(error);
+
+        mostrarToast(
+            "Erro ao salvar status: " +
+            error.message
+        );
+
+        return;
+    }
+
+
+    const os =
+        agendamentos.find(
+            x =>
+                x.id ===
+                osAbertaId
+        );
+
+
+    if(os){
+
+        os.status =
+            statusSelecionado;
+
+    }
+
+
+    fecharOS();
+
+    renderizarOS();
+
+
+    mostrarToast(
+        "Status atualizado ✅"
+    );
+
+}
+
+
+/* ==================================================
+   FECHAR OS
+================================================== */
+
+function fecharOS(){
+
+    document
+        .getElementById(
+            "modalOS"
+        )
+        .classList.remove(
+            "show"
+        );
+
+
+    osAbertaId =
+        null;
+
+    statusSelecionado =
+        null;
+
+}
+
+
+/* ==================================================
+   DATA
+================================================== */
+
+function obterDataHoje(){
+
+    const d =
+        new Date();
+
+
+    const ano =
+        d.getFullYear();
+
+
+    const mes =
+        String(
+            d.getMonth()+1
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    const dia =
+        String(
+            d.getDate()
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    return `${ano}-${mes}-${dia}`;
+
+}
+
+
+function atualizarTituloData(){
+
+    if(!dataAtualSelecionada)
+        return;
+
+
+    const partes =
+        dataAtualSelecionada
+        .split("-");
+
+
+    if(partes.length !== 3)
+        return;
+
+
+    const d =
+        new Date(
+            Number(partes[0]),
+            Number(partes[1])-1,
+            Number(partes[2])
+        );
+
+
+    const hoje =
+        obterDataHoje();
+
+
+    const nomes = [
+
+        "Domingo",
+
+        "Segunda-feira",
+
+        "Terça-feira",
+
+        "Quarta-feira",
+
+        "Quinta-feira",
+
+        "Sexta-feira",
+
+        "Sábado"
+
+    ];
+
+
+    document.getElementById(
+        "diaSelecionado"
+    ).textContent =
+
+        dataAtualSelecionada === hoje
+
+        ? "Hoje"
+
+        : formatarDataBR(
+            dataAtualSelecionada
+        );
+
+
+    document.getElementById(
+        "diaSemana"
+    ).textContent =
+        nomes[d.getDay()];
+
+
+    document.getElementById(
+        "dataEscolhida"
+    ).value =
+        dataAtualSelecionada;
+
+}
+
+
+function mudarDia(valor){
+
+    const partes =
+        dataAtualSelecionada
+        .split("-");
+
+
+    const d =
+        new Date(
+            Number(partes[0]),
+            Number(partes[1])-1,
+            Number(partes[2])
+        );
+
+
+    d.setDate(
+        d.getDate() +
+        valor
+    );
+
+
+    const ano =
+        d.getFullYear();
+
+
+    const mes =
+        String(
+            d.getMonth()+1
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    const dia =
+        String(
+            d.getDate()
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    dataAtualSelecionada =
+        `${ano}-${mes}-${dia}`;
+
+
+    atualizarTituloData();
+
+    renderizarOS();
+
+}
+
+
+function selecionarData(){
+
+    const valor =
+        document.getElementById(
+            "dataEscolhida"
+        ).value;
+
+
+    if(!valor)
+        return;
+
+
+    dataAtualSelecionada =
+        valor;
+
+
+    atualizarTituloData();
+
+    renderizarOS();
+
+}
+
+
+/* ==================================================
+   FINANCEIRO
+================================================== */
+
+async function carregarFinanceiro(){
+
+    const {data,error} =
+        await supabaseClient
+        .from("movimentacoes")
+        .select("*")
+        .order(
+            "id",
+            {
+                ascending:false
             }
+        );
+
+
+    if(error){
+
+        console.error(error);
+
+        mostrarToast(
+            "Erro ao carregar financeiro."
+        );
+
+        return;
+    }
+
+
+    movimentacoes =
+        data || [];
+
+
+    calcularFinanceiro();
+
+    renderizarFinanceiro();
+
+}
+
+
+function calcularFinanceiro(){
+
+    let entradas = 0;
+
+    let saidas = 0;
+
+
+    movimentacoes.forEach(
+        item => {
+
+            const valor =
+                Number(
+                    item.valor
+                ) || 0;
+
+
+            if(
+                String(item.tipo)
+                .toLowerCase()
+                === "entrada"
+            ){
+
+                entradas +=
+                    valor;
+
+            }else{
+
+                saidas +=
+                    valor;
+
+            }
+
         }
+    );
 
-        // 2. Listar Produtos no Admin
-        window.carregarProdutosAdmin = async function() {
-            const vitrine = document.getElementById('lista-produtos');
-            vitrine.innerHTML = '<div class="mensagem-vazia" style="grid-column: 1 / -1;">Atualizando...</div>';
 
-            const { data, error } = await supabase.from('produtos').select('*').order('id', { ascending: false });
+    document.getElementById(
+        "totalEntradas"
+    ).textContent =
+        dinheiro(
+            entradas
+        );
 
-            if (error || !data || data.length === 0) {
-                vitrine.innerHTML = '<div class="mensagem-vazia" style="grid-column: 1 / -1;">Você ainda não cadastrou nenhum produto ou serviço.</div>';
-                return;
-            }
 
-            vitrine.innerHTML = '';
-            data.forEach(prod => {
-                const card = document.createElement('div');
-                card.className = 'prod-card';
-                card.innerHTML = `
-                    <div class="prod-icon">${prod.icone}</div>
-                    <div class="prod-nome">${prod.nome}</div>
-                    <div class="prod-preco">R$ ${prod.preco}</div>
-                    <button class="btn-del-prod" onclick="deletarProduto(${prod.id}, '${prod.nome}')">🗑️ Remover</button>
-                `;
-                vitrine.appendChild(card);
+    document.getElementById(
+        "totalSaidas"
+    ).textContent =
+        dinheiro(
+            saidas
+        );
+
+
+    document.getElementById(
+        "saldo"
+    ).textContent =
+        dinheiro(
+            entradas -
+            saidas
+        );
+
+}
+
+
+function renderizarFinanceiro(){
+
+    const container =
+        document.getElementById(
+            "listaFinanceiro"
+        );
+
+
+    if(!movimentacoes.length){
+
+        container.innerHTML = `
+
+            <div class="vazio">
+
+                Nenhuma movimentação.
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    let html = "";
+
+
+    movimentacoes.forEach(
+        item => {
+
+            const entrada =
+                String(item.tipo)
+                .toLowerCase()
+                === "entrada";
+
+
+            const valor =
+                Number(
+                    item.valor
+                ) || 0;
+
+
+            html += `
+
+                <div class="finance-item">
+
+                    <div class="finance-top">
+
+                        <div
+                            class="
+                                finance-descricao
+                            "
+                        >
+
+                            ${
+                                entrada
+                                ? "🟢"
+                                : "🔴"
+                            }
+
+                            ${escapeHTML(
+                                item.descricao ||
+                                "Sem descrição"
+                            )}
+
+                        </div>
+
+
+                        <div
+                            class="
+                                finance-valor
+                                ${
+                                    entrada
+                                    ? "entrada"
+                                    : "saida"
+                                }
+                            "
+                        >
+
+                            ${
+                                entrada
+                                ? "+"
+                                : "-"
+                            }
+
+                            ${dinheiro(
+                                valor
+                            )}
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="finance-meta">
+
+                        ${
+                            entrada
+                            ? "Entrada"
+                            : "Saída"
+                        }
+
+                        •
+
+                        ${escapeHTML(
+                            item.data ||
+                            "-"
+                        )}
+
+                    </div>
+
+
+                    <div class="finance-acoes">
+
+                        <button
+                            class="
+                                btn
+                                cinza
+                                pequeno
+                            "
+                            onclick="
+                                editarFinanceiro(
+                                    ${item.id}
+                                )
+                            "
+                        >
+                            ✏️ Editar
+                        </button>
+
+
+                        <button
+                            class="
+                                btn
+                                vermelho
+                                pequeno
+                            "
+                            onclick="
+                                excluirFinanceiro(
+                                    ${item.id}
+                                )
+                            "
+                        >
+                            🗑️ Excluir
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }
+    );
+
+
+    container.innerHTML =
+        html;
+
+}
+
+
+/* ==================================================
+   NOVO FINANCEIRO
+================================================== */
+
+function abrirNovoFinanceiro(){
+
+    document.getElementById(
+        "financeId"
+    ).value =
+        "";
+
+
+    document.getElementById(
+        "financeTipo"
+    ).value =
+        "entrada";
+
+
+    document.getElementById(
+        "financeDescricao"
+    ).value =
+        "";
+
+
+    document.getElementById(
+        "financeValor"
+    ).value =
+        "";
+
+
+    document.getElementById(
+        "financeData"
+    ).value =
+        obterDataHoje();
+
+
+    document.getElementById(
+        "tituloFinanceiro"
+    ).textContent =
+        "Nova movimentação";
+
+
+    document.getElementById(
+        "modalFinanceiro"
+    ).classList.add(
+        "show"
+    );
+
+}
+
+
+/* ==================================================
+   EDITAR FINANCEIRO
+================================================== */
+
+function editarFinanceiro(id){
+
+    const item =
+        movimentacoes.find(
+            x =>
+                x.id === id
+        );
+
+
+    if(!item)
+        return;
+
+
+    document.getElementById(
+        "financeId"
+    ).value =
+        item.id;
+
+
+    document.getElementById(
+        "financeTipo"
+    ).value =
+        item.tipo ||
+        "entrada";
+
+
+    document.getElementById(
+        "financeDescricao"
+    ).value =
+        item.descricao ||
+        "";
+
+
+    document.getElementById(
+        "financeValor"
+    ).value =
+        item.valor ||
+        0;
+
+
+    document.getElementById(
+        "financeData"
+    ).value =
+        converterDataInput(
+            item.data
+        );
+
+
+    document.getElementById(
+        "tituloFinanceiro"
+    ).textContent =
+        "Editar movimentação";
+
+
+    document.getElementById(
+        "modalFinanceiro"
+    ).classList.add(
+        "show"
+    );
+
+}
+
+
+/* ==================================================
+   SALVAR FINANCEIRO
+================================================== */
+
+async function salvarFinanceiro(){
+
+    const id =
+        document.getElementById(
+            "financeId"
+        ).value;
+
+
+    const tipo =
+        document.getElementById(
+            "financeTipo"
+        ).value;
+
+
+    const descricao =
+        document.getElementById(
+            "financeDescricao"
+        ).value.trim();
+
+
+    const valor =
+        Number(
+            document.getElementById(
+                "financeValor"
+            ).value
+        );
+
+
+    const dataInput =
+        document.getElementById(
+            "financeData"
+        ).value;
+
+
+    if(!descricao){
+
+        mostrarToast(
+            "Digite a descrição."
+        );
+
+        return;
+    }
+
+
+    if(!valor || valor <= 0){
+
+        mostrarToast(
+            "Digite um valor válido."
+        );
+
+        return;
+    }
+
+
+    const data =
+        converterDataBanco(
+            dataInput
+        );
+
+
+    let error;
+
+
+    if(id){
+
+        const resposta =
+            await supabaseClient
+            .from("movimentacoes")
+            .update({
+
+                tipo,
+
+                descricao,
+
+                valor,
+
+                data
+
+            })
+            .eq(
+                "id",
+                id
+            );
+
+
+        error =
+            resposta.error;
+
+    }else{
+
+        const resposta =
+            await supabaseClient
+            .from("movimentacoes")
+            .insert({
+
+                tipo,
+
+                descricao,
+
+                valor,
+
+                data
+
             });
+
+
+        error =
+            resposta.error;
+
+    }
+
+
+    if(error){
+
+        console.error(error);
+
+        mostrarToast(
+            "Erro ao salvar: " +
+            error.message
+        );
+
+        return;
+    }
+
+
+    fecharFinanceiro();
+
+
+    await carregarFinanceiro();
+
+
+    mostrarToast(
+        id
+        ? "Movimentação editada ✅"
+        : "Movimentação adicionada ✅"
+    );
+
+}
+
+
+/* ==================================================
+   EXCLUIR FINANCEIRO
+================================================== */
+
+async function excluirFinanceiro(id){
+
+    if(
+        !confirm(
+            "Deseja realmente excluir esta movimentação?"
+        )
+    ){
+
+        return;
+
+    }
+
+
+    const {error} =
+        await supabaseClient
+        .from("movimentacoes")
+        .delete()
+        .eq(
+            "id",
+            id
+        );
+
+
+    if(error){
+
+        console.error(error);
+
+        mostrarToast(
+            "Erro ao excluir."
+        );
+
+        return;
+    }
+
+
+    await carregarFinanceiro();
+
+
+    mostrarToast(
+        "Movimentação excluída."
+    );
+
+}
+
+
+/* ==================================================
+   CLIENTES
+================================================== */
+
+async function carregarClientes(){
+
+    const {data,error} =
+        await supabaseClient
+        .from("clientes")
+        .select("*")
+        .order(
+            "id",
+            {
+                ascending:false
+            }
+        );
+
+
+    if(error){
+
+        console.error(error);
+
+        return;
+    }
+
+
+    clientes =
+        data || [];
+
+
+    renderizarClientes();
+
+}
+
+
+function renderizarClientes(){
+
+    const container =
+        document.getElementById(
+            "listaClientes"
+        );
+
+
+    if(!clientes.length){
+
+        container.innerHTML = `
+
+            <div class="vazio">
+
+                Nenhum cliente cadastrado.
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    let html = "";
+
+
+    clientes.forEach(
+        cliente => {
+
+            const telefone =
+                somenteNumeros(
+                    cliente.whatsapp ||
+                    ""
+                );
+
+
+            html += `
+
+                <div class="cliente">
+
+                    <div class="cliente-nome">
+
+                        👤
+
+                        ${escapeHTML(
+                            cliente.nome ||
+                            "-"
+                        )}
+
+                    </div>
+
+
+                    <div class="cliente-info">
+
+                        WhatsApp:
+
+                        ${escapeHTML(
+                            cliente.whatsapp ||
+                            "-"
+                        )}
+
+                        ${
+                            cliente.cidade
+                            ?
+                            `
+                            <br>
+                            Cidade:
+
+                            ${escapeHTML(
+                                cliente.cidade
+                            )}
+                            `
+                            :
+                            ""
+                        }
+
+                    </div>
+
+
+                    ${
+                        telefone
+                        ?
+                        `
+                        <div
+                            style="
+                            margin-top:10px
+                            "
+                        >
+
+                            <button
+                                class="
+                                    btn
+                                    verde
+                                    pequeno
+                                "
+                                onclick="
+                                    abrirWhatsApp(
+                                        '${telefone}'
+                                    )
+                                "
+                            >
+                                WhatsApp
+                            </button>
+
+                        </div>
+                        `
+                        :
+                        ""
+                    }
+
+                </div>
+
+            `;
+
+        }
+    );
+
+
+    container.innerHTML =
+        html;
+
+}
+
+
+/* ==================================================
+   REALTIME
+================================================== */
+
+function iniciarRealtime(){
+
+    supabaseClient
+    .channel("ws-painel")
+
+    .on(
+        "postgres_changes",
+        {
+            event:"*",
+            schema:"public",
+            table:"agendamentos"
+        },
+        function(){
+
+            carregarAgendamentos();
+
+        }
+    )
+
+    .on(
+        "postgres_changes",
+        {
+            event:"*",
+            schema:"public",
+            table:"movimentacoes"
+        },
+        function(){
+
+            carregarFinanceiro();
+
+        }
+    )
+
+    .on(
+        "postgres_changes",
+        {
+            event:"*",
+            schema:"public",
+            table:"clientes"
+        },
+        function(){
+
+            carregarClientes();
+
+        }
+    )
+
+    .subscribe();
+
+}
+
+
+/* ==================================================
+   NAVEGAÇÃO
+================================================== */
+
+function abrirPagina(
+    pagina,
+    botao
+){
+
+    document
+        .querySelectorAll(
+            ".page"
+        )
+        .forEach(
+            p =>
+                p.classList.remove(
+                    "active"
+                )
+        );
+
+
+    document
+        .getElementById(
+            pagina
+        )
+        .classList.add(
+            "active"
+        );
+
+
+    document
+        .querySelectorAll(
+            "nav button"
+        )
+        .forEach(
+            b =>
+                b.classList.remove(
+                    "active"
+                )
+        );
+
+
+    botao.classList.add(
+        "active"
+    );
+
+
+    if(
+        pagina ===
+        "financeiro"
+    ){
+
+        carregarFinanceiro();
+
+    }
+
+
+    if(
+        pagina ===
+        "clientes"
+    ){
+
+        carregarClientes();
+
+    }
+
+}
+
+
+/* ==================================================
+   MODAL FINANCEIRO
+================================================== */
+
+function fecharFinanceiro(){
+
+    document
+        .getElementById(
+            "modalFinanceiro"
+        )
+        .classList.remove(
+            "show"
+        );
+
+}
+
+
+/* ==================================================
+   WHATSAPP
+================================================== */
+
+function abrirWhatsApp(numero){
+
+    let telefone =
+        somenteNumeros(
+            numero
+        );
+
+
+    if(!telefone)
+        return;
+
+
+    if(
+        !telefone.startsWith("55")
+    ){
+
+        telefone =
+            "55" +
+            telefone;
+
+    }
+
+
+    window.open(
+        "https://wa.me/" +
+        telefone,
+        "_blank"
+    );
+
+}
+
+
+/* ==================================================
+   FORMATAÇÕES
+================================================== */
+
+function formatarHora(hora){
+
+    if(!hora)
+        return "Sem horário";
+
+
+    return String(hora)
+        .substring(
+            0,
+            5
+        );
+
+}
+
+
+function formatarDataBR(data){
+
+    if(!data)
+        return "-";
+
+
+    const partes =
+        data.split("-");
+
+
+    if(partes.length !== 3)
+        return data;
+
+
+    return `
+        ${partes[2]}/
+        ${partes[1]}/
+        ${partes[0]}
+    `.replace(
+        /\s/g,
+        ""
+    );
+
+}
+
+
+function formatarDataCompleta(data){
+
+    if(!data)
+        return "Sem data";
+
+
+    const partes =
+        data.split("-");
+
+
+    if(partes.length !== 3)
+        return data;
+
+
+    const d =
+        new Date(
+            Number(partes[0]),
+            Number(partes[1])-1,
+            Number(partes[2])
+        );
+
+
+    const dias = [
+
+        "Domingo",
+
+        "Segunda-feira",
+
+        "Terça-feira",
+
+        "Quarta-feira",
+
+        "Quinta-feira",
+
+        "Sexta-feira",
+
+        "Sábado"
+
+    ];
+
+
+    return `
+        ${partes[2]}/
+        ${partes[1]}/
+        ${partes[0]}
+        — ${dias[d.getDay()]}
+    `;
+
+}
+
+
+function dinheiro(valor){
+
+    return Number(
+        valor || 0
+    ).toLocaleString(
+        "pt-BR",
+        {
+            style:"currency",
+            currency:"BRL"
+        }
+    );
+
+}
+
+
+/* ==================================================
+   DATA FINANCEIRO
+================================================== */
+
+function converterDataBanco(data){
+
+    if(!data)
+        return "";
+
+
+    const partes =
+        data.split("-");
+
+
+    if(partes.length !== 3)
+        return data;
+
+
+    return `
+        ${partes[2]}/
+        ${partes[1]}/
+        ${partes[0]}
+    `.replace(
+        /\s/g,
+        ""
+    );
+
+}
+
+
+function converterDataInput(data){
+
+    if(!data)
+        return obterDataHoje();
+
+
+    if(data.includes("-"))
+        return data;
+
+
+    const partes =
+        data.split("/");
+
+
+    if(partes.length !== 3)
+        return obterDataHoje();
+
+
+    return `
+        ${partes[2]}-
+        ${partes[1]}-
+        ${partes[0]}
+    `.replace(
+        /\s/g,
+        ""
+    );
+
+}
+
+
+/* ==================================================
+   STATUS
+================================================== */
+
+function normalizarStatus(status){
+
+    const s =
+        String(
+            status ||
+            "aguardando"
+        ).toLowerCase();
+
+
+    const permitidos = [
+
+        "aguardando",
+
+        "confirmado",
+
+        "andamento",
+
+        "concluido",
+
+        "cancelado"
+
+    ];
+
+
+    return permitidos.includes(s)
+        ? s
+        : "aguardando";
+
+}
+
+
+function textoStatus(status){
+
+    switch(
+        normalizarStatus(status)
+    ){
+
+        case "confirmado":
+            return "Confirmado";
+
+        case "andamento":
+            return "Em andamento";
+
+        case "concluido":
+            return "Concluído";
+
+        case "cancelado":
+            return "Cancelado";
+
+        default:
+            return "Aguardando";
+
+    }
+
+}
+
+
+/* ==================================================
+   SEGURANÇA
+================================================== */
+
+function escapeHTML(text){
+
+    return String(
+        text ?? ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
+
+
+/* ==================================================
+   TELEFONE
+================================================== */
+
+function somenteNumeros(numero){
+
+    return String(
+        numero || ""
+    ).replace(
+        /\D/g,
+        ""
+    );
+
+}
+
+
+/* ==================================================
+   TOAST
+================================================== */
+
+let toastTimer;
+
+
+function mostrarToast(mensagem){
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    toast.textContent =
+        mensagem;
+
+
+    toast.classList.add(
+        "show"
+    );
+
+
+    clearTimeout(
+        toastTimer
+    );
+
+
+    toastTimer =
+        setTimeout(
+            function(){
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            },
+            3000
+        );
+
+}
+
+
+/* ==================================================
+   TEMA
+================================================== */
+
+function alternarTema(){
+
+    document.body
+        .classList
+        .toggle(
+            "dark"
+        );
+
+
+    const dark =
+        document.body
+        .classList
+        .contains(
+            "dark"
+        );
+
+
+    localStorage.setItem(
+        "ws_tema",
+        dark
+        ? "dark"
+        : "light"
+    );
+
+
+    document.getElementById(
+        "temaBtn"
+    ).textContent =
+        dark
+        ? "☀️"
+        : "🌙";
+
+}
+
+
+function carregarTema(){
+
+    if(
+        localStorage.getItem(
+            "ws_tema"
+        ) ===
+        "dark"
+    ){
+
+        document.body
+            .classList
+            .add(
+                "dark"
+            );
+
+
+        document.getElementById(
+            "temaBtn"
+        ).textContent =
+            "☀️";
+
+    }
+
+}
+
+
+/* ==================================================
+   CLIQUE FORA / ESC
+================================================== */
+
+document
+    .getElementById(
+        "modalOS"
+    )
+    .addEventListener(
+        "click",
+        function(e){
+
+            if(
+                e.target === this
+            ){
+
+                fecharOS();
+
+            }
+
+        }
+    );
+
+
+document
+    .getElementById(
+        "modalFinanceiro"
+    )
+    .addEventListener(
+        "click",
+        function(e){
+
+            if(
+                e.target === this
+            ){
+
+                fecharFinanceiro();
+
+            }
+
+        }
+    );
+
+
+document.addEventListener(
+    "keydown",
+    function(e){
+
+        if(
+            e.key === "Escape"
+        ){
+
+            fecharOS();
+
+            fecharFinanceiro();
+
         }
 
-        // 3. Deletar Produto
-        window.deletarProduto = async function(idProd, nomeProd) {
-            if (confirm(`Remover "${nomeProd}" da vitrine dos clientes?`)) {
-                await supabase.from("produtos").delete().eq("id", idProd);
-                carregarProdutosAdmin(); 
-            }
-        }
-    </script>
+    }
+);
+
+</script>
+
 </body>
 </html>
