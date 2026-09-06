@@ -360,6 +360,12 @@ main{
     color:var(--roxo3);
 }
 
+.acoes{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+}
+
 .acoes-os{
     display:flex;
     gap:8px;
@@ -531,6 +537,12 @@ th{
     display:block;
 }
 
+.vazio{
+    text-align:center;
+    padding:25px;
+    color:var(--cinza);
+}
+
 @media(max-width:650px){
 
     main{
@@ -549,6 +561,10 @@ th{
         max-height:92vh;
         padding:17px;
     }
+
+    .acoes button{
+        flex:1;
+    }
 }
 </style></head><body><header><div class="logo">
 WS SOLUÇÕES
@@ -566,25 +582,16 @@ WS SOLUÇÕES
 💰 Financeiro
 </button><button onclick="abrirTela('servicos',this)">
 🛠️ Serviços
-</button></nav><main><!-- INÍCIO --><section id="inicio" class="tela ativa"><div class="titulo">
-<h1>Olá, Mila 👋</h1>
-<p>Controle da WS SOLUÇÕES</p>
-</div><div class="cards"><div class="card">
-<div class="icone">👥</div>
-<h3>Clientes</h3>
-<strong id="totalClientes">0</strong>
-</div><div class="card">
-<div class="icone">📅</div>
-<h3>Agendamentos</h3>
-<strong id="totalAgendamentos">0</strong>
-</div><div class="card">
-<div class="icone">⏳</div>
-<h3>Pendentes</h3>
-<strong id="totalPendentes">0</strong>
-</div><div class="card">
-<div class="icone">💰</div>
-<h3>Entradas</h3>
-<strong id="totalEntradas">R$ 0,00</strong>
+</button></nav><main><!-- =========================
+     INÍCIO
+========================= --><section id="inicio" class="tela ativa"><div class="titulo"><h1>Olá, Mila 👋</h1><p>Controle da WS SOLUÇÕES</p></div><div class="cards"><div class="card"><div class="icone">👥</div><h3>Clientes</h3><strong id="totalClientes">0</strong>
+
+</div><div class="card"><div class="icone">📅</div><h3>Agendamentos</h3><strong id="totalAgendamentos">0</strong>
+
+</div><div class="card"><div class="icone">⏳</div><h3>Pendentes</h3><strong id="totalPendentes">0</strong>
+
+</div><div class="card"><div class="icone">💰</div><h3>Entradas</h3><strong id="totalEntradas">R$ 0,00</strong>
+
 </div></div><div class="painel"><div class="calendario-topo"><h2 id="mesAno"></h2><div class="navegacao-calendario"><button class="btn-nav" onclick="mesAnterior()">‹</button>
 
 <button class="btn-nav" onclick="irParaHoje()">●</button>
@@ -604,18 +611,14 @@ onclick="abrirModalAgendamento()">
 + Agendar
   </button>
 
-</div><div id="listaDia"></div></div></div><div class="painel"><div class="painel-titulo">
-<h2>📌 Próximos agendamentos</h2>
-</div><div class="tabela-container"><table><thead>
-<tr>
-<th>Cliente</th>
+</div><div id="listaDia"></div></div></div><div class="painel"><div class="painel-titulo"><h2>📌 Próximos agendamentos</h2></div><div class="tabela-container"><table><thead><tr><th>Cliente</th>
 <th>Serviço</th>
 <th>Data</th>
 <th>Hora</th>
 <th>Status</th>
-<th>Ação</th>
-</tr>
-</thead><tbody id="tabelaInicio"></tbody></table></div></div></section><!-- CLIENTES --><section id="clientes" class="tela"><div class="titulo"><h1>👥 Clientes</h1><p>Cadastro de clientes</p></div><div class="painel"><div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:15px;"><input
+<th>Ação</th></tr></thead><tbody id="tabelaInicio"></tbody></table></div></div></section><!-- =========================
+     CLIENTES
+========================= --><section id="clientes" class="tela"><div class="titulo"><h1>👥 Clientes</h1><p>Cadastro e gerenciamento de clientes</p></div><div class="painel"><div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:15px;"><input
 id="buscarCliente"
 type="search"
 placeholder="🔎 Buscar cliente..."
@@ -631,30 +634,29 @@ onclick="abrirModalCliente()">
 + Novo cliente
   </button>
 
-</div><div class="tabela-container"><table><thead>
-<tr>
-<th>Nome</th>
+</div><div class="tabela-container"><table><thead><tr><th>Nome</th>
 <th>WhatsApp</th>
-<th>Endereço</th>
+<th>Cidade</th>
 <th>Cadastro</th>
-</tr>
-</thead><tbody id="tabelaClientes"></tbody></table></div></div></section><!-- AGENDAMENTOS --><section id="agendamentos" class="tela"><div class="titulo"><h1>📅 Agendamentos</h1><p>Todos os agendamentos</p></div><div class="painel"><button
+<th>Ações</th></tr></thead><tbody id="tabelaClientes"></tbody></table></div></div></section><!-- =========================
+     AGENDAMENTOS
+========================= --><section id="agendamentos" class="tela"><div class="titulo"><h1>📅 Agendamentos</h1><p>Todos os agendamentos</p></div><div class="painel"><button
 class="btn btn-roxo"
 onclick="abrirModalAgendamento()">
 
 + Novo agendamento
   </button>
 
-</div><div class="painel"><div class="tabela-container"><table><thead><tr>
-<th>Cliente</th>
+</div><div class="painel"><div class="tabela-container"><table><thead><tr><th>Cliente</th>
 <th>WhatsApp</th>
 <th>Serviço</th>
 <th>Defeito</th>
 <th>Data</th>
 <th>Hora</th>
 <th>Status</th>
-<th>Ação</th>
-</tr></thead><tbody id="tabelaAgendamentos"></tbody></table></div></div></section><!-- FINANCEIRO --><section id="financeiro" class="tela"><div class="titulo"><h1>💰 Financeiro</h1><p>Movimentações da empresa</p></div><div class="cards"><div class="card"><h3>Entradas</h3><strong id="financeiroEntradas">
+<th>Ação</th></tr></thead><tbody id="tabelaAgendamentos"></tbody></table></div></div></section><!-- =========================
+     FINANCEIRO
+========================= --><section id="financeiro" class="tela"><div class="titulo"><h1>💰 Financeiro</h1><p>Movimentações da empresa</p></div><div class="cards"><div class="card"><h3>Entradas</h3><strong id="financeiroEntradas">
 R$ 0,00
 </strong></div><div class="card"><h3>Saídas</h3><strong id="financeiroSaidas">
 R$ 0,00
@@ -667,36 +669,36 @@ onclick="abrirModalFinanceiro()">
 + Nova movimentação
   </button>
 
-</div><div class="painel"><div class="tabela-container"><table><thead><tr>
-<th>Tipo</th>
+</div><div class="painel"><div class="tabela-container"><table><thead><tr><th>Tipo</th>
 <th>Descrição</th>
 <th>Valor</th>
 <th>Data</th>
-<th>Ações</th>
-</tr></thead><tbody id="tabelaFinanceiro"></tbody></table></div></div></section><!-- SERVIÇOS --><section id="servicos" class="tela"><div class="titulo"><h1>🛠️ Serviços</h1><p>Controle dos serviços</p></div><div class="painel"><button
+<th>Ações</th></tr></thead><tbody id="tabelaFinanceiro"></tbody></table></div></div></section><!-- =========================
+     SERVIÇOS
+========================= --><section id="servicos" class="tela"><div class="titulo"><h1>🛠️ Serviços</h1><p>Controle dos serviços</p></div><div class="painel"><button
 class="btn btn-roxo"
 onclick="abrirModalServico()">
 
 + Novo serviço
   </button>
 
-</div><div class="painel"><div class="tabela-container"><table><thead><tr>
-<th>Cliente</th>
+</div><div class="painel"><div class="tabela-container"><table><thead><tr><th>Cliente</th>
 <th>Serviço</th>
 <th>Valor</th>
-<th>Status</th>
-</tr></thead><tbody id="tabelaServicos"></tbody></table></div></div></section></main><!-- MODAL CLIENTE --><div id="modalCliente" class="modal"><div class="modal-box"><div class="modal-topo"><h2>Novo cliente</h2><button class="fechar" onclick="fecharModais()">×</button>
+<th>Status</th></tr></thead><tbody id="tabelaServicos"></tbody></table></div></div></section></main><!-- =========================
+     MODAL CLIENTE
+========================= --><div id="modalCliente" class="modal"><div class="modal-box"><div class="modal-topo"><h2 id="tituloModalCliente">
+Novo cliente
+</h2><button class="fechar" onclick="fecharModais()">×</button>
 
-</div><div class="modal-corpo"><div class="form-grid"><div class="campo"><label>Nome</label>
-<input id="clienteNome">
+</div><div class="modal-corpo"><input type="hidden" id="clienteId"><div class="form-grid"><div class="campo"><label>Nome</label>
 
-</div><div class="campo"><label>WhatsApp</label>
-<input id="clienteWhatsapp">
+<input id="clienteNome"></div><div class="campo"><label>WhatsApp</label>
 
-</div><div class="campo"><label>Cidade</label>
-<input id="clienteCidade">
+<input id="clienteWhatsapp"></div><div class="campo"><label>Cidade</label>
 
-</div></div></div><div class="form-acoes"><button
+<input id="clienteCidade"></div></div></div><div class="form-acoes"><button
+id="btnSalvarCliente"
 class="btn btn-roxo"
 onclick="salvarCliente()">
 Salvar
@@ -708,31 +710,33 @@ onclick="fecharModais()">
 Cancelar
 </button>
 
-</div></div></div><!-- MODAL AGENDAMENTO --><div id="modalAgendamento" class="modal"><div class="modal-box"><div class="modal-topo"><h2 id="tituloModalAgendamento">
+</div></div></div><!-- =========================
+     MODAL AGENDAMENTO
+========================= --><div id="modalAgendamento" class="modal"><div class="modal-box"><div class="modal-topo"><h2 id="tituloModalAgendamento">
 Novo agendamento
-</h2><button class="fechar" onclick="fecharModais()">×</button>
+</h2><button class="fechar" onclick="fecharModais()">
+×
+</button></div><div class="modal-corpo"><input type="hidden" id="agId"><div class="form-grid"><div class="campo"><label>Cliente</label>
 
-</div><div class="modal-corpo"><input type="hidden" id="agId"><div class="form-grid"><div class="campo">
-<label>Cliente</label>
-<input id="agNome">
-</div><div class="campo">
-<label>WhatsApp</label>
-<input id="agWhatsapp">
-</div><div class="campo">
-<label>Aparelho</label>
-<input id="agAparelho">
-</div><div class="campo">
-<label>Data</label>
-<input id="agData" type="date">
-</div><div class="campo">
-<label>Hora</label>
-<input id="agHora" type="time">
-</div><div class="campo"><label>Status</label>
+<input id="agNome"></div><div class="campo"><label>WhatsApp</label>
 
-<select id="agStatus"><option value="aguardando">Aguardando</option>
-<option value="confirmado">Confirmado</option>
-<option value="concluido">Concluído</option>
-<option value="cancelado">Cancelado</option></select></div></div><div class="campo" style="margin-top:15px;"><label>Defeito / serviço</label>
+<input id="agWhatsapp"></div><div class="campo"><label>Aparelho / Serviço</label>
+
+<input id="agAparelho"></div><div class="campo"><label>Data</label>
+
+<input id="agData" type="date"></div><div class="campo"><label>Hora</label>
+
+<input id="agHora" type="time"></div><div class="campo"><label>Status</label>
+
+<select id="agStatus"><option value="aguardando">
+Aguardando
+</option><option value="confirmado">
+Confirmado
+</option><option value="concluido">
+Concluído
+</option><option value="cancelado">
+Cancelado
+</option></select></div></div><div class="campo" style="margin-top:15px;"><label>Defeito / serviço</label>
 
 <textarea id="agDefeito"></textarea></div></div><div class="form-acoes"><button
 id="btnSalvarAgendamento"
@@ -747,25 +751,32 @@ onclick="fecharModais()">
 Cancelar
 </button>
 
-</div></div></div><!-- MODAL FINANCEIRO --><div id="modalFinanceiro" class="modal"><div class="modal-box"><div class="modal-topo"><h2 id="tituloModalFinanceiro">
+</div></div></div><!-- =========================
+     MODAL FINANCEIRO
+========================= --><div id="modalFinanceiro" class="modal"><div class="modal-box"><div class="modal-topo"><h2 id="tituloModalFinanceiro">
 Nova movimentação
-</h2><button class="fechar" onclick="fecharModais()">×</button>
+</h2><button class="fechar" onclick="fecharModais()">
+×
+</button></div><div class="modal-corpo"><input type="hidden" id="finId"><div class="form-grid"><div class="campo"><label>Tipo</label>
 
-</div><div class="modal-corpo"><input type="hidden" id="finId"><div class="form-grid"><div class="campo"><label>Tipo</label>
-
-<select id="finTipo"><option value="entrada">Entrada</option>
-<option value="saida">Saída</option></select></div><div class="campo"><label>Valor</label>
+<select id="finTipo"><option value="entrada">
+Entrada
+</option><option value="saida">
+Saída
+</option></select></div><div class="campo"><label>Valor</label>
 
 <input
 id="finValor"
 type="number"
 step="0.01"
+min="0"
 
 «»
 
 </div></div><div class="campo" style="margin-top:15px;"><label>Descrição</label>
 
 <input id="finDescricao"></div></div><div class="form-acoes"><button
+id="btnSalvarFinanceiro"
 class="btn btn-roxo"
 onclick="salvarFinanceiro()">
 💾 Salvar
@@ -777,15 +788,15 @@ onclick="fecharModais()">
 Cancelar
 </button>
 
-</div></div></div><!-- MODAL SERVIÇO --><div id="modalServico" class="modal"><div class="modal-box"><div class="modal-topo"><h2>Novo serviço</h2><button class="fechar" onclick="fecharModais()">×</button>
+</div></div></div><!-- =========================
+     MODAL SERVIÇO
+========================= --><div id="modalServico" class="modal"><div class="modal-box"><div class="modal-topo"><h2>Novo serviço</h2><button class="fechar" onclick="fecharModais()">
+×
+</button></div><div class="modal-corpo"><div class="form-grid"><div class="campo"><label>Cliente</label>
 
-</div><div class="modal-corpo"><div class="form-grid"><div class="campo"><label>Cliente</label>
-<input id="servCliente">
+<input id="servCliente"></div><div class="campo"><label>Serviço</label>
 
-</div><div class="campo"><label>Serviço</label>
-<input id="servNome">
-
-</div><div class="campo"><label>Valor</label>
+<input id="servNome"></div><div class="campo"><label>Valor</label>
 
 <input
 id="servValor"
@@ -796,9 +807,13 @@ step="0.01"
 
 </div><div class="campo"><label>Status</label>
 
-<select id="servStatus"><option value="pendente">Pendente</option>
-<option value="andamento">Em andamento</option>
-<option value="concluido">Concluído</option></select></div></div></div><div class="form-acoes"><button
+<select id="servStatus"><option value="pendente">
+Pendente
+</option><option value="andamento">
+Em andamento
+</option><option value="concluido">
+Concluído
+</option></select></div></div></div><div class="form-acoes"><button
 class="btn btn-roxo"
 onclick="salvarServico()">
 Salvar
@@ -810,7 +825,7 @@ onclick="fecharModais()">
 Cancelar
 </button>
 
-</div></div></div><div id="toast" class="toast"></div><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>
+</div></div></div><div id="toast" class="toast"></div><script>
 
 /* =========================================
    SUPABASE
@@ -851,7 +866,7 @@ let carregando = false;
 
 
 /* =========================================
-   MENSAGEM
+   UTILITÁRIOS
 ========================================= */
 
 function mensagem(msg){
@@ -868,6 +883,27 @@ function mensagem(msg){
         toast.classList.remove("mostrar");
 
     },3000);
+}
+
+
+function escaparHTML(valor){
+
+    return String(valor ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+}
+
+
+function formatarMoeda(valor){
+
+    return Number(valor || 0)
+        .toLocaleString("pt-BR",{
+            style:"currency",
+            currency:"BRL"
+        });
 }
 
 
@@ -1085,6 +1121,24 @@ function classeStatus(status){
 }
 
 
+function textoStatus(status){
+
+    const mapa = {
+
+        aguardando:"Aguardando",
+
+        confirmado:"Confirmado",
+
+        concluido:"Concluído",
+
+        cancelado:"Cancelado"
+
+    };
+
+    return mapa[status] || status || "Aguardando";
+}
+
+
 /* =========================================
    AGENDAMENTOS DO DIA
 ========================================= */
@@ -1140,26 +1194,26 @@ function mostrarAgendamentosDoDia(){
         div.innerHTML = `
 
             <strong>
-                ⏰ ${item.hora || "--:--"} —
-                ${item.nome || "Cliente"}
+                ⏰ ${escaparHTML(item.hora || "--:--")} —
+                ${escaparHTML(item.nome || "Cliente")}
             </strong>
 
             <div class="agendamento-info">
-                📱 ${item.whatsapp || "Sem WhatsApp"}
+                📱 ${escaparHTML(item.whatsapp || "Sem WhatsApp")}
             </div>
 
             <div class="agendamento-info">
-                🔧 ${item.aparelho || "Serviço"}
+                🔧 ${escaparHTML(item.aparelho || "Serviço")}
             </div>
 
             <div class="agendamento-info">
-                📝 ${item.defeito || ""}
+                📝 ${escaparHTML(item.defeito || "")}
             </div>
 
             <div style="margin-top:8px;">
 
                 <span class="status ${classeStatus(item.status)}">
-                    ${item.status || "aguardando"}
+                    ${escaparHTML(textoStatus(item.status))}
                 </span>
 
             </div>
@@ -1198,9 +1252,13 @@ function abrirTela(id,botao){
         tela.classList.remove("ativa")
     );
 
-    document
-    .getElementById(id)
-    .classList.add("ativa");
+    const tela =
+    document.getElementById(id);
+
+    if(!tela)
+        return;
+
+    tela.classList.add("ativa");
 
     document.querySelectorAll("nav button")
     .forEach(
@@ -1231,6 +1289,32 @@ function abrirModalCliente(){
     document
     .getElementById("modalCliente")
     .classList.add("aberto");
+
+    document
+    .getElementById("tituloModalCliente")
+    .innerText =
+    "Novo cliente";
+
+    document
+    .getElementById("btnSalvarCliente")
+    .innerText =
+    "Salvar";
+
+    document
+    .getElementById("clienteId")
+    .value = "";
+
+    document
+    .getElementById("clienteNome")
+    .value = "";
+
+    document
+    .getElementById("clienteWhatsapp")
+    .value = "";
+
+    document
+    .getElementById("clienteCidade")
+    .value = "";
 }
 
 
@@ -1285,8 +1369,346 @@ function abrirModalAgendamento(){
 }
 
 
+function abrirModalFinanceiro(){
+
+    document
+    .getElementById("modalFinanceiro")
+    .classList.add("aberto");
+
+    document
+    .getElementById("tituloModalFinanceiro")
+    .innerText =
+    "Nova movimentação";
+
+    document
+    .getElementById("btnSalvarFinanceiro")
+    .innerText =
+    "💾 Salvar";
+
+    document
+    .getElementById("finId")
+    .value = "";
+
+    document
+    .getElementById("finTipo")
+    .value = "entrada";
+
+    document
+    .getElementById("finValor")
+    .value = "";
+
+    document
+    .getElementById("finDescricao")
+    .value = "";
+}
+
+
+function abrirModalServico(){
+
+    document
+    .getElementById("modalServico")
+    .classList.add("aberto");
+}
+
+
 /* =========================================
-   EDITAR OS
+   CLIENTES
+========================================= */
+
+function editarCliente(id){
+
+    const cliente =
+    clientes.find(
+        c =>
+        String(c.id) === String(id)
+    );
+
+    if(!cliente){
+
+        mensagem(
+            "Cliente não encontrado."
+        );
+
+        return;
+    }
+
+    document
+    .getElementById("modalCliente")
+    .classList.add("aberto");
+
+    document
+    .getElementById("tituloModalCliente")
+    .innerText =
+    "Editar cliente";
+
+    document
+    .getElementById("btnSalvarCliente")
+    .innerText =
+    "💾 Salvar alterações";
+
+    document
+    .getElementById("clienteId")
+    .value =
+    cliente.id;
+
+    document
+    .getElementById("clienteNome")
+    .value =
+    cliente.nome || "";
+
+    document
+    .getElementById("clienteWhatsapp")
+    .value =
+    cliente.whatsapp || "";
+
+    document
+    .getElementById("clienteCidade")
+    .value =
+    cliente.cidade || "";
+}
+
+
+async function salvarCliente(){
+
+    const id =
+    document
+    .getElementById("clienteId")
+    .value;
+
+    const nome =
+    document
+    .getElementById("clienteNome")
+    .value
+    .trim();
+
+    if(!nome){
+
+        mensagem(
+            "Digite o nome do cliente."
+        );
+
+        return;
+    }
+
+    const dados = {
+
+        nome: nome,
+
+        whatsapp:
+        document
+        .getElementById("clienteWhatsapp")
+        .value
+        .trim(),
+
+        cidade:
+        document
+        .getElementById("clienteCidade")
+        .value
+        .trim()
+    };
+
+    let resultado;
+
+    if(id){
+
+        resultado =
+        await supabaseClient
+        .from("clientes")
+        .update(dados)
+        .eq("id",id);
+
+    }else{
+
+        dados.data =
+        new Date()
+        .toLocaleDateString("pt-BR");
+
+        resultado =
+        await supabaseClient
+        .from("clientes")
+        .insert([dados]);
+    }
+
+    if(resultado.error){
+
+        console.error(resultado.error);
+
+        mensagem(
+            id
+            ? "Erro ao atualizar cliente."
+            : "Erro ao salvar cliente."
+        );
+
+        return;
+    }
+
+    fecharModais();
+
+    mensagem(
+        id
+        ? "✅ Cliente atualizado!"
+        : "✅ Cliente cadastrado!"
+    );
+
+    await carregarTudo();
+}
+
+
+async function excluirCliente(id){
+
+    const cliente =
+    clientes.find(
+        c =>
+        String(c.id) === String(id)
+    );
+
+    if(!cliente){
+
+        mensagem(
+            "Cliente não encontrado."
+        );
+
+        return;
+    }
+
+    const confirmar =
+    confirm(
+        "⚠️ Tem certeza que deseja excluir este cliente?\n\n" +
+        "Nome: " +
+        (cliente.nome || "Não informado") +
+        "\nWhatsApp: " +
+        (cliente.whatsapp || "Não informado")
+    );
+
+    if(!confirmar)
+        return;
+
+    const {error} =
+    await supabaseClient
+    .from("clientes")
+    .delete()
+    .eq("id",id);
+
+    if(error){
+
+        console.error(error);
+
+        mensagem(
+            "Erro ao excluir cliente."
+        );
+
+        return;
+    }
+
+    mensagem(
+        "🗑️ Cliente excluído!"
+    );
+
+    await carregarTudo();
+}
+
+
+function renderizarClientes(){
+
+    const busca =
+    document
+    .getElementById("buscarCliente")
+    .value
+    .toLowerCase()
+    .trim();
+
+    const tabela =
+    document
+    .getElementById("tabelaClientes");
+
+    tabela.innerHTML = "";
+
+    const lista =
+    clientes.filter(
+        c =>
+        (c.nome || "")
+        .toLowerCase()
+        .includes(busca) ||
+
+        (c.whatsapp || "")
+        .toLowerCase()
+        .includes(busca) ||
+
+        (c.cidade || "")
+        .toLowerCase()
+        .includes(busca)
+    );
+
+    if(!lista.length){
+
+        tabela.innerHTML = `
+        <tr>
+            <td colspan="5" class="vazio">
+                Nenhum cliente encontrado.
+            </td>
+        </tr>`;
+
+        return;
+    }
+
+    lista.forEach(cliente => {
+
+        const tr =
+        document.createElement("tr");
+
+        tr.innerHTML = `
+
+            <td>
+                ${escaparHTML(cliente.nome || "-")}
+            </td>
+
+            <td>
+                ${escaparHTML(cliente.whatsapp || "-")}
+            </td>
+
+            <td>
+                ${escaparHTML(cliente.cidade || "-")}
+            </td>
+
+            <td>
+                ${escaparHTML(cliente.data || "-")}
+            </td>
+
+            <td>
+
+                <div class="acoes">
+
+                    <button
+                        class="btn btn-editar"
+                        onclick="editarCliente('${cliente.id}')">
+                        ✏️
+                    </button>
+
+                    <button
+                        class="btn btn-vermelho"
+                        onclick="excluirCliente('${cliente.id}')">
+                        🗑️
+                    </button>
+
+                </div>
+
+            </td>
+
+        `;
+
+        tabela.appendChild(tr);
+    });
+}
+
+
+function filtrarClientes(){
+
+    renderizarClientes();
+}
+
+
+/* =========================================
+   OS / AGENDAMENTOS
 ========================================= */
 
 function editarAgendamento(id){
@@ -1299,7 +1721,9 @@ function editarAgendamento(id){
 
     if(!item){
 
-        mensagem("OS não encontrada.");
+        mensagem(
+            "OS não encontrada."
+        );
 
         return;
     }
@@ -1360,9 +1784,108 @@ function editarAgendamento(id){
 }
 
 
-/* =========================================
-   EXCLUIR OS
-========================================= */
+async function salvarAgendamento(){
+
+    const id =
+    document
+    .getElementById("agId")
+    .value;
+
+    const nome =
+    document
+    .getElementById("agNome")
+    .value
+    .trim();
+
+    if(!nome){
+
+        mensagem(
+            "Preencha o nome do cliente."
+        );
+
+        return;
+    }
+
+    const dados = {
+
+        nome: nome,
+
+        whatsapp:
+        document
+        .getElementById("agWhatsapp")
+        .value
+        .trim(),
+
+        aparelho:
+        document
+        .getElementById("agAparelho")
+        .value
+        .trim(),
+
+        data:
+        document
+        .getElementById("agData")
+        .value || null,
+
+        hora:
+        document
+        .getElementById("agHora")
+        .value || null,
+
+        defeito:
+        document
+        .getElementById("agDefeito")
+        .value
+        .trim(),
+
+        status:
+        document
+        .getElementById("agStatus")
+        .value
+    };
+
+    let resultado;
+
+    if(id){
+
+        resultado =
+        await supabaseClient
+        .from("agendamentos")
+        .update(dados)
+        .eq("id",id);
+
+    }else{
+
+        resultado =
+        await supabaseClient
+        .from("agendamentos")
+        .insert([dados]);
+    }
+
+    if(resultado.error){
+
+        console.error(resultado.error);
+
+        mensagem(
+            id
+            ? "Erro ao atualizar OS."
+            : "Erro ao salvar agendamento."
+        );
+
+        return;
+    }
+
+    fecharModais();
+
+    mensagem(
+        id
+        ? "✅ OS atualizada com sucesso!"
+        : "✅ Agendamento salvo!"
+    );
+
+    await carregarTudo();
+}
+
 
 async function excluirAgendamento(id){
 
@@ -1374,7 +1897,9 @@ async function excluirAgendamento(id){
 
     if(!item){
 
-        mensagem("OS não encontrada.");
+        mensagem(
+            "OS não encontrada."
+        );
 
         return;
     }
@@ -1422,35 +1947,6 @@ async function excluirAgendamento(id){
    FINANCEIRO
 ========================================= */
 
-function abrirModalFinanceiro(){
-
-    document
-    .getElementById("modalFinanceiro")
-    .classList.add("aberto");
-
-    document
-    .getElementById("tituloModalFinanceiro")
-    .innerText =
-    "Nova movimentação";
-
-    document
-    .getElementById("finId")
-    .value = "";
-
-    document
-    .getElementById("finTipo")
-    .value = "entrada";
-
-    document
-    .getElementById("finValor")
-    .value = "";
-
-    document
-    .getElementById("finDescricao")
-    .value = "";
-}
-
-
 function editarFinanceiro(id){
 
     const item =
@@ -1476,6 +1972,11 @@ function editarFinanceiro(id){
     .getElementById("tituloModalFinanceiro")
     .innerText =
     "Editar movimentação";
+
+    document
+    .getElementById("btnSalvarFinanceiro")
+    .innerText =
+    "💾 Salvar alterações";
 
     document
     .getElementById("finId")
@@ -1507,14 +2008,16 @@ async function salvarFinanceiro(){
     .value;
 
     const valor =
-    document
-    .getElementById("finValor")
-    .value;
+    parseFloat(
+        document
+        .getElementById("finValor")
+        .value
+    );
 
-    if(!valor){
+    if(!valor || valor <= 0){
 
         mensagem(
-            "Informe o valor."
+            "Informe um valor válido."
         );
 
         return;
@@ -1527,13 +2030,13 @@ async function salvarFinanceiro(){
         .getElementById("finTipo")
         .value,
 
-        valor:
-        parseFloat(valor),
+        valor: valor,
 
         descricao:
         document
         .getElementById("finDescricao")
         .value
+        .trim()
     };
 
     let resultado;
@@ -1607,9 +2110,8 @@ async function excluirFinanceiro(id){
         (item.tipo || "-") +
         "\nDescrição: " +
         (item.descricao || "-") +
-        "\nValor: R$ " +
-        (parseFloat(item.valor) || 0)
-        .toFixed(2)
+        "\nValor: " +
+        formatarMoeda(item.valor)
     );
 
     if(!confirmar)
@@ -1644,14 +2146,6 @@ async function excluirFinanceiro(id){
    SERVIÇOS
 ========================================= */
 
-function abrirModalServico(){
-
-    document
-    .getElementById("modalServico")
-    .classList.add("aberto");
-}
-
-
 async function salvarServico(){
 
     const cliente =
@@ -1676,7 +2170,8 @@ async function salvarServico(){
         nome:
         document
         .getElementById("servNome")
-        .value,
+        .value
+        .trim(),
 
         valor:
         parseFloat(
@@ -1715,223 +2210,6 @@ async function salvarServico(){
 
     mensagem(
         "Serviço registrado!"
-    );
-
-    await carregarTudo();
-}
-
-
-/* =========================================
-   CLIENTES
-========================================= */
-
-async function salvarCliente(){
-
-    const nome =
-    document
-    .getElementById("clienteNome")
-    .value
-    .trim();
-
-    if(!nome){
-
-        mensagem(
-            "Digite o nome do cliente."
-        );
-
-        return;
-    }
-
-    const novoCliente = {
-
-        nome: nome,
-
-        whatsapp:
-        document
-        .getElementById("clienteWhatsapp")
-        .value,
-
-        cidade:
-        document
-        .getElementById("clienteCidade")
-        .value,
-
-        data:
-        new Date()
-        .toLocaleDateString("pt-BR")
-    };
-
-    const {error} =
-    await supabaseClient
-    .from("clientes")
-    .insert([novoCliente]);
-
-    if(error){
-
-        console.error(error);
-
-        mensagem(
-            "Erro ao salvar cliente."
-        );
-
-        return;
-    }
-
-    fecharModais();
-
-    document.getElementById("clienteNome").value = "";
-    document.getElementById("clienteWhatsapp").value = "";
-    document.getElementById("clienteCidade").value = "";
-
-    mensagem(
-        "Cliente cadastrado!"
-    );
-
-    await carregarTudo();
-}
-
-
-function filtrarClientes(){
-
-    const busca =
-    document
-    .getElementById("buscarCliente")
-    .value
-    .toLowerCase();
-
-    const tabela =
-    document
-    .getElementById("tabelaClientes");
-
-    tabela.innerHTML = "";
-
-    clientes
-    .filter(
-        c =>
-        (c.nome || "")
-        .toLowerCase()
-        .includes(busca)
-    )
-    .forEach(cliente => {
-
-        const tr =
-        document.createElement("tr");
-
-        tr.innerHTML = `
-
-            <td>${cliente.nome || "-"}</td>
-
-            <td>${cliente.whatsapp || "-"}</td>
-
-            <td>${cliente.cidade || "-"}</td>
-
-            <td>${cliente.data || "-"}</td>
-
-        `;
-
-        tabela.appendChild(tr);
-    });
-}
-
-
-/* =========================================
-   AGENDAMENTOS
-========================================= */
-
-async function salvarAgendamento(){
-
-    const id =
-    document
-    .getElementById("agId")
-    .value;
-
-    const nome =
-    document
-    .getElementById("agNome")
-    .value
-    .trim();
-
-    if(!nome){
-
-        mensagem(
-            "Preencha o nome do cliente."
-        );
-
-        return;
-    }
-
-    const dados = {
-
-        nome: nome,
-
-        whatsapp:
-        document
-        .getElementById("agWhatsapp")
-        .value,
-
-        aparelho:
-        document
-        .getElementById("agAparelho")
-        .value,
-
-        data:
-        document
-        .getElementById("agData")
-        .value || null,
-
-        hora:
-        document
-        .getElementById("agHora")
-        .value || null,
-
-        defeito:
-        document
-        .getElementById("agDefeito")
-        .value,
-
-        status:
-        document
-        .getElementById("agStatus")
-        .value
-    };
-
-    let resultado;
-
-    if(id){
-
-        resultado =
-        await supabaseClient
-        .from("agendamentos")
-        .update(dados)
-        .eq("id",id);
-
-    }else{
-
-        resultado =
-        await supabaseClient
-        .from("agendamentos")
-        .insert([dados]);
-    }
-
-    if(resultado.error){
-
-        console.error(resultado.error);
-
-        mensagem(
-            id
-            ? "Erro ao atualizar OS."
-            : "Erro ao salvar agendamento."
-        );
-
-        return;
-    }
-
-    fecharModais();
-
-    mensagem(
-        id
-        ? "✅ OS atualizada com sucesso!"
-        : "✅ Agendamento salvo!"
     );
 
     await carregarTudo();
@@ -2048,8 +2326,7 @@ async function carregarTudo(){
         document
         .getElementById("totalEntradas")
         .innerText =
-        "R$ " +
-        entradas.toFixed(2);
+        formatarMoeda(entradas);
 
 
         /* CALENDÁRIO */
@@ -2061,44 +2338,7 @@ async function carregarTudo(){
 
         /* CLIENTES */
 
-        const buscaCliente =
-        document
-        .getElementById("buscarCliente")
-        .value
-        .toLowerCase();
-
-        const tabelaClientes =
-        document
-        .getElementById("tabelaClientes");
-
-        tabelaClientes.innerHTML = "";
-
-        clientes
-        .filter(
-            c =>
-            (c.nome || "")
-            .toLowerCase()
-            .includes(buscaCliente)
-        )
-        .forEach(cliente => {
-
-            const tr =
-            document.createElement("tr");
-
-            tr.innerHTML = `
-
-                <td>${cliente.nome || "-"}</td>
-
-                <td>${cliente.whatsapp || "-"}</td>
-
-                <td>${cliente.cidade || "-"}</td>
-
-                <td>${cliente.data || "-"}</td>
-
-            `;
-
-            tabelaClientes.appendChild(tr);
-        });
+        renderizarClientes();
 
 
         /* AGENDAMENTOS */
@@ -2109,56 +2349,81 @@ async function carregarTudo(){
 
         tabelaAg.innerHTML = "";
 
-        agendamentos.forEach(item => {
+        if(!agendamentos.length){
 
-            const tr =
-            document.createElement("tr");
-
-            tr.innerHTML = `
-
-                <td>${item.nome || "-"}</td>
-
-                <td>${item.whatsapp || "-"}</td>
-
-                <td>${item.aparelho || "-"}</td>
-
-                <td>${item.defeito || "-"}</td>
-
-                <td>${item.data || "-"}</td>
-
-                <td>${item.hora || "-"}</td>
-
-                <td>
-
-                    <span class="status ${classeStatus(item.status)}">
-                        ${item.status || "aguardando"}
-                    </span>
-
+            tabelaAg.innerHTML = `
+            <tr>
+                <td colspan="8" class="vazio">
+                    Nenhum agendamento cadastrado.
                 </td>
+            </tr>`;
 
-                <td>
+        }else{
 
-                    <div class="acoes-os">
+            agendamentos.forEach(item => {
 
-                        <button
-                            class="btn btn-editar"
-                            onclick="editarAgendamento('${item.id}')">
-                            ✏️ Editar
-                        </button>
+                const tr =
+                document.createElement("tr");
 
-                        <button
-                            class="btn btn-vermelho"
-                            onclick="excluirAgendamento('${item.id}')">
-                            🗑️ Excluir
-                        </button>
+                tr.innerHTML = `
 
-                    </div>
+                    <td>
+                        ${escaparHTML(item.nome || "-")}
+                    </td>
 
-                </td>
-            `;
+                    <td>
+                        ${escaparHTML(item.whatsapp || "-")}
+                    </td>
 
-            tabelaAg.appendChild(tr);
-        });
+                    <td>
+                        ${escaparHTML(item.aparelho || "-")}
+                    </td>
+
+                    <td>
+                        ${escaparHTML(item.defeito || "-")}
+                    </td>
+
+                    <td>
+                        ${escaparHTML(item.data || "-")}
+                    </td>
+
+                    <td>
+                        ${escaparHTML(item.hora || "-")}
+                    </td>
+
+                    <td>
+
+                        <span class="status ${classeStatus(item.status)}">
+                            ${escaparHTML(textoStatus(item.status))}
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        <div class="acoes">
+
+                            <button
+                                class="btn btn-editar"
+                                onclick="editarAgendamento('${item.id}')">
+                                ✏️
+                            </button>
+
+                            <button
+                                class="btn btn-vermelho"
+                                onclick="excluirAgendamento('${item.id}')">
+                                🗑️
+                            </button>
+
+                        </div>
+
+                    </td>
+
+                `;
+
+                tabelaAg.appendChild(tr);
+            });
+        }
 
 
         /* INÍCIO */
@@ -2178,25 +2443,33 @@ async function carregarTudo(){
 
             tr.innerHTML = `
 
-                <td>${item.nome || "-"}</td>
+                <td>
+                    ${escaparHTML(item.nome || "-")}
+                </td>
 
-                <td>${item.aparelho || "-"}</td>
+                <td>
+                    ${escaparHTML(item.aparelho || "-")}
+                </td>
 
-                <td>${item.data || "-"}</td>
+                <td>
+                    ${escaparHTML(item.data || "-")}
+                </td>
 
-                <td>${item.hora || "-"}</td>
+                <td>
+                    ${escaparHTML(item.hora || "-")}
+                </td>
 
                 <td>
 
                     <span class="status ${classeStatus(item.status)}">
-                        ${item.status || "aguardando"}
+                        ${escaparHTML(textoStatus(item.status))}
                     </span>
 
                 </td>
 
                 <td>
 
-                    <div class="acoes-os">
+                    <div class="acoes">
 
                         <button
                             class="btn btn-editar"
@@ -2213,10 +2486,22 @@ async function carregarTudo(){
                     </div>
 
                 </td>
+
             `;
 
             tabelaInicio.appendChild(tr);
         });
+
+
+        if(!agendamentos.length){
+
+            tabelaInicio.innerHTML = `
+            <tr>
+                <td colspan="6" class="vazio">
+                    Nenhum agendamento cadastrado.
+                </td>
+            </tr>`;
+        }
 
 
         /* FINANCEIRO */
@@ -2230,93 +2515,106 @@ async function carregarTudo(){
         let totalEntradas = 0;
         let totalSaidas = 0;
 
-        movimentacoes.forEach(item => {
+        if(!movimentacoes.length){
 
-            const valor =
-            parseFloat(item.valor) || 0;
-
-            if(item.tipo === "entrada")
-                totalEntradas += valor;
-            else
-                totalSaidas += valor;
-
-            const tr =
-            document.createElement("tr");
-
-            tr.innerHTML = `
-
-                <td>
-
-                    <span class="status ${
-                        item.tipo === "entrada"
-                        ? "concluido"
-                        : "cancelado"
-                    }">
-
-                        ${item.tipo || "-"}
-
-                    </span>
-
+            tabelaFin.innerHTML = `
+            <tr>
+                <td colspan="5" class="vazio">
+                    Nenhuma movimentação registrada.
                 </td>
+            </tr>`;
 
-                <td>
-                    ${item.descricao || "-"}
-                </td>
+        }else{
 
-                <td>
-                    R$ ${valor.toFixed(2)}
-                </td>
+            movimentacoes.forEach(item => {
 
-                <td>
-                    ${item.data || "-"}
-                </td>
+                const valor =
+                parseFloat(item.valor) || 0;
 
-                <td>
+                if(item.tipo === "entrada")
+                    totalEntradas += valor;
+                else
+                    totalSaidas += valor;
 
-                    <div class="acoes-os">
+                const tr =
+                document.createElement("tr");
 
-                        <button
-                            class="btn btn-editar"
-                            onclick="editarFinanceiro('${item.id}')">
-                            ✏️ Editar
-                        </button>
+                tr.innerHTML = `
 
-                        <button
-                            class="btn btn-vermelho"
-                            onclick="excluirFinanceiro('${item.id}')">
-                            🗑️ Excluir
-                        </button>
+                    <td>
 
-                    </div>
+                        <span class="status ${
+                            item.tipo === "entrada"
+                            ? "concluido"
+                            : "cancelado"
+                        }">
 
-                </td>
+                            ${escaparHTML(
+                                item.tipo === "entrada"
+                                ? "Entrada"
+                                : "Saída"
+                            )}
 
-            `;
+                        </span>
 
-            tabelaFin.appendChild(tr);
-        });
+                    </td>
+
+                    <td>
+                        ${escaparHTML(item.descricao || "-")}
+                    </td>
+
+                    <td>
+                        ${formatarMoeda(valor)}
+                    </td>
+
+                    <td>
+                        ${escaparHTML(item.data || "-")}
+                    </td>
+
+                    <td>
+
+                        <div class="acoes">
+
+                            <button
+                                class="btn btn-editar"
+                                onclick="editarFinanceiro('${item.id}')">
+                                ✏️
+                            </button>
+
+                            <button
+                                class="btn btn-vermelho"
+                                onclick="excluirFinanceiro('${item.id}')">
+                                🗑️
+                            </button>
+
+                        </div>
+
+                    </td>
+
+                `;
+
+                tabelaFin.appendChild(tr);
+            });
+        }
 
 
         document
         .getElementById("financeiroEntradas")
         .innerText =
-        "R$ " +
-        totalEntradas.toFixed(2);
+        formatarMoeda(totalEntradas);
 
         document
         .getElementById("financeiroSaidas")
         .innerText =
-        "R$ " +
-        totalSaidas.toFixed(2);
+        formatarMoeda(totalSaidas);
 
         document
         .getElementById("financeiroSaldo")
         .innerText =
-        "R$ " +
-        (
+        formatarMoeda(
             totalEntradas -
             totalSaidas
-        ).toFixed(2);
+        );
 
 
         /* SERVIÇOS */
@@ -2337,22 +2635,37 @@ async function carregarTudo(){
 
             tr.innerHTML = `
 
-                <td>${item.cliente || "-"}</td>
-
-                <td>${item.nome || "-"}</td>
-
                 <td>
-                    R$ ${valor.toFixed(2)}
+                    ${escaparHTML(item.cliente || "-")}
                 </td>
 
                 <td>
-                    ${item.status || "-"}
+                    ${escaparHTML(item.nome || "-")}
+                </td>
+
+                <td>
+                    ${formatarMoeda(valor)}
+                </td>
+
+                <td>
+                    ${escaparHTML(item.status || "-")}
                 </td>
 
             `;
 
             tabelaServ.appendChild(tr);
         });
+
+
+        if(!servicos.length){
+
+            tabelaServ.innerHTML = `
+            <tr>
+                <td colspan="4" class="vazio">
+                    Nenhum serviço cadastrado.
+                </td>
+            </tr>`;
+        }
 
 
     }catch(error){
