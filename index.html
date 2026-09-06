@@ -479,7 +479,7 @@ th{
     flex-wrap:wrap;
 }
 
-/* MODAL CORRIGIDO */
+/* MODAL - ORIGINAL MANTIDO */
 
 .modal{
     position:fixed;
@@ -557,6 +557,7 @@ th{
         WS SOLUÇÕES
         <small>Painel da equipe</small>
     </div>
+
     <div class="usuario">
         <div>
             <strong>Mila</strong>
@@ -577,45 +578,56 @@ th{
 <main>
 
 <section id="inicio" class="tela ativa">
+
     <div class="titulo">
         <h1>Olá, Mila 👋</h1>
         <p>Controle da WS SOLUÇÕES</p>
     </div>
 
     <div class="cards">
+
         <div class="card">
             <div class="icone">👥</div>
             <h3>Clientes</h3>
             <strong id="totalClientes">0</strong>
         </div>
+
         <div class="card">
             <div class="icone">📅</div>
             <h3>Agendamentos</h3>
             <strong id="totalAgendamentos">0</strong>
         </div>
+
         <div class="card">
             <div class="icone">⏳</div>
             <h3>Pendentes</h3>
             <strong id="totalPendentes">0</strong>
         </div>
+
         <div class="card">
             <div class="icone">💰</div>
             <h3>Entradas</h3>
             <strong id="totalEntradas">R$ 0,00</strong>
         </div>
+
     </div>
 
     <div class="painel">
+
         <div class="calendario-topo">
+
             <h2 id="mesAno">Setembro 2026</h2>
+
             <div class="navegacao-calendario">
                 <button class="btn-nav" onclick="mesAnterior()">‹</button>
                 <button class="btn-nav" onclick="irParaHoje()">●</button>
                 <button class="btn-nav" onclick="mesProximo()">›</button>
             </div>
+
         </div>
 
         <div class="calendario">
+
             <div class="dias-semana">
                 <div class="dia-semana">DOM</div>
                 <div class="dia-semana">SEG</div>
@@ -625,24 +637,34 @@ th{
                 <div class="dia-semana">SEX</div>
                 <div class="dia-semana">SÁB</div>
             </div>
+
             <div id="diasCalendario" class="dias"></div>
+
         </div>
 
         <div class="agendamentos-dia">
+
             <div class="painel-titulo">
                 <h2 id="tituloDia">Agendamentos</h2>
                 <button class="btn btn-roxo" onclick="abrirModalAgendamento()">+ Agendar</button>
             </div>
+
             <div id="listaDia"></div>
+
         </div>
+
     </div>
 
     <div class="painel">
+
         <div class="painel-titulo">
             <h2>📌 Próximos agendamentos</h2>
         </div>
+
         <div class="tabela-container">
+
             <table>
+
                 <thead>
                     <tr>
                         <th>Cliente</th>
@@ -652,25 +674,47 @@ th{
                         <th>Status</th>
                     </tr>
                 </thead>
+
                 <tbody id="tabelaInicio"></tbody>
+
             </table>
+
         </div>
+
     </div>
+
 </section>
 
+
 <section id="clientes" class="tela">
+
     <div class="titulo">
         <h1>👥 Clientes</h1>
         <p>Cadastro de clientes</p>
     </div>
 
     <div class="painel">
+
         <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:15px;">
-            <input id="buscarCliente" type="search" placeholder="🔎 Buscar cliente..." oninput="filtrarClientes()" style="flex:1;min-width:200px;padding:11px;border:1px solid #ddd;border-radius:9px;">
-            <button class="btn btn-roxo" onclick="abrirModalCliente()">+ Novo cliente</button>
+
+            <input
+                id="buscarCliente"
+                type="search"
+                placeholder="🔎 Buscar cliente..."
+                oninput="filtrarClientes()"
+                style="flex:1;min-width:200px;padding:11px;border:1px solid #ddd;border-radius:9px;"
+            >
+
+            <button class="btn btn-roxo" onclick="abrirModalCliente()">
+                + Novo cliente
+            </button>
+
         </div>
+
         <div class="tabela-container">
+
             <table>
+
                 <thead>
                     <tr>
                         <th>Nome</th>
@@ -679,25 +723,39 @@ th{
                         <th>Cadastro</th>
                     </tr>
                 </thead>
+
                 <tbody id="tabelaClientes"></tbody>
+
             </table>
+
         </div>
+
     </div>
+
 </section>
 
+
 <section id="agendamentos" class="tela">
+
     <div class="titulo">
         <h1>📅 Agendamentos</h1>
         <p>Todos os agendamentos</p>
     </div>
 
     <div class="painel">
-        <button class="btn btn-roxo" onclick="abrirModalAgendamento()">+ Novo agendamento</button>
+
+        <button class="btn btn-roxo" onclick="abrirModalAgendamento()">
+            + Novo agendamento
+        </button>
+
     </div>
 
     <div class="painel">
+
         <div class="tabela-container">
+
             <table>
+
                 <thead>
                     <tr>
                         <th>Cliente</th>
@@ -709,40 +767,58 @@ th{
                         <th>Status</th>
                     </tr>
                 </thead>
+
                 <tbody id="tabelaAgendamentos"></tbody>
+
             </table>
+
         </div>
+
     </div>
+
 </section>
 
+
 <section id="financeiro" class="tela">
+
     <div class="titulo">
         <h1>💰 Financeiro</h1>
         <p>Movimentações da empresa</p>
     </div>
 
     <div class="cards">
+
         <div class="card">
             <h3>Entradas</h3>
             <strong id="financeiroEntradas">R$ 0,00</strong>
         </div>
+
         <div class="card">
             <h3>Saídas</h3>
             <strong id="financeiroSaidas">R$ 0,00</strong>
         </div>
+
         <div class="card">
             <h3>Saldo</h3>
             <strong id="financeiroSaldo">R$ 0,00</strong>
         </div>
+
     </div>
 
     <div class="painel">
-        <button class="btn btn-roxo" onclick="abrirModalFinanceiro()">+ Nova movimentação</button>
+
+        <button class="btn btn-roxo" onclick="abrirModalFinanceiro()">
+            + Nova movimentação
+        </button>
+
     </div>
 
     <div class="painel">
+
         <div class="tabela-container">
+
             <table>
+
                 <thead>
                     <tr>
                         <th>Tipo</th>
@@ -751,25 +827,39 @@ th{
                         <th>Data</th>
                     </tr>
                 </thead>
+
                 <tbody id="tabelaFinanceiro"></tbody>
+
             </table>
+
         </div>
+
     </div>
+
 </section>
 
+
 <section id="servicos" class="tela">
+
     <div class="titulo">
         <h1>🛠️ Serviços</h1>
         <p>Controle dos serviços</p>
     </div>
 
     <div class="painel">
-        <button class="btn btn-roxo" onclick="abrirModalServico()">+ Novo serviço</button>
+
+        <button class="btn btn-roxo" onclick="abrirModalServico()">
+            + Novo serviço
+        </button>
+
     </div>
 
     <div class="painel">
+
         <div class="tabela-container">
+
             <table>
+
                 <thead>
                     <tr>
                         <th>Cliente</th>
@@ -778,473 +868,1512 @@ th{
                         <th>Status</th>
                     </tr>
                 </thead>
+
                 <tbody id="tabelaServicos"></tbody>
+
             </table>
+
         </div>
+
     </div>
+
 </section>
 
 </main>
 
+
+<!-- MODAL CLIENTE -->
+
 <div id="modalCliente" class="modal">
+
     <div class="modal-box">
+
         <div class="modal-topo">
             <h2>Novo cliente</h2>
             <button class="fechar" onclick="fecharModais()">×</button>
         </div>
+
         <div class="modal-corpo">
+
             <div class="form-grid">
+
                 <div class="campo">
                     <label>Nome</label>
                     <input id="clienteNome">
                 </div>
+
                 <div class="campo">
                     <label>WhatsApp</label>
                     <input id="clienteWhatsapp">
                 </div>
+
                 <div class="campo">
                     <label>Cidade</label>
                     <input id="clienteCidade">
                 </div>
+
             </div>
+
         </div>
+
         <div class="form-acoes">
-            <button class="btn btn-roxo" onclick="salvarCliente()">Salvar</button>
-            <button class="btn btn-cinza" onclick="fecharModais()">Cancelar</button>
+
+            <button class="btn btn-roxo" onclick="salvarCliente()">
+                Salvar
+            </button>
+
+            <button class="btn btn-cinza" onclick="fecharModais()">
+                Cancelar
+            </button>
+
         </div>
+
     </div>
+
 </div>
 
+
+<!-- MODAL AGENDAMENTO -->
+
 <div id="modalAgendamento" class="modal">
+
     <div class="modal-box">
+
         <div class="modal-topo">
             <h2>Novo agendamento</h2>
             <button class="fechar" onclick="fecharModais()">×</button>
         </div>
+
         <div class="modal-corpo">
+
             <div class="form-grid">
+
                 <div class="campo">
                     <label>Cliente</label>
                     <input id="agNome">
                 </div>
+
                 <div class="campo">
                     <label>WhatsApp</label>
                     <input id="agWhatsapp">
                 </div>
+
                 <div class="campo">
                     <label>Aparelho</label>
                     <input id="agAparelho">
                 </div>
+
                 <div class="campo">
                     <label>Data</label>
                     <input id="agData" type="date">
                 </div>
+
                 <div class="campo">
                     <label>Hora</label>
                     <input id="agHora" type="time">
                 </div>
+
             </div>
+
             <div class="campo" style="margin-top:15px;">
+
                 <label>Defeito / serviço</label>
+
                 <textarea id="agDefeito"></textarea>
+
             </div>
+
         </div>
+
         <div class="form-acoes">
-            <button class="btn btn-roxo" onclick="salvarAgendamento()">Salvar agendamento</button>
-            <button class="btn btn-cinza" onclick="fecharModais()">Cancelar</button>
+
+            <button class="btn btn-roxo" onclick="salvarAgendamento()">
+                Salvar agendamento
+            </button>
+
+            <button class="btn btn-cinza" onclick="fecharModais()">
+                Cancelar
+            </button>
+
         </div>
+
     </div>
+
 </div>
 
+
+<!-- MODAL FINANCEIRO -->
+
 <div id="modalFinanceiro" class="modal">
+
     <div class="modal-box">
+
         <div class="modal-topo">
             <h2>Nova movimentação</h2>
             <button class="fechar" onclick="fecharModais()">×</button>
         </div>
+
         <div class="modal-corpo">
+
             <div class="form-grid">
+
                 <div class="campo">
+
                     <label>Tipo</label>
+
                     <select id="finTipo">
-                        <option value="entrada">Entrada</option>
-                        <option value="saida">Saída</option>
+
+                        <option value="entrada">
+                            Entrada
+                        </option>
+
+                        <option value="saida">
+                            Saída
+                        </option>
+
                     </select>
+
                 </div>
+
                 <div class="campo">
+
                     <label>Valor</label>
-                    <input id="finValor" type="number" step="0.01">
+
+                    <input
+                        id="finValor"
+                        type="number"
+                        step="0.01"
+                    >
+
                 </div>
+
             </div>
+
             <div class="campo" style="margin-top:15px;">
+
                 <label>Descrição</label>
+
                 <input id="finDescricao">
+
             </div>
+
         </div>
+
         <div class="form-acoes">
-            <button class="btn btn-roxo" onclick="salvarFinanceiro()">Salvar</button>
-            <button class="btn btn-cinza" onclick="fecharModais()">Cancelar</button>
+
+            <button class="btn btn-roxo" onclick="salvarFinanceiro()">
+                Salvar
+            </button>
+
+            <button class="btn btn-cinza" onclick="fecharModais()">
+                Cancelar
+            </button>
+
         </div>
+
     </div>
+
 </div>
 
+
+<!-- MODAL SERVIÇO -->
+
 <div id="modalServico" class="modal">
+
     <div class="modal-box">
+
         <div class="modal-topo">
             <h2>Novo serviço</h2>
             <button class="fechar" onclick="fecharModais()">×</button>
         </div>
+
         <div class="modal-corpo">
+
             <div class="form-grid">
+
                 <div class="campo">
+
                     <label>Cliente</label>
+
                     <input id="servCliente">
+
                 </div>
+
                 <div class="campo">
+
                     <label>Serviço</label>
+
                     <input id="servNome">
+
                 </div>
+
                 <div class="campo">
+
                     <label>Valor</label>
-                    <input id="servValor" type="number" step="0.01">
+
+                    <input
+                        id="servValor"
+                        type="number"
+                        step="0.01"
+                    >
+
                 </div>
+
                 <div class="campo">
+
                     <label>Status</label>
+
                     <select id="servStatus">
-                        <option value="pendente">Pendente</option>
-                        <option value="andamento">Em andamento</option>
-                        <option value="concluido">Concluído</option>
+
+                        <option value="pendente">
+                            Pendente
+                        </option>
+
+                        <option value="andamento">
+                            Em andamento
+                        </option>
+
+                        <option value="concluido">
+                            Concluído
+                        </option>
+
                     </select>
+
                 </div>
+
             </div>
+
         </div>
+
         <div class="form-acoes">
-            <button class="btn btn-roxo" onclick="salvarServico()">Salvar</button>
-            <button class="btn btn-cinza" onclick="fecharModais()">Cancelar</button>
+
+            <button class="btn btn-roxo" onclick="salvarServico()">
+                Salvar
+            </button>
+
+            <button class="btn btn-cinza" onclick="fecharModais()">
+                Cancelar
+            </button>
+
         </div>
+
     </div>
+
 </div>
+
 
 <div id="toast" class="toast"></div>
 
+
+<!-- SUPABASE -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
+
+/* =========================================
+   SUPABASE
+   ========================================= */
+
+const SUPABASE_URL =
+"https://xcncqpjxghujwbyklhel.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_xJqknenrg3H20jeGum1bkg_Ir-GLZsl";
+
+const supabaseClient =
+window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+
+
+/* =========================================
+   DADOS
+   ========================================= */
+
 let agendamentos = [];
 let clientes = [];
 let movimentacoes = [];
 let servicos = [];
 
 let dataCalendario = new Date();
-let diaSelecionado = dataCalendario.toISOString().split("T")[0];
+
+let diaSelecionado =
+dataCalendario.getFullYear() +
+"-" +
+String(dataCalendario.getMonth()+1).padStart(2,"0") +
+"-" +
+String(dataCalendario.getDate()).padStart(2,"0");
+
+
+/* =========================================
+   MENSAGEM
+   ========================================= */
+
+function mensagem(msg){
+
+    const toast =
+    document.getElementById("toast");
+
+    toast.innerText = msg;
+
+    toast.classList.add("mostrar");
+
+    setTimeout(() => {
+
+        toast.classList.remove("mostrar");
+
+    },3000);
+}
+
+
+/* =========================================
+   CALENDÁRIO
+   ========================================= */
 
 function renderizarCalendario(){
-    const ano = dataCalendario.getFullYear();
-    const mes = dataCalendario.getMonth();
-    const nomeMes = dataCalendario.toLocaleDateString("pt-BR", { month:"long", year:"numeric" });
 
-    document.getElementById("mesAno").innerText = nomeMes;
+    const ano =
+    dataCalendario.getFullYear();
 
-    const primeiroDia = new Date(ano,mes,1).getDay();
-    const ultimoDia = new Date(ano,mes+1,0).getDate();
-    const diasMesAnterior = new Date(ano,mes,0).getDate();
+    const mes =
+    dataCalendario.getMonth();
 
-    const container = document.getElementById("diasCalendario");
+    const nomeMes =
+    dataCalendario.toLocaleDateString(
+        "pt-BR",
+        {
+            month:"long",
+            year:"numeric"
+        }
+    );
+
+    document.getElementById("mesAno").innerText =
+    nomeMes;
+
+    const primeiroDia =
+    new Date(ano,mes,1).getDay();
+
+    const ultimoDia =
+    new Date(ano,mes+1,0).getDate();
+
+    const diasMesAnterior =
+    new Date(ano,mes,0).getDate();
+
+    const container =
+    document.getElementById("diasCalendario");
+
     container.innerHTML = "";
 
     for(let i = primeiroDia - 1; i >= 0; i--){
-        const dia = criarDia(diasMesAnterior - i, true, new Date(ano, mes - 1, diasMesAnterior - i));
+
+        const dia =
+        criarDia(
+            diasMesAnterior - i,
+            true,
+            new Date(
+                ano,
+                mes - 1,
+                diasMesAnterior - i
+            )
+        );
+
         container.appendChild(dia);
     }
 
     for(let d=1; d<=ultimoDia; d++){
-        const dia = criarDia(d, false, new Date(ano,mes,d));
+
+        const dia =
+        criarDia(
+            d,
+            false,
+            new Date(ano,mes,d)
+        );
+
         container.appendChild(dia);
     }
 
-    const total = container.children.length;
-    const faltam = (7 - (total % 7)) % 7;
+    const total =
+    container.children.length;
+
+    const faltam =
+    (7 - (total % 7)) % 7;
 
     for(let d=1; d<=faltam; d++){
-        const dia = criarDia(d, true, new Date(ano,mes+1,d));
+
+        const dia =
+        criarDia(
+            d,
+            true,
+            new Date(ano,mes+1,d)
+        );
+
         container.appendChild(dia);
     }
 }
 
+
 function criarDia(numero,outroMes,data){
-    const div = document.createElement("div");
+
+    const div =
+    document.createElement("div");
+
     div.className = "dia";
 
-    const dataISO = data.getFullYear() + "-" + String(data.getMonth()+1).padStart(2,"0") + "-" + String(data.getDate()).padStart(2,"0");
+    const dataISO =
+    data.getFullYear() +
+    "-" +
+    String(data.getMonth()+1).padStart(2,"0") +
+    "-" +
+    String(data.getDate()).padStart(2,"0");
 
-    if(outroMes) div.classList.add("outro-mes");
+    if(outroMes)
+        div.classList.add("outro-mes");
 
     const hoje = new Date();
-    const hojeISO = hoje.getFullYear() + "-" + String(hoje.getMonth()+1).padStart(2,"0") + "-" + String(hoje.getDate()).padStart(2,"0");
 
-    if(dataISO === hojeISO) div.classList.add("hoje");
-    if(dataISO === diaSelecionado) div.classList.add("selecionado");
+    const hojeISO =
+    hoje.getFullYear() +
+    "-" +
+    String(hoje.getMonth()+1).padStart(2,"0") +
+    "-" +
+    String(hoje.getDate()).padStart(2,"0");
 
-    div.innerHTML = `<div class="numero">${numero}</div>`;
+    if(dataISO === hojeISO)
+        div.classList.add("hoje");
 
-    const eventos = agendamentos.filter(item => item.data === dataISO);
+    if(dataISO === diaSelecionado)
+        div.classList.add("selecionado");
+
+    div.innerHTML =
+    `<div class="numero">${numero}</div>`;
+
+    const eventos =
+    agendamentos.filter(
+        item => item.data === dataISO
+    );
 
     if(eventos.length > 0){
-        const marcador = document.createElement("div");
-        marcador.className = "marcador " + (eventos.length > 1 ? "multiplos" : "");
-        marcador.innerText = eventos.length === 1 ? "📅 " + eventos[0].hora : "📅 " + eventos.length + " agendamentos";
+
+        const marcador =
+        document.createElement("div");
+
+        marcador.className =
+        "marcador " +
+        (eventos.length > 1 ? "multiplos" : "");
+
+        marcador.innerText =
+        eventos.length === 1
+        ?
+        "📅 " + eventos[0].hora
+        :
+        "📅 " + eventos.length + " agendamentos";
+
         div.appendChild(marcador);
     }
 
     div.onclick = () => {
+
         diaSelecionado = dataISO;
+
         mostrarAgendamentosDoDia();
+
         renderizarCalendario();
     };
 
     return div;
 }
 
+
 function mesAnterior(){
-    dataCalendario.setMonth(dataCalendario.getMonth()-1);
+
+    dataCalendario.setMonth(
+        dataCalendario.getMonth()-1
+    );
+
     renderizarCalendario();
 }
+
 
 function mesProximo(){
-    dataCalendario.setMonth(dataCalendario.getMonth()+1);
+
+    dataCalendario.setMonth(
+        dataCalendario.getMonth()+1
+    );
+
     renderizarCalendario();
 }
 
+
 function irParaHoje(){
+
     dataCalendario = new Date();
-    diaSelecionado = dataCalendario.toISOString().split("T")[0];
+
+    diaSelecionado =
+    dataCalendario.getFullYear() +
+    "-" +
+    String(dataCalendario.getMonth()+1).padStart(2,"0") +
+    "-" +
+    String(dataCalendario.getDate()).padStart(2,"0");
+
     renderizarCalendario();
+
     mostrarAgendamentosDoDia();
 }
 
+
+/* =========================================
+   STATUS
+   ========================================= */
+
 function classeStatus(status){
+
     switch((status || '').toLowerCase()){
-        case 'confirmado': return 'confirmado';
-        case 'concluido': return 'concluido';
-        case 'cancelado': return 'cancelado';
-        default: return 'aguardando';
+
+        case 'confirmado':
+            return 'confirmado';
+
+        case 'concluido':
+            return 'concluido';
+
+        case 'cancelado':
+            return 'cancelado';
+
+        default:
+            return 'aguardando';
     }
 }
 
+
+/* =========================================
+   AGENDAMENTOS DO DIA
+   ========================================= */
+
 function mostrarAgendamentosDoDia(){
-    const lista = document.getElementById("listaDia");
-    const titulo = document.getElementById("tituloDia");
 
-    const eventos = agendamentos.filter(item => item.data === diaSelecionado).sort((a,b) => (a.hora || "").localeCompare(b.hora || ""));
-    const data = new Date(diaSelecionado + "T12:00:00");
+    const lista =
+    document.getElementById("listaDia");
 
-    titulo.innerText = "Agendamentos de " + data.toLocaleDateString("pt-BR");
+    const titulo =
+    document.getElementById("tituloDia");
+
+    const eventos =
+    agendamentos
+    .filter(
+        item => item.data === diaSelecionado
+    )
+    .sort(
+        (a,b) =>
+        (a.hora || "")
+        .localeCompare(b.hora || "")
+    );
+
+    const data =
+    new Date(diaSelecionado + "T12:00:00");
+
+    titulo.innerText =
+    "Agendamentos de " +
+    data.toLocaleDateString("pt-BR");
+
     lista.innerHTML = "";
 
     if(eventos.length === 0){
-        lista.innerHTML = `<div class="sem-agendamento">Nenhum agendamento para este dia.</div>`;
+
+        lista.innerHTML =
+        `<div class="sem-agendamento">
+            Nenhum agendamento para este dia.
+        </div>`;
+
         return;
     }
 
     eventos.forEach(item => {
-        const div = document.createElement("div");
-        div.className = "agendamento-item";
+
+        const div =
+        document.createElement("div");
+
+        div.className =
+        "agendamento-item";
+
         div.innerHTML = `
-            <strong>⏰ ${item.hora || "--:--"} — ${item.nome || "Cliente"}</strong>
-            <div class="agendamento-info">📱 ${item.whatsapp || "Sem WhatsApp"}</div>
-            <div class="agendamento-info">🔧 ${item.aparelho || "Serviço"}</div>
-            <div class="agendamento-info">📝 ${item.defeito || ""}</div>
+
+            <strong>
+                ⏰ ${item.hora || "--:--"} —
+                ${item.nome || "Cliente"}
+            </strong>
+
+            <div class="agendamento-info">
+                📱 ${item.whatsapp || "Sem WhatsApp"}
+            </div>
+
+            <div class="agendamento-info">
+                🔧 ${item.aparelho || "Serviço"}
+            </div>
+
+            <div class="agendamento-info">
+                📝 ${item.defeito || ""}
+            </div>
+
             <div style="margin-top:8px;">
-                <span class="status ${classeStatus(item.status)}">${item.status || "aguardando"}</span>
+
+                <span class="status ${classeStatus(item.status)}">
+                    ${item.status || "aguardando"}
+                </span>
+
             </div>
         `;
+
         lista.appendChild(div);
     });
 }
 
-function abrirTela(id,botao){
-    document.querySelectorAll(".tela").forEach(tela => tela.classList.remove("ativa"));
-    document.getElementById(id).classList.add("ativa");
 
-    document.querySelectorAll("nav button").forEach(btn => btn.classList.remove("active"));
+/* =========================================
+   NAVEGAÇÃO
+   ========================================= */
+
+function abrirTela(id,botao){
+
+    document.querySelectorAll(".tela")
+    .forEach(
+        tela =>
+        tela.classList.remove("ativa")
+    );
+
+    document.getElementById(id)
+    .classList.add("ativa");
+
+    document.querySelectorAll("nav button")
+    .forEach(
+        btn =>
+        btn.classList.remove("active")
+    );
+
     botao.classList.add("active");
 
     if(id === "inicio"){
+
+        renderizarCalendario();
+
+        mostrarAgendamentosDoDia();
+
+        carregarDashboard();
+    }
+
+    if(id === "clientes")
+        carregarClientes();
+
+    if(id === "agendamentos")
+        carregarAgendamentos();
+
+    if(id === "financeiro")
+        carregarFinanceiro();
+
+    if(id === "servicos")
+        carregarServicos();
+}
+
+
+/* =========================================
+   MODAIS
+   ========================================= */
+
+function fecharModais(){
+
+    document.querySelectorAll(".modal")
+    .forEach(
+        modal =>
+        modal.classList.remove("aberto")
+    );
+}
+
+
+function abrirModalCliente(){
+
+    document
+    .getElementById("modalCliente")
+    .classList.add("aberto");
+}
+
+
+function abrirModalAgendamento(){
+
+    document
+    .getElementById("modalAgendamento")
+    .classList.add("aberto");
+
+    document
+    .getElementById("agData")
+    .value = diaSelecionado;
+}
+
+
+function abrirModalFinanceiro(){
+
+    document
+    .getElementById("modalFinanceiro")
+    .classList.add("aberto");
+}
+
+
+function abrirModalServico(){
+
+    document
+    .getElementById("modalServico")
+    .classList.add("aberto");
+}
+
+
+/* =========================================
+   CLIENTES - SUPABASE
+   ========================================= */
+
+async function carregarClientes(){
+
+    const tabela =
+    document.getElementById("tabelaClientes");
+
+    tabela.innerHTML = "";
+
+    const { data, error } =
+    await supabaseClient
+    .from("clientes")
+    .select("*")
+    .order("id",{ascending:false});
+
+    if(error){
+
+        console.error(error);
+
+        mensagem(
+            "Erro ao carregar clientes."
+        );
+
+        return;
+    }
+
+    clientes = data || [];
+
+    clientes.forEach(cliente => {
+
+        const tr =
+        document.createElement("tr");
+
+        tr.innerHTML = `
+            <td>${cliente.nome || "-"}</td>
+            <td>${cliente.whatsapp || "-"}</td>
+            <td>${cliente.cidade || "-"}</td>
+            <td>${cliente.data || "-"}</td>
+        `;
+
+        tabela.appendChild(tr);
+    });
+
+    carregarDashboard();
+}
+
+
+function filtrarClientes(){
+
+    const busca =
+    document
+    .getElementById("buscarCliente")
+    .value
+    .toLowerCase();
+
+    const tabela =
+    document.getElementById("tabelaClientes");
+
+    tabela.innerHTML = "";
+
+    clientes
+    .filter(
+        c =>
+        (c.nome || "")
+        .toLowerCase()
+        .includes(busca)
+    )
+    .forEach(cliente => {
+
+        const tr =
+        document.createElement("tr");
+
+        tr.innerHTML = `
+            <td>${cliente.nome || "-"}</td>
+            <td>${cliente.whatsapp || "-"}</td>
+            <td>${cliente.cidade || "-"}</td>
+            <td>${cliente.data || "-"}</td>
+        `;
+
+        tabela.appendChild(tr);
+    });
+}
+
+
+async function salvarCliente(){
+
+    const nome =
+    document
+    .getElementById("clienteNome")
+    .value
+    .trim();
+
+    if(!nome){
+
+        mensagem(
+            "Digite o nome do cliente."
+        );
+
+        return;
+    }
+
+    const novoCliente = {
+
+        nome: nome,
+
+        whatsapp:
+        document
+        .getElementById("clienteWhatsapp")
+        .value,
+
+        cidade:
+        document
+        .getElementById("clienteCidade")
+        .value,
+
+        data:
+        new Date()
+        .toLocaleDateString("pt-BR")
+    };
+
+    const { error } =
+    await supabaseClient
+    .from("clientes")
+    .insert([novoCliente]);
+
+    if(error){
+
+        console.error(error);
+
+        mensagem(
+            "Erro ao salvar cliente."
+        );
+
+        return;
+    }
+
+    fecharModais();
+
+    document.getElementById("clienteNome").value = "";
+    document.getElementById("clienteWhatsapp").value = "";
+    document.getElementById("clienteCidade").value = "";
+
+    mensagem(
+        "Cliente cadastrado!"
+    );
+
+    await carregarClientes();
+}
+
+
+/* =========================================
+   AGENDAMENTOS - SUPABASE
+   ========================================= */
+
+async function carregarAgendamentos(){
+
+    const tabela =
+    document
+    .getElementById("tabelaAgendamentos");
+
+    tabela.innerHTML = "";
+
+    const { data, error } =
+    await supabaseClient
+    .from("agendamentos")
+    .select("*")
+    .order("data",{ascending:true})
+    .order("hora",{ascending:true});
+
+    if(error){
+
+        console.error(error);
+
+        mensagem(
+            "Erro ao carregar agendamentos."
+        );
+
+        return;
+    }
+
+    agendamentos = data || [];
+
+    agendamentos.forEach(item => {
+
+        const tr =
+        document.createElement("tr");
+
+        tr.innerHTML = `
+
+            <td>${item.nome || "-"}</td>
+
+            <td>${item.whatsapp || "-"}</td>
+
+            <td>${item.aparelho || "-"}</td>
+
+            <td>${item.defeito || "-"}</td>
+
+            <td>${item.data || "-"}</td>
+
+            <td>${item.hora || "-"}</td>
+
+            <td>
+                <span class="status ${classeStatus(item.status)}">
+                    ${item.status || "aguardando"}
+                </span>
+            </td>
+        `;
+
+        tabela.appendChild(tr);
+    });
+
+    renderizarCalendario();
+
+    mostrarAgendamentosDoDia();
+
+    carregarDashboard();
+}
+
+
+async function salvarAgendamento(){
+
+    const nome =
+    document
+    .getElementById("agNome")
+    .value
+    .trim();
+
+    if(!nome){
+
+        mensagem(
+            "Preencha o nome do cliente."
+        );
+
+        return;
+    }
+
+    const novoAgendamento = {
+
+        nome: nome,
+
+        whatsapp:
+        document
+        .getElementById("agWhatsapp")
+        .value,
+
+        aparelho:
+        document
+        .getElementById("agAparelho")
+        .value,
+
+        data:
+        document
+        .getElementById("agData")
+        .value || null,
+
+        hora:
+        document
+        .getElementById("agHora")
+        .value || null,
+
+        defeito:
+        document
+        .getElementById("agDefeito")
+        .value,
+
+        status:
+        "aguardando"
+    };
+
+    const { error } =
+    await supabaseClient
+    .from("agendamentos")
+    .insert([novoAgendamento]);
+
+    if(error){
+
+        console.error(error);
+
+        mensagem(
+            "Erro ao salvar agendamento."
+        );
+
+        return;
+    }
+
+    fecharModais();
+
+    document.getElementById("agNome").value = "";
+    document.getElementById("agWhatsapp").value = "";
+    document.getElementById("agAparelho").value = "";
+    document.getElementById("agHora").value = "";
+    document.getElementById("agDefeito").value = "";
+
+    mensagem(
+        "Agendamento salvo!"
+    );
+
+    await carregarAgendamentos();
+}
+
+
+/* =========================================
+   FINANCEIRO - SUPABASE
+   ========================================= */
+
+async function carregarFinanceiro(){
+
+    const tabela =
+    document
+    .getElementById("tabelaFinanceiro");
+
+    tabela.innerHTML = "";
+
+    const { data, error } =
+    await supabaseClient
+    .from("movimentacoes")
+    .select("*")
+    .order("id",{ascending:false});
+
+    if(error){
+
+        console.error(error);
+
+        mensagem(
+            "Erro ao carregar financeiro."
+        );
+
+        return;
+    }
+
+    movimentacoes = data || [];
+
+    let entradas = 0;
+    let saidas = 0;
+
+    movimentacoes.forEach(item => {
+
+        const valor =
+        parseFloat(item.valor) || 0;
+
+        const tr =
+        document.createElement("tr");
+
+        tr.innerHTML = `
+
+            <td>${item.tipo || "-"}</td>
+
+            <td>${item.descricao || "-"}</td>
+
+            <td>
+                R$ ${valor.toFixed(2)}
+            </td>
+
+            <td>${item.data || "-"}</td>
+        `;
+
+        tabela.appendChild(tr);
+
+        if(item.tipo === "entrada")
+            entradas += valor;
+        else
+            saidas += valor;
+    });
+
+    document
+    .getElementById("financeiroEntradas")
+    .innerText =
+    "R$ " + entradas.toFixed(2);
+
+    document
+    .getElementById("financeiroSaidas")
+    .innerText =
+    "R$ " + saidas.toFixed(2);
+
+    document
+    .getElementById("financeiroSaldo")
+    .innerText =
+    "R$ " +
+    (entradas - saidas).toFixed(2);
+
+    carregarDashboard();
+}
+
+
+async function salvarFinanceiro(){
+
+    const valor =
+    document
+    .getElementById("finValor")
+    .value;
+
+    if(!valor){
+
+        mensagem(
+            "Informe o valor."
+        );
+
+        return;
+    }
+
+    const novaMovimentacao = {
+
+        tipo:
+        document
+        .getElementById("finTipo")
+        .value,
+
+        valor:
+        parseFloat(valor),
+
+        descricao:
+        document
+        .getElementById("finDescricao")
+        .value,
+
+        data:
+        new Date()
+        .toLocaleDateString("pt-BR")
+    };
+
+    const { error } =
+    await supabaseClient
+    .from("movimentacoes")
+    .insert([novaMovimentacao]);
+
+    if(error){
+
+        console.error(error);
+
+        mensagem(
+            "Erro ao registrar movimentação."
+        );
+
+        return;
+    }
+
+    fecharModais();
+
+    document.getElementById("finValor").value = "";
+    document.getElementById("finDescricao").value = "";
+
+    mensagem(
+        "Movimentação registrada!"
+    );
+
+    await carregarFinanceiro();
+}
+
+
+/* =========================================
+   SERVIÇOS - SUPABASE
+   ========================================= */
+
+async function carregarServicos(){
+
+    const tabela =
+    document
+    .getElementById("tabelaServicos");
+
+    tabela.innerHTML = "";
+
+    const { data, error } =
+    await supabaseClient
+    .from("servicos")
+    .select("*")
+    .order("id",{ascending:false});
+
+    if(error){
+
+        console.error(error);
+
+        mensagem(
+            "Erro ao carregar serviços."
+        );
+
+        return;
+    }
+
+    servicos = data || [];
+
+    servicos.forEach(item => {
+
+        const tr =
+        document.createElement("tr");
+
+        const valor =
+        parseFloat(item.valor) || 0;
+
+        tr.innerHTML = `
+
+            <td>${item.cliente || "-"}</td>
+
+            <td>${item.nome || "-"}</td>
+
+            <td>
+                R$ ${valor.toFixed(2)}
+            </td>
+
+            <td>${item.status || "-"}</td>
+        `;
+
+        tabela.appendChild(tr);
+    });
+}
+
+
+async function salvarServico(){
+
+    const cliente =
+    document
+    .getElementById("servCliente")
+    .value
+    .trim();
+
+    if(!cliente){
+
+        mensagem(
+            "Informe o cliente."
+        );
+
+        return;
+    }
+
+    const novoServico = {
+
+        cliente: cliente,
+
+        nome:
+        document
+        .getElementById("servNome")
+        .value,
+
+        valor:
+        parseFloat(
+            document
+            .getElementById("servValor")
+            .value
+        ) || 0,
+
+        status:
+        document
+        .getElementById("servStatus")
+        .value
+    };
+
+    const { error } =
+    await supabaseClient
+    .from("servicos")
+    .insert([novoServico]);
+
+    if(error){
+
+        console.error(error);
+
+        mensagem(
+            "Erro ao registrar serviço."
+        );
+
+        return;
+    }
+
+    fecharModais();
+
+    document.getElementById("servCliente").value = "";
+    document.getElementById("servNome").value = "";
+    document.getElementById("servValor").value = "";
+
+    mensagem(
+        "Serviço registrado!"
+    );
+
+    await carregarServicos();
+}
+
+
+/* =========================================
+   DASHBOARD
+   ========================================= */
+
+function carregarDashboard(){
+
+    document
+    .getElementById("totalClientes")
+    .innerText =
+    clientes.length;
+
+    document
+    .getElementById("totalAgendamentos")
+    .innerText =
+    agendamentos.length;
+
+    document
+    .getElementById("totalPendentes")
+    .innerText =
+    agendamentos
+    .filter(
+        a => a.status === "aguardando"
+    )
+    .length;
+
+    let entradas =
+    movimentacoes
+    .filter(
+        m => m.tipo === "entrada"
+    )
+    .reduce(
+        (acc,current) =>
+        acc +
+        (parseFloat(current.valor) || 0),
+        0
+    );
+
+    document
+    .getElementById("totalEntradas")
+    .innerText =
+    "R$ " +
+    entradas.toFixed(2);
+
+    const tabela =
+    document
+    .getElementById("tabelaInicio");
+
+    tabela.innerHTML = "";
+
+    agendamentos
+    .slice(0,5)
+    .forEach(item => {
+
+        const tr =
+        document.createElement("tr");
+
+        tr.innerHTML = `
+
+            <td>${item.nome || "-"}</td>
+
+            <td>${item.aparelho || "-"}</td>
+
+            <td>${item.data || "-"}</td>
+
+            <td>${item.hora || "-"}</td>
+
+            <td>
+                <span class="status ${classeStatus(item.status)}">
+                    ${item.status || "aguardando"}
+                </span>
+            </td>
+        `;
+
+        tabela.appendChild(tr);
+    });
+}
+
+
+/* =========================================
+   CARREGAR TUDO DO SUPABASE
+   ========================================= */
+
+async function carregarTudo(){
+
+    try{
+
+        const [
+            clientesResult,
+            agendamentosResult,
+            movimentacoesResult,
+            servicosResult
+        ] = await Promise.all([
+
+            supabaseClient
+            .from("clientes")
+            .select("*")
+            .order("id",{ascending:false}),
+
+            supabaseClient
+            .from("agendamentos")
+            .select("*")
+            .order("data",{ascending:true})
+            .order("hora",{ascending:true}),
+
+            supabaseClient
+            .from("movimentacoes")
+            .select("*")
+            .order("id",{ascending:false}),
+
+            supabaseClient
+            .from("servicos")
+            .select("*")
+            .order("id",{ascending:false})
+        ]);
+
+        if(clientesResult.error)
+            throw clientesResult.error;
+
+        if(agendamentosResult.error)
+            throw agendamentosResult.error;
+
+        if(movimentacoesResult.error)
+            throw movimentacoesResult.error;
+
+        if(servicosResult.error)
+            throw servicosResult.error;
+
+        clientes =
+        clientesResult.data || [];
+
+        agendamentos =
+        agendamentosResult.data || [];
+
+        movimentacoes =
+        movimentacoesResult.data || [];
+
+        servicos =
+        servicosResult.data || [];
+
+        carregarClientes();
+        carregarAgendamentos();
+        carregarFinanceiro();
+        carregarServicos();
+
         renderizarCalendario();
         mostrarAgendamentosDoDia();
         carregarDashboard();
+
+    }catch(error){
+
+        console.error(
+            "Erro ao carregar dados:",
+            error
+        );
+
+        mensagem(
+            "Não foi possível conectar ao Supabase."
+        );
     }
-    if(id === "clientes") carregarClientes();
-    if(id === "agendamentos") carregarAgendamentos();
-    if(id === "financeiro") carregarFinanceiro();
-    if(id === "servicos") carregarServicos();
 }
 
-function fecharModais(){
-    document.querySelectorAll(".modal").forEach(modal => modal.classList.remove("aberto"));
-}
 
-function abrirModalCliente(){ document.getElementById("modalCliente").classList.add("aberto"); }
-function abrirModalAgendamento(){ 
-    document.getElementById("modalAgendamento").classList.add("aberto");
-    document.getElementById("agData").value = diaSelecionado;
-}
-function abrirModalFinanceiro(){ document.getElementById("modalFinanceiro").classList.add("aberto"); }
-function abrirModalServico(){ document.getElementById("modalServico").classList.add("aberto"); }
+/* =========================================
+   INICIALIZAÇÃO
+   ========================================= */
 
-function mensagem(msg){
-    const toast = document.getElementById("toast");
-    toast.innerText = msg;
-    toast.classList.add("mostrar");
-    setTimeout(() => toast.classList.remove("mostrar"), 3000);
-}
-
-function carregarClientes(){
-    const tabela = document.getElementById("tabelaClientes");
-    tabela.innerHTML = "";
-    clientes.forEach(cliente => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `<td>${cliente.nome}</td><td>${cliente.whatsapp || "-"}</td><td>${cliente.cidade || "-"}</td><td>${cliente.data || "-"}</td>`;
-        tabela.appendChild(tr);
-    });
-}
-
-function filtrarClientes(){
-    const busca = document.getElementById("buscarCliente").value.toLowerCase();
-    const tabela = document.getElementById("tabelaClientes");
-    tabela.innerHTML = "";
-    clientes.filter(c => c.nome.toLowerCase().includes(busca)).forEach(cliente => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `<td>${cliente.nome}</td><td>${cliente.whatsapp || "-"}</td><td>${cliente.cidade || "-"}</td><td>${cliente.data || "-"}</td>`;
-        tabela.appendChild(tr);
-    });
-}
-
-function salvarCliente(){
-    const nome = document.getElementById("clienteNome").value.trim();
-    if(!nome){ mensagem("Digite o nome do cliente."); return; }
-    clientes.push({
-        nome,
-        whatsapp: document.getElementById("clienteWhatsapp").value,
-        cidade: document.getElementById("clienteCidade").value,
-        data: new Date().toLocaleDateString("pt-BR")
-    });
-    fecharModais();
-    mensagem("Cliente cadastrado!");
-    carregarClientes();
-    carregarDashboard();
-}
-
-function carregarAgendamentos(){
-    const tabela = document.getElementById("tabelaAgendamentos");
-    tabela.innerHTML = "";
-    agendamentos.forEach(item => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-            <td>${item.nome || "-"}</td>
-            <td>${item.whatsapp || "-"}</td>
-            <td>${item.aparelho || "-"}</td>
-            <td>${item.defeito || "-"}</td>
-            <td>${item.data || "-"}</td>
-            <td>${item.hora || "-"}</td>
-            <td><span class="status ${classeStatus(item.status)}">${item.status || "aguardando"}</span></td>
-        `;
-        tabela.appendChild(tr);
-    });
-}
-
-function salvarAgendamento(){
-    const nome = document.getElementById("agNome").value.trim();
-    if(!nome){ mensagem("Preencha o nome do cliente."); return; }
-    agendamentos.push({
-        nome,
-        whatsapp: document.getElementById("agWhatsapp").value,
-        aparelho: document.getElementById("agAparelho").value,
-        data: document.getElementById("agData").value,
-        hora: document.getElementById("agHora").value,
-        defeito: document.getElementById("agDefeito").value,
-        status: "aguardando"
-    });
-    fecharModais();
-    mensagem("Agendamento salvo!");
-    renderizarCalendario();
-    mostrarAgendamentosDoDia();
-    carregarDashboard();
-}
-
-function carregarFinanceiro(){
-    const tabela = document.getElementById("tabelaFinanceiro");
-    tabela.innerHTML = "";
-    let entradas = 0, saidas = 0;
-    movimentacoes.forEach(item => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `<td>${item.tipo}</td><td>${item.descricao}</td><td>R$ ${parseFloat(item.valor).toFixed(2)}</td><td>${item.data}</td>`;
-        tabela.appendChild(tr);
-        if(item.tipo === "entrada") entradas += parseFloat(item.valor);
-        else saidas += parseFloat(item.valor);
-    });
-    document.getElementById("financeiroEntradas").innerText = "R$ " + entradas.toFixed(2);
-    document.getElementById("financeiroSaidas").innerText = "R$ " + saidas.toFixed(2);
-    document.getElementById("financeiroSaldo").innerText = "R$ " + (entradas - saidas).toFixed(2);
-}
-
-function salvarFinanceiro(){
-    const valor = document.getElementById("finValor").value;
-    if(!valor){ mensagem("Informe o valor."); return; }
-    movimentacoes.push({
-        tipo: document.getElementById("finTipo").value,
-        valor,
-        descricao: document.getElementById("finDescricao").value,
-        data: new Date().toLocaleDateString("pt-BR")
-    });
-    fecharModais();
-    mensagem("Movimentação registrada!");
-    carregarFinanceiro();
-    carregarDashboard();
-}
-
-function carregarServicos(){
-    const tabela = document.getElementById("tabelaServicos");
-    tabela.innerHTML = "";
-    servicos.forEach(item => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `<td>${item.cliente}</td><td>${item.nome}</td><td>R$ ${parseFloat(item.valor).toFixed(2)}</td><td>${item.status}</td>`;
-        tabela.appendChild(tr);
-    });
-}
-
-function salvarServico(){
-    const cliente = document.getElementById("servCliente").value.trim();
-    if(!cliente){ mensagem("Informe o cliente."); return; }
-    servicos.push({
-        cliente,
-        nome: document.getElementById("servNome").value,
-        valor: document.getElementById("servValor").value || 0,
-        status: document.getElementById("servStatus").value
-    });
-    fecharModais();
-    mensagem("Serviço registrado!");
-    carregarServicos();
-}
-
-function carregarDashboard(){
-    document.getElementById("totalClientes").innerText = clientes.length;
-    document.getElementById("totalAgendamentos").innerText = agendamentos.length;
-    document.getElementById("totalPendentes").innerText = agendamentos.filter(a => a.status === "aguardando").length;
-    
-    let entradas = movimentacoes.filter(m => m.tipo === "entrada").reduce((acc, current) => acc + parseFloat(current.valor), 0);
-    document.getElementById("totalEntradas").innerText = "R$ " + entradas.toFixed(2);
-
-    const tabela = document.getElementById("tabelaInicio");
-    tabela.innerHTML = "";
-    agendamentos.slice(0, 5).forEach(item => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `<td>${item.nome}</td><td>${item.aparelho || "-"}</td><td>${item.data}</td><td>${item.hora}</td><td><span class="status ${classeStatus(item.status)}">${item.status}</span></td>`;
-        tabela.appendChild(tr);
-    });
-}
-
-// Inicialização
 renderizarCalendario();
+
 mostrarAgendamentosDoDia();
+
+carregarTudo();
+
 </script>
 
 </body>
