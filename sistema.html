@@ -1,187 +1,2187 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <title>WS Chat | Sistema</title>
-    <style>
-        :root { --bg: #050505; --primary: #00d4ff; }
-        body { background: var(--bg); color: #fff; font-family: sans-serif; }
-        nav { display: flex; gap: 20px; padding: 20px; border-bottom: 1px solid #333; }
-        .tab { cursor: pointer; color: #888; font-weight: bold; }
-        .tab.ativo { color: var(--primary); }
-        .content { display: none; padding: 20px; }
-        .content.ativo { display: block; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        input {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 6px;
-            background: #111;
-            border: 1px solid #444;
-            color: white;
-        }
+<title>Painel da Mila - WS SOLUÇÕES</title>
 
-        button {
-            background: var(--primary);
-            border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-    </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+    --roxo:#7c3aed;
+    --roxo2:#6d28d9;
+    --roxo3:#4c1d95;
+    --bg:#f5f3ff;
+    --card:#ffffff;
+    --texto:#1f2937;
+    --texto2:#6b7280;
+    --borda:#e5e7eb;
+    --verde:#16a34a;
+    --vermelho:#dc2626;
+    --laranja:#ea580c;
+    --azul:#2563eb;
+    --sombra:0 8px 25px rgba(0,0,0,.08);
+}
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+    background:var(--bg);
+    color:var(--texto);
+    padding-bottom:82px;
+}
+
+button,
+input,
+select,
+textarea{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+    border:0;
+}
+
+.header{
+    background:linear-gradient(135deg,var(--roxo3),var(--roxo));
+    color:white;
+    padding:18px 16px;
+    position:sticky;
+    top:0;
+    z-index:50;
+    box-shadow:0 4px 15px rgba(0,0,0,.15);
+}
+
+.header-content{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.logo-area{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.logo{
+    width:45px;
+    height:45px;
+    background:white;
+    color:var(--roxo);
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    font-weight:bold;
+}
+
+.header h1{
+    font-size:19px;
+}
+
+.header p{
+    font-size:12px;
+    opacity:.85;
+    margin-top:3px;
+}
+
+.container{
+    padding:16px;
+    max-width:700px;
+    margin:auto;
+}
+
+.tela{
+    display:none;
+}
+
+.tela.ativa{
+    display:block;
+}
+
+.titulo{
+    font-size:22px;
+    font-weight:bold;
+    margin-bottom:15px;
+}
+
+.subtitulo{
+    color:var(--texto2);
+    font-size:13px;
+    margin-top:-10px;
+    margin-bottom:18px;
+}
+
+.cards-resumo{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+    margin-bottom:20px;
+}
+
+.resumo{
+    background:var(--card);
+    border-radius:18px;
+    padding:17px;
+    box-shadow:var(--sombra);
+}
+
+.resumo .icone{
+    font-size:24px;
+    margin-bottom:8px;
+}
+
+.resumo .numero{
+    font-size:25px;
+    font-weight:bold;
+}
+
+.resumo .legenda{
+    color:var(--texto2);
+    font-size:12px;
+    margin-top:3px;
+}
+
+.card{
+    background:var(--card);
+    border-radius:18px;
+    padding:17px;
+    margin-bottom:14px;
+    box-shadow:var(--sombra);
+}
+
+.card-titulo{
+    font-weight:bold;
+    margin-bottom:12px;
+    font-size:16px;
+}
+
+.lista{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.item{
+    background:#fafafa;
+    border:1px solid var(--borda);
+    border-radius:14px;
+    padding:13px;
+}
+
+.item-topo{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:10px;
+}
+
+.item-nome{
+    font-weight:bold;
+    font-size:15px;
+}
+
+.item-info{
+    color:var(--texto2);
+    font-size:12px;
+    margin-top:5px;
+    line-height:1.5;
+}
+
+.item-acoes{
+    display:flex;
+    gap:7px;
+    margin-top:11px;
+    flex-wrap:wrap;
+}
+
+.btn{
+    padding:10px 13px;
+    border-radius:10px;
+    font-weight:bold;
+    font-size:13px;
+}
+
+.btn-roxo{
+    background:var(--roxo);
+    color:white;
+}
+
+.btn-verde{
+    background:var(--verde);
+    color:white;
+}
+
+.btn-vermelho{
+    background:var(--vermelho);
+    color:white;
+}
+
+.btn-azul{
+    background:var(--azul);
+    color:white;
+}
+
+.btn-cinza{
+    background:#e5e7eb;
+    color:#374151;
+}
+
+.btn-laranja{
+    background:var(--laranja);
+    color:white;
+}
+
+.status{
+    display:inline-block;
+    padding:5px 9px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:bold;
+    white-space:nowrap;
+}
+
+.status-pendente{
+    background:#fef3c7;
+    color:#92400e;
+}
+
+.status-andamento{
+    background:#dbeafe;
+    color:#1d4ed8;
+}
+
+.status-concluido{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.status-cancelado{
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+.vazio{
+    text-align:center;
+    color:var(--texto2);
+    padding:25px 10px;
+    font-size:14px;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.campo{
+    margin-bottom:13px;
+}
+
+.campo.full{
+    grid-column:1/-1;
+}
+
+.campo label{
+    display:block;
+    font-size:12px;
+    font-weight:bold;
+    margin-bottom:6px;
+    color:#4b5563;
+}
+
+.campo input,
+.campo select,
+.campo textarea{
+    width:100%;
+    border:1px solid var(--borda);
+    background:white;
+    border-radius:11px;
+    padding:12px;
+    outline:none;
+    color:var(--texto);
+}
+
+.campo textarea{
+    min-height:100px;
+    resize:vertical;
+}
+
+.campo input:focus,
+.campo select:focus,
+.campo textarea:focus{
+    border-color:var(--roxo);
+}
+
+.acoes-form{
+    display:flex;
+    gap:10px;
+    margin-top:5px;
+}
+
+.acoes-form .btn{
+    flex:1;
+}
+
+.filtro-data{
+    display:flex;
+    gap:8px;
+    margin-bottom:15px;
+}
+
+.filtro-data input{
+    flex:1;
+    padding:12px;
+    border:1px solid var(--borda);
+    border-radius:11px;
+    background:white;
+}
+
+.filtro-data button{
+    padding:0 14px;
+    border-radius:11px;
+    background:var(--roxo);
+    color:white;
+    font-weight:bold;
+}
+
+.financeiro{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.financeiro-card{
+    padding:17px;
+    border-radius:17px;
+    background:white;
+    box-shadow:var(--sombra);
+}
+
+.financeiro-card small{
+    color:var(--texto2);
+}
+
+.financeiro-card strong{
+    display:block;
+    font-size:22px;
+    margin-top:7px;
+}
+
+.nav{
+    position:fixed;
+    bottom:0;
+    left:0;
+    right:0;
+    height:70px;
+    background:white;
+    border-top:1px solid var(--borda);
+    display:flex;
+    justify-content:space-around;
+    align-items:center;
+    z-index:100;
+    box-shadow:0 -5px 18px rgba(0,0,0,.08);
+}
+
+.nav button{
+    background:none;
+    color:#6b7280;
+    font-size:10px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:4px;
+    min-width:50px;
+}
+
+.nav button span{
+    font-size:22px;
+}
+
+.nav button.ativo{
+    color:var(--roxo);
+    font-weight:bold;
+}
+
+.modal-fundo{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.65);
+    z-index:500;
+    align-items:flex-end;
+}
+
+.modal-fundo.aberto{
+    display:flex;
+}
+
+.modal{
+    width:100%;
+    max-height:94vh;
+    overflow-y:auto;
+    background:white;
+    border-radius:22px 22px 0 0;
+    padding:18px;
+    animation:subir .2s ease;
+}
+
+.modal.detalhes{
+    height:100vh;
+    max-height:100vh;
+    border-radius:0;
+    padding:18px 16px 25px;
+}
+
+@keyframes subir{
+    from{
+        transform:translateY(100%);
+    }
+    to{
+        transform:translateY(0);
+    }
+}
+
+.modal-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:18px;
+}
+
+.modal-header h2{
+    font-size:19px;
+}
+
+.fechar{
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    background:#f3f4f6;
+    font-size:20px;
+}
+
+.detalhe-bloco{
+    margin-bottom:17px;
+}
+
+.detalhe-label{
+    font-size:11px;
+    color:var(--texto2);
+    margin-bottom:4px;
+    font-weight:bold;
+    text-transform:uppercase;
+}
+
+.detalhe-valor{
+    font-size:16px;
+    font-weight:600;
+    line-height:1.45;
+    word-break:break-word;
+}
+
+.detalhe-acoes{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin-top:25px;
+}
+
+.detalhe-acoes button{
+    min-height:48px;
+}
+
+.alerta{
+    position:fixed;
+    left:15px;
+    right:15px;
+    bottom:82px;
+    background:#111827;
+    color:white;
+    padding:14px;
+    border-radius:12px;
+    text-align:center;
+    font-size:13px;
+    z-index:1000;
+    display:none;
+}
+
+.alerta.mostrar{
+    display:block;
+}
+
+.carregando{
+    opacity:.65;
+    pointer-events:none;
+}
+
+@media(max-width:380px){
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .campo.full{
+        grid-column:auto;
+    }
+
+    .nav button{
+        min-width:43px;
+        font-size:9px;
+    }
+}
+</style>
 </head>
+
 <body>
 
-<nav>
-    <div class="tab ativo" onclick="mudarTab('dash', this)">Dashboard</div>
-    <div class="tab" onclick="mudarTab('amigos', this)">Adicionar Amigos</div>
-    <div class="tab" onclick="mudarTab('chat', this)">Chat</div>
-</nav>
+<header class="header">
+    <div class="header-content">
+        <div class="logo-area">
+            <div class="logo">M</div>
+            <div>
+                <h1>Painel da Mila</h1>
+                <p>WS SOLUÇÕES</p>
+            </div>
+        </div>
+    </div>
+</header>
 
-<div id="dash" class="content ativo">
-    <h2 id="boasVindas">Carregando...</h2>
-</div>
+<main class="container">
 
-<div id="amigos" class="content">
-    <h3>Buscar por E-mail</h3>
-    <input id="emailBusca" placeholder="Ex: amigo@email.com">
-    <button onclick="buscarAmigo()">Adicionar</button>
-</div>
+<!-- INÍCIO -->
+<section id="inicio" class="tela ativa">
+    <div class="titulo">Olá, Mila 👋</div>
+    <div class="subtitulo">Resumo da WS SOLUÇÕES</div>
 
-<div id="chat" class="content">
-    <h3>Chat</h3>
+    <div class="cards-resumo">
+        <div class="resumo">
+            <div class="icone">👥</div>
+            <div class="numero" id="totalClientes">0</div>
+            <div class="legenda">Clientes</div>
+        </div>
 
-    <div id="chatBox"
-        style="height:250px; background:#111; overflow-y:auto; padding:10px;">
+        <div class="resumo">
+            <div class="icone">📋</div>
+            <div class="numero" id="totalOS">0</div>
+            <div class="legenda">Ordens de serviço</div>
+        </div>
+
+        <div class="resumo">
+            <div class="icone">📅</div>
+            <div class="numero" id="totalAgendamentos">0</div>
+            <div class="legenda">Agendamentos</div>
+        </div>
+
+        <div class="resumo">
+            <div class="icone">💰</div>
+            <div class="numero" id="saldoResumo">R$ 0,00</div>
+            <div class="legenda">Saldo</div>
+        </div>
     </div>
 
-    <input id="msgInput" placeholder="Mensagem...">
-    <button onclick="enviar()">Enviar</button>
+    <div class="card">
+        <div class="card-titulo">📋 Últimas OS</div>
+        <div id="inicioOS" class="lista"></div>
+    </div>
+</section>
+
+<!-- CLIENTES -->
+<section id="clientes" class="tela">
+    <div class="titulo">👥 Clientes</div>
+    <div class="subtitulo">Cadastre e gerencie seus clientes</div>
+
+    <button class="btn btn-roxo" onclick="abrirCliente()" style="width:100%;margin-bottom:15px;">
+        ➕ Novo cliente
+    </button>
+
+    <div id="listaClientes" class="lista"></div>
+</section>
+
+<!-- OS -->
+<section id="os" class="tela">
+    <div class="titulo">📋 Ordens de Serviço</div>
+    <div class="subtitulo">Controle os serviços da WS SOLUÇÕES</div>
+
+    <button class="btn btn-roxo" onclick="abrirOS()" style="width:100%;margin-bottom:15px;">
+        ➕ Nova OS
+    </button>
+
+    <div id="listaOS" class="lista"></div>
+</section>
+
+<!-- AGENDA -->
+<section id="agenda" class="tela">
+    <div class="titulo">📅 Agenda</div>
+    <div class="subtitulo">Agendamentos dos clientes</div>
+
+    <button class="btn btn-roxo" onclick="abrirAgendamento()" style="width:100%;margin-bottom:15px;">
+        ➕ Novo agendamento
+    </button>
+
+    <div class="filtro-data">
+        <input type="date" id="filtroAgenda" onchange="renderizarAgenda()">
+        <button onclick="limparFiltroAgenda()">Hoje</button>
+    </div>
+
+    <div id="listaAgenda" class="lista"></div>
+</section>
+
+<!-- FINANCEIRO -->
+<section id="financeiro" class="tela">
+    <div class="titulo">💰 Financeiro</div>
+    <div class="subtitulo">Movimentações da empresa</div>
+
+    <div class="financeiro">
+        <div class="financeiro-card">
+            <small>Entradas</small>
+            <strong id="totalEntradas">R$ 0,00</strong>
+        </div>
+
+        <div class="financeiro-card">
+            <small>Saídas</small>
+            <strong id="totalSaidas">R$ 0,00</strong>
+        </div>
+    </div>
+
+    <button class="btn btn-roxo"
+            onclick="abrirMovimentacao()"
+            style="width:100%;margin:15px 0;">
+        ➕ Nova movimentação
+    </button>
+
+    <div id="listaFinanceiro" class="lista"></div>
+</section>
+
+<!-- CONFIG -->
+<section id="config" class="tela">
+    <div class="titulo">⚙️ Configurações</div>
+    <div class="subtitulo">Configurações gerais do painel</div>
+
+    <div class="card">
+        <div class="card-titulo">WS SOLUÇÕES</div>
+        <p style="color:var(--texto2);font-size:14px;line-height:1.6;">
+            Painel administrativo da Mila conectado ao Supabase.
+        </p>
+    </div>
+</section>
+
+</main>
+
+<!-- NAVEGAÇÃO -->
+<nav class="nav">
+    <button class="ativo" onclick="irPara('inicio',this)">
+        <span>🏠</span>
+        Início
+    </button>
+
+    <button onclick="irPara('clientes',this)">
+        <span>👥</span>
+        Clientes
+    </button>
+
+    <button onclick="irPara('os',this)">
+        <span>📋</span>
+        OS
+    </button>
+
+    <button onclick="irPara('agenda',this)">
+        <span>📅</span>
+        Agenda
+    </button>
+
+    <button onclick="irPara('financeiro',this)">
+        <span>💰</span>
+        Financeiro
+    </button>
+
+    <button onclick="irPara('config',this)">
+        <span>⚙️</span>
+        Config
+    </button>
+</nav>
+
+<!-- MODAL CLIENTE -->
+<div id="modalCliente" class="modal-fundo">
+    <div class="modal">
+
+        <div class="modal-header">
+            <h2 id="tituloCliente">Novo cliente</h2>
+            <button class="fechar" onclick="fecharModais()">×</button>
+        </div>
+
+        <div class="campo">
+            <label>Nome</label>
+            <input id="clienteNome" type="text" placeholder="Nome do cliente">
+        </div>
+
+        <div class="campo">
+            <label>WhatsApp</label>
+            <input id="clienteWhatsapp" type="tel" placeholder="(88) 99999-9999">
+        </div>
+
+        <div class="campo">
+            <label>Cidade</label>
+            <input id="clienteCidade" type="text" placeholder="Cidade">
+        </div>
+
+        <div class="acoes-form">
+            <button class="btn btn-cinza" onclick="fecharModais()">Cancelar</button>
+            <button class="btn btn-roxo" onclick="salvarCliente()">Salvar</button>
+        </div>
+    </div>
 </div>
 
-<script type="module">
-import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+<!-- MODAL OS -->
+<div id="modalOS" class="modal-fundo">
+    <div class="modal">
 
-const supabase = createClient(
-    "https://vqwklgrnknnhgurjvywz.supabase.co",
-    "sb_publishable_mInPXc-URRgK5w7qJuNVPw_fo-9J9Uv"
+        <div class="modal-header">
+            <h2 id="tituloOS">Nova OS</h2>
+            <button class="fechar" onclick="fecharModais()">×</button>
+        </div>
+
+        <div class="form-grid">
+
+            <div class="campo full">
+                <label>Cliente</label>
+                <input id="osNome" type="text" placeholder="Digite o nome do cliente">
+            </div>
+
+            <div class="campo">
+                <label>WhatsApp</label>
+                <input id="osWhatsapp" type="tel" placeholder="WhatsApp">
+            </div>
+
+            <div class="campo">
+                <label>Serviço</label>
+                <input id="osServico" type="text" placeholder="Digite o serviço">
+            </div>
+
+            <div class="campo">
+                <label>Data</label>
+                <input id="osData" type="date">
+            </div>
+
+            <div class="campo">
+                <label>Hora</label>
+                <input id="osHora" type="time">
+            </div>
+
+            <div class="campo">
+                <label>Valor</label>
+                <input id="osValor" type="number" step="0.01" min="0" placeholder="0,00">
+            </div>
+
+            <div class="campo">
+                <label>Status</label>
+                <select id="osStatus">
+                    <option value="Pendente">Pendente</option>
+                    <option value="Em andamento">Em andamento</option>
+                    <option value="Concluído">Concluído</option>
+                    <option value="Cancelado">Cancelado</option>
+                </select>
+            </div>
+
+            <div class="campo full">
+                <label>Descrição / Defeito</label>
+                <textarea id="osDefeito"
+                          placeholder="Digite os detalhes do serviço..."></textarea>
+            </div>
+
+        </div>
+
+        <div class="acoes-form">
+            <button class="btn btn-cinza" onclick="fecharModais()">Cancelar</button>
+            <button class="btn btn-roxo" onclick="salvarOS()">Salvar OS</button>
+        </div>
+
+    </div>
+</div>
+
+<!-- MODAL DETALHES OS -->
+<div id="modalDetalhesOS" class="modal-fundo">
+    <div class="modal detalhes">
+
+        <div class="modal-header">
+            <h2>📋 Detalhes da OS</h2>
+            <button class="fechar" onclick="fecharModais()">×</button>
+        </div>
+
+        <div id="conteudoDetalhesOS"></div>
+
+        <div class="detalhe-acoes">
+            <button class="btn btn-azul" onclick="abrirEdicaoOS()">
+                ✏️ Editar OS
+            </button>
+
+            <button class="btn btn-verde" onclick="abrirWhatsAppOS()">
+                💬 WhatsApp
+            </button>
+
+            <button class="btn btn-vermelho" onclick="excluirOS()">
+                🗑️ Excluir OS
+            </button>
+
+            <button class="btn btn-cinza" onclick="fecharModais()">
+                Fechar
+            </button>
+        </div>
+
+    </div>
+</div>
+
+<!-- MODAL AGENDAMENTO -->
+<div id="modalAgendamento" class="modal-fundo">
+    <div class="modal">
+
+        <div class="modal-header">
+            <h2>Novo agendamento</h2>
+            <button class="fechar" onclick="fecharModais()">×</button>
+        </div>
+
+        <div class="campo">
+            <label>Cliente</label>
+            <select id="agCliente">
+                <option value="">Selecione o cliente</option>
+            </select>
+        </div>
+
+        <div class="campo">
+            <label>Serviço / Aparelho</label>
+            <input id="agAparelho" type="text" placeholder="Ex.: Micro-ondas">
+        </div>
+
+        <div class="campo">
+            <label>Data</label>
+            <input id="agData" type="date">
+        </div>
+
+        <div class="campo">
+            <label>Hora</label>
+            <input id="agHora" type="time">
+        </div>
+
+        <div class="campo">
+            <label>Defeito / Observação</label>
+            <textarea id="agDefeito"></textarea>
+        </div>
+
+        <div class="acoes-form">
+            <button class="btn btn-cinza" onclick="fecharModais()">Cancelar</button>
+            <button class="btn btn-roxo" onclick="salvarAgendamento()">Salvar</button>
+        </div>
+
+    </div>
+</div>
+
+<!-- MODAL MOVIMENTAÇÃO -->
+<div id="modalMovimentacao" class="modal-fundo">
+    <div class="modal">
+
+        <div class="modal-header">
+            <h2>Nova movimentação</h2>
+            <button class="fechar" onclick="fecharModais()">×</button>
+        </div>
+
+        <div class="campo">
+            <label>Tipo</label>
+            <select id="movTipo">
+                <option value="entrada">Entrada</option>
+                <option value="saida">Saída</option>
+            </select>
+        </div>
+
+        <div class="campo">
+            <label>Valor</label>
+            <input id="movValor" type="number" step="0.01" min="0">
+        </div>
+
+        <div class="campo">
+            <label>Descrição</label>
+            <input id="movDescricao" type="text" placeholder="Descrição">
+        </div>
+
+        <div class="acoes-form">
+            <button class="btn btn-cinza" onclick="fecharModais()">Cancelar</button>
+            <button class="btn btn-roxo" onclick="salvarMovimentacao()">Salvar</button>
+        </div>
+
+    </div>
+</div>
+
+<div id="alerta" class="alerta"></div>
+
+<script>
+
+const SUPABASE_URL = "https://xcncqpjxghujwbyklhel.supabase.co";
+
+const SUPABASE_KEY = "sb_publishable_xJqknenrg3H20jeGum1bkg_Ir-GLZsl";
+
+const supabase = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
 );
 
-let usuarioAtual = null;
+let clientes = [];
+let ordens = [];
+let agendamentos = [];
+let movimentacoes = [];
 
-/* ================= INIT ================= */
-async function init() {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) window.location.href = "index.html";
+let osAtual = null;
+let clienteEditando = null;
+let carregando = false;
 
-    const { data, error } = await supabase
-        .from('usuarios')
-        .select('*')
-        .eq('id', session.user.id)
-        .maybeSingle();
 
-    if (error || !data) {
-        console.log(error);
-        return;
-    }
+/* =========================
+   UTILIDADES
+========================= */
 
-    usuarioAtual = data;
-    document.getElementById('boasVindas')
-        .innerText = `Olá, ${usuarioAtual.nome}`;
+function mensagem(texto){
+    const alerta = document.getElementById("alerta");
 
-    carregarMensagens();
+    alerta.textContent = texto;
+    alerta.classList.add("mostrar");
+
+    setTimeout(()=>{
+        alerta.classList.remove("mostrar");
+    },2500);
 }
 
-/* ================= TABS ================= */
-window.mudarTab = (id, btn) => {
-    document.querySelectorAll('.content').forEach(c => c.classList.remove('ativo'));
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('ativo'));
+function dinheiro(valor){
+    return Number(valor || 0).toLocaleString("pt-BR",{
+        style:"currency",
+        currency:"BRL"
+    });
+}
 
-    document.getElementById(id).classList.add('ativo');
-    btn.classList.add('ativo');
-};
+function escapeHTML(texto){
+    if(texto === null || texto === undefined) return "";
 
-/* ================= AMIGOS ================= */
-window.buscarAmigo = async () => {
-    const email = document.getElementById('emailBusca').value;
+    return String(texto)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+}
 
-    const { data: user, error: errUser } = await supabase
-        .from('usuarios')
-        .select('id, nome')
-        .eq('email', email)
-        .maybeSingle();
+function classeStatus(status){
+    const s = String(status || "").toLowerCase();
 
-    console.log("USER FOUND:", user, errUser);
+    if(s.includes("concl")) return "status-concluido";
+    if(s.includes("andamento")) return "status-andamento";
+    if(s.includes("cancel")) return "status-cancelado";
 
-    if (!user) {
-        alert("Usuário não encontrado");
-        return;
+    return "status-pendente";
+}
+
+function formatarData(data){
+    if(!data) return "-";
+
+    const partes = String(data).split("-");
+
+    if(partes.length === 3){
+        return `${partes[2]}/${partes[1]}/${partes[0]}`;
     }
 
-    const { data, error } = await supabase
-        .from('amigos')
-        .upsert([{
-            user_id: usuarioAtual.id,
-            amigo_id: user.id
-        }]);
+    return data;
+}
 
-    console.log("INSERT AMIGO:", data, error);
+function dataHoje(){
+    const agora = new Date();
 
-    if (error) {
-        alert("Erro ao adicionar amigo");
-        console.log(error);
-        return;
-    }
+    const ano = agora.getFullYear();
+    const mes = String(agora.getMonth()+1).padStart(2,"0");
+    const dia = String(agora.getDate()).padStart(2,"0");
 
-    alert("Amigo adicionado 👍");
-};
+    return `${ano}-${mes}-${dia}`;
+}
 
-/* ================= CHAT ================= */
-async function carregarMensagens() {
-    const { data, error } = await supabase
-        .from('chat')
-        .select('*')
-        .order('id', { ascending: true });
 
-    if (error) {
-        console.log(error);
-        return;
-    }
+/* =========================
+   NAVEGAÇÃO
+========================= */
 
-    const box = document.getElementById('chatBox');
-    box.innerHTML = "";
+function irPara(tela,botao){
 
-    (data || []).forEach(m => {
-        box.innerHTML += `<div><b>${m.nome_remetente}:</b> ${m.mensagem}</div>`;
+    document.querySelectorAll(".tela").forEach(el=>{
+        el.classList.remove("ativa");
     });
 
-    box.scrollTop = box.scrollHeight;
+    document.getElementById(tela).classList.add("ativa");
+
+    document.querySelectorAll(".nav button").forEach(el=>{
+        el.classList.remove("ativo");
+    });
+
+    if(botao){
+        botao.classList.add("ativo");
+    }
+
+    renderizarTelaAtual();
 }
 
-window.enviar = async () => {
-    const msg = document.getElementById('msgInput').value;
-    if (!msg) return;
+function renderizarTelaAtual(){
 
-    const { error } = await supabase.from('chat').insert([{
-        remetente_id: usuarioAtual.id,
-        nome_remetente: usuarioAtual.nome,
-        mensagem: msg
-    }]);
+    const tela = document.querySelector(".tela.ativa");
 
-    if (error) {
-        console.log(error);
+    if(!tela) return;
+
+    switch(tela.id){
+
+        case "inicio":
+            renderizarInicio();
+            break;
+
+        case "clientes":
+            renderizarClientes();
+            break;
+
+        case "os":
+            renderizarOS();
+            break;
+
+        case "agenda":
+            renderizarAgenda();
+            break;
+
+        case "financeiro":
+            renderizarFinanceiro();
+            break;
+    }
+}
+
+
+/* =========================
+   CARREGAR SUPABASE
+========================= */
+
+async function carregarDados(){
+
+    if(carregando) return;
+
+    carregando = true;
+
+    try{
+
+        const [
+            clientesResp,
+            osResp,
+            agendaResp,
+            financeiroResp
+        ] = await Promise.all([
+
+            supabase
+                .from("clientes")
+                .select("*")
+                .order("id",{ascending:false}),
+
+            supabase
+                .from("agendamentos")
+                .select("*")
+                .order("id",{ascending:false}),
+
+            supabase
+                .from("agendamentos")
+                .select("*")
+                .order("data",{ascending:true})
+                .order("hora",{ascending:true}),
+
+            supabase
+                .from("movimentacoes")
+                .select("*")
+                .order("id",{ascending:false})
+        ]);
+
+        if(clientesResp.error){
+            console.error(clientesResp.error);
+        }else{
+            clientes = clientesResp.data || [];
+        }
+
+        if(osResp.error){
+            console.error(osResp.error);
+        }else{
+            ordens = osResp.data || [];
+        }
+
+        if(agendaResp.error){
+            console.error(agendaResp.error);
+        }else{
+            agendamentos = agendaResp.data || [];
+        }
+
+        if(financeiroResp.error){
+            console.error(financeiroResp.error);
+        }else{
+            movimentacoes = financeiroResp.data || [];
+        }
+
+        renderizarTelaAtual();
+
+        atualizarResumo();
+
+    }catch(error){
+
+        console.error(error);
+
+    }finally{
+
+        carregando = false;
+
+    }
+}
+
+
+/* =========================
+   ATUALIZAÇÃO AUTOMÁTICA
+========================= */
+
+async function atualizarAutomaticamente(){
+
+    // Atualiza os dados sem recarregar a página.
+    // Modais e campos que estiverem abertos não são fechados.
+    await carregarDados();
+
+}
+
+setInterval(atualizarAutomaticamente,2000);
+
+
+/* =========================
+   RESUMO
+========================= */
+
+function atualizarResumo(){
+
+    document.getElementById("totalClientes").textContent =
+        clientes.length;
+
+    document.getElementById("totalOS").textContent =
+        ordens.length;
+
+    document.getElementById("totalAgendamentos").textContent =
+        agendamentos.length;
+
+    let entradas = 0;
+    let saidas = 0;
+
+    movimentacoes.forEach(m=>{
+
+        const valor = Number(m.valor || 0);
+
+        if(String(m.tipo).toLowerCase() === "entrada"){
+            entradas += valor;
+        }else{
+            saidas += valor;
+        }
+
+    });
+
+    document.getElementById("saldoResumo").textContent =
+        dinheiro(entradas-saidas);
+}
+
+
+/* =========================
+   INÍCIO
+========================= */
+
+function renderizarInicio(){
+
+    const lista = document.getElementById("inicioOS");
+
+    const ultimas = ordens.slice(0,5);
+
+    if(!ultimas.length){
+
+        lista.innerHTML =
+            `<div class="vazio">Nenhuma OS cadastrada.</div>`;
+
         return;
     }
 
-    document.getElementById('msgInput').value = "";
-    carregarMensagens();
-};
+    lista.innerHTML = ultimas.map(os=>`
 
-/* fallback simples */
-setInterval(carregarMensagens, 3000);
+        <div class="item" onclick="abrirDetalhesOS(${os.id})">
 
-init();
+            <div class="item-topo">
+
+                <div>
+                    <div class="item-nome">
+                        ${escapeHTML(os.nome || "Cliente")}
+                    </div>
+
+                    <div class="item-info">
+                        ${escapeHTML(os.aparelho || "Serviço não informado")}
+                    </div>
+                </div>
+
+                <span class="status ${classeStatus(os.status)}">
+                    ${escapeHTML(os.status || "Pendente")}
+                </span>
+
+            </div>
+
+        </div>
+
+    `).join("");
+}
+
+
+/* =========================
+   CLIENTES
+========================= */
+
+function renderizarClientes(){
+
+    const lista = document.getElementById("listaClientes");
+
+    if(!clientes.length){
+
+        lista.innerHTML =
+            `<div class="vazio">Nenhum cliente cadastrado.</div>`;
+
+        return;
+    }
+
+    lista.innerHTML = clientes.map(cliente=>`
+
+        <div class="item">
+
+            <div class="item-topo">
+
+                <div>
+                    <div class="item-nome">
+                        ${escapeHTML(cliente.nome)}
+                    </div>
+
+                    <div class="item-info">
+                        📱 ${escapeHTML(cliente.whatsapp || "Sem WhatsApp")}<br>
+                        📍 ${escapeHTML(cliente.cidade || "Sem cidade")}
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="item-acoes">
+
+                <button class="btn btn-azul"
+                        onclick="abrirCliente(${cliente.id})">
+                    ✏️ Editar
+                </button>
+
+                <button class="btn btn-vermelho"
+                        onclick="excluirCliente(${cliente.id})">
+                    🗑️ Excluir
+                </button>
+
+            </div>
+
+        </div>
+
+    `).join("");
+}
+
+function abrirCliente(id=null){
+
+    clienteEditando = null;
+
+    document.getElementById("clienteNome").value = "";
+    document.getElementById("clienteWhatsapp").value = "";
+    document.getElementById("clienteCidade").value = "";
+
+    document.getElementById("tituloCliente").textContent =
+        "Novo cliente";
+
+    if(id){
+
+        const cliente = clientes.find(c=>Number(c.id) === Number(id));
+
+        if(!cliente) return;
+
+        clienteEditando = cliente;
+
+        document.getElementById("tituloCliente").textContent =
+            "Editar cliente";
+
+        document.getElementById("clienteNome").value =
+            cliente.nome || "";
+
+        document.getElementById("clienteWhatsapp").value =
+            cliente.whatsapp || "";
+
+        document.getElementById("clienteCidade").value =
+            cliente.cidade || "";
+    }
+
+    document.getElementById("modalCliente")
+        .classList.add("aberto");
+}
+
+async function salvarCliente(){
+
+    const nome =
+        document.getElementById("clienteNome").value.trim();
+
+    const whatsapp =
+        document.getElementById("clienteWhatsapp").value.trim();
+
+    const cidade =
+        document.getElementById("clienteCidade").value.trim();
+
+    if(!nome){
+
+        mensagem("Digite o nome do cliente.");
+
+        return;
+    }
+
+    const estavaEditando = !!clienteEditando;
+
+    let resposta;
+
+    if(clienteEditando){
+
+        resposta = await supabase
+            .from("clientes")
+            .update({
+                nome,
+                whatsapp,
+                cidade
+            })
+            .eq("id",clienteEditando.id);
+
+    }else{
+
+        resposta = await supabase
+            .from("clientes")
+            .insert([{
+                nome,
+                whatsapp,
+                cidade,
+                data:dataHoje()
+            }]);
+    }
+
+    if(resposta.error){
+
+        console.error(resposta.error);
+
+        mensagem("Erro ao salvar cliente.");
+
+        return;
+    }
+
+    fecharModais();
+
+    mensagem(
+        estavaEditando
+        ? "Cliente atualizado!"
+        : "Cliente cadastrado!"
+    );
+
+    await carregarDados();
+}
+
+async function excluirCliente(id){
+
+    if(!confirm("Excluir este cliente?")) return;
+
+    const {error} = await supabase
+        .from("clientes")
+        .delete()
+        .eq("id",id);
+
+    if(error){
+
+        console.error(error);
+
+        mensagem("Erro ao excluir cliente.");
+
+        return;
+    }
+
+    mensagem("Cliente excluído!");
+
+    await carregarDados();
+}
+
+
+/* =========================
+   OS
+========================= */
+
+function renderizarOS(){
+
+    const lista = document.getElementById("listaOS");
+
+    if(!ordens.length){
+
+        lista.innerHTML =
+            `<div class="vazio">Nenhuma ordem de serviço cadastrada.</div>`;
+
+        return;
+    }
+
+    lista.innerHTML = ordens.map(os=>`
+
+        <div class="item">
+
+            <div class="item-topo">
+
+                <div style="flex:1">
+
+                    <div class="item-nome">
+                        ${escapeHTML(os.nome || "Cliente")}
+                    </div>
+
+                    <div class="item-info">
+
+                        🔧 ${escapeHTML(
+                            os.aparelho || "Serviço não informado"
+                        )}<br>
+
+                        📅 ${formatarData(os.data)}
+                        ${os.hora ? " às "+escapeHTML(os.hora) : ""}
+
+                        ${os.valor !== undefined && os.valor !== null
+                            ? `<br>💰 ${dinheiro(os.valor)}`
+                            : ""
+                        }
+
+                    </div>
+
+                </div>
+
+                <span class="status ${classeStatus(os.status)}">
+                    ${escapeHTML(os.status || "Pendente")}
+                </span>
+
+            </div>
+
+            <div class="item-acoes">
+
+                <button class="btn btn-roxo"
+                        onclick="abrirDetalhesOS(${os.id})">
+                    👁️ Detalhes
+                </button>
+
+            </div>
+
+        </div>
+
+    `).join("");
+}
+
+
+/* =========================
+   ABRIR NOVA OS
+========================= */
+
+function abrirOS(){
+
+    osAtual = null;
+
+    document.getElementById("tituloOS").textContent =
+        "Nova OS";
+
+    document.getElementById("osNome").value = "";
+    document.getElementById("osWhatsapp").value = "";
+    document.getElementById("osServico").value = "";
+    document.getElementById("osData").value = dataHoje();
+    document.getElementById("osHora").value = "";
+    document.getElementById("osValor").value = "";
+    document.getElementById("osStatus").value = "Pendente";
+    document.getElementById("osDefeito").value = "";
+
+    document.getElementById("modalOS")
+        .classList.add("aberto");
+}
+
+
+/* =========================
+   SALVAR OS
+========================= */
+
+async function salvarOS(){
+
+    const nome =
+        document.getElementById("osNome").value.trim();
+
+    const whatsapp =
+        document.getElementById("osWhatsapp").value.trim();
+
+    const servico =
+        document.getElementById("osServico").value.trim();
+
+    const data =
+        document.getElementById("osData").value;
+
+    const hora =
+        document.getElementById("osHora").value;
+
+    const valorTexto =
+        document.getElementById("osValor").value;
+
+    const status =
+        document.getElementById("osStatus").value;
+
+    const defeito =
+        document.getElementById("osDefeito").value.trim();
+
+    if(!nome){
+
+        mensagem("Digite o nome do cliente.");
+
+        return;
+    }
+
+    const dados = {
+
+        nome,
+        whatsapp,
+
+        // Mantemos "aparelho" para compatibilidade
+        // com a estrutura atual do Supabase.
+        aparelho:servico,
+
+        data,
+        hora,
+        defeito,
+        status
+    };
+
+    if(valorTexto !== ""){
+        dados.valor = Number(valorTexto);
+    }
+
+    let resposta;
+
+    if(osAtual){
+
+        resposta = await supabase
+            .from("agendamentos")
+            .update(dados)
+            .eq("id",osAtual.id);
+
+    }else{
+
+        resposta = await supabase
+            .from("agendamentos")
+            .insert([dados]);
+    }
+
+    /*
+       Caso a tabela antiga ainda não tenha a coluna "valor",
+       tenta novamente sem ela.
+    */
+
+    if(
+        resposta.error &&
+        dados.valor !== undefined &&
+        /valor|column/i.test(resposta.error.message || "")
+    ){
+
+        delete dados.valor;
+
+        if(osAtual){
+
+            resposta = await supabase
+                .from("agendamentos")
+                .update(dados)
+                .eq("id",osAtual.id);
+
+        }else{
+
+            resposta = await supabase
+                .from("agendamentos")
+                .insert([dados]);
+
+        }
+    }
+
+    if(resposta.error){
+
+        console.error(resposta.error);
+
+        mensagem("Erro ao salvar OS.");
+
+        return;
+    }
+
+    const editando = !!osAtual;
+
+    osAtual = null;
+
+    fecharModais();
+
+    mensagem(
+        editando
+        ? "OS atualizada!"
+        : "OS cadastrada!"
+    );
+
+    await carregarDados();
+}
+
+
+/* =========================
+   DETALHES OS
+========================= */
+
+function abrirDetalhesOS(id){
+
+    const os = ordens.find(o=>Number(o.id) === Number(id));
+
+    if(!os) return;
+
+    osAtual = os;
+
+    const valorHTML =
+        os.valor !== undefined && os.valor !== null
+        ? `
+            <div class="detalhe-bloco">
+                <div class="detalhe-label">Valor</div>
+                <div class="detalhe-valor">
+                    ${dinheiro(os.valor)}
+                </div>
+            </div>
+        `
+        : "";
+
+    document.getElementById("conteudoDetalhesOS").innerHTML = `
+
+        <div class="detalhe-bloco">
+            <div class="detalhe-label">Cliente</div>
+            <div class="detalhe-valor">
+                ${escapeHTML(os.nome || "-")}
+            </div>
+        </div>
+
+        <div class="detalhe-bloco">
+            <div class="detalhe-label">WhatsApp</div>
+            <div class="detalhe-valor">
+                ${escapeHTML(os.whatsapp || "Não informado")}
+            </div>
+        </div>
+
+        <div class="detalhe-bloco">
+            <div class="detalhe-label">Serviço</div>
+            <div class="detalhe-valor">
+                ${escapeHTML(os.aparelho || "Não informado")}
+            </div>
+        </div>
+
+        <div class="detalhe-bloco">
+            <div class="detalhe-label">Data e hora</div>
+            <div class="detalhe-valor">
+                ${formatarData(os.data)}
+                ${os.hora ? " às "+escapeHTML(os.hora) : ""}
+            </div>
+        </div>
+
+        ${valorHTML}
+
+        <div class="detalhe-bloco">
+            <div class="detalhe-label">Status</div>
+            <div class="detalhe-valor">
+                <span class="status ${classeStatus(os.status)}">
+                    ${escapeHTML(os.status || "Pendente")}
+                </span>
+            </div>
+        </div>
+
+        <div class="detalhe-bloco">
+            <div class="detalhe-label">Descrição / Defeito</div>
+            <div class="detalhe-valor">
+                ${escapeHTML(os.defeito || "Nenhuma descrição informada.")}
+            </div>
+        </div>
+
+    `;
+
+    document.getElementById("modalDetalhesOS")
+        .classList.add("aberto");
+}
+
+
+/* =========================
+   EDITAR OS
+========================= */
+
+function abrirEdicaoOS(){
+
+    if(!osAtual) return;
+
+    const os = osAtual;
+
+    document.getElementById("tituloOS").textContent =
+        "Editar OS";
+
+    document.getElementById("osNome").value =
+        os.nome || "";
+
+    document.getElementById("osWhatsapp").value =
+        os.whatsapp || "";
+
+    document.getElementById("osServico").value =
+        os.aparelho || "";
+
+    document.getElementById("osData").value =
+        os.data || "";
+
+    document.getElementById("osHora").value =
+        os.hora || "";
+
+    document.getElementById("osValor").value =
+        os.valor ?? "";
+
+    document.getElementById("osStatus").value =
+        os.status || "Pendente";
+
+    document.getElementById("osDefeito").value =
+        os.defeito || "";
+
+    document.getElementById("modalDetalhesOS")
+        .classList.remove("aberto");
+
+    document.getElementById("modalOS")
+        .classList.add("aberto");
+}
+
+
+/* =========================
+   EXCLUIR OS
+========================= */
+
+async function excluirOS(){
+
+    if(!osAtual) return;
+
+    if(!confirm("Excluir esta OS?")) return;
+
+    const id = osAtual.id;
+
+    const {error} = await supabase
+        .from("agendamentos")
+        .delete()
+        .eq("id",id);
+
+    if(error){
+
+        console.error(error);
+
+        mensagem("Erro ao excluir OS.");
+
+        return;
+    }
+
+    osAtual = null;
+
+    fecharModais();
+
+    mensagem("OS excluída!");
+
+    await carregarDados();
+}
+
+
+/* =========================
+   WHATSAPP
+========================= */
+
+function abrirWhatsAppOS(){
+
+    if(!osAtual || !osAtual.whatsapp){
+
+        mensagem("Esta OS não possui WhatsApp.");
+
+        return;
+    }
+
+    let numero =
+        String(osAtual.whatsapp)
+        .replace(/\D/g,"");
+
+    if(numero.length === 11){
+        numero = "55" + numero;
+    }
+
+    if(numero.length === 10){
+        numero = "55" + numero;
+    }
+
+    const texto =
+        `Olá ${osAtual.nome || ""}! Aqui é da WS SOLUÇÕES.`;
+
+    window.open(
+        `https://wa.me/${numero}?text=${encodeURIComponent(texto)}`,
+        "_blank"
+    );
+}
+
+
+/* =========================
+   AGENDA
+========================= */
+
+function preencherClientesSelect(){
+
+    const select =
+        document.getElementById("agCliente");
+
+    select.innerHTML =
+        `<option value="">Selecione o cliente</option>`;
+
+    clientes.forEach(cliente=>{
+
+        const option =
+            document.createElement("option");
+
+        option.value = cliente.id;
+
+        option.textContent =
+            cliente.nome +
+            (cliente.whatsapp
+                ? " - " + cliente.whatsapp
+                : "");
+
+        select.appendChild(option);
+
+    });
+}
+
+function abrirAgendamento(){
+
+    preencherClientesSelect();
+
+    document.getElementById("agCliente").value = "";
+    document.getElementById("agAparelho").value = "";
+    document.getElementById("agData").value = dataHoje();
+    document.getElementById("agHora").value = "";
+    document.getElementById("agDefeito").value = "";
+
+    document.getElementById("modalAgendamento")
+        .classList.add("aberto");
+}
+
+async function salvarAgendamento(){
+
+    const clienteId =
+        document.getElementById("agCliente").value;
+
+    const aparelho =
+        document.getElementById("agAparelho").value.trim();
+
+    const data =
+        document.getElementById("agData").value;
+
+    const hora =
+        document.getElementById("agHora").value;
+
+    const defeito =
+        document.getElementById("agDefeito").value.trim();
+
+    if(!clienteId){
+
+        mensagem("Selecione um cliente.");
+
+        return;
+    }
+
+    const cliente =
+        clientes.find(c=>String(c.id) === String(clienteId));
+
+    if(!cliente){
+
+        mensagem("Cliente não encontrado.");
+
+        return;
+    }
+
+    const {error} = await supabase
+        .from("agendamentos")
+        .insert([{
+            nome:cliente.nome,
+            whatsapp:cliente.whatsapp || "",
+            aparelho,
+            data,
+            hora,
+            defeito,
+            status:"Pendente"
+        }]);
+
+    if(error){
+
+        console.error(error);
+
+        mensagem("Erro ao salvar agendamento.");
+
+        return;
+    }
+
+    fecharModais();
+
+    mensagem("Agendamento salvo!");
+
+    await carregarDados();
+}
+
+function renderizarAgenda(){
+
+    const lista =
+        document.getElementById("listaAgenda");
+
+    let dataFiltro =
+        document.getElementById("filtroAgenda").value;
+
+    if(!dataFiltro){
+        dataFiltro = dataHoje();
+    }
+
+    const listaFiltrada =
+        agendamentos.filter(a=>a.data === dataFiltro);
+
+    if(!listaFiltrada.length){
+
+        lista.innerHTML =
+            `<div class="vazio">
+                Nenhum agendamento para ${formatarData(dataFiltro)}.
+            </div>`;
+
+        return;
+    }
+
+    lista.innerHTML =
+        listaFiltrada.map(ag=>`
+
+            <div class="item">
+
+                <div class="item-topo">
+
+                    <div>
+                        <div class="item-nome">
+                            ${escapeHTML(ag.nome)}
+                        </div>
+
+                        <div class="item-info">
+                            🕐 ${escapeHTML(ag.hora || "-")}<br>
+                            🔧 ${escapeHTML(ag.aparelho || "-")}
+                        </div>
+                    </div>
+
+                    <span class="status ${classeStatus(ag.status)}">
+                        ${escapeHTML(ag.status || "Pendente")}
+                    </span>
+
+                </div>
+
+                <div class="item-acoes">
+
+                    <button class="btn btn-roxo"
+                            onclick="abrirDetalhesOS(${ag.id})">
+                        👁️ Ver OS
+                    </button>
+
+                </div>
+
+            </div>
+
+        `).join("");
+}
+
+function limparFiltroAgenda(){
+
+    document.getElementById("filtroAgenda").value =
+        dataHoje();
+
+    renderizarAgenda();
+}
+
+
+/* =========================
+   FINANCEIRO
+========================= */
+
+function renderizarFinanceiro(){
+
+    let entradas = 0;
+    let saidas = 0;
+
+    movimentacoes.forEach(m=>{
+
+        const valor = Number(m.valor || 0);
+
+        if(String(m.tipo).toLowerCase() === "entrada"){
+            entradas += valor;
+        }else{
+            saidas += valor;
+        }
+
+    });
+
+    document.getElementById("totalEntradas").textContent =
+        dinheiro(entradas);
+
+    document.getElementById("totalSaidas").textContent =
+        dinheiro(saidas);
+
+    const lista =
+        document.getElementById("listaFinanceiro");
+
+    if(!movimentacoes.length){
+
+        lista.innerHTML =
+            `<div class="vazio">Nenhuma movimentação.</div>`;
+
+        return;
+    }
+
+    lista.innerHTML =
+        movimentacoes.map(m=>{
+
+            const entrada =
+                String(m.tipo).toLowerCase() === "entrada";
+
+            return `
+
+                <div class="item">
+
+                    <div class="item-topo">
+
+                        <div>
+
+                            <div class="item-nome">
+                                ${entrada ? "💰 Entrada" : "💸 Saída"}
+                            </div>
+
+                            <div class="item-info">
+                                ${escapeHTML(m.descricao || "Sem descrição")}
+                            </div>
+
+                        </div>
+
+                        <strong style="
+                            color:${entrada
+                                ? "var(--verde)"
+                                : "var(--vermelho)"
+                            };
+                        ">
+                            ${entrada ? "+" : "-"}
+                            ${dinheiro(m.valor)}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }).join("");
+}
+
+function abrirMovimentacao(){
+
+    document.getElementById("movTipo").value = "entrada";
+    document.getElementById("movValor").value = "";
+    document.getElementById("movDescricao").value = "";
+
+    document.getElementById("modalMovimentacao")
+        .classList.add("aberto");
+}
+
+async function salvarMovimentacao(){
+
+    const tipo =
+        document.getElementById("movTipo").value;
+
+    const valor =
+        Number(document.getElementById("movValor").value);
+
+    const descricao =
+        document.getElementById("movDescricao").value.trim();
+
+    if(!valor || valor <= 0){
+
+        mensagem("Digite um valor válido.");
+
+        return;
+    }
+
+    const {error} = await supabase
+        .from("movimentacoes")
+        .insert([{
+            tipo,
+            valor,
+            descricao,
+            data:dataHoje()
+        }]);
+
+    if(error){
+
+        console.error(error);
+
+        mensagem("Erro ao salvar movimentação.");
+
+        return;
+    }
+
+    fecharModais();
+
+    mensagem("Movimentação salva!");
+
+    await carregarDados();
+}
+
+
+/* =========================
+   MODAIS
+========================= */
+
+function fecharModais(){
+
+    document.querySelectorAll(".modal-fundo")
+        .forEach(modal=>{
+            modal.classList.remove("aberto");
+        });
+
+    clienteEditando = null;
+}
+
+document.querySelectorAll(".modal-fundo")
+.forEach(fundo=>{
+
+    fundo.addEventListener("click",function(e){
+
+        if(e.target === fundo){
+            fecharModais();
+        }
+
+    });
+
+});
+
+
+/* =========================
+   INICIALIZAÇÃO
+========================= */
+
+document.getElementById("filtroAgenda").value =
+    dataHoje();
+
+carregarDados();
+
 </script>
 
 </body>
