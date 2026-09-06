@@ -1,14 +1,7 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+<!DOCTYPE html><html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Painel WS SOLUÇÕES</title>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Painel WS SOLUÇÕES</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style>
 :root{
     --roxo:#7c3aed;
     --roxo2:#6d28d9;
@@ -41,7 +34,8 @@ body{
 
 button,
 input,
-select{
+select,
+textarea{
     font-family:inherit;
 }
 
@@ -63,8 +57,7 @@ header{
     top:0;
     z-index:100;
 
-    box-shadow:
-        0 3px 12px rgba(0,0,0,.15);
+    box-shadow:0 3px 12px rgba(0,0,0,.15);
 }
 
 .header{
@@ -442,8 +435,7 @@ nav button.active{
 .finance-cards{
     display:grid;
 
-    grid-template-columns:
-        repeat(3,1fr);
+    grid-template-columns:repeat(3,1fr);
 
     gap:12px;
 
@@ -485,9 +477,7 @@ nav button.active{
 
 .finance-list{
     display:flex;
-
     flex-direction:column;
-
     gap:8px;
 }
 
@@ -514,7 +504,6 @@ nav button.active{
 
 .finance-valor{
     font-weight:bold;
-
     white-space:nowrap;
 }
 
@@ -528,9 +517,7 @@ nav button.active{
 
 .finance-acoes{
     display:flex;
-
     gap:7px;
-
     margin-top:10px;
 }
 
@@ -540,9 +527,7 @@ nav button.active{
 
 .clientes{
     display:flex;
-
     flex-direction:column;
-
     gap:8px;
 }
 
@@ -568,7 +553,7 @@ nav button.active{
 }
 
 /* ==================================================
-   MODAL DE DETALHES DA OS
+   MODAL BASE
 ================================================== */
 
 .modal{
@@ -592,16 +577,16 @@ nav button.active{
     display:flex;
 }
 
-/*
-    Modal grande, mas centralizado.
-*/
+/* ==================================================
+   MODAL OS
+================================================== */
 
 .modal-os{
     width:100%;
 
-    max-width:700px;
+    max-width:760px;
 
-    max-height:92vh;
+    max-height:94vh;
 
     background:var(--card);
 
@@ -609,8 +594,7 @@ nav button.active{
 
     overflow:hidden;
 
-    box-shadow:
-        0 20px 60px rgba(0,0,0,.35);
+    box-shadow:0 20px 60px rgba(0,0,0,.35);
 
     display:flex;
 
@@ -618,12 +602,11 @@ nav button.active{
 }
 
 .modal-os-header{
-    background:
-        linear-gradient(
-            135deg,
-            var(--roxo3),
-            var(--roxo)
-        );
+    background:linear-gradient(
+        135deg,
+        var(--roxo3),
+        var(--roxo)
+    );
 
     color:white;
 
@@ -634,6 +617,8 @@ nav button.active{
     justify-content:space-between;
 
     align-items:center;
+
+    flex-shrink:0;
 }
 
 .modal-os-header h3{
@@ -659,17 +644,20 @@ nav button.active{
     padding:18px;
 
     overflow-y:auto;
+
+    flex:1;
 }
 
-/* STATUS NO TOPO */
+/* =========================
+   STATUS
+========================= */
 
 .status-box{
-    background:
-        linear-gradient(
-            135deg,
-            #f5f3ff,
-            #ede9fe
-        );
+    background:linear-gradient(
+        135deg,
+        #f5f3ff,
+        #ede9fe
+    );
 
     border:1px solid #ddd6fe;
 
@@ -693,8 +681,7 @@ nav button.active{
 .status-botoes{
     display:grid;
 
-    grid-template-columns:
-        repeat(5,1fr);
+    grid-template-columns:repeat(5,1fr);
 
     gap:7px;
 }
@@ -739,66 +726,113 @@ nav button.active{
     margin-bottom:5px;
 }
 
-/* DETALHES */
+/* ==================================================
+   FORMULÁRIO OS
+================================================== */
 
-.detalhe-titulo{
-    font-size:25px;
-
-    font-weight:bold;
-
-    margin-bottom:10px;
-}
-
-.detalhe-subtitulo{
-    color:var(--texto2);
-
-    font-size:13px;
-
-    margin-bottom:18px;
-}
-
-.detalhes-grid{
+.form-os{
     display:grid;
 
-    grid-template-columns:
-        repeat(2,1fr);
+    grid-template-columns:repeat(2,1fr);
 
-    gap:10px;
+    gap:12px;
 }
 
-.detalhe-item{
-    border:1px solid var(--borda);
-
-    border-radius:12px;
-
-    padding:14px;
+.form-group{
+    margin-bottom:0;
 }
 
-.detalhe-item.full{
+.form-group.full{
     grid-column:1/-1;
 }
 
-.detalhe-label{
+.form-group label{
     display:block;
 
-    color:var(--texto2);
-
-    font-size:11px;
+    font-size:12px;
 
     font-weight:bold;
 
     margin-bottom:6px;
+
+    color:var(--texto);
 }
 
-.detalhe-valor{
-    font-size:15px;
+.form-group input,
+.form-group select,
+.form-group textarea{
+    width:100%;
 
-    font-weight:bold;
+    padding:12px;
+
+    border:1px solid var(--borda);
+
+    border-radius:10px;
+
+    background:var(--card);
+
+    color:var(--texto);
+
+    outline:none;
+
+    font-size:14px;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus{
+    border-color:var(--roxo);
+
+    box-shadow:
+        0 0 0 2px
+        rgba(124,58,237,.10);
+}
+
+.form-group textarea{
+    min-height:120px;
+
+    resize:vertical;
 
     line-height:1.5;
-
-    word-break:break-word;
 }
+
+.form-ajuda{
+    margin-top:5px;
+
+    color:var(--texto2);
+
+    font-size:11px;
+}
+
+.os-identificacao{
+    margin-bottom:15px;
+
+    padding:14px;
+
+    border:1px solid var(--borda);
+
+    border-radius:12px;
+
+    background:var(--fundo);
+}
+
+.os-identificacao strong{
+    font-size:20px;
+}
+
+.os-identificacao span{
+    display:block;
+
+    color:var(--texto2);
+
+    font-size:12px;
+
+    margin-top:4px;
+}
+
+/* ==================================================
+   FOOTER OS
+================================================== */
 
 .modal-os-footer{
     border-top:1px solid var(--borda);
@@ -807,16 +841,33 @@ nav button.active{
 
     display:flex;
 
-    justify-content:flex-end;
+    justify-content:space-between;
 
     gap:8px;
 
     background:var(--card);
+
+    flex-shrink:0;
 }
 
-/* =========================
+.footer-esquerda,
+.footer-direita{
+    display:flex;
+
+    gap:8px;
+
+    flex-wrap:wrap;
+}
+
+.btn-excluir{
+    background:#fee2e2;
+
+    color:#991b1b;
+}
+
+/* ==================================================
    MODAL FINANCEIRO
-========================= */
+================================================== */
 
 .modal-financeiro{
     width:calc(100% - 30px);
@@ -832,35 +883,6 @@ nav button.active{
 
 .modal-financeiro h3{
     margin-bottom:18px;
-}
-
-.form-group{
-    margin-bottom:14px;
-}
-
-.form-group label{
-    display:block;
-
-    font-size:13px;
-
-    font-weight:bold;
-
-    margin-bottom:5px;
-}
-
-.form-group input,
-.form-group select{
-    width:100%;
-
-    padding:12px;
-
-    border:1px solid var(--borda);
-
-    border-radius:9px;
-
-    background:var(--card);
-
-    color:var(--texto);
 }
 
 .modal-buttons{
@@ -944,6 +966,15 @@ body.dark .status-btn.selected{
     background:#312e81;
 }
 
+body.dark .os-identificacao{
+    background:#111827;
+}
+
+body.dark .btn-excluir{
+    background:#451a1a;
+    color:#fecaca;
+}
+
 /* =========================
    MOBILE
 ========================= */
@@ -956,7 +987,6 @@ body.dark .status-btn.selected{
 
     .os-linha{
         flex-direction:column;
-
         gap:3px;
     }
 
@@ -966,18 +996,25 @@ body.dark .status-btn.selected{
 
     .titulo .btn{
         padding:9px 10px;
-
         font-size:12px;
     }
 
+    /* MODAL OS FULLSCREEN */
+
     .modal{
-        padding:8px;
+        padding:0;
     }
 
     .modal-os{
-        max-height:96vh;
+        width:100%;
+        height:100%;
+        max-width:none;
+        max-height:none;
+        border-radius:0;
+    }
 
-        border-radius:15px;
+    .modal-os-header{
+        border-radius:0;
     }
 
     .modal-os-body{
@@ -985,32 +1022,33 @@ body.dark .status-btn.selected{
     }
 
     .status-botoes{
-        grid-template-columns:
-            repeat(2,1fr);
+        grid-template-columns:repeat(2,1fr);
     }
 
     .status-btn:last-child{
         grid-column:1/-1;
     }
 
-    .detalhes-grid{
+    .form-os{
         grid-template-columns:1fr;
     }
 
-    .detalhe-item.full{
+    .form-group.full{
         grid-column:auto;
     }
 
-    .detalhe-titulo{
-        font-size:22px;
-    }
-
     .modal-os-footer{
+        padding:10px;
         flex-direction:column;
     }
 
-    .modal-os-footer button{
+    .footer-esquerda,
+    .footer-direita{
         width:100%;
+    }
+
+    .modal-os-footer button{
+        flex:1;
     }
 
     .finance-top{
@@ -1025,316 +1063,231 @@ body.dark .status-btn.selected{
         width:38px;
         height:38px;
     }
+
+    .modal-financeiro{
+        width:calc(100% - 20px);
+    }
 }
-</style>
-</head>
-
-<body>
-
-<header>
-
-<div class="header">
-
-    <div class="logo">
-        <h1>WS SOLUÇÕES</h1>
-        <span>Painel administrativo</span>
-    </div>
-
-    <div class="header-actions">
-
-        <button
-            class="icon"
-            id="temaBtn"
-            onclick="alternarTema()"
-        >
-            🌙
-        </button>
-
-        <button
-            class="icon"
-            onclick="carregarTudo()"
-        >
-            ↻
-        </button>
-
-    </div>
-
+</style></head><body><header><div class="header"><div class="logo">
+    <h1>WS SOLUÇÕES</h1>
+    <span>Painel administrativo</span>
 </div>
 
-</header>
-
-
-<nav>
-
-<button
-    class="active"
-    onclick="abrirPagina('inicio',this)"
->
-    🏠 Início
-</button>
-
-<button
-    onclick="abrirPagina('financeiro',this)"
->
-    💰 Financeiro
-</button>
-
-<button
-    onclick="abrirPagina('clientes',this)"
->
-    👥 Clientes
-</button>
-
-</nav>
-
-
-<div class="container">
-
-
-<!-- ==================================================
-     INÍCIO
-================================================== -->
-
-<section
-    id="inicio"
-    class="page active"
->
-
-<div class="titulo">
-
-    <div>
-        <h2>Minhas OS</h2>
-
-        <p>
-            Checklist diário das ordens de serviço
-        </p>
-    </div>
-
-</div>
-
-
-<!-- DATA -->
-
-<div class="seletor-data">
-
-    <button onclick="mudarDia(-1)">
-        ◀
-    </button>
-
-
-    <div class="data-centro">
-
-        <strong id="diaSelecionado">
-            Hoje
-        </strong>
-
-        <span id="diaSemana">
-            -
-        </span>
-
-
-        <input
-            type="date"
-            id="dataEscolhida"
-            class="data-input"
-            onchange="selecionarData()"
-        >
-
-    </div>
-
-
-    <button onclick="mudarDia(1)">
-        ▶
-    </button>
-
-</div>
-
-
-<div id="listaOS">
-
-    <div class="vazio">
-        Carregando OS...
-    </div>
-
-</div>
-
-</section>
-
-
-<!-- ==================================================
-     FINANCEIRO
-================================================== -->
-
-<section
-    id="financeiro"
-    class="page"
->
-
-<div class="titulo">
-
-    <div>
-
-        <h2>Financeiro</h2>
-
-        <p>
-            Entradas, saídas e saldo
-        </p>
-
-    </div>
-
+<div class="header-actions">
 
     <button
-        class="btn roxo"
-        onclick="abrirNovoFinanceiro()"
+        class="icon"
+        id="temaBtn"
+        onclick="alternarTema()"
     >
-        + Lançamento
+        🌙
+    </button>
+
+    <button
+        class="icon"
+        onclick="carregarTudo()"
+    >
+        ↻
+    </button>
+
+</div>
+
+</div></header><nav><button
+class="active"
+onclick="abrirPagina('inicio',this)"
+
+«»
+
+🏠 Início
+
+</button><button
+onclick="abrirPagina('financeiro',this)"
+
+«»
+
+💰 Financeiro
+
+</button><button
+onclick="abrirPagina('clientes',this)"
+
+«»
+
+👥 Clientes
+
+</button></nav><div class="container"><!-- ==================================================
+     INÍCIO
+================================================== --><section
+    id="inicio"
+    class="page active"
+><div class="titulo"><div>
+
+    <h2>Minhas OS</h2>
+
+    <p>
+        Checklist diário das ordens de serviço
+    </p>
+
+</div>
+
+<button
+    class="btn roxo"
+    onclick="abrirNovaOS()"
+>
+    + Nova OS
+</button>
+
+</div><!-- DATA --><div class="seletor-data"><button onclick="mudarDia(-1)">
+    ◀
+</button>
+
+<div class="data-centro">
+
+    <strong id="diaSelecionado">
+        Hoje
+    </strong>
+
+    <span id="diaSemana">
+        -
+    </span>
+
+    <input
+        type="date"
+        id="dataEscolhida"
+        class="data-input"
+        onchange="selecionarData()"
+    >
+
+</div>
+
+<button onclick="mudarDia(1)">
+    ▶
+</button>
+
+</div><div id="listaOS"><div class="vazio">
+    Carregando OS...
+</div>
+
+</div></section><!-- ==================================================
+     FINANCEIRO
+================================================== --><section
+    id="financeiro"
+    class="page"
+><div class="titulo"><div>
+
+    <h2>Financeiro</h2>
+
+    <p>
+        Entradas, saídas e saldo
+    </p>
+
+</div>
+
+<button
+    class="btn roxo"
+    onclick="abrirNovoFinanceiro()"
+>
+    + Lançamento
+</button>
+
+</div><div class="finance-cards"><div class="finance-card">
+
+    <small>Entradas</small>
+
+    <strong
+        class="entrada"
+        id="totalEntradas"
+    >
+        R$ 0,00
+    </strong>
+
+</div>
+
+<div class="finance-card">
+
+    <small>Saídas</small>
+
+    <strong
+        class="saida"
+        id="totalSaidas"
+    >
+        R$ 0,00
+    </strong>
+
+</div>
+
+<div class="finance-card">
+
+    <small>Saldo</small>
+
+    <strong
+        class="saldo"
+        id="saldo"
+    >
+        R$ 0,00
+    </strong>
+
+</div>
+
+</div><div
+    id="listaFinanceiro"
+    class="finance-list"
+><div class="vazio">
+    Carregando financeiro...
+</div>
+
+</div></section><!-- ==================================================
+     CLIENTES
+================================================== --><section
+    id="clientes"
+    class="page"
+><div class="titulo"><div>
+
+    <h2>Clientes</h2>
+
+    <p>
+        Clientes cadastrados
+    </p>
+
+</div>
+
+</div><div
+    id="listaClientes"
+    class="clientes"
+><div class="vazio">
+    Carregando clientes...
+</div>
+
+</div></section></div><!-- ==================================================
+     MODAL OS
+================================================== --><div
+    id="modalOS"
+    class="modal"
+><div class="modal-os"><div class="modal-os-header">
+
+    <h3 id="modalOSTitulo">
+        Nova Ordem de Serviço
+    </h3>
+
+    <button
+        class="fechar"
+        onclick="fecharOS()"
+    >
+        ×
     </button>
 
 </div>
 
 
-<div class="finance-cards">
-
-    <div class="finance-card">
-
-        <small>
-            Entradas
-        </small>
-
-        <strong
-            class="entrada"
-            id="totalEntradas"
-        >
-            R$ 0,00
-        </strong>
-
-    </div>
-
-
-    <div class="finance-card">
-
-        <small>
-            Saídas
-        </small>
-
-        <strong
-            class="saida"
-            id="totalSaidas"
-        >
-            R$ 0,00
-        </strong>
-
-    </div>
-
-
-    <div class="finance-card">
-
-        <small>
-            Saldo
-        </small>
-
-        <strong
-            class="saldo"
-            id="saldo"
-        >
-            R$ 0,00
-        </strong>
-
-    </div>
-
-</div>
-
-
 <div
-    id="listaFinanceiro"
-    class="finance-list"
+    id="detalhesOS"
+    class="modal-os-body"
 >
-
-    <div class="vazio">
-        Carregando financeiro...
-    </div>
-
-</div>
-
-</section>
-
-
-<!-- ==================================================
-     CLIENTES
-================================================== -->
-
-<section
-    id="clientes"
-    class="page"
->
-
-<div class="titulo">
-
-    <div>
-
-        <h2>Clientes</h2>
-
-        <p>
-            Clientes cadastrados
-        </p>
-
-    </div>
-
 </div>
 
 
-<div
-    id="listaClientes"
-    class="clientes"
->
+<div class="modal-os-footer">
 
-    <div class="vazio">
-        Carregando clientes...
-    </div>
-
-</div>
-
-</section>
-
-</div>
-
-
-<!-- ==================================================
-     MODAL DETALHES OS
-================================================== -->
-
-<div
-    id="modalOS"
-    class="modal"
->
-
-<div class="modal-os">
-
-
-    <div class="modal-os-header">
-
-        <h3>
-            Detalhes da OS
-        </h3>
-
-        <button
-            class="fechar"
-            onclick="fecharOS()"
-        >
-            ×
-        </button>
-
-    </div>
-
-
-    <div
-        id="detalhesOS"
-        class="modal-os-body"
-    >
-    </div>
-
-
-    <div class="modal-os-footer">
+    <div class="footer-esquerda">
 
         <button
             class="btn cinza"
@@ -1342,7 +1295,6 @@ body.dark .status-btn.selected{
         >
             Fechar
         </button>
-
 
         <button
             id="btnWhatsOS"
@@ -1352,140 +1304,137 @@ body.dark .status-btn.selected{
             WhatsApp
         </button>
 
+    </div>
+
+
+    <div class="footer-direita">
 
         <button
-            id="btnSalvarStatus"
-            class="btn roxo"
+            id="btnExcluirOS"
+            class="btn btn-excluir"
+            style="display:none"
+            onclick="excluirOS()"
         >
-            Salvar status
+            🗑️ Excluir
+        </button>
+
+        <button
+            id="btnSalvarOS"
+            class="btn roxo"
+            onclick="salvarOS()"
+        >
+            Salvar OS
         </button>
 
     </div>
 
 </div>
 
-</div>
-
-
-<!-- ==================================================
+</div></div><!-- ==================================================
      MODAL FINANCEIRO
-================================================== -->
-
-<div
+================================================== --><div
     id="modalFinanceiro"
     class="modal"
+><div class="modal-financeiro"><h3 id="tituloFinanceiro">
+    Nova movimentação
+</h3>
+
+
+<input
+    type="hidden"
+    id="financeId"
 >
 
-<div class="modal-financeiro">
 
-    <h3 id="tituloFinanceiro">
-        Nova movimentação
-    </h3>
+<div class="form-group">
 
+    <label>
+        Tipo
+    </label>
+
+    <select id="financeTipo">
+
+        <option value="entrada">
+            Entrada
+        </option>
+
+        <option value="saida">
+            Saída
+        </option>
+
+    </select>
+
+</div>
+
+
+<div class="form-group" style="margin-top:14px">
+
+    <label>
+        Descrição
+    </label>
 
     <input
-        type="hidden"
-        id="financeId"
+        id="financeDescricao"
+        type="text"
+        placeholder="Ex: Pagamento de cliente"
     >
 
-
-    <div class="form-group">
-
-        <label>
-            Tipo
-        </label>
-
-        <select id="financeTipo">
-
-            <option value="entrada">
-                Entrada
-            </option>
-
-            <option value="saida">
-                Saída
-            </option>
-
-        </select>
-
-    </div>
-
-
-    <div class="form-group">
-
-        <label>
-            Descrição
-        </label>
-
-        <input
-            id="financeDescricao"
-            type="text"
-            placeholder="Ex: Pagamento de cliente"
-        >
-
-    </div>
-
-
-    <div class="form-group">
-
-        <label>
-            Valor
-        </label>
-
-        <input
-            id="financeValor"
-            type="number"
-            step="0.01"
-            min="0"
-            placeholder="0,00"
-        >
-
-    </div>
-
-
-    <div class="form-group">
-
-        <label>
-            Data
-        </label>
-
-        <input
-            id="financeData"
-            type="date"
-        >
-
-    </div>
-
-
-    <div class="modal-buttons">
-
-        <button
-            class="btn cinza"
-            onclick="fecharFinanceiro()"
-        >
-            Cancelar
-        </button>
-
-        <button
-            class="btn roxo"
-            onclick="salvarFinanceiro()"
-        >
-            Salvar
-        </button>
-
-    </div>
-
 </div>
+
+
+<div class="form-group" style="margin-top:14px">
+
+    <label>
+        Valor
+    </label>
+
+    <input
+        id="financeValor"
+        type="number"
+        step="0.01"
+        min="0"
+        placeholder="0,00"
+    >
 
 </div>
 
 
-<div
+<div class="form-group" style="margin-top:14px">
+
+    <label>
+        Data
+    </label>
+
+    <input
+        id="financeData"
+        type="date"
+    >
+
+</div>
+
+
+<div class="modal-buttons">
+
+    <button
+        class="btn cinza"
+        onclick="fecharFinanceiro()"
+    >
+        Cancelar
+    </button>
+
+    <button
+        class="btn roxo"
+        onclick="salvarFinanceiro()"
+    >
+        Salvar
+    </button>
+
+</div>
+
+</div></div><div
     id="toast"
     class="toast"
-></div>
-
-
-<script>
+></div><script>
 
 /* ==================================================
    SUPABASE
@@ -1532,18 +1481,14 @@ document.addEventListener(
 
         carregarTema();
 
-
         document.getElementById(
             "dataEscolhida"
         ).value =
             dataAtualSelecionada;
 
-
         atualizarTituloData();
 
-
         await carregarTudo();
-
 
         iniciarRealtime();
 
@@ -1605,7 +1550,7 @@ async function carregarAgendamentos(){
 
 
 /* ==================================================
-   RENDERIZAR OS DO DIA
+   RENDERIZAR OS
 ================================================== */
 
 function renderizarOS(){
@@ -1650,7 +1595,7 @@ function renderizarOS(){
                     "
                 >
                     Escolha outra data acima
-                    para consultar as OS.
+                    ou cadastre uma nova OS.
                 </p>
 
             </div>
@@ -1664,7 +1609,7 @@ function renderizarOS(){
     const concluidas =
         osDoDia.filter(
             x =>
-                x.status ===
+                normalizarStatus(x.status) ===
                 "concluido"
         ).length;
 
@@ -1696,8 +1641,14 @@ function renderizarOS(){
 
     osDoDia.forEach(os => {
 
+        const status =
+            normalizarStatus(
+                os.status
+            );
+
+
         const concluida =
-            os.status ===
+            status ===
             "concluido";
 
 
@@ -1784,7 +1735,12 @@ function renderizarOS(){
                             )}
                             `
                             :
-                            ""
+                            `
+                            <br>
+                            <span style="opacity:.7">
+                                Sem diagnóstico informado
+                            </span>
+                            `
                         }
 
 
@@ -1794,11 +1750,7 @@ function renderizarOS(){
                         <span
                             class="
                                 status
-                                s-${
-                                    normalizarStatus(
-                                        os.status
-                                    )
-                                }
+                                s-${status}
                             "
                         >
 
@@ -1825,7 +1777,7 @@ function renderizarOS(){
                                 )
                             "
                         >
-                            👁️ Detalhes
+                            👁️ Detalhes / Editar
                         </button>
 
 
@@ -1940,7 +1892,77 @@ async function marcarConcluida(
 
 
 /* ==================================================
-   ABRIR DETALHES
+   NOVA OS
+================================================== */
+
+function abrirNovaOS(){
+
+    osAbertaId =
+        null;
+
+    statusSelecionado =
+        "aguardando";
+
+
+    document.getElementById(
+        "modalOSTitulo"
+    ).textContent =
+        "Nova Ordem de Serviço";
+
+
+    document.getElementById(
+        "btnSalvarOS"
+    ).textContent =
+        "Criar OS";
+
+
+    document.getElementById(
+        "btnExcluirOS"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "btnWhatsOS"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "detalhesOS"
+    ).innerHTML = montarFormularioOS({
+
+        nome:"",
+
+        whatsapp:"",
+
+        aparelho:"",
+
+        defeito:"",
+
+        data:dataAtualSelecionada,
+
+        hora:"",
+
+        status:"aguardando"
+
+    });
+
+
+    atualizarBotoesStatus();
+
+
+    document.getElementById(
+        "modalOS"
+    ).classList.add(
+        "show"
+    );
+
+}
+
+
+/* ==================================================
+   ABRIR DETALHES / EDITAR OS
 ================================================== */
 
 function abrirDetalhesOS(id){
@@ -1965,282 +1987,28 @@ function abrirDetalhesOS(id){
         );
 
 
+    document.getElementById(
+        "modalOSTitulo"
+    ).textContent =
+        "Detalhes / Editar OS";
+
+
+    document.getElementById(
+        "btnSalvarOS"
+    ).textContent =
+        "Salvar alterações";
+
+
+    document.getElementById(
+        "btnExcluirOS"
+    ).style.display =
+        "block";
+
+
     const telefone =
         somenteNumeros(
             os.whatsapp || ""
         );
-
-
-    document.getElementById(
-        "detalhesOS"
-    ).innerHTML = `
-
-        <!-- STATUS -->
-
-        <div class="status-box">
-
-            <div class="status-box-titulo">
-
-                STATUS DA ORDEM DE SERVIÇO
-
-            </div>
-
-
-            <div class="status-botoes">
-
-
-                <button
-                    class="
-                        status-btn
-                        ${
-                            statusSelecionado ===
-                            "aguardando"
-                            ? "selected"
-                            : ""
-                        }
-                    "
-                    onclick="
-                        selecionarStatus(
-                            'aguardando'
-                        )
-                    "
-                    id="statusBtn-aguardando"
-                >
-
-                    <span class="emoji">
-                        🟡
-                    </span>
-
-                    Aguardando
-
-                </button>
-
-
-                <button
-                    class="
-                        status-btn
-                        ${
-                            statusSelecionado ===
-                            "confirmado"
-                            ? "selected"
-                            : ""
-                        }
-                    "
-                    onclick="
-                        selecionarStatus(
-                            'confirmado'
-                        )
-                    "
-                    id="statusBtn-confirmado"
-                >
-
-                    <span class="emoji">
-                        🔵
-                    </span>
-
-                    Confirmado
-
-                </button>
-
-
-                <button
-                    class="
-                        status-btn
-                        ${
-                            statusSelecionado ===
-                            "andamento"
-                            ? "selected"
-                            : ""
-                        }
-                    "
-                    onclick="
-                        selecionarStatus(
-                            'andamento'
-                        )
-                    "
-                    id="statusBtn-andamento"
-                >
-
-                    <span class="emoji">
-                        🟣
-                    </span>
-
-                    Em andamento
-
-                </button>
-
-
-                <button
-                    class="
-                        status-btn
-                        ${
-                            statusSelecionado ===
-                            "concluido"
-                            ? "selected"
-                            : ""
-                        }
-                    "
-                    onclick="
-                        selecionarStatus(
-                            'concluido'
-                        )
-                    "
-                    id="statusBtn-concluido"
-                >
-
-                    <span class="emoji">
-                        🟢
-                    </span>
-
-                    Concluído
-
-                </button>
-
-
-                <button
-                    class="
-                        status-btn
-                        ${
-                            statusSelecionado ===
-                            "cancelado"
-                            ? "selected"
-                            : ""
-                        }
-                    "
-                    onclick="
-                        selecionarStatus(
-                            'cancelado'
-                        )
-                    "
-                    id="statusBtn-cancelado"
-                >
-
-                    <span class="emoji">
-                        🔴
-                    </span>
-
-                    Cancelado
-
-                </button>
-
-            </div>
-
-        </div>
-
-
-        <!-- DADOS -->
-
-        <div class="detalhe-titulo">
-
-            ${escapeHTML(
-                os.nome ||
-                "Cliente"
-            )}
-
-        </div>
-
-
-        <div class="detalhe-subtitulo">
-
-            Ordem de serviço #${os.id}
-
-        </div>
-
-
-        <div class="detalhes-grid">
-
-
-            <div class="detalhe-item">
-
-                <span class="detalhe-label">
-                    APARELHO / SERVIÇO
-                </span>
-
-                <div class="detalhe-valor">
-
-                    ${escapeHTML(
-                        os.aparelho ||
-                        "-"
-                    )}
-
-                </div>
-
-            </div>
-
-
-            <div class="detalhe-item">
-
-                <span class="detalhe-label">
-                    HORÁRIO
-                </span>
-
-                <div class="detalhe-valor">
-
-                    ${formatarHora(
-                        os.hora
-                    )}
-
-                </div>
-
-            </div>
-
-
-            <div class="detalhe-item">
-
-                <span class="detalhe-label">
-                    DATA
-                </span>
-
-                <div class="detalhe-valor">
-
-                    ${formatarDataCompleta(
-                        os.data
-                    )}
-
-                </div>
-
-            </div>
-
-
-            <div class="detalhe-item">
-
-                <span class="detalhe-label">
-                    WHATSAPP
-                </span>
-
-                <div class="detalhe-valor">
-
-                    ${escapeHTML(
-                        os.whatsapp ||
-                        "-"
-                    )}
-
-                </div>
-
-            </div>
-
-
-            <div class="detalhe-item full">
-
-                <span class="detalhe-label">
-                    DEFEITO / DESCRIÇÃO
-                </span>
-
-                <div class="detalhe-valor">
-
-                    ${escapeHTML(
-                        os.defeito ||
-                        "Nenhuma descrição informada."
-                    )}
-
-                </div>
-
-            </div>
-
-
-        </div>
-
-    `;
 
 
     const btnWhats =
@@ -2273,1054 +2041,1398 @@ function abrirDetalhesOS(id){
 
 
     document.getElementById(
+        "detalhesOS"
+    ).innerHTML =
+        montarFormularioOS(os);
+
+
+    atualizarBotoesStatus();
+
+
+    document.getElementById(
         "modalOS"
-    ).classList.add("show");
+    ).classList.add(
+        "show"
+    );
 
 }
 
 
 /* ==================================================
-   SELECIONAR STATUS
+   FORMULÁRIO DA OS
 ================================================== */
+
+function montarFormularioOS(os){
+
+    return `
+
+        <div class="os-identificacao">
+
+            <strong>
+                ${
+                    escapeHTML(
+                        os.nome ||
+                        "Nova OS"
+                    )
+                }
+            </strong>
+
+            <span>
+                ${
+                    os.id
+                    ? "Ordem de serviço #" + os.id
+                    : "Preencha os dados da ordem de serviço"
+                }
+            </span>
+
+        </div>
+
+
+        <!-- STATUS -->
+
+        <div class="status-box">
+
+            <div class="status-box-titulo">
+
+                STATUS DA ORDEM DE SERVIÇO
+
+            </div>
+
+
+            <div class="status-botoes">
+
+                ${criarBotaoStatus(
+                    "aguardando",
+                    "🟡",
+                    "Aguardando"
+                )}
+
+                ${criarBotaoStatus(
+                    "confirmado",
+                    "🔵",
+                    "Confirmado"
+                )}
+
+                ${criarBotaoStatus(
+                    "andamento",
+                    "🟣",
+                    "Em andamento"
+                )}
+
+                ${criarBotaoStatus(
+                    "concluido",
+                    "🟢",
+                    "Concluído"
+                )}
+
+                ${criarBotaoStatus(
+                    "cancelado",
+                    "🔴",
+                    "Cancelado"
+                )}
+
+            </div>
+
+        </div>
+
+
+        <!-- CAMPOS -->
+
+        <div class="form-os">
+
+
+            <div class="form-group">
+
+                <label>
+                    Cliente *
+                </label>
+
+                <input
+                    id="osNome"
+                    type="text"
+                    value="${escapeHTML(
+                        os.nome || ""
+                    )}"
+                    placeholder="Nome do cliente"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    WhatsApp
+                </label>
+
+                <input
+                    id="osWhatsapp"
+                    type="text"
+                    value="${escapeHTML(
+                        os.whatsapp || ""
+                    )}"
+                    placeholder="Ex: (88) 99999-9999"
+                >
+
+            </div>
+
+
+            <div class="form-group full">
+
+                <label>
+                    Aparelho / Serviço *
+                </label>
+
+                <input
+                    id="osAparelho"
+                    type="text"
+                    value="${escapeHTML(
+                        os.aparelho || ""
+                    )}"
+                    placeholder="Ex: Micro-ondas, TV, instalação..."
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Data *
+                </label>
+
+                <input
+                    id="osData"
+                    type="date"
+                    value="${converterDataInput(
+                        os.data ||
+                        dataAtualSelecionada
+                    )}"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Horário
+                </label>
+
+                <input
+                    id="osHora"
+                    type="time"
+                    value="${formatarHoraInput(
+                        os.hora || ""
+                    )}"
+                >
+
+            </div>
+
+
+            <div class="form-group full">
+
+                <label>
+                    Defeito / Diagnóstico
+                </label>
+
+                <textarea
+                    id="osDefeito"
+                    placeholder="Aqui você pode colocar o defeito encontrado, diagnóstico, peças necessárias, observações técnicas etc."
+                >${escapeHTML(
+                    os.defeito || ""
+                )}</textarea>            <div class="form-ajuda">
+
+                Esse campo é opcional no cadastro.
+                Você pode preencher depois, quando avaliar o aparelho.
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+`;
+
+}
+
+/* ==================================================
+BOTÕES DE STATUS
+================================================== */
+
+function criarBotaoStatus(
+status,
+emoji,
+texto
+){
+
+return `
+
+    <button
+        type="button"
+        class="
+            status-btn
+            ${
+                statusSelecionado === status
+                ? "selected"
+                : ""
+            }
+        "
+        id="statusBtn-${status}"
+        onclick="
+            selecionarStatus('${status}')
+        "
+    >
+
+        <span class="emoji">
+            ${emoji}
+        </span>
+
+        ${texto}
+
+    </button>
+
+`;
+
+}
 
 function selecionarStatus(status){
 
-    statusSelecionado =
-        status;
+statusSelecionado =
+    normalizarStatus(
+        status
+    );
 
 
-    document
-        .querySelectorAll(
-            ".status-btn"
-        )
-        .forEach(
-            btn =>
-                btn.classList.remove(
-                    "selected"
-                )
-        );
-
-
-    const botao =
-        document.getElementById(
-            "statusBtn-" +
-            status
-        );
-
-
-    if(botao){
-
-        botao.classList.add(
-            "selected"
-        );
-
-    }
+atualizarBotoesStatus();
 
 }
 
+function atualizarBotoesStatus(){
+
+document
+    .querySelectorAll(
+        ".status-btn"
+    )
+    .forEach(
+        btn => {
+
+            btn.classList.remove(
+                "selected"
+            );
+
+        }
+    );
+
+
+const botao =
+    document.getElementById(
+        "statusBtn-" +
+        statusSelecionado
+    );
+
+
+if(botao){
+
+    botao.classList.add(
+        "selected"
+    );
+
+}
+
+}
 
 /* ==================================================
-   SALVAR STATUS
+SALVAR / CRIAR OS
 ================================================== */
 
-async function salvarStatusOS(){
+async function salvarOS(){
 
-    if(!osAbertaId)
-        return;
-
-
-    if(!statusSelecionado){
-
-        mostrarToast(
-            "Selecione um status."
-        );
-
-        return;
-    }
+const nome =
+    document.getElementById(
+        "osNome"
+    ).value.trim();
 
 
-    const {error} =
+const whatsapp =
+    document.getElementById(
+        "osWhatsapp"
+    ).value.trim();
+
+
+const aparelho =
+    document.getElementById(
+        "osAparelho"
+    ).value.trim();
+
+
+const defeito =
+    document.getElementById(
+        "osDefeito"
+    ).value.trim();
+
+
+const data =
+    document.getElementById(
+        "osData"
+    ).value;
+
+
+const hora =
+    document.getElementById(
+        "osHora"
+    ).value;
+
+
+if(!nome){
+
+    mostrarToast(
+        "Digite o nome do cliente."
+    );
+
+    return;
+}
+
+
+if(!aparelho){
+
+    mostrarToast(
+        "Digite o aparelho ou serviço."
+    );
+
+    return;
+}
+
+
+if(!data){
+
+    mostrarToast(
+        "Escolha a data da OS."
+    );
+
+    return;
+}
+
+
+const dados = {
+
+    nome,
+
+    whatsapp,
+
+    aparelho,
+
+    defeito,
+
+    data,
+
+    hora:hora || null,
+
+    status:
+        statusSelecionado ||
+        "aguardando"
+
+};
+
+
+let resposta;
+
+
+if(osAbertaId){
+
+    resposta =
         await supabaseClient
         .from("agendamentos")
-        .update({
-            status:
-                statusSelecionado
-        })
+        .update(dados)
         .eq(
             "id",
             osAbertaId
         );
 
+}else{
 
-    if(error){
-
-        console.error(error);
-
-        mostrarToast(
-            "Erro ao salvar status: " +
-            error.message
-        );
-
-        return;
-    }
-
-
-    const os =
-        agendamentos.find(
-            x =>
-                x.id ===
-                osAbertaId
-        );
-
-
-    if(os){
-
-        os.status =
-            statusSelecionado;
-
-    }
-
-
-    fecharOS();
-
-    renderizarOS();
-
-
-    mostrarToast(
-        "Status atualizado ✅"
-    );
+    resposta =
+        await supabaseClient
+        .from("agendamentos")
+        .insert(dados);
 
 }
 
 
+if(resposta.error){
+
+    console.error(
+        resposta.error
+    );
+
+    mostrarToast(
+        "Erro ao salvar OS: " +
+        resposta.error.message
+    );
+
+    return;
+}
+
+
+const eraEdicao =
+    !!osAbertaId;
+
+
+fecharOS();
+
+
+await carregarAgendamentos();
+
+
+mostrarToast(
+    eraEdicao
+    ? "OS atualizada ✅"
+    : "OS criada com sucesso ✅"
+);
+
+}
+
 /* ==================================================
-   FECHAR OS
+EXCLUIR OS
+================================================== */
+
+async function excluirOS(){
+
+if(!osAbertaId)
+    return;
+
+
+const os =
+    agendamentos.find(
+        x =>
+            x.id ===
+            osAbertaId
+    );
+
+
+if(!os)
+    return;
+
+
+const confirmou =
+    confirm(
+        "Deseja realmente excluir a OS #" +
+        os.id +
+        " de " +
+        (os.nome || "este cliente") +
+        "?"
+    );
+
+
+if(!confirmou)
+    return;
+
+
+const {error} =
+    await supabaseClient
+    .from("agendamentos")
+    .delete()
+    .eq(
+        "id",
+        osAbertaId
+    );
+
+
+if(error){
+
+    console.error(error);
+
+    mostrarToast(
+        "Erro ao excluir OS: " +
+        error.message
+    );
+
+    return;
+}
+
+
+fecharOS();
+
+
+await carregarAgendamentos();
+
+
+mostrarToast(
+    "OS excluída."
+);
+
+}
+
+/* ==================================================
+FECHAR OS
 ================================================== */
 
 function fecharOS(){
 
-    document
-        .getElementById(
-            "modalOS"
-        )
-        .classList.remove(
-            "show"
-        );
+document
+    .getElementById(
+        "modalOS"
+    )
+    .classList.remove(
+        "show"
+    );
 
 
-    osAbertaId =
-        null;
+osAbertaId =
+    null;
 
-    statusSelecionado =
-        null;
+statusSelecionado =
+    null;
 
 }
 
-
 /* ==================================================
-   DATA
+DATA
 ================================================== */
 
 function obterDataHoje(){
 
-    const d =
-        new Date();
+const d =
+    new Date();
 
 
-    const ano =
-        d.getFullYear();
+const ano =
+    d.getFullYear();
 
 
-    const mes =
-        String(
-            d.getMonth()+1
-        ).padStart(
-            2,
-            "0"
-        );
-
-
-    const dia =
-        String(
-            d.getDate()
-        ).padStart(
-            2,
-            "0"
-        );
-
-
-    return `${ano}-${mes}-${dia}`;
-
-}
-
-
-function atualizarTituloData(){
-
-    if(!dataAtualSelecionada)
-        return;
-
-
-    const partes =
-        dataAtualSelecionada
-        .split("-");
-
-
-    if(partes.length !== 3)
-        return;
-
-
-    const d =
-        new Date(
-            Number(partes[0]),
-            Number(partes[1])-1,
-            Number(partes[2])
-        );
-
-
-    const hoje =
-        obterDataHoje();
-
-
-    const nomes = [
-
-        "Domingo",
-
-        "Segunda-feira",
-
-        "Terça-feira",
-
-        "Quarta-feira",
-
-        "Quinta-feira",
-
-        "Sexta-feira",
-
-        "Sábado"
-
-    ];
-
-
-    document.getElementById(
-        "diaSelecionado"
-    ).textContent =
-
-        dataAtualSelecionada === hoje
-
-        ? "Hoje"
-
-        : formatarDataBR(
-            dataAtualSelecionada
-        );
-
-
-    document.getElementById(
-        "diaSemana"
-    ).textContent =
-        nomes[d.getDay()];
-
-
-    document.getElementById(
-        "dataEscolhida"
-    ).value =
-        dataAtualSelecionada;
-
-}
-
-
-function mudarDia(valor){
-
-    const partes =
-        dataAtualSelecionada
-        .split("-");
-
-
-    const d =
-        new Date(
-            Number(partes[0]),
-            Number(partes[1])-1,
-            Number(partes[2])
-        );
-
-
-    d.setDate(
-        d.getDate() +
-        valor
+const mes =
+    String(
+        d.getMonth()+1
+    ).padStart(
+        2,
+        "0"
     );
 
 
-    const ano =
-        d.getFullYear();
+const dia =
+    String(
+        d.getDate()
+    ).padStart(
+        2,
+        "0"
+    );
 
 
-    const mes =
-        String(
-            d.getMonth()+1
-        ).padStart(
-            2,
-            "0"
-        );
-
-
-    const dia =
-        String(
-            d.getDate()
-        ).padStart(
-            2,
-            "0"
-        );
-
-
-    dataAtualSelecionada =
-        `${ano}-${mes}-${dia}`;
-
-
-    atualizarTituloData();
-
-    renderizarOS();
+return `${ano}-${mes}-${dia}`;
 
 }
 
+function atualizarTituloData(){
+
+if(!dataAtualSelecionada)
+    return;
+
+
+const partes =
+    dataAtualSelecionada
+    .split("-");
+
+
+if(partes.length !== 3)
+    return;
+
+
+const d =
+    new Date(
+        Number(partes[0]),
+        Number(partes[1])-1,
+        Number(partes[2])
+    );
+
+
+const hoje =
+    obterDataHoje();
+
+
+const nomes = [
+
+    "Domingo",
+
+    "Segunda-feira",
+
+    "Terça-feira",
+
+    "Quarta-feira",
+
+    "Quinta-feira",
+
+    "Sexta-feira",
+
+    "Sábado"
+
+];
+
+
+document.getElementById(
+    "diaSelecionado"
+).textContent =
+
+    dataAtualSelecionada === hoje
+
+    ? "Hoje"
+
+    : formatarDataBR(
+        dataAtualSelecionada
+    );
+
+
+document.getElementById(
+    "diaSemana"
+).textContent =
+    nomes[d.getDay()];
+
+
+document.getElementById(
+    "dataEscolhida"
+).value =
+    dataAtualSelecionada;
+
+}
+
+function mudarDia(valor){
+
+const partes =
+    dataAtualSelecionada
+    .split("-");
+
+
+const d =
+    new Date(
+        Number(partes[0]),
+        Number(partes[1])-1,
+        Number(partes[2])
+    );
+
+
+d.setDate(
+    d.getDate() +
+    valor
+);
+
+
+const ano =
+    d.getFullYear();
+
+
+const mes =
+    String(
+        d.getMonth()+1
+    ).padStart(
+        2,
+        "0"
+    );
+
+
+const dia =
+    String(
+        d.getDate()
+    ).padStart(
+        2,
+        "0"
+    );
+
+
+dataAtualSelecionada =
+    `${ano}-${mes}-${dia}`;
+
+
+atualizarTituloData();
+
+renderizarOS();
+
+}
 
 function selecionarData(){
 
-    const valor =
-        document.getElementById(
-            "dataEscolhida"
-        ).value;
+const valor =
+    document.getElementById(
+        "dataEscolhida"
+    ).value;
 
 
-    if(!valor)
-        return;
+if(!valor)
+    return;
 
 
-    dataAtualSelecionada =
-        valor;
+dataAtualSelecionada =
+    valor;
 
 
-    atualizarTituloData();
+atualizarTituloData();
 
-    renderizarOS();
+renderizarOS();
 
 }
 
-
 /* ==================================================
-   FINANCEIRO
+FINANCEIRO
 ================================================== */
 
 async function carregarFinanceiro(){
 
-    const {data,error} =
-        await supabaseClient
-        .from("movimentacoes")
-        .select("*")
-        .order(
-            "id",
-            {
-                ascending:false
-            }
-        );
-
-
-    if(error){
-
-        console.error(error);
-
-        mostrarToast(
-            "Erro ao carregar financeiro."
-        );
-
-        return;
-    }
-
-
-    movimentacoes =
-        data || [];
-
-
-    calcularFinanceiro();
-
-    renderizarFinanceiro();
-
-}
-
-
-function calcularFinanceiro(){
-
-    let entradas = 0;
-
-    let saidas = 0;
-
-
-    movimentacoes.forEach(
-        item => {
-
-            const valor =
-                Number(
-                    item.valor
-                ) || 0;
-
-
-            if(
-                String(item.tipo)
-                .toLowerCase()
-                === "entrada"
-            ){
-
-                entradas +=
-                    valor;
-
-            }else{
-
-                saidas +=
-                    valor;
-
-            }
-
+const {data,error} =
+    await supabaseClient
+    .from("movimentacoes")
+    .select("*")
+    .order(
+        "id",
+        {
+            ascending:false
         }
     );
 
 
-    document.getElementById(
-        "totalEntradas"
-    ).textContent =
-        dinheiro(
-            entradas
-        );
+if(error){
 
+    console.error(error);
 
-    document.getElementById(
-        "totalSaidas"
-    ).textContent =
-        dinheiro(
-            saidas
-        );
+    mostrarToast(
+        "Erro ao carregar financeiro."
+    );
 
-
-    document.getElementById(
-        "saldo"
-    ).textContent =
-        dinheiro(
-            entradas -
-            saidas
-        );
-
+    return;
 }
 
 
+movimentacoes =
+    data || [];
+
+
+calcularFinanceiro();
+
+renderizarFinanceiro();
+
+}
+
+function calcularFinanceiro(){
+
+let entradas = 0;
+
+let saidas = 0;
+
+
+movimentacoes.forEach(
+    item => {
+
+        const valor =
+            Number(
+                item.valor
+            ) || 0;
+
+
+        if(
+            String(item.tipo)
+            .toLowerCase()
+            === "entrada"
+        ){
+
+            entradas +=
+                valor;
+
+        }else{
+
+            saidas +=
+                valor;
+
+        }
+
+    }
+);
+
+
+document.getElementById(
+    "totalEntradas"
+).textContent =
+    dinheiro(
+        entradas
+    );
+
+
+document.getElementById(
+    "totalSaidas"
+).textContent =
+    dinheiro(
+        saidas
+    );
+
+
+document.getElementById(
+    "saldo"
+).textContent =
+    dinheiro(
+        entradas -
+        saidas
+    );
+
+}
+
 function renderizarFinanceiro(){
 
-    const container =
-        document.getElementById(
-            "listaFinanceiro"
-        );
+const container =
+    document.getElementById(
+        "listaFinanceiro"
+    );
 
 
-    if(!movimentacoes.length){
+if(!movimentacoes.length){
 
-        container.innerHTML = `
+    container.innerHTML = `
 
-            <div class="vazio">
+        <div class="vazio">
 
-                Nenhuma movimentação.
+            Nenhuma movimentação.
 
-            </div>
+        </div>
 
-        `;
+    `;
 
-        return;
-    }
-
-
-    let html = "";
+    return;
+}
 
 
-    movimentacoes.forEach(
-        item => {
-
-            const entrada =
-                String(item.tipo)
-                .toLowerCase()
-                === "entrada";
+let html = "";
 
 
-            const valor =
-                Number(
-                    item.valor
-                ) || 0;
+movimentacoes.forEach(
+    item => {
+
+        const entrada =
+            String(item.tipo)
+            .toLowerCase()
+            === "entrada";
 
 
-            html += `
-
-                <div class="finance-item">
-
-                    <div class="finance-top">
-
-                        <div
-                            class="
-                                finance-descricao
-                            "
-                        >
-
-                            ${
-                                entrada
-                                ? "🟢"
-                                : "🔴"
-                            }
-
-                            ${escapeHTML(
-                                item.descricao ||
-                                "Sem descrição"
-                            )}
-
-                        </div>
+        const valor =
+            Number(
+                item.valor
+            ) || 0;
 
 
-                        <div
-                            class="
-                                finance-valor
-                                ${
-                                    entrada
-                                    ? "entrada"
-                                    : "saida"
-                                }
-                            "
-                        >
+        html += `
 
-                            ${
-                                entrada
-                                ? "+"
-                                : "-"
-                            }
+            <div class="finance-item">
 
-                            ${dinheiro(
-                                valor
-                            )}
+                <div class="finance-top">
 
-                        </div>
-
-                    </div>
-
-
-                    <div class="finance-meta">
+                    <div class="finance-descricao">
 
                         ${
                             entrada
-                            ? "Entrada"
-                            : "Saída"
+                            ? "🟢"
+                            : "🔴"
                         }
 
-                        •
-
                         ${escapeHTML(
-                            item.data ||
-                            "-"
+                            item.descricao ||
+                            "Sem descrição"
                         )}
 
                     </div>
 
 
-                    <div class="finance-acoes">
+                    <div
+                        class="
+                            finance-valor
+                            ${
+                                entrada
+                                ? "entrada"
+                                : "saida"
+                            }
+                        "
+                    >
 
-                        <button
-                            class="
-                                btn
-                                cinza
-                                pequeno
-                            "
-                            onclick="
-                                editarFinanceiro(
-                                    ${item.id}
-                                )
-                            "
-                        >
-                            ✏️ Editar
-                        </button>
+                        ${
+                            entrada
+                            ? "+"
+                            : "-"
+                        }
 
-
-                        <button
-                            class="
-                                btn
-                                vermelho
-                                pequeno
-                            "
-                            onclick="
-                                excluirFinanceiro(
-                                    ${item.id}
-                                )
-                            "
-                        >
-                            🗑️ Excluir
-                        </button>
+                        ${dinheiro(
+                            valor
+                        )}
 
                     </div>
 
                 </div>
 
-            `;
 
-        }
-    );
+                <div class="finance-meta">
+
+                    ${
+                        entrada
+                        ? "Entrada"
+                        : "Saída"
+                    }
+
+                    •
+
+                    ${escapeHTML(
+                        item.data ||
+                        "-"
+                    )}
+
+                </div>
 
 
-    container.innerHTML =
-        html;
+                <div class="finance-acoes">
+
+                    <button
+                        class="btn cinza pequeno"
+                        onclick="
+                            editarFinanceiro(
+                                ${item.id}
+                            )
+                        "
+                    >
+                        ✏️ Editar
+                    </button>
+
+
+                    <button
+                        class="btn vermelho pequeno"
+                        onclick="
+                            excluirFinanceiro(
+                                ${item.id}
+                            )
+                        "
+                    >
+                        🗑️ Excluir
+                    </button>
+
+                </div>
+
+            </div>
+
+        `;
+
+    }
+);
+
+
+container.innerHTML =
+    html;
 
 }
 
-
 /* ==================================================
-   NOVO FINANCEIRO
+NOVO FINANCEIRO
 ================================================== */
 
 function abrirNovoFinanceiro(){
 
-    document.getElementById(
-        "financeId"
-    ).value =
-        "";
+document.getElementById(
+    "financeId"
+).value =
+    "";
 
 
-    document.getElementById(
-        "financeTipo"
-    ).value =
-        "entrada";
+document.getElementById(
+    "financeTipo"
+).value =
+    "entrada";
 
 
-    document.getElementById(
-        "financeDescricao"
-    ).value =
-        "";
+document.getElementById(
+    "financeDescricao"
+).value =
+    "";
 
 
-    document.getElementById(
-        "financeValor"
-    ).value =
-        "";
+document.getElementById(
+    "financeValor"
+).value =
+    "";
 
 
-    document.getElementById(
-        "financeData"
-    ).value =
-        obterDataHoje();
+document.getElementById(
+    "financeData"
+).value =
+    obterDataHoje();
 
 
-    document.getElementById(
-        "tituloFinanceiro"
-    ).textContent =
-        "Nova movimentação";
+document.getElementById(
+    "tituloFinanceiro"
+).textContent =
+    "Nova movimentação";
 
 
-    document.getElementById(
-        "modalFinanceiro"
-    ).classList.add(
-        "show"
-    );
+document.getElementById(
+    "modalFinanceiro"
+).classList.add(
+    "show"
+);
 
 }
 
-
 /* ==================================================
-   EDITAR FINANCEIRO
+EDITAR FINANCEIRO
 ================================================== */
 
 function editarFinanceiro(id){
 
-    const item =
-        movimentacoes.find(
-            x =>
-                x.id === id
-        );
-
-
-    if(!item)
-        return;
-
-
-    document.getElementById(
-        "financeId"
-    ).value =
-        item.id;
-
-
-    document.getElementById(
-        "financeTipo"
-    ).value =
-        item.tipo ||
-        "entrada";
-
-
-    document.getElementById(
-        "financeDescricao"
-    ).value =
-        item.descricao ||
-        "";
-
-
-    document.getElementById(
-        "financeValor"
-    ).value =
-        item.valor ||
-        0;
-
-
-    document.getElementById(
-        "financeData"
-    ).value =
-        converterDataInput(
-            item.data
-        );
-
-
-    document.getElementById(
-        "tituloFinanceiro"
-    ).textContent =
-        "Editar movimentação";
-
-
-    document.getElementById(
-        "modalFinanceiro"
-    ).classList.add(
-        "show"
+const item =
+    movimentacoes.find(
+        x =>
+            x.id === id
     );
+
+
+if(!item)
+    return;
+
+
+document.getElementById(
+    "financeId"
+).value =
+    item.id;
+
+
+document.getElementById(
+    "financeTipo"
+).value =
+    item.tipo ||
+    "entrada";
+
+
+document.getElementById(
+    "financeDescricao"
+).value =
+    item.descricao ||
+    "";
+
+
+document.getElementById(
+    "financeValor"
+).value =
+    item.valor ||
+    0;
+
+
+document.getElementById(
+    "financeData"
+).value =
+    converterDataInput(
+        item.data
+    );
+
+
+document.getElementById(
+    "tituloFinanceiro"
+).textContent =
+    "Editar movimentação";
+
+
+document.getElementById(
+    "modalFinanceiro"
+).classList.add(
+    "show"
+);
 
 }
 
-
 /* ==================================================
-   SALVAR FINANCEIRO
+SALVAR FINANCEIRO
 ================================================== */
 
 async function salvarFinanceiro(){
 
-    const id =
+const id =
+    document.getElementById(
+        "financeId"
+    ).value;
+
+
+const tipo =
+    document.getElementById(
+        "financeTipo"
+    ).value;
+
+
+const descricao =
+    document.getElementById(
+        "financeDescricao"
+    ).value.trim();
+
+
+const valor =
+    Number(
         document.getElementById(
-            "financeId"
-        ).value;
-
-
-    const tipo =
-        document.getElementById(
-            "financeTipo"
-        ).value;
-
-
-    const descricao =
-        document.getElementById(
-            "financeDescricao"
-        ).value.trim();
-
-
-    const valor =
-        Number(
-            document.getElementById(
-                "financeValor"
-            ).value
-        );
-
-
-    const dataInput =
-        document.getElementById(
-            "financeData"
-        ).value;
-
-
-    if(!descricao){
-
-        mostrarToast(
-            "Digite a descrição."
-        );
-
-        return;
-    }
-
-
-    if(!valor || valor <= 0){
-
-        mostrarToast(
-            "Digite um valor válido."
-        );
-
-        return;
-    }
-
-
-    const data =
-        converterDataBanco(
-            dataInput
-        );
-
-
-    let error;
-
-
-    if(id){
-
-        const resposta =
-            await supabaseClient
-            .from("movimentacoes")
-            .update({
-
-                tipo,
-
-                descricao,
-
-                valor,
-
-                data
-
-            })
-            .eq(
-                "id",
-                id
-            );
-
-
-        error =
-            resposta.error;
-
-    }else{
-
-        const resposta =
-            await supabaseClient
-            .from("movimentacoes")
-            .insert({
-
-                tipo,
-
-                descricao,
-
-                valor,
-
-                data
-
-            });
-
-
-        error =
-            resposta.error;
-
-    }
-
-
-    if(error){
-
-        console.error(error);
-
-        mostrarToast(
-            "Erro ao salvar: " +
-            error.message
-        );
-
-        return;
-    }
-
-
-    fecharFinanceiro();
-
-
-    await carregarFinanceiro();
-
-
-    mostrarToast(
-        id
-        ? "Movimentação editada ✅"
-        : "Movimentação adicionada ✅"
+            "financeValor"
+        ).value
     );
 
+
+const dataInput =
+    document.getElementById(
+        "financeData"
+    ).value;
+
+
+if(!descricao){
+
+    mostrarToast(
+        "Digite a descrição."
+    );
+
+    return;
 }
 
 
-/* ==================================================
-   EXCLUIR FINANCEIRO
-================================================== */
+if(!valor || valor <= 0){
 
-async function excluirFinanceiro(id){
+    mostrarToast(
+        "Digite um valor válido."
+    );
 
-    if(
-        !confirm(
-            "Deseja realmente excluir esta movimentação?"
-        )
-    ){
-
-        return;
-
-    }
+    return;
+}
 
 
-    const {error} =
+const data =
+    converterDataBanco(
+        dataInput
+    );
+
+
+let error;
+
+
+if(id){
+
+    const resposta =
         await supabaseClient
         .from("movimentacoes")
-        .delete()
+        .update({
+
+            tipo,
+
+            descricao,
+
+            valor,
+
+            data
+
+        })
         .eq(
             "id",
             id
         );
 
 
-    if(error){
+    error =
+        resposta.error;
 
-        console.error(error);
+}else{
 
-        mostrarToast(
-            "Erro ao excluir."
-        );
+    const resposta =
+        await supabaseClient
+        .from("movimentacoes")
+        .insert({
 
-        return;
-    }
+            tipo,
+
+            descricao,
+
+            valor,
+
+            data
+
+        });
 
 
-    await carregarFinanceiro();
-
-
-    mostrarToast(
-        "Movimentação excluída."
-    );
+    error =
+        resposta.error;
 
 }
 
 
+if(error){
+
+    console.error(error);
+
+    mostrarToast(
+        "Erro ao salvar: " +
+        error.message
+    );
+
+    return;
+}
+
+
+fecharFinanceiro();
+
+
+await carregarFinanceiro();
+
+
+mostrarToast(
+    id
+    ? "Movimentação editada ✅"
+    : "Movimentação adicionada ✅"
+);
+
+}
+
 /* ==================================================
-   CLIENTES
+EXCLUIR FINANCEIRO
+================================================== */
+
+async function excluirFinanceiro(id){
+
+if(
+    !confirm(
+        "Deseja realmente excluir esta movimentação?"
+    )
+){
+
+    return;
+
+}
+
+
+const {error} =
+    await supabaseClient
+    .from("movimentacoes")
+    .delete()
+    .eq(
+        "id",
+        id
+    );
+
+
+if(error){
+
+    console.error(error);
+
+    mostrarToast(
+        "Erro ao excluir."
+    );
+
+    return;
+}
+
+
+await carregarFinanceiro();
+
+
+mostrarToast(
+    "Movimentação excluída."
+);
+
+}
+
+/* ==================================================
+CLIENTES
 ================================================== */
 
 async function carregarClientes(){
 
-    const {data,error} =
-        await supabaseClient
-        .from("clientes")
-        .select("*")
-        .order(
-            "id",
-            {
-                ascending:false
-            }
-        );
+const {data,error} =
+    await supabaseClient
+    .from("clientes")
+    .select("*")
+    .order(
+        "id",
+        {
+            ascending:false
+        }
+    );
 
 
-    if(error){
+if(error){
 
-        console.error(error);
+    console.error(error);
 
-        return;
-    }
-
-
-    clientes =
-        data || [];
-
-
-    renderizarClientes();
-
+    return;
 }
 
 
+clientes =
+    data || [];
+
+
+renderizarClientes();
+
+}
+
 function renderizarClientes(){
 
-    const container =
-        document.getElementById(
-            "listaClientes"
-        );
+const container =
+    document.getElementById(
+        "listaClientes"
+    );
 
 
-    if(!clientes.length){
+if(!clientes.length){
 
-        container.innerHTML = `
+    container.innerHTML = `
 
-            <div class="vazio">
+        <div class="vazio">
 
-                Nenhum cliente cadastrado.
+            Nenhum cliente cadastrado.
 
-            </div>
+        </div>
 
-        `;
+    `;
 
-        return;
-    }
-
-
-    let html = "";
+    return;
+}
 
 
-    clientes.forEach(
-        cliente => {
-
-            const telefone =
-                somenteNumeros(
-                    cliente.whatsapp ||
-                    ""
-                );
+let html = "";
 
 
-            html += `
+clientes.forEach(
+    cliente => {
 
-                <div class="cliente">
-
-                    <div class="cliente-nome">
-
-                        👤
-
-                        ${escapeHTML(
-                            cliente.nome ||
-                            "-"
-                        )}
-
-                    </div>
+        const telefone =
+            somenteNumeros(
+                cliente.whatsapp ||
+                ""
+            );
 
 
-                    <div class="cliente-info">
+        html += `
 
-                        WhatsApp:
+            <div class="cliente">
 
-                        ${escapeHTML(
-                            cliente.whatsapp ||
-                            "-"
-                        )}
+                <div class="cliente-nome">
 
-                        ${
-                            cliente.cidade
-                            ?
-                            `
-                            <br>
-                            Cidade:
+                    👤
 
-                            ${escapeHTML(
-                                cliente.cidade
-                            )}
-                            `
-                            :
-                            ""
-                        }
+                    ${escapeHTML(
+                        cliente.nome ||
+                        "-"
+                    )}
 
-                    </div>
+                </div>
 
+
+                <div class="cliente-info">
+
+                    WhatsApp:
+
+                    ${escapeHTML(
+                        cliente.whatsapp ||
+                        "-"
+                    )}
 
                     ${
-                        telefone
+                        cliente.cidade
                         ?
                         `
-                        <div
-                            style="
-                            margin-top:10px
-                            "
-                        >
+                        <br>
+                        Cidade:
 
-                            <button
-                                class="
-                                    btn
-                                    verde
-                                    pequeno
-                                "
-                                onclick="
-                                    abrirWhatsApp(
-                                        '${telefone}'
-                                    )
-                                "
-                            >
-                                WhatsApp
-                            </button>
-
-                        </div>
+                        ${escapeHTML(
+                            cliente.cidade
+                        )}
                         `
                         :
                         ""
@@ -3328,639 +3440,602 @@ function renderizarClientes(){
 
                 </div>
 
-            `;
 
-        }
-    );
+                ${
+                    telefone
+                    ?
+                    `
+                    <div
+                        style="
+                        margin-top:10px
+                        "
+                    >
+
+                        <button
+                            class="
+                                btn
+                                verde
+                                pequeno
+                            "
+                            onclick="
+                                abrirWhatsApp(
+                                    '${telefone}'
+                                )
+                            "
+                        >
+                            WhatsApp
+                        </button>
+
+                    </div>
+                    `
+                    :
+                    ""
+                }
+
+            </div>
+
+        `;
+
+    }
+);
 
 
-    container.innerHTML =
-        html;
+container.innerHTML =
+    html;
 
 }
 
-
 /* ==================================================
-   REALTIME
+REALTIME
 ================================================== */
 
 function iniciarRealtime(){
 
-    supabaseClient
-    .channel("ws-painel")
+supabaseClient
+.channel("ws-painel")
 
-    .on(
-        "postgres_changes",
-        {
-            event:"*",
-            schema:"public",
-            table:"agendamentos"
-        },
-        function(){
+.on(
+    "postgres_changes",
+    {
+        event:"*",
+        schema:"public",
+        table:"agendamentos"
+    },
+    function(){
 
-            carregarAgendamentos();
+        carregarAgendamentos();
 
-        }
-    )
+    }
+)
 
-    .on(
-        "postgres_changes",
-        {
-            event:"*",
-            schema:"public",
-            table:"movimentacoes"
-        },
-        function(){
-
-            carregarFinanceiro();
-
-        }
-    )
-
-    .on(
-        "postgres_changes",
-        {
-            event:"*",
-            schema:"public",
-            table:"clientes"
-        },
-        function(){
-
-            carregarClientes();
-
-        }
-    )
-
-    .subscribe();
-
-}
-
-
-/* ==================================================
-   NAVEGAÇÃO
-================================================== */
-
-function abrirPagina(
-    pagina,
-    botao
-){
-
-    document
-        .querySelectorAll(
-            ".page"
-        )
-        .forEach(
-            p =>
-                p.classList.remove(
-                    "active"
-                )
-        );
-
-
-    document
-        .getElementById(
-            pagina
-        )
-        .classList.add(
-            "active"
-        );
-
-
-    document
-        .querySelectorAll(
-            "nav button"
-        )
-        .forEach(
-            b =>
-                b.classList.remove(
-                    "active"
-                )
-        );
-
-
-    botao.classList.add(
-        "active"
-    );
-
-
-    if(
-        pagina ===
-        "financeiro"
-    ){
+.on(
+    "postgres_changes",
+    {
+        event:"*",
+        schema:"public",
+        table:"movimentacoes"
+    },
+    function(){
 
         carregarFinanceiro();
 
     }
+)
 
-
-    if(
-        pagina ===
-        "clientes"
-    ){
+.on(
+    "postgres_changes",
+    {
+        event:"*",
+        schema:"public",
+        table:"clientes"
+    },
+    function(){
 
         carregarClientes();
 
     }
+)
+
+.subscribe();
 
 }
-
 
 /* ==================================================
-   MODAL FINANCEIRO
+NAVEGAÇÃO
 ================================================== */
 
-function fecharFinanceiro(){
-
-    document
-        .getElementById(
-            "modalFinanceiro"
-        )
-        .classList.remove(
-            "show"
-        );
-
-}
-
-
-/* ==================================================
-   WHATSAPP
-================================================== */
-
-function abrirWhatsApp(numero){
-
-    let telefone =
-        somenteNumeros(
-            numero
-        );
-
-
-    if(!telefone)
-        return;
-
-
-    if(
-        !telefone.startsWith("55")
-    ){
-
-        telefone =
-            "55" +
-            telefone;
-
-    }
-
-
-    window.open(
-        "https://wa.me/" +
-        telefone,
-        "_blank"
-    );
-
-}
-
-
-/* ==================================================
-   FORMATAÇÕES
-================================================== */
-
-function formatarHora(hora){
-
-    if(!hora)
-        return "Sem horário";
-
-
-    return String(hora)
-        .substring(
-            0,
-            5
-        );
-
-}
-
-
-function formatarDataBR(data){
-
-    if(!data)
-        return "-";
-
-
-    const partes =
-        data.split("-");
-
-
-    if(partes.length !== 3)
-        return data;
-
-
-    return `
-        ${partes[2]}/
-        ${partes[1]}/
-        ${partes[0]}
-    `.replace(
-        /\s/g,
-        ""
-    );
-
-}
-
-
-function formatarDataCompleta(data){
-
-    if(!data)
-        return "Sem data";
-
-
-    const partes =
-        data.split("-");
-
-
-    if(partes.length !== 3)
-        return data;
-
-
-    const d =
-        new Date(
-            Number(partes[0]),
-            Number(partes[1])-1,
-            Number(partes[2])
-        );
-
-
-    const dias = [
-
-        "Domingo",
-
-        "Segunda-feira",
-
-        "Terça-feira",
-
-        "Quarta-feira",
-
-        "Quinta-feira",
-
-        "Sexta-feira",
-
-        "Sábado"
-
-    ];
-
-
-    return `
-        ${partes[2]}/
-        ${partes[1]}/
-        ${partes[0]}
-        — ${dias[d.getDay()]}
-    `;
-
-}
-
-
-function dinheiro(valor){
-
-    return Number(
-        valor || 0
-    ).toLocaleString(
-        "pt-BR",
-        {
-            style:"currency",
-            currency:"BRL"
-        }
-    );
-
-}
-
-
-/* ==================================================
-   DATA FINANCEIRO
-================================================== */
-
-function converterDataBanco(data){
-
-    if(!data)
-        return "";
-
-
-    const partes =
-        data.split("-");
-
-
-    if(partes.length !== 3)
-        return data;
-
-
-    return `
-        ${partes[2]}/
-        ${partes[1]}/
-        ${partes[0]}
-    `.replace(
-        /\s/g,
-        ""
-    );
-
-}
-
-
-function converterDataInput(data){
-
-    if(!data)
-        return obterDataHoje();
-
-
-    if(data.includes("-"))
-        return data;
-
-
-    const partes =
-        data.split("/");
-
-
-    if(partes.length !== 3)
-        return obterDataHoje();
-
-
-    return `
-        ${partes[2]}-
-        ${partes[1]}-
-        ${partes[0]}
-    `.replace(
-        /\s/g,
-        ""
-    );
-
-}
-
-
-/* ==================================================
-   STATUS
-================================================== */
-
-function normalizarStatus(status){
-
-    const s =
-        String(
-            status ||
-            "aguardando"
-        ).toLowerCase();
-
-
-    const permitidos = [
-
-        "aguardando",
-
-        "confirmado",
-
-        "andamento",
-
-        "concluido",
-
-        "cancelado"
-
-    ];
-
-
-    return permitidos.includes(s)
-        ? s
-        : "aguardando";
-
-}
-
-
-function textoStatus(status){
-
-    switch(
-        normalizarStatus(status)
-    ){
-
-        case "confirmado":
-            return "Confirmado";
-
-        case "andamento":
-            return "Em andamento";
-
-        case "concluido":
-            return "Concluído";
-
-        case "cancelado":
-            return "Cancelado";
-
-        default:
-            return "Aguardando";
-
-    }
-
-}
-
-
-/* ==================================================
-   SEGURANÇA
-================================================== */
-
-function escapeHTML(text){
-
-    return String(
-        text ?? ""
+function abrirPagina(
+pagina,
+botao
+){
+
+document
+    .querySelectorAll(
+        ".page"
     )
-    .replace(
-        /&/g,
-        "&amp;"
-    )
-    .replace(
-        /</g,
-        "&lt;"
-    )
-    .replace(
-        />/g,
-        "&gt;"
-    )
-    .replace(
-        /"/g,
-        "&quot;"
-    )
-    .replace(
-        /'/g,
-        "&#039;"
+    .forEach(
+        p =>
+            p.classList.remove(
+                "active"
+            )
     );
 
-}
-
-
-/* ==================================================
-   TELEFONE
-================================================== */
-
-function somenteNumeros(numero){
-
-    return String(
-        numero || ""
-    ).replace(
-        /\D/g,
-        ""
-    );
-
-}
-
-
-/* ==================================================
-   TOAST
-================================================== */
-
-let toastTimer;
-
-
-function mostrarToast(mensagem){
-
-    const toast =
-        document.getElementById(
-            "toast"
-        );
-
-
-    toast.textContent =
-        mensagem;
-
-
-    toast.classList.add(
-        "show"
-    );
-
-
-    clearTimeout(
-        toastTimer
-    );
-
-
-    toastTimer =
-        setTimeout(
-            function(){
-
-                toast.classList.remove(
-                    "show"
-                );
-
-            },
-            3000
-        );
-
-}
-
-
-/* ==================================================
-   TEMA
-================================================== */
-
-function alternarTema(){
-
-    document.body
-        .classList
-        .toggle(
-            "dark"
-        );
-
-
-    const dark =
-        document.body
-        .classList
-        .contains(
-            "dark"
-        );
-
-
-    localStorage.setItem(
-        "ws_tema",
-        dark
-        ? "dark"
-        : "light"
-    );
-
-
-    document.getElementById(
-        "temaBtn"
-    ).textContent =
-        dark
-        ? "☀️"
-        : "🌙";
-
-}
-
-
-function carregarTema(){
-
-    if(
-        localStorage.getItem(
-            "ws_tema"
-        ) ===
-        "dark"
-    ){
-
-        document.body
-            .classList
-            .add(
-                "dark"
-            );
-
-
-        document.getElementById(
-            "temaBtn"
-        ).textContent =
-            "☀️";
-
-    }
-
-}
-
-
-/* ==================================================
-   CLIQUE FORA / ESC
-================================================== */
 
 document
     .getElementById(
-        "modalOS"
+        pagina
     )
-    .addEventListener(
-        "click",
-        function(e){
-
-            if(
-                e.target === this
-            ){
-
-                fecharOS();
-
-            }
-
-        }
+    .classList.add(
+        "active"
     );
 
+
+document
+    .querySelectorAll(
+        "nav button"
+    )
+    .forEach(
+        b =>
+            b.classList.remove(
+                "active"
+            )
+    );
+
+
+botao.classList.add(
+    "active"
+);
+
+
+if(
+    pagina ===
+    "financeiro"
+){
+
+    carregarFinanceiro();
+
+}
+
+
+if(
+    pagina ===
+    "clientes"
+){
+
+    carregarClientes();
+
+}
+
+}
+
+/* ==================================================
+MODAL FINANCEIRO
+================================================== */
+
+function fecharFinanceiro(){
 
 document
     .getElementById(
         "modalFinanceiro"
     )
-    .addEventListener(
-        "click",
-        function(e){
+    .classList.remove(
+        "show"
+    );
 
-            if(
-                e.target === this
-            ){
+}
 
-                fecharFinanceiro();
+/* ==================================================
+WHATSAPP
+================================================== */
 
-            }
+function abrirWhatsApp(numero){
 
-        }
+let telefone =
+    somenteNumeros(
+        numero
     );
 
 
-document.addEventListener(
-    "keydown",
-    function(e){
+if(!telefone)
+    return;
+
+
+if(
+    !telefone.startsWith("55")
+){
+
+    telefone =
+        "55" +
+        telefone;
+
+}
+
+
+window.open(
+    "https://wa.me/" +
+    telefone,
+    "_blank"
+);
+
+}
+
+/* ==================================================
+FORMATAÇÕES
+================================================== */
+
+function formatarHora(hora){
+
+if(!hora)
+    return "Sem horário";
+
+
+return String(hora)
+    .substring(
+        0,
+        5
+    );
+
+}
+
+function formatarHoraInput(hora){
+
+if(!hora)
+    return "";
+
+
+return String(hora)
+    .substring(
+        0,
+        5
+    );
+
+}
+
+function formatarDataBR(data){
+
+if(!data)
+    return "-";
+
+
+const partes =
+    data.split("-");
+
+
+if(partes.length !== 3)
+    return data;
+
+
+return `
+    ${partes[2]}/
+    ${partes[1]}/
+    ${partes[0]}
+`.replace(
+    /\s/g,
+    ""
+);
+
+}
+
+function dinheiro(valor){
+
+return Number(
+    valor || 0
+).toLocaleString(
+    "pt-BR",
+    {
+        style:"currency",
+        currency:"BRL"
+    }
+);
+
+}
+
+/* ==================================================
+DATA
+================================================== */
+
+function converterDataBanco(data){
+
+if(!data)
+    return "";
+
+
+/*
+   Agora mantemos a data no formato
+   YYYY-MM-DD, que é o formato ideal
+   para coluna DATE no Supabase.
+*/
+
+return data;
+
+}
+
+function converterDataInput(data){
+
+if(!data)
+    return obterDataHoje();
+
+
+if(
+    /^\d{4}-\d{2}-\d{2}$/.test(data)
+){
+
+    return data;
+
+}
+
+
+if(data.includes("/")){
+
+    const partes =
+        data.split("/");
+
+
+    if(partes.length === 3){
+
+        return `
+            ${partes[2]}-
+            ${partes[1]}-
+            ${partes[0]}
+        `.replace(
+            /\s/g,
+            ""
+        );
+
+    }
+
+}
+
+
+return obterDataHoje();
+
+}
+
+/* ==================================================
+STATUS
+================================================== */
+
+function normalizarStatus(status){
+
+const s =
+    String(
+        status ||
+        "aguardando"
+    ).toLowerCase();
+
+
+const permitidos = [
+
+    "aguardando",
+
+    "confirmado",
+
+    "andamento",
+
+    "concluido",
+
+    "cancelado"
+
+];
+
+
+return permitidos.includes(s)
+    ? s
+    : "aguardando";
+
+}
+
+function textoStatus(status){
+
+switch(
+    normalizarStatus(status)
+){
+
+    case "confirmado":
+        return "Confirmado";
+
+    case "andamento":
+        return "Em andamento";
+
+    case "concluido":
+        return "Concluído";
+
+    case "cancelado":
+        return "Cancelado";
+
+    default:
+        return "Aguardando";
+
+}
+
+}
+
+/* ==================================================
+SEGURANÇA
+================================================== */
+
+function escapeHTML(text){
+
+return String(
+    text ?? ""
+)
+.replace(
+    /&/g,
+    "&amp;"
+)
+.replace(
+    /</g,
+    "&lt;"
+)
+.replace(
+    />/g,
+    "&gt;"
+)
+.replace(
+    /"/g,
+    "&quot;"
+)
+.replace(
+    /'/g,
+    "&#039;"
+);
+
+}
+
+/* ==================================================
+TELEFONE
+================================================== */
+
+function somenteNumeros(numero){
+
+return String(
+    numero || ""
+).replace(
+    /\D/g,
+    ""
+);
+
+}
+
+/* ==================================================
+TOAST
+================================================== */
+
+let toastTimer;
+
+function mostrarToast(mensagem){
+
+const toast =
+    document.getElementById(
+        "toast"
+    );
+
+
+toast.textContent =
+    mensagem;
+
+
+toast.classList.add(
+    "show"
+);
+
+
+clearTimeout(
+    toastTimer
+);
+
+
+toastTimer =
+    setTimeout(
+        function(){
+
+            toast.classList.remove(
+                "show"
+            );
+
+        },
+        3000
+    );
+
+}
+
+/* ==================================================
+TEMA
+================================================== */
+
+function alternarTema(){
+
+document.body
+    .classList
+    .toggle(
+        "dark"
+    );
+
+
+const dark =
+    document.body
+    .classList
+    .contains(
+        "dark"
+    );
+
+
+localStorage.setItem(
+    "ws_tema",
+    dark
+    ? "dark"
+    : "light"
+);
+
+
+document.getElementById(
+    "temaBtn"
+).textContent =
+    dark
+    ? "☀️"
+    : "🌙";
+
+}
+
+function carregarTema(){
+
+if(
+    localStorage.getItem(
+        "ws_tema"
+    ) ===
+    "dark"
+){
+
+    document.body
+        .classList
+        .add(
+            "dark"
+        );
+
+
+    document.getElementById(
+        "temaBtn"
+    ).textContent =
+        "☀️";
+
+}
+
+}
+
+/* ==================================================
+CLIQUE FORA / ESC
+================================================== */
+
+document
+.getElementById(
+"modalOS"
+)
+.addEventListener(
+"click",
+function(e){
 
         if(
-            e.key === "Escape"
+            e.target === this
         ){
 
             fecharOS();
+
+        }
+
+    }
+);
+
+document
+.getElementById(
+"modalFinanceiro"
+)
+.addEventListener(
+"click",
+function(e){
+
+        if(
+            e.target === this
+        ){
 
             fecharFinanceiro();
 
@@ -3969,7 +4044,23 @@ document.addEventListener(
     }
 );
 
-</script>
+document.addEventListener(
+"keydown",
+function(e){
 
-</body>
+    if(
+        e.key === "Escape"
+    ){
+
+        fecharOS();
+
+        fecharFinanceiro();
+
+    }
+
+}
+
+);
+
+</script></body>
 </html>
