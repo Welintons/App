@@ -235,7 +235,7 @@ main{
 }
 
 .dia{
-    min-height:75px;
+    height:75px;
     background:#fafafa;
     border:1px solid #eee;
     border-radius:10px;
@@ -268,27 +268,23 @@ main{
     border:2px solid var(--roxo);
 }
 
-.marcador{
-    margin-top:7px;
+/* BOLINHA DO AGENDAMENTO */
+.bolinha-agendamento{
+    width:9px;
+    height:9px;
+    border-radius:50%;
     background:var(--roxo);
-    color:white;
-    border-radius:7px;
-    padding:4px 6px;
-    font-size:10px;
-    font-weight:bold;
-    overflow:hidden;
-    white-space:nowrap;
-    text-overflow:ellipsis;
-}
-
-.marcador.multiplos{
-    background:var(--roxo3);
+    position:absolute;
+    left:50%;
+    bottom:9px;
+    transform:translateX(-50%);
+    box-shadow:0 0 0 3px rgba(124,58,237,.12);
 }
 
 @media(max-width:650px){
 
     .dia{
-        min-height:58px;
+        height:58px;
         padding:5px;
     }
 
@@ -296,9 +292,10 @@ main{
         font-size:12px;
     }
 
-    .marcador{
-        font-size:9px;
-        padding:3px;
+    .bolinha-agendamento{
+        width:7px;
+        height:7px;
+        bottom:6px;
     }
 }
 
@@ -591,7 +588,6 @@ WS SOLUÇÕES
 👥 Clientes
 </button>
 
-
 <button onclick="abrirTela('financeiro',this)">
 💰 Financeiro
 </button>
@@ -602,7 +598,9 @@ WS SOLUÇÕES
 <main>
 
 
-<!-- INÍCIO -->
+<!-- ================================
+     INÍCIO
+================================ -->
 
 <section id="inicio" class="tela ativa">
 
@@ -654,9 +652,9 @@ WS SOLUÇÕES
 
 <div class="icone">💰</div>
 
-<h3>Entradas</h3>
+<h3>Saldo total</h3>
 
-<strong id="totalEntradas">R$ 0,00</strong>
+<strong id="totalSaldo">R$ 0,00</strong>
 
 </div>
 
@@ -761,7 +759,9 @@ onclick="abrirModalAgendamento()">
 </section>
 
 
-<!-- CLIENTES -->
+<!-- ================================
+     CLIENTES
+================================ -->
 
 <section id="clientes" class="tela">
 
@@ -807,6 +807,7 @@ onclick="abrirModalCliente()">
 <th>WhatsApp</th>
 <th>Endereço</th>
 <th>Cadastro</th>
+<th>Ação</th>
 
 </tr>
 
@@ -823,65 +824,9 @@ onclick="abrirModalCliente()">
 </section>
 
 
-<!-- AGENDAMENTOS -->
-
-<section id="agendamentos" class="tela">
-
-<div class="titulo">
-
-<h1>📅 Agendamentos</h1>
-
-<p>Todos os agendamentos</p>
-
-</div>
-
-
-<div class="painel">
-
-<button
-class="btn btn-roxo"
-onclick="abrirModalAgendamento()">
-+ Novo agendamento
-</button>
-
-</div>
-
-
-<div class="painel">
-
-<div class="tabela-container">
-
-<table>
-
-<thead>
-
-<tr>
-
-<th>Cliente</th>
-<th>WhatsApp</th>
-<th>serviço</th>
-<th>Defeito</th>
-<th>Data</th>
-<th>Hora</th>
-<th>Status</th>
-<th>Ação</th>
-
-</tr>
-
-</thead>
-
-<tbody id="tabelaAgendamentos"></tbody>
-
-</table>
-
-</div>
-
-</div>
-
-</section>
-
-
-<!-- FINANCEIRO -->
+<!-- ================================
+     FINANCEIRO
+================================ -->
 
 <section id="financeiro" class="tela">
 
@@ -956,6 +901,7 @@ onclick="abrirModalFinanceiro()">
 <th>Descrição</th>
 <th>Valor</th>
 <th>Data</th>
+<th>Ação</th>
 
 </tr>
 
@@ -971,64 +917,12 @@ onclick="abrirModalFinanceiro()">
 
 </section>
 
-
-<!-- SERVIÇOS -->
-
-<section id="servicos" class="tela">
-
-<div class="titulo">
-
-<h1>🛠️ Serviços</h1>
-
-<p>Controle dos serviços</p>
-
-</div>
-
-
-<div class="painel">
-
-<button
-class="btn btn-roxo"
-onclick="abrirModalServico()">
-+ Novo serviço
-</button>
-
-</div>
-
-
-<div class="painel">
-
-<div class="tabela-container">
-
-<table>
-
-<thead>
-
-<tr>
-
-<th>Cliente</th>
-<th>Serviço</th>
-<th>Valor</th>
-<th>Status</th>
-
-</tr>
-
-</thead>
-
-<tbody id="tabelaServicos"></tbody>
-
-</table>
-
-</div>
-
-</div>
-
-</section>
-
 </main>
 
 
-<!-- MODAL CLIENTE -->
+<!-- ================================
+     MODAL CLIENTE
+================================ -->
 
 <div id="modalCliente" class="modal">
 
@@ -1036,14 +930,20 @@ onclick="abrirModalServico()">
 
 <div class="modal-topo">
 
-<h2>Novo cliente</h2>
+<h2 id="tituloModalCliente">
+Novo cliente
+</h2>
 
-<button class="fechar" onclick="fecharModais()">×</button>
+<button class="fechar" onclick="fecharModais()">
+×
+</button>
 
 </div>
 
 
 <div class="modal-corpo">
+
+<input type="hidden" id="clienteId">
 
 <div class="form-grid">
 
@@ -1067,7 +967,7 @@ onclick="abrirModalServico()">
 
 <div class="campo">
 
-<label>Cidade</label>
+<label>Cidade / Endereço</label>
 
 <input id="clienteCidade">
 
@@ -1081,6 +981,7 @@ onclick="abrirModalServico()">
 <div class="form-acoes">
 
 <button
+id="btnSalvarCliente"
 class="btn btn-roxo"
 onclick="salvarCliente()">
 Salvar
@@ -1099,7 +1000,9 @@ Cancelar
 </div>
 
 
-<!-- MODAL AGENDAMENTO / EDITAR -->
+<!-- ================================
+     MODAL AGENDAMENTO
+================================ -->
 
 <div id="modalAgendamento" class="modal">
 
@@ -1120,11 +1023,7 @@ Novo agendamento
 
 <div class="modal-corpo">
 
-<input
-type="hidden"
-id="agId"
->
-
+<input type="hidden" id="agId">
 
 <div class="form-grid">
 
@@ -1179,21 +1078,10 @@ id="agId"
 
 <select id="agStatus">
 
-<option value="aguardando">
-Aguardando
-</option>
-
-<option value="confirmado">
-Confirmado
-</option>
-
-<option value="concluido">
-Concluído
-</option>
-
-<option value="cancelado">
-Cancelado
-</option>
+<option value="aguardando">Aguardando</option>
+<option value="confirmado">Confirmado</option>
+<option value="concluido">Concluído</option>
+<option value="cancelado">Cancelado</option>
 
 </select>
 
@@ -1219,18 +1107,13 @@ Cancelado
 id="btnSalvarAgendamento"
 class="btn btn-roxo"
 onclick="salvarAgendamento()">
-
 Salvar agendamento
-
 </button>
-
 
 <button
 class="btn btn-cinza"
 onclick="fecharModais()">
-
 Cancelar
-
 </button>
 
 </div>
@@ -1240,7 +1123,9 @@ Cancelar
 </div>
 
 
-<!-- MODAL FINANCEIRO -->
+<!-- ================================
+     MODAL FINANCEIRO
+================================ -->
 
 <div id="modalFinanceiro" class="modal">
 
@@ -1248,7 +1133,9 @@ Cancelar
 
 <div class="modal-topo">
 
-<h2>Nova movimentação</h2>
+<h2 id="tituloModalFinanceiro">
+Nova movimentação
+</h2>
 
 <button class="fechar" onclick="fecharModais()">
 ×
@@ -1259,6 +1146,8 @@ Cancelar
 
 <div class="modal-corpo">
 
+<input type="hidden" id="finId">
+
 <div class="form-grid">
 
 <div class="campo">
@@ -1267,13 +1156,8 @@ Cancelar
 
 <select id="finTipo">
 
-<option value="entrada">
-Entrada
-</option>
-
-<option value="saida">
-Saída
-</option>
+<option value="entrada">Entrada</option>
+<option value="saida">Saída</option>
 
 </select>
 
@@ -1309,125 +1193,16 @@ step="0.01"
 <div class="form-acoes">
 
 <button
+id="btnSalvarFinanceiro"
 class="btn btn-roxo"
 onclick="salvarFinanceiro()">
-
 Salvar
-
 </button>
-
 
 <button
 class="btn btn-cinza"
 onclick="fecharModais()">
-
 Cancelar
-
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-
-<!-- MODAL SERVIÇO -->
-
-<div id="modalServico" class="modal">
-
-<div class="modal-box">
-
-<div class="modal-topo">
-
-<h2>Novo serviço</h2>
-
-<button class="fechar" onclick="fecharModais()">
-×
-</button>
-
-</div>
-
-
-<div class="modal-corpo">
-
-<div class="form-grid">
-
-<div class="campo">
-
-<label>Cliente</label>
-
-<input id="servCliente">
-
-</div>
-
-
-<div class="campo">
-
-<label>Serviço</label>
-
-<input id="servNome">
-
-</div>
-
-
-<div class="campo">
-
-<label>Valor</label>
-
-<input
-id="servValor"
-type="number"
-step="0.01"
->
-
-</div>
-
-
-<div class="campo">
-
-<label>Status</label>
-
-<select id="servStatus">
-
-<option value="pendente">
-Pendente
-</option>
-
-<option value="andamento">
-Em andamento
-</option>
-
-<option value="concluido">
-Concluído
-</option>
-
-</select>
-
-</div>
-
-</div>
-
-</div>
-
-
-<div class="form-acoes">
-
-<button
-class="btn btn-roxo"
-onclick="salvarServico()">
-
-Salvar
-
-</button>
-
-
-<button
-class="btn btn-cinza"
-onclick="fecharModais()">
-
-Cancelar
-
 </button>
 
 </div>
@@ -1468,7 +1243,6 @@ window.supabase.createClient(
 let agendamentos = [];
 let clientes = [];
 let movimentacoes = [];
-let servicos = [];
 
 let dataCalendario = new Date();
 
@@ -1500,6 +1274,20 @@ function mensagem(msg){
         toast.classList.remove("mostrar");
 
     },3000);
+}
+
+
+/* =========================================
+   FORMATAÇÃO
+========================================= */
+
+function moeda(valor){
+
+    return Number(valor || 0)
+    .toLocaleString("pt-BR",{
+        style:"currency",
+        currency:"BRL"
+    });
 }
 
 
@@ -1538,6 +1326,7 @@ function renderizarCalendario(){
 
     container.innerHTML = "";
 
+
     for(let i=primeiroDia-1;i>=0;i--){
 
         container.appendChild(
@@ -1551,7 +1340,9 @@ function renderizarCalendario(){
                 )
             )
         );
+
     }
+
 
     for(let d=1;d<=ultimoDia;d++){
 
@@ -1562,13 +1353,16 @@ function renderizarCalendario(){
                 new Date(ano,mes,d)
             )
         );
+
     }
+
 
     const total =
     container.children.length;
 
     const faltam =
     (7-(total%7))%7;
+
 
     for(let d=1;d<=faltam;d++){
 
@@ -1579,7 +1373,9 @@ function renderizarCalendario(){
                 new Date(ano,mes+1,d)
             )
         );
+
     }
+
 }
 
 
@@ -1590,6 +1386,7 @@ function criarDia(numero,outroMes,data){
 
     div.className = "dia";
 
+
     const dataISO =
     data.getFullYear() +
     "-" +
@@ -1597,8 +1394,10 @@ function criarDia(numero,outroMes,data){
     "-" +
     String(data.getDate()).padStart(2,"0");
 
+
     if(outroMes)
         div.classList.add("outro-mes");
+
 
     const hoje = new Date();
 
@@ -1609,38 +1408,37 @@ function criarDia(numero,outroMes,data){
     "-" +
     String(hoje.getDate()).padStart(2,"0");
 
+
     if(dataISO === hojeISO)
         div.classList.add("hoje");
+
 
     if(dataISO === diaSelecionado)
         div.classList.add("selecionado");
 
+
     div.innerHTML =
     `<div class="numero">${numero}</div>`;
 
-    const eventos =
-    agendamentos.filter(
+
+    const temAgendamento =
+    agendamentos.some(
         item => item.data === dataISO
     );
 
-    if(eventos.length){
 
-        const marcador =
+    if(temAgendamento){
+
+        const bolinha =
         document.createElement("div");
 
-        marcador.className =
-        "marcador " +
-        (eventos.length > 1
-            ? "multiplos"
-            : "");
+        bolinha.className =
+        "bolinha-agendamento";
 
-        marcador.innerText =
-        eventos.length === 1
-        ? "📅 " + (eventos[0].hora || "--:--")
-        : "📅 " + eventos.length + " agendamentos";
+        div.appendChild(bolinha);
 
-        div.appendChild(marcador);
     }
+
 
     div.onclick = () => {
 
@@ -1649,7 +1447,9 @@ function criarDia(numero,outroMes,data){
         mostrarAgendamentosDoDia();
 
         renderizarCalendario();
+
     };
+
 
     return div;
 }
@@ -1662,6 +1462,7 @@ function mesAnterior(){
     );
 
     renderizarCalendario();
+
 }
 
 
@@ -1672,6 +1473,7 @@ function mesProximo(){
     );
 
     renderizarCalendario();
+
 }
 
 
@@ -1689,6 +1491,7 @@ function irParaHoje(){
     renderizarCalendario();
 
     mostrarAgendamentosDoDia();
+
 }
 
 
@@ -1714,6 +1517,7 @@ function classeStatus(status){
         default:
             return "aguardando";
     }
+
 }
 
 
@@ -1729,6 +1533,7 @@ function mostrarAgendamentosDoDia(){
     const titulo =
     document.getElementById("tituloDia");
 
+
     const eventos =
     agendamentos
     .filter(
@@ -1740,16 +1545,20 @@ function mostrarAgendamentosDoDia(){
         .localeCompare(b.hora || "")
     );
 
+
     const data =
     new Date(
         diaSelecionado + "T12:00:00"
     );
 
+
     titulo.innerText =
     "Agendamentos de " +
     data.toLocaleDateString("pt-BR");
 
+
     lista.innerHTML = "";
+
 
     if(!eventos.length){
 
@@ -1761,6 +1570,7 @@ function mostrarAgendamentosDoDia(){
         return;
     }
 
+
     eventos.forEach(item => {
 
         const div =
@@ -1768,6 +1578,7 @@ function mostrarAgendamentosDoDia(){
 
         div.className =
         "agendamento-item";
+
 
         div.innerHTML = `
 
@@ -1811,10 +1622,13 @@ function mostrarAgendamentosDoDia(){
                 </button>
 
             </div>
+
         `;
 
         lista.appendChild(div);
+
     });
+
 }
 
 
@@ -1830,9 +1644,11 @@ function abrirTela(id,botao){
         tela.classList.remove("ativa")
     );
 
+
     document
     .getElementById(id)
     .classList.add("ativa");
+
 
     document.querySelectorAll("nav button")
     .forEach(
@@ -1840,7 +1656,9 @@ function abrirTela(id,botao){
         btn.classList.remove("active")
     );
 
+
     botao.classList.add("active");
+
 }
 
 
@@ -1855,232 +1673,104 @@ function fecharModais(){
         modal =>
         modal.classList.remove("aberto")
     );
+
 }
 
+
+/* =========================================
+   CLIENTE
+========================================= */
 
 function abrirModalCliente(){
 
     document
     .getElementById("modalCliente")
     .classList.add("aberto");
+
+
+    document
+    .getElementById("tituloModalCliente")
+    .innerText =
+    "Novo cliente";
+
+
+    document
+    .getElementById("btnSalvarCliente")
+    .innerText =
+    "Salvar";
+
+
+    document.getElementById("clienteId").value = "";
+    document.getElementById("clienteNome").value = "";
+    document.getElementById("clienteWhatsapp").value = "";
+    document.getElementById("clienteCidade").value = "";
+
 }
 
 
-function abrirModalAgendamento(){
+function editarCliente(id){
 
-    document
-    .getElementById("modalAgendamento")
-    .classList.add("aberto");
-
-    document
-    .getElementById("tituloModalAgendamento")
-    .innerText =
-    "Novo agendamento";
-
-    document
-    .getElementById("btnSalvarAgendamento")
-    .innerText =
-    "Salvar agendamento";
-
-    document
-    .getElementById("agId")
-    .value = "";
-
-    document
-    .getElementById("agNome")
-    .value = "";
-
-    document
-    .getElementById("agWhatsapp")
-    .value = "";
-
-    document
-    .getElementById("agAparelho")
-    .value = "";
-
-    document
-    .getElementById("agHora")
-    .value = "";
-
-    document
-    .getElementById("agDefeito")
-    .value = "";
-
-    document
-    .getElementById("agStatus")
-    .value = "aguardando";
-
-    document
-    .getElementById("agData")
-    .value =
-    diaSelecionado;
-}
-
-
-/* =========================================
-   EDITAR OS
-========================================= */
-
-function editarAgendamento(id){
-
-    const item =
-    agendamentos.find(
-        ag =>
-        String(ag.id) === String(id)
+    const cliente =
+    clientes.find(
+        c =>
+        String(c.id) === String(id)
     );
 
-    if(!item){
 
-        mensagem("OS não encontrada.");
+    if(!cliente){
+
+        mensagem("Cliente não encontrado.");
 
         return;
     }
 
+
     document
-    .getElementById("modalAgendamento")
+    .getElementById("modalCliente")
     .classList.add("aberto");
 
-    document
-    .getElementById("tituloModalAgendamento")
-    .innerText =
-    "Editar OS";
 
     document
-    .getElementById("btnSalvarAgendamento")
+    .getElementById("tituloModalCliente")
+    .innerText =
+    "Editar cliente";
+
+
+    document
+    .getElementById("btnSalvarCliente")
     .innerText =
     "💾 Salvar alterações";
 
-    document
-    .getElementById("agId")
-    .value =
-    item.id;
 
-    document
-    .getElementById("agNome")
-    .value =
-    item.nome || "";
+    document.getElementById("clienteId").value =
+    cliente.id;
 
-    document
-    .getElementById("agWhatsapp")
-    .value =
-    item.whatsapp || "";
+    document.getElementById("clienteNome").value =
+    cliente.nome || "";
 
-    document
-    .getElementById("agAparelho")
-    .value =
-    item.aparelho || "";
+    document.getElementById("clienteWhatsapp").value =
+    cliente.whatsapp || "";
 
-    document
-    .getElementById("agData")
-    .value =
-    item.data || "";
+    document.getElementById("clienteCidade").value =
+    cliente.cidade || "";
 
-    document
-    .getElementById("agHora")
-    .value =
-    item.hora || "";
-
-    document
-    .getElementById("agDefeito")
-    .value =
-    item.defeito || "";
-
-    document
-    .getElementById("agStatus")
-    .value =
-    item.status || "aguardando";
 }
 
-
-/* =========================================
-   EXCLUIR OS
-========================================= */
-
-async function excluirAgendamento(id){
-
-    const item =
-    agendamentos.find(
-        ag =>
-        String(ag.id) === String(id)
-    );
-
-    if(!item){
-
-        mensagem("OS não encontrada.");
-
-        return;
-    }
-
-    const confirmar =
-    confirm(
-        "⚠️ Tem certeza que deseja excluir esta OS?\n\n" +
-        "Cliente: " +
-        (item.nome || "Não informado") +
-        "\nData: " +
-        (item.data || "Não informada") +
-        "\nHora: " +
-        (item.hora || "Não informada")
-    );
-
-    if(!confirmar)
-        return;
-
-    const {error} =
-    await supabaseClient
-    .from("agendamentos")
-    .delete()
-    .eq("id",id);
-
-    if(error){
-
-        console.error(error);
-
-        mensagem(
-            "Erro ao excluir a OS."
-        );
-
-        return;
-    }
-
-    mensagem(
-        "🗑️ OS excluída com sucesso!"
-    );
-
-    await carregarTudo();
-}
-
-
-/* =========================================
-   FINANCEIRO / SERVIÇO MODAIS
-========================================= */
-
-function abrirModalFinanceiro(){
-
-    document
-    .getElementById("modalFinanceiro")
-    .classList.add("aberto");
-}
-
-
-function abrirModalServico(){
-
-    document
-    .getElementById("modalServico")
-    .classList.add("aberto");
-}
-
-
-/* =========================================
-   CLIENTES
-========================================= */
 
 async function salvarCliente(){
+
+    const id =
+    document
+    .getElementById("clienteId")
+    .value;
+
 
     const nome =
     document
     .getElementById("clienteNome")
     .value
     .trim();
+
 
     if(!nome){
 
@@ -2091,7 +1781,8 @@ async function salvarCliente(){
         return;
     }
 
-    const novoCliente = {
+
+    const dados = {
 
         nome: nome,
 
@@ -2103,40 +1794,126 @@ async function salvarCliente(){
         cidade:
         document
         .getElementById("clienteCidade")
-        .value,
+        .value
 
-        data:
-        new Date()
-        .toLocaleDateString("pt-BR")
     };
+
+
+    let resultado;
+
+
+    if(id){
+
+        resultado =
+        await supabaseClient
+        .from("clientes")
+        .update(dados)
+        .eq("id",id);
+
+    }else{
+
+        dados.data =
+        new Date()
+        .toLocaleDateString("pt-BR");
+
+        resultado =
+        await supabaseClient
+        .from("clientes")
+        .insert([dados]);
+
+    }
+
+
+    if(resultado.error){
+
+        console.error(resultado.error);
+
+        mensagem(
+            id
+            ? "Erro ao atualizar cliente."
+            : "Erro ao salvar cliente."
+        );
+
+        return;
+    }
+
+
+    fecharModais();
+
+
+    mensagem(
+        id
+        ? "✅ Cliente atualizado!"
+        : "✅ Cliente cadastrado!"
+    );
+
+
+    await carregarTudo();
+
+}
+
+
+async function excluirCliente(id){
+
+    const cliente =
+    clientes.find(
+        c =>
+        String(c.id) === String(id)
+    );
+
+
+    if(!cliente){
+
+        mensagem("Cliente não encontrado.");
+
+        return;
+    }
+
+
+    const confirmar =
+    confirm(
+        "⚠️ Tem certeza que deseja excluir este cliente?\n\n" +
+        "Cliente: " +
+        (cliente.nome || "Não informado")
+    );
+
+
+    if(!confirmar)
+        return;
+
 
     const {error} =
     await supabaseClient
     .from("clientes")
-    .insert([novoCliente]);
+    .delete()
+    .eq("id",id);
+
 
     if(error){
 
         console.error(error);
 
         mensagem(
-            "Erro ao salvar cliente."
+            "Erro ao excluir cliente."
         );
 
         return;
     }
 
-    fecharModais();
 
-    document.getElementById("clienteNome").value = "";
-    document.getElementById("clienteWhatsapp").value = "";
-    document.getElementById("clienteCidade").value = "";
+    mensagem(
+        "🗑️ Cliente excluído com sucesso!"
+    );
 
-    mensagem("Cliente cadastrado!");
 
     await carregarTudo();
+
 }
 
+
+/* =========================================
+   FILTRAR CLIENTES
+========================================= */
 
 function filtrarClientes(){
 
@@ -2146,11 +1923,14 @@ function filtrarClientes(){
     .value
     .toLowerCase();
 
+
     const tabela =
     document
     .getElementById("tabelaClientes");
 
+
     tabela.innerHTML = "";
+
 
     clientes
     .filter(
@@ -2164,6 +1944,7 @@ function filtrarClientes(){
         const tr =
         document.createElement("tr");
 
+
         tr.innerHTML = `
 
             <td>${cliente.nome || "-"}</td>
@@ -2174,16 +1955,131 @@ function filtrarClientes(){
 
             <td>${cliente.data || "-"}</td>
 
+            <td>
+
+                <div class="acoes-os">
+
+                    <button
+                        class="btn btn-editar"
+                        onclick="editarCliente('${cliente.id}')">
+                        ✏️ Editar
+                    </button>
+
+                    <button
+                        class="btn btn-vermelho"
+                        onclick="excluirCliente('${cliente.id}')">
+                        🗑️ Excluir
+                    </button>
+
+                </div>
+
+            </td>
+
         `;
 
+
         tabela.appendChild(tr);
+
     });
+
 }
 
 
 /* =========================================
-   AGENDAMENTOS
+   AGENDAMENTO
 ========================================= */
+
+function abrirModalAgendamento(){
+
+    document
+    .getElementById("modalAgendamento")
+    .classList.add("aberto");
+
+
+    document
+    .getElementById("tituloModalAgendamento")
+    .innerText =
+    "Novo agendamento";
+
+
+    document
+    .getElementById("btnSalvarAgendamento")
+    .innerText =
+    "Salvar agendamento";
+
+
+    document.getElementById("agId").value = "";
+    document.getElementById("agNome").value = "";
+    document.getElementById("agWhatsapp").value = "";
+    document.getElementById("agAparelho").value = "";
+    document.getElementById("agHora").value = "";
+    document.getElementById("agDefeito").value = "";
+    document.getElementById("agStatus").value = "aguardando";
+    document.getElementById("agData").value = diaSelecionado;
+
+}
+
+
+function editarAgendamento(id){
+
+    const item =
+    agendamentos.find(
+        ag =>
+        String(ag.id) === String(id)
+    );
+
+
+    if(!item){
+
+        mensagem("OS não encontrada.");
+
+        return;
+    }
+
+
+    document
+    .getElementById("modalAgendamento")
+    .classList.add("aberto");
+
+
+    document
+    .getElementById("tituloModalAgendamento")
+    .innerText =
+    "Editar OS";
+
+
+    document
+    .getElementById("btnSalvarAgendamento")
+    .innerText =
+    "💾 Salvar alterações";
+
+
+    document.getElementById("agId").value =
+    item.id;
+
+    document.getElementById("agNome").value =
+    item.nome || "";
+
+    document.getElementById("agWhatsapp").value =
+    item.whatsapp || "";
+
+    document.getElementById("agAparelho").value =
+    item.aparelho || "";
+
+    document.getElementById("agData").value =
+    item.data || "";
+
+    document.getElementById("agHora").value =
+    item.hora || "";
+
+    document.getElementById("agDefeito").value =
+    item.defeito || "";
+
+    document.getElementById("agStatus").value =
+    item.status || "aguardando";
+
+}
+
 
 async function salvarAgendamento(){
 
@@ -2192,11 +2088,13 @@ async function salvarAgendamento(){
     .getElementById("agId")
     .value;
 
+
     const nome =
     document
     .getElementById("agNome")
     .value
     .trim();
+
 
     if(!nome){
 
@@ -2206,6 +2104,7 @@ async function salvarAgendamento(){
 
         return;
     }
+
 
     const dados = {
 
@@ -2240,9 +2139,12 @@ async function salvarAgendamento(){
         document
         .getElementById("agStatus")
         .value
+
     };
 
+
     let resultado;
+
 
     if(id){
 
@@ -2258,7 +2160,9 @@ async function salvarAgendamento(){
         await supabaseClient
         .from("agendamentos")
         .insert([dados]);
+
     }
+
 
     if(resultado.error){
 
@@ -2273,7 +2177,9 @@ async function salvarAgendamento(){
         return;
     }
 
+
     fecharModais();
+
 
     mensagem(
         id
@@ -2281,7 +2187,71 @@ async function salvarAgendamento(){
         : "✅ Agendamento salvo!"
     );
 
+
     await carregarTudo();
+
+}
+
+
+async function excluirAgendamento(id){
+
+    const item =
+    agendamentos.find(
+        ag =>
+        String(ag.id) === String(id)
+    );
+
+
+    if(!item){
+
+        mensagem("OS não encontrada.");
+
+        return;
+    }
+
+
+    const confirmar =
+    confirm(
+        "⚠️ Tem certeza que deseja excluir esta OS?\n\n" +
+        "Cliente: " +
+        (item.nome || "Não informado") +
+        "\nData: " +
+        (item.data || "Não informada") +
+        "\nHora: " +
+        (item.hora || "Não informada")
+    );
+
+
+    if(!confirmar)
+        return;
+
+
+    const {error} =
+    await supabaseClient
+    .from("agendamentos")
+    .delete()
+    .eq("id",id);
+
+
+    if(error){
+
+        console.error(error);
+
+        mensagem(
+            "Erro ao excluir a OS."
+        );
+
+        return;
+    }
+
+
+    mensagem(
+        "🗑️ OS excluída com sucesso!"
+    );
+
+
+    await carregarTudo();
+
 }
 
 
@@ -2289,139 +2259,240 @@ async function salvarAgendamento(){
    FINANCEIRO
 ========================================= */
 
-async function salvarFinanceiro(){
+function abrirModalFinanceiro(){
 
-    const valor =
     document
-    .getElementById("finValor")
-    .value;
+    .getElementById("modalFinanceiro")
+    .classList.add("aberto");
 
-    if(!valor){
 
-        mensagem("Informe o valor.");
+    document
+    .getElementById("tituloModalFinanceiro")
+    .innerText =
+    "Nova movimentação";
+
+
+    document
+    .getElementById("btnSalvarFinanceiro")
+    .innerText =
+    "Salvar";
+
+
+    document.getElementById("finId").value = "";
+    document.getElementById("finTipo").value = "entrada";
+    document.getElementById("finValor").value = "";
+    document.getElementById("finDescricao").value = "";
+
+}
+
+
+function editarFinanceiro(id){
+
+    const item =
+    movimentacoes.find(
+        m =>
+        String(m.id) === String(id)
+    );
+
+
+    if(!item){
+
+        mensagem(
+            "Movimentação não encontrada."
+        );
 
         return;
     }
 
-    const novaMovimentacao = {
+
+    document
+    .getElementById("modalFinanceiro")
+    .classList.add("aberto");
+
+
+    document
+    .getElementById("tituloModalFinanceiro")
+    .innerText =
+    "Editar movimentação";
+
+
+    document
+    .getElementById("btnSalvarFinanceiro")
+    .innerText =
+    "💾 Salvar alterações";
+
+
+    document.getElementById("finId").value =
+    item.id;
+
+    document.getElementById("finTipo").value =
+    item.tipo || "entrada";
+
+    document.getElementById("finValor").value =
+    item.valor || "";
+
+    document.getElementById("finDescricao").value =
+    item.descricao || "";
+
+}
+
+
+async function salvarFinanceiro(){
+
+    const id =
+    document
+    .getElementById("finId")
+    .value;
+
+
+    const valor =
+    parseFloat(
+        document
+        .getElementById("finValor")
+        .value
+    );
+
+
+    if(!valor || valor <= 0){
+
+        mensagem(
+            "Informe um valor válido."
+        );
+
+        return;
+    }
+
+
+    const dados = {
 
         tipo:
         document
         .getElementById("finTipo")
         .value,
 
-        valor:
-        parseFloat(valor),
+        valor:valor,
 
         descricao:
         document
         .getElementById("finDescricao")
-        .value,
+        .value
 
-        data:
-        new Date()
-        .toLocaleDateString("pt-BR")
     };
+
+
+    let resultado;
+
+
+    if(id){
+
+        resultado =
+        await supabaseClient
+        .from("movimentacoes")
+        .update(dados)
+        .eq("id",id);
+
+    }else{
+
+        dados.data =
+        new Date()
+        .toLocaleDateString("pt-BR");
+
+        resultado =
+        await supabaseClient
+        .from("movimentacoes")
+        .insert([dados]);
+
+    }
+
+
+    if(resultado.error){
+
+        console.error(resultado.error);
+
+        mensagem(
+            id
+            ? "Erro ao atualizar movimentação."
+            : "Erro ao registrar movimentação."
+        );
+
+        return;
+    }
+
+
+    fecharModais();
+
+
+    mensagem(
+        id
+        ? "✅ Movimentação atualizada!"
+        : "✅ Movimentação registrada!"
+    );
+
+
+    await carregarTudo();
+
+}
+
+
+async function excluirFinanceiro(id){
+
+    const item =
+    movimentacoes.find(
+        m =>
+        String(m.id) === String(id)
+    );
+
+
+    if(!item){
+
+        mensagem(
+            "Movimentação não encontrada."
+        );
+
+        return;
+    }
+
+
+    const confirmar =
+    confirm(
+        "⚠️ Tem certeza que deseja excluir esta movimentação?\n\n" +
+        "Descrição: " +
+        (item.descricao || "Sem descrição") +
+        "\nValor: " +
+        moeda(item.valor)
+    );
+
+
+    if(!confirmar)
+        return;
+
 
     const {error} =
     await supabaseClient
     .from("movimentacoes")
-    .insert([novaMovimentacao]);
+    .delete()
+    .eq("id",id);
+
 
     if(error){
 
         console.error(error);
 
         mensagem(
-            "Erro ao registrar movimentação."
+            "Erro ao excluir movimentação."
         );
 
         return;
     }
 
-    fecharModais();
-
-    document.getElementById("finValor").value = "";
-    document.getElementById("finDescricao").value = "";
 
     mensagem(
-        "Movimentação registrada!"
+        "🗑️ Movimentação excluída!"
     );
 
-    await carregarTudo();
-}
-
-
-/* =========================================
-   SERVIÇOS
-========================================= */
-
-async function salvarServico(){
-
-    const cliente =
-    document
-    .getElementById("servCliente")
-    .value
-    .trim();
-
-    if(!cliente){
-
-        mensagem(
-            "Informe o cliente."
-        );
-
-        return;
-    }
-
-    const novoServico = {
-
-        cliente: cliente,
-
-        nome:
-        document
-        .getElementById("servNome")
-        .value,
-
-        valor:
-        parseFloat(
-            document
-            .getElementById("servValor")
-            .value
-        ) || 0,
-
-        status:
-        document
-        .getElementById("servStatus")
-        .value
-    };
-
-    const {error} =
-    await supabaseClient
-    .from("servicos")
-    .insert([novoServico]);
-
-    if(error){
-
-        console.error(error);
-
-        mensagem(
-            "Erro ao registrar serviço."
-        );
-
-        return;
-    }
-
-    fecharModais();
-
-    document.getElementById("servCliente").value = "";
-    document.getElementById("servNome").value = "";
-    document.getElementById("servValor").value = "";
-
-    mensagem(
-        "Serviço registrado!"
-    );
 
     await carregarTudo();
+
 }
 
 
@@ -2434,19 +2505,20 @@ async function carregarTudo(){
     if(carregando)
         return;
 
-    /* Não atualiza enquanto algum modal está aberto */
+
     if(document.querySelector(".modal.aberto"))
         return;
 
+
     carregando = true;
+
 
     try{
 
         const [
             clientesResult,
             agendamentosResult,
-            movimentacoesResult,
-            servicosResult
+            movimentacoesResult
         ] = await Promise.all([
 
             supabaseClient
@@ -2454,72 +2526,49 @@ async function carregarTudo(){
             .select("*")
             .order("id",{ascending:false}),
 
+
             supabaseClient
             .from("agendamentos")
             .select("*")
             .order("data",{ascending:true})
             .order("hora",{ascending:true}),
 
+
             supabaseClient
             .from("movimentacoes")
             .select("*")
-            .order("id",{ascending:false}),
-
-            supabaseClient
-            .from("servicos")
-            .select("*")
             .order("id",{ascending:false})
+
         ]);
 
 
         if(clientesResult.error)
             throw clientesResult.error;
 
+
         if(agendamentosResult.error)
             throw agendamentosResult.error;
 
+
         if(movimentacoesResult.error)
             throw movimentacoesResult.error;
-
-        if(servicosResult.error)
-            throw servicosResult.error;
 
 
         clientes =
         clientesResult.data || [];
 
+
         agendamentos =
         agendamentosResult.data || [];
+
 
         movimentacoes =
         movimentacoesResult.data || [];
 
-        servicos =
-        servicosResult.data || [];
-
 
         /* ==========================
-           DASHBOARD
+           TOTAIS
         ========================== */
-
-        document
-        .getElementById("totalClientes")
-        .innerText =
-        clientes.length;
-
-        document
-        .getElementById("totalAgendamentos")
-        .innerText =
-        agendamentos.length;
-
-        document
-        .getElementById("totalPendentes")
-        .innerText =
-        agendamentos.filter(
-            a =>
-            a.status === "aguardando"
-        ).length;
-
 
         const entradas =
         movimentacoes
@@ -2535,11 +2584,49 @@ async function carregarTudo(){
         );
 
 
+        const saidas =
+        movimentacoes
+        .filter(
+            m =>
+            m.tipo === "saida"
+        )
+        .reduce(
+            (acc,m) =>
+            acc +
+            (parseFloat(m.valor) || 0),
+            0
+        );
+
+
+        const saldo =
+        entradas - saidas;
+
+
         document
-        .getElementById("totalEntradas")
+        .getElementById("totalClientes")
         .innerText =
-        "R$ " +
-        entradas.toFixed(2);
+        clientes.length;
+
+
+        document
+        .getElementById("totalAgendamentos")
+        .innerText =
+        agendamentos.length;
+
+
+        document
+        .getElementById("totalPendentes")
+        .innerText =
+        agendamentos.filter(
+            a =>
+            a.status === "aguardando"
+        ).length;
+
+
+        document
+        .getElementById("totalSaldo")
+        .innerText =
+        moeda(saldo);
 
 
         /* ==========================
@@ -2555,113 +2642,7 @@ async function carregarTudo(){
            CLIENTES
         ========================== */
 
-        const buscaCliente =
-        document
-        .getElementById("buscarCliente")
-        .value
-        .toLowerCase();
-
-        const tabelaClientes =
-        document
-        .getElementById("tabelaClientes");
-
-        tabelaClientes.innerHTML = "";
-
-        clientes
-        .filter(
-            c =>
-            (c.nome || "")
-            .toLowerCase()
-            .includes(buscaCliente)
-        )
-        .forEach(cliente => {
-
-            const tr =
-            document.createElement("tr");
-
-            tr.innerHTML = `
-
-                <td>${cliente.nome || "-"}</td>
-
-                <td>${cliente.whatsapp || "-"}</td>
-
-                <td>${cliente.cidade || "-"}</td>
-
-                <td>${cliente.data || "-"}</td>
-
-            `;
-
-            tabelaClientes.appendChild(tr);
-        });
-
-
-        /* ==========================
-           TABELA AGENDAMENTOS
-        ========================== */
-
-        const tabelaAg =
-        document
-        .getElementById("tabelaAgendamentos");
-
-        tabelaAg.innerHTML = "";
-
-        agendamentos.forEach(item => {
-
-            const tr =
-            document.createElement("tr");
-
-            tr.innerHTML = `
-
-                <td>${item.nome || "-"}</td>
-
-                <td>${item.whatsapp || "-"}</td>
-
-                <td>${item.aparelho || "-"}</td>
-
-                <td>${item.defeito || "-"}</td>
-
-                <td>${item.data || "-"}</td>
-
-                <td>${item.hora || "-"}</td>
-
-                <td>
-
-                    <span class="status ${classeStatus(item.status)}">
-
-                        ${item.status || "aguardando"}
-
-                    </span>
-
-                </td>
-
-                <td>
-
-                    <div class="acoes-os">
-
-                        <button
-                            class="btn btn-editar"
-                            onclick="editarAgendamento('${item.id}')">
-
-                            ✏️ Editar
-
-                        </button>
-
-                        <button
-                            class="btn btn-vermelho"
-                            onclick="excluirAgendamento('${item.id}')">
-
-                            🗑️ Excluir
-
-                        </button>
-
-                    </div>
-
-                </td>
-
-            `;
-
-            tabelaAg.appendChild(tr);
-        });
+        filtrarClientes();
 
 
         /* ==========================
@@ -2672,7 +2653,9 @@ async function carregarTudo(){
         document
         .getElementById("tabelaInicio");
 
+
         tabelaInicio.innerHTML = "";
+
 
         agendamentos
         .slice(0,5)
@@ -2680,6 +2663,7 @@ async function carregarTudo(){
 
             const tr =
             document.createElement("tr");
+
 
             tr.innerHTML = `
 
@@ -2694,9 +2678,7 @@ async function carregarTudo(){
                 <td>
 
                     <span class="status ${classeStatus(item.status)}">
-
                         ${item.status || "aguardando"}
-
                     </span>
 
                 </td>
@@ -2708,17 +2690,13 @@ async function carregarTudo(){
                         <button
                             class="btn btn-editar"
                             onclick="editarAgendamento('${item.id}')">
-
                             ✏️
-
                         </button>
 
                         <button
                             class="btn btn-vermelho"
                             onclick="excluirAgendamento('${item.id}')">
-
                             🗑️
-
                         </button>
 
                     </div>
@@ -2727,7 +2705,9 @@ async function carregarTudo(){
 
             `;
 
+
             tabelaInicio.appendChild(tr);
+
         });
 
 
@@ -2739,100 +2719,92 @@ async function carregarTudo(){
         document
         .getElementById("tabelaFinanceiro");
 
+
         tabelaFin.innerHTML = "";
 
-        let totalEntradas = 0;
-        let totalSaidas = 0;
 
         movimentacoes.forEach(item => {
 
             const valor =
             parseFloat(item.valor) || 0;
 
-            if(item.tipo === "entrada")
-                totalEntradas += valor;
-            else
-                totalSaidas += valor;
 
             const tr =
             document.createElement("tr");
 
+
             tr.innerHTML = `
 
-                <td>${item.tipo || "-"}</td>
-
-                <td>${item.descricao || "-"}</td>
-
                 <td>
-                    R$ ${valor.toFixed(2)}
+                    <span class="status ${
+                        item.tipo === "entrada"
+                        ? "concluido"
+                        : "cancelado"
+                    }">
+                        ${item.tipo || "-"}
+                    </span>
                 </td>
 
-                <td>${item.data || "-"}</td>
+                <td>
+                    ${item.descricao || "-"}
+                </td>
+
+                <td>
+                    ${moeda(valor)}
+                </td>
+
+                <td>
+                    ${item.data || "-"}
+                </td>
+
+                <td>
+
+                    <div class="acoes-os">
+
+                        <button
+                            class="btn btn-editar"
+                            onclick="editarFinanceiro('${item.id}')">
+                            ✏️ Editar
+                        </button>
+
+                        <button
+                            class="btn btn-vermelho"
+                            onclick="excluirFinanceiro('${item.id}')">
+                            🗑️ Excluir
+                        </button>
+
+                    </div>
+
+                </td>
 
             `;
 
+
             tabelaFin.appendChild(tr);
+
         });
 
+
+        /* ==========================
+           CARDS FINANCEIRO
+        ========================== */
 
         document
         .getElementById("financeiroEntradas")
         .innerText =
-        "R$ " +
-        totalEntradas.toFixed(2);
+        moeda(entradas);
+
 
         document
         .getElementById("financeiroSaidas")
         .innerText =
-        "R$ " +
-        totalSaidas.toFixed(2);
+        moeda(saidas);
+
 
         document
         .getElementById("financeiroSaldo")
         .innerText =
-        "R$ " +
-        (
-            totalEntradas -
-            totalSaidas
-        ).toFixed(2);
-
-
-        /* ==========================
-           SERVIÇOS
-        ========================== */
-
-        const tabelaServ =
-        document
-        .getElementById("tabelaServicos");
-
-        tabelaServ.innerHTML = "";
-
-        servicos.forEach(item => {
-
-            const valor =
-            parseFloat(item.valor) || 0;
-
-            const tr =
-            document.createElement("tr");
-
-            tr.innerHTML = `
-
-                <td>${item.cliente || "-"}</td>
-
-                <td>${item.nome || "-"}</td>
-
-                <td>
-                    R$ ${valor.toFixed(2)}
-                </td>
-
-                <td>
-                    ${item.status || "-"}
-                </td>
-
-            `;
-
-            tabelaServ.appendChild(tr);
-        });
+        moeda(saldo);
 
 
     }catch(error){
@@ -2845,7 +2817,9 @@ async function carregarTudo(){
     }finally{
 
         carregando = false;
+
     }
+
 }
 
 
@@ -2862,7 +2836,6 @@ carregarTudo();
 
 /* =========================================
    ATUALIZAÇÃO AUTOMÁTICA
-   A CADA 2 SEGUNDOS
 ========================================= */
 
 setInterval(() => {
