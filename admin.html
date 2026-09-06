@@ -1,7 +1,14 @@
-<!DOCTYPE html><html lang="pt-BR">
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Painel WS SOLUÇÕES</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Painel WS SOLUÇÕES</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
 :root{
     --roxo:#7c3aed;
     --roxo2:#6d28d9;
@@ -44,26 +51,18 @@ button{
 }
 
 header{
-    background:linear-gradient(
-        135deg,
-        var(--roxo3),
-        var(--roxo)
-    );
-
+    background:linear-gradient(135deg,var(--roxo3),var(--roxo));
     color:white;
     padding:16px;
-
     position:sticky;
     top:0;
     z-index:100;
-
     box-shadow:0 3px 12px rgba(0,0,0,.15);
 }
 
 .header{
     max-width:1100px;
     margin:auto;
-
     display:flex;
     justify-content:space-between;
     align-items:center;
@@ -86,40 +85,29 @@ header{
 .icon{
     width:40px;
     height:40px;
-
     border:0;
     border-radius:10px;
-
     background:rgba(255,255,255,.15);
     color:white;
-
     font-size:18px;
 }
 
 nav{
     max-width:1100px;
     margin:15px auto;
-
     padding:0 15px;
-
     display:flex;
     gap:8px;
-
     overflow-x:auto;
 }
 
 nav button{
     border:1px solid var(--borda);
-
     background:var(--card);
     color:var(--texto2);
-
     border-radius:10px;
-
     padding:11px 17px;
-
     font-weight:bold;
-
     white-space:nowrap;
 }
 
@@ -147,7 +135,6 @@ nav button.active{
     display:flex;
     justify-content:space-between;
     align-items:center;
-
     gap:10px;
     margin-bottom:16px;
 }
@@ -162,16 +149,12 @@ nav button.active{
     margin-top:3px;
 }
 
-/* =========================
-   BOTÕES
-========================= */
+/* BOTÕES */
 
 .btn{
     border:0;
     border-radius:9px;
-
     padding:11px 15px;
-
     font-weight:bold;
 }
 
@@ -190,6 +173,11 @@ nav button.active{
     color:white;
 }
 
+.azul{
+    background:var(--azul);
+    color:white;
+}
+
 .cinza{
     background:#e5e7eb;
     color:#374151;
@@ -200,36 +188,59 @@ nav button.active{
     font-size:12px;
 }
 
-/* =========================
-   DATA
-========================= */
+/* DASHBOARD */
+
+.dashboard{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+    margin-bottom:20px;
+}
+
+.dashboard-card{
+    background:var(--card);
+    border:1px solid var(--borda);
+    border-radius:14px;
+    padding:16px;
+}
+
+.dashboard-card small{
+    color:var(--texto2);
+}
+
+.dashboard-card strong{
+    display:block;
+    margin-top:7px;
+    font-size:24px;
+}
+
+.dashboard-card span{
+    display:block;
+    margin-top:5px;
+    color:var(--texto2);
+    font-size:11px;
+}
+
+/* DATA */
 
 .seletor-data{
     background:var(--card);
-
     border:1px solid var(--borda);
     border-radius:14px;
-
     padding:12px;
-
     display:flex;
     align-items:center;
-
     gap:8px;
-
     margin-bottom:18px;
 }
 
 .seletor-data button{
     width:42px;
     height:42px;
-
     border:0;
     border-radius:10px;
-
     background:#ede9fe;
     color:var(--roxo3);
-
     font-size:18px;
 }
 
@@ -250,21 +261,32 @@ nav button.active{
 
 .data-input{
     margin-top:9px;
-
     width:100%;
-
     border:1px solid var(--borda);
     border-radius:9px;
-
     padding:9px;
-
     color:var(--texto);
     background:var(--card);
 }
 
-/* =========================
-   OS
-========================= */
+/* BUSCA */
+
+.busca{
+    width:100%;
+    padding:12px 14px;
+    border:1px solid var(--borda);
+    border-radius:10px;
+    background:var(--card);
+    color:var(--texto);
+    margin-bottom:12px;
+    outline:none;
+}
+
+.busca:focus{
+    border-color:var(--roxo);
+}
+
+/* OS */
 
 .os-dia{
     margin-bottom:20px;
@@ -273,11 +295,8 @@ nav button.active{
 .os-dia-header{
     background:var(--roxo3);
     color:white;
-
     padding:14px 16px;
-
     border-radius:12px 12px 0 0;
-
     display:flex;
     justify-content:space-between;
     align-items:center;
@@ -291,25 +310,17 @@ nav button.active{
 .os-list{
     display:flex;
     flex-direction:column;
-
     gap:8px;
-
     margin-top:8px;
 }
 
 .os{
     background:var(--card);
-
     border:1px solid var(--borda);
     border-radius:12px;
-
     padding:14px;
-
     display:flex;
-
     gap:12px;
-
-    transition:.2s;
 }
 
 .os.concluida{
@@ -324,11 +335,8 @@ nav button.active{
 .check{
     width:23px;
     height:23px;
-
     min-width:23px;
-
     margin-top:2px;
-
     accent-color:var(--roxo);
 }
 
@@ -340,7 +348,6 @@ nav button.active{
 .os-linha{
     display:flex;
     justify-content:space-between;
-
     gap:10px;
 }
 
@@ -357,25 +364,17 @@ nav button.active{
 
 .os-info{
     margin-top:5px;
-
     color:var(--texto2);
-
     font-size:13px;
-
     line-height:1.5;
 }
 
 .status{
     display:inline-block;
-
     padding:4px 9px;
-
     border-radius:20px;
-
     font-size:11px;
-
     font-weight:bold;
-
     margin-top:7px;
 }
 
@@ -406,48 +405,63 @@ nav button.active{
 
 .os-acoes{
     display:flex;
-
     gap:7px;
-
     margin-top:10px;
-
     flex-wrap:wrap;
 }
 
-.vazio{
-    background:var(--card);
+/* LISTAS */
 
-    border:1px dashed var(--borda);
-
-    border-radius:14px;
-
-    padding:35px 20px;
-
-    text-align:center;
-
-    color:var(--texto2);
+.lista{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
 }
 
-/* =========================
-   FINANCEIRO
-========================= */
+.item{
+    background:var(--card);
+    border:1px solid var(--borda);
+    border-radius:12px;
+    padding:15px;
+}
+
+.item-top{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+}
+
+.item-titulo{
+    font-weight:bold;
+}
+
+.item-info{
+    margin-top:5px;
+    color:var(--texto2);
+    font-size:13px;
+    line-height:1.5;
+}
+
+.item-acoes{
+    display:flex;
+    gap:7px;
+    flex-wrap:wrap;
+    margin-top:10px;
+}
+
+/* FINANCEIRO */
 
 .finance-cards{
     display:grid;
-
     grid-template-columns:repeat(3,1fr);
-
     gap:12px;
-
     margin-bottom:18px;
 }
 
 .finance-card{
     background:var(--card);
-
     border:1px solid var(--borda);
     border-radius:12px;
-
     padding:16px;
 }
 
@@ -457,9 +471,7 @@ nav button.active{
 
 .finance-card strong{
     display:block;
-
     margin-top:6px;
-
     font-size:21px;
 }
 
@@ -475,100 +487,15 @@ nav button.active{
     color:var(--roxo);
 }
 
-.finance-list{
-    display:flex;
-    flex-direction:column;
-    gap:8px;
-}
-
-.finance-item{
-    background:var(--card);
-
-    border:1px solid var(--borda);
-    border-radius:12px;
-
-    padding:14px;
-}
-
-.finance-top{
-    display:flex;
-
-    justify-content:space-between;
-
-    gap:10px;
-}
-
-.finance-descricao{
-    font-weight:bold;
-}
-
-.finance-valor{
-    font-weight:bold;
-    white-space:nowrap;
-}
-
-.finance-meta{
-    color:var(--texto2);
-
-    font-size:12px;
-
-    margin-top:5px;
-}
-
-.finance-acoes{
-    display:flex;
-    gap:7px;
-    margin-top:10px;
-}
-
-/* =========================
-   CLIENTES
-========================= */
-
-.clientes{
-    display:flex;
-    flex-direction:column;
-    gap:8px;
-}
-
-.cliente{
-    background:var(--card);
-
-    border:1px solid var(--borda);
-    border-radius:12px;
-
-    padding:15px;
-}
-
-.cliente-nome{
-    font-weight:bold;
-}
-
-.cliente-info{
-    margin-top:5px;
-
-    color:var(--texto2);
-
-    font-size:13px;
-}
-
-/* ==================================================
-   MODAL BASE
-================================================== */
+/* MODAL */
 
 .modal{
     display:none;
-
     position:fixed;
-
     inset:0;
-
     background:rgba(0,0,0,.65);
-
     z-index:500;
-
     padding:15px;
-
     align-items:center;
     justify-content:center;
 }
@@ -577,164 +504,61 @@ nav button.active{
     display:flex;
 }
 
-/* ==================================================
-   MODAL OS
-================================================== */
-
-.modal-os{
+.modal-box{
     width:100%;
-
     max-width:760px;
-
     max-height:94vh;
-
     background:var(--card);
-
     border-radius:18px;
-
     overflow:hidden;
-
     box-shadow:0 20px 60px rgba(0,0,0,.35);
-
     display:flex;
-
     flex-direction:column;
 }
 
-.modal-os-header{
-    background:linear-gradient(
-        135deg,
-        var(--roxo3),
-        var(--roxo)
-    );
-
+.modal-header{
+    background:linear-gradient(135deg,var(--roxo3),var(--roxo));
     color:white;
-
     padding:17px;
-
     display:flex;
-
     justify-content:space-between;
-
     align-items:center;
-
     flex-shrink:0;
 }
 
-.modal-os-header h3{
+.modal-header h3{
     font-size:19px;
 }
 
 .fechar{
     width:40px;
     height:40px;
-
     border:0;
-
     border-radius:10px;
-
     background:rgba(255,255,255,.15);
-
     color:white;
-
     font-size:23px;
 }
 
-.modal-os-body{
+.modal-body{
     padding:18px;
-
     overflow-y:auto;
-
     flex:1;
 }
 
-/* =========================
-   STATUS
-========================= */
-
-.status-box{
-    background:linear-gradient(
-        135deg,
-        #f5f3ff,
-        #ede9fe
-    );
-
-    border:1px solid #ddd6fe;
-
-    border-radius:14px;
-
-    padding:15px;
-
-    margin-bottom:18px;
+.modal-footer{
+    border-top:1px solid var(--borda);
+    padding:13px 18px;
+    display:flex;
+    justify-content:space-between;
+    gap:8px;
+    background:var(--card);
+    flex-shrink:0;
 }
 
-.status-box-titulo{
-    font-size:12px;
-
-    font-weight:bold;
-
-    color:var(--roxo3);
-
-    margin-bottom:10px;
-}
-
-.status-botoes{
+.form-grid{
     display:grid;
-
-    grid-template-columns:repeat(5,1fr);
-
-    gap:7px;
-}
-
-.status-btn{
-    border:2px solid transparent;
-
-    border-radius:10px;
-
-    padding:10px 5px;
-
-    background:white;
-
-    font-size:11px;
-
-    font-weight:bold;
-
-    cursor:pointer;
-
-    transition:.15s;
-}
-
-.status-btn:hover{
-    transform:translateY(-1px);
-}
-
-.status-btn.selected{
-    border-color:var(--roxo);
-
-    box-shadow:
-        0 0 0 2px
-        rgba(124,58,237,.12);
-
-    background:#faf5ff;
-}
-
-.status-btn .emoji{
-    display:block;
-
-    font-size:19px;
-
-    margin-bottom:5px;
-}
-
-/* ==================================================
-   FORMULÁRIO OS
-================================================== */
-
-.form-os{
-    display:grid;
-
     grid-template-columns:repeat(2,1fr);
-
     gap:12px;
 }
 
@@ -748,33 +572,21 @@ nav button.active{
 
 .form-group label{
     display:block;
-
     font-size:12px;
-
     font-weight:bold;
-
     margin-bottom:6px;
-
-    color:var(--texto);
 }
 
 .form-group input,
 .form-group select,
 .form-group textarea{
     width:100%;
-
     padding:12px;
-
     border:1px solid var(--borda);
-
     border-radius:10px;
-
     background:var(--card);
-
     color:var(--texto);
-
     outline:none;
-
     font-size:14px;
 }
 
@@ -782,143 +594,89 @@ nav button.active{
 .form-group select:focus,
 .form-group textarea:focus{
     border-color:var(--roxo);
-
-    box-shadow:
-        0 0 0 2px
-        rgba(124,58,237,.10);
+    box-shadow:0 0 0 2px rgba(124,58,237,.10);
 }
 
 .form-group textarea{
     min-height:120px;
-
     resize:vertical;
-
-    line-height:1.5;
 }
 
-.form-ajuda{
-    margin-top:5px;
-
-    color:var(--texto2);
-
-    font-size:11px;
-}
-
-.os-identificacao{
-    margin-bottom:15px;
-
-    padding:14px;
-
-    border:1px solid var(--borda);
-
-    border-radius:12px;
-
-    background:var(--fundo);
-}
-
-.os-identificacao strong{
-    font-size:20px;
-}
-
-.os-identificacao span{
-    display:block;
-
-    color:var(--texto2);
-
-    font-size:12px;
-
-    margin-top:4px;
-}
-
-/* ==================================================
-   FOOTER OS
-================================================== */
-
-.modal-os-footer{
-    border-top:1px solid var(--borda);
-
-    padding:13px 18px;
-
-    display:flex;
-
-    justify-content:space-between;
-
-    gap:8px;
-
-    background:var(--card);
-
-    flex-shrink:0;
-}
-
-.footer-esquerda,
-.footer-direita{
-    display:flex;
-
-    gap:8px;
-
-    flex-wrap:wrap;
-}
-
-.btn-excluir{
-    background:#fee2e2;
-
-    color:#991b1b;
-}
-
-/* ==================================================
-   MODAL FINANCEIRO
-================================================== */
-
-.modal-financeiro{
-    width:calc(100% - 30px);
-
-    max-width:500px;
-
-    background:var(--card);
-
-    border-radius:16px;
-
-    padding:20px;
-}
-
-.modal-financeiro h3{
+.status-box{
+    background:linear-gradient(135deg,#f5f3ff,#ede9fe);
+    border:1px solid #ddd6fe;
+    border-radius:14px;
+    padding:15px;
     margin-bottom:18px;
 }
 
-.modal-buttons{
-    display:flex;
-
-    justify-content:flex-end;
-
-    gap:8px;
-
-    margin-top:18px;
+.status-box-titulo{
+    font-size:12px;
+    font-weight:bold;
+    color:var(--roxo3);
+    margin-bottom:10px;
 }
 
-/* =========================
-   TOAST
-========================= */
+.status-botoes{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:7px;
+}
+
+.status-btn{
+    border:2px solid transparent;
+    border-radius:10px;
+    padding:10px 5px;
+    background:white;
+    font-size:11px;
+    font-weight:bold;
+    transition:.15s;
+}
+
+.status-btn.selected{
+    border-color:var(--roxo);
+    box-shadow:0 0 0 2px rgba(124,58,237,.12);
+    background:#faf5ff;
+}
+
+.status-btn .emoji{
+    display:block;
+    font-size:19px;
+    margin-bottom:5px;
+}
+
+.modal-financeiro{
+    width:100%;
+    max-width:500px;
+    background:var(--card);
+    border-radius:16px;
+    padding:20px;
+}
+
+/* VAZIO */
+
+.vazio{
+    background:var(--card);
+    border:1px dashed var(--borda);
+    border-radius:14px;
+    padding:35px 20px;
+    text-align:center;
+    color:var(--texto2);
+}
+
+/* TOAST */
 
 .toast{
     position:fixed;
-
     bottom:20px;
     right:20px;
-
     background:#111827;
-
     color:white;
-
     padding:13px 17px;
-
     border-radius:10px;
-
     z-index:1000;
-
     display:none;
-
     font-size:13px;
-
     max-width:320px;
 }
 
@@ -926,9 +684,7 @@ nav button.active{
     display:block;
 }
 
-/* =========================
-   DARK
-========================= */
+/* DARK */
 
 body.dark{
     --fundo:#111827;
@@ -966,20 +722,13 @@ body.dark .status-btn.selected{
     background:#312e81;
 }
 
-body.dark .os-identificacao{
-    background:#111827;
-}
+/* MOBILE */
 
-body.dark .btn-excluir{
-    background:#451a1a;
-    color:#fecaca;
-}
+@media(max-width:700px){
 
-/* =========================
-   MOBILE
-========================= */
-
-@media(max-width:650px){
+    .dashboard{
+        grid-template-columns:repeat(2,1fr);
+    }
 
     .finance-cards{
         grid-template-columns:1fr;
@@ -999,13 +748,11 @@ body.dark .btn-excluir{
         font-size:12px;
     }
 
-    /* MODAL OS FULLSCREEN */
-
     .modal{
         padding:0;
     }
 
-    .modal-os{
+    .modal-box{
         width:100%;
         height:100%;
         max-width:none;
@@ -1013,12 +760,12 @@ body.dark .btn-excluir{
         border-radius:0;
     }
 
-    .modal-os-header{
-        border-radius:0;
+    .form-grid{
+        grid-template-columns:1fr;
     }
 
-    .modal-os-body{
-        padding:14px;
+    .form-group.full{
+        grid-column:auto;
     }
 
     .status-botoes{
@@ -1029,415 +776,537 @@ body.dark .btn-excluir{
         grid-column:1/-1;
     }
 
-    .form-os{
-        grid-template-columns:1fr;
-    }
-
-    .form-group.full{
-        grid-column:auto;
-    }
-
-    .modal-os-footer{
-        padding:10px;
+    .modal-footer{
         flex-direction:column;
     }
 
-    .footer-esquerda,
-    .footer-direita{
-        width:100%;
-    }
-
-    .modal-os-footer button{
+    .modal-footer .btn{
         flex:1;
-    }
-
-    .finance-top{
-        flex-direction:column;
-    }
-
-    .finance-valor{
-        font-size:17px;
-    }
-
-    .seletor-data button{
-        width:38px;
-        height:38px;
     }
 
     .modal-financeiro{
         width:calc(100% - 20px);
     }
+
+    .item-top{
+        flex-direction:column;
+    }
 }
-</style></head><body><header><div class="header"><div class="logo">
-    <h1>WS SOLUÇÕES</h1>
-    <span>Painel administrativo</span>
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="header">
+
+    <div class="logo">
+        <h1>WS SOLUÇÕES</h1>
+        <span>Painel administrativo</span>
+    </div>
+
+    <div class="header-actions">
+
+        <button
+            class="icon"
+            id="temaBtn"
+            onclick="alternarTema()">
+            🌙
+        </button>
+
+        <button
+            class="icon"
+            onclick="carregarTudo()">
+            ↻
+        </button>
+
+    </div>
+
 </div>
+</header>
 
-<div class="header-actions">
+<nav>
 
-    <button
-        class="icon"
-        id="temaBtn"
-        onclick="alternarTema()"
-    >
-        🌙
+<button class="active" onclick="abrirPagina('inicio',this)">
+    🏠 Início
+</button>
+
+<button onclick="abrirPagina('financeiro',this)">
+    💰 Financeiro
+</button>
+
+<button onclick="abrirPagina('clientes',this)">
+    👥 Clientes
+</button>
+
+<button onclick="abrirPagina('servicos',this)">
+    🛠️ Serviços
+</button>
+
+</nav>
+
+<div class="container">
+
+<!-- ==================================================
+INÍCIO
+================================================== -->
+
+<section id="inicio" class="page active">
+
+<div class="titulo">
+
+    <div>
+        <h2>Minhas OS</h2>
+        <p>Controle técnico das ordens de serviço</p>
+    </div>
+
+    <button class="btn roxo" onclick="abrirNovaOS()">
+        + Nova OS
     </button>
 
-    <button
-        class="icon"
-        onclick="carregarTudo()"
-    >
-        ↻
+</div>
+
+<div class="dashboard">
+
+    <div class="dashboard-card">
+        <small>Clientes</small>
+        <strong id="dashClientes">0</strong>
+        <span>cadastrados</span>
+    </div>
+
+    <div class="dashboard-card">
+        <small>OS</small>
+        <strong id="dashOS">0</strong>
+        <span>ordens cadastradas</span>
+    </div>
+
+    <div class="dashboard-card">
+        <small>Pendentes</small>
+        <strong id="dashPendentes">0</strong>
+        <span>em aberto</span>
+    </div>
+
+    <div class="dashboard-card">
+        <small>Saldo</small>
+        <strong id="dashSaldo">R$ 0,00</strong>
+        <span>financeiro</span>
+    </div>
+
+</div>
+
+<div class="seletor-data">
+
+    <button onclick="mudarDia(-1)">◀</button>
+
+    <div class="data-centro">
+
+        <strong id="diaSelecionado">Hoje</strong>
+
+        <span id="diaSemana">-</span>
+
+        <input
+            type="date"
+            id="dataEscolhida"
+            class="data-input"
+            onchange="selecionarData()">
+
+    </div>
+
+    <button onclick="mudarDia(1)">▶</button>
+
+</div>
+
+<div id="listaOS">
+    <div class="vazio">Carregando OS...</div>
+</div>
+
+</section>
+
+<!-- ==================================================
+FINANCEIRO
+================================================== -->
+
+<section id="financeiro" class="page">
+
+<div class="titulo">
+
+    <div>
+        <h2>Financeiro</h2>
+        <p>Controle completo das movimentações</p>
+    </div>
+
+    <button class="btn roxo" onclick="abrirNovoFinanceiro()">
+        + Lançamento
     </button>
 
 </div>
 
-</div></header><nav><button
-class="active"
-onclick="abrirPagina('inicio',this)"
+<div class="finance-cards">
 
-«»
+    <div class="finance-card">
+        <small>Entradas</small>
+        <strong class="entrada" id="totalEntradas">
+            R$ 0,00
+        </strong>
+    </div>
 
-🏠 Início
+    <div class="finance-card">
+        <small>Saídas</small>
+        <strong class="saida" id="totalSaidas">
+            R$ 0,00
+        </strong>
+    </div>
 
-</button><button
-onclick="abrirPagina('financeiro',this)"
-
-«»
-
-💰 Financeiro
-
-</button><button
-onclick="abrirPagina('clientes',this)"
-
-«»
-
-👥 Clientes
-
-</button></nav><div class="container"><!-- ==================================================
-     INÍCIO
-================================================== --><section
-    id="inicio"
-    class="page active"
-><div class="titulo"><div>
-
-    <h2>Minhas OS</h2>
-
-    <p>
-        Checklist diário das ordens de serviço
-    </p>
+    <div class="finance-card">
+        <small>Saldo</small>
+        <strong class="saldo" id="saldo">
+            R$ 0,00
+        </strong>
+    </div>
 
 </div>
 
-<button
-    class="btn roxo"
-    onclick="abrirNovaOS()"
->
-    + Nova OS
-</button>
+<input
+    class="busca"
+    id="buscaFinanceiro"
+    placeholder="🔎 Pesquisar movimentação..."
+    oninput="renderizarFinanceiro()">
 
-</div><!-- DATA --><div class="seletor-data"><button onclick="mudarDia(-1)">
-    ◀
-</button>
+<div id="listaFinanceiro" class="lista">
+    <div class="vazio">Carregando financeiro...</div>
+</div>
 
-<div class="data-centro">
+</section>
 
-    <strong id="diaSelecionado">
-        Hoje
-    </strong>
+<!-- ==================================================
+CLIENTES
+================================================== -->
 
-    <span id="diaSemana">
-        -
-    </span>
+<section id="clientes" class="page">
 
-    <input
-        type="date"
-        id="dataEscolhida"
-        class="data-input"
-        onchange="selecionarData()"
-    >
+<div class="titulo">
+
+    <div>
+        <h2>Clientes</h2>
+        <p>Cadastro e gerenciamento de clientes</p>
+    </div>
+
+    <button class="btn roxo" onclick="abrirNovoCliente()">
+        + Cliente
+    </button>
 
 </div>
 
-<button onclick="mudarDia(1)">
-    ▶
-</button>
+<input
+    class="busca"
+    id="buscaCliente"
+    placeholder="🔎 Pesquisar cliente..."
+    oninput="renderizarClientes()">
 
-</div><div id="listaOS"><div class="vazio">
-    Carregando OS...
+<div id="listaClientes" class="lista">
+    <div class="vazio">Carregando clientes...</div>
 </div>
 
-</div></section><!-- ==================================================
-     FINANCEIRO
-================================================== --><section
-    id="financeiro"
-    class="page"
-><div class="titulo"><div>
+</section>
 
-    <h2>Financeiro</h2>
+<!-- ==================================================
+SERVIÇOS
+================================================== -->
 
-    <p>
-        Entradas, saídas e saldo
-    </p>
+<section id="servicos" class="page">
 
-</div>
+<div class="titulo">
 
-<button
-    class="btn roxo"
-    onclick="abrirNovoFinanceiro()"
->
-    + Lançamento
-</button>
+    <div>
+        <h2>Serviços</h2>
+        <p>Controle dos serviços realizados</p>
+    </div>
 
-</div><div class="finance-cards"><div class="finance-card">
-
-    <small>Entradas</small>
-
-    <strong
-        class="entrada"
-        id="totalEntradas"
-    >
-        R$ 0,00
-    </strong>
+    <button class="btn roxo" onclick="abrirNovoServico()">
+        + Serviço
+    </button>
 
 </div>
 
-<div class="finance-card">
+<input
+    class="busca"
+    id="buscaServico"
+    placeholder="🔎 Pesquisar serviço..."
+    oninput="renderizarServicos()">
 
-    <small>Saídas</small>
+<div id="listaServicos" class="lista">
+    <div class="vazio">Carregando serviços...</div>
+</div>
 
-    <strong
-        class="saida"
-        id="totalSaidas"
-    >
-        R$ 0,00
-    </strong>
+</section>
 
 </div>
 
-<div class="finance-card">
+<!-- ==================================================
+MODAL OS
+================================================== -->
 
-    <small>Saldo</small>
+<div id="modalOS" class="modal">
 
-    <strong
-        class="saldo"
-        id="saldo"
-    >
-        R$ 0,00
-    </strong>
+<div class="modal-box">
 
-</div>
-
-</div><div
-    id="listaFinanceiro"
-    class="finance-list"
-><div class="vazio">
-    Carregando financeiro...
-</div>
-
-</div></section><!-- ==================================================
-     CLIENTES
-================================================== --><section
-    id="clientes"
-    class="page"
-><div class="titulo"><div>
-
-    <h2>Clientes</h2>
-
-    <p>
-        Clientes cadastrados
-    </p>
-
-</div>
-
-</div><div
-    id="listaClientes"
-    class="clientes"
-><div class="vazio">
-    Carregando clientes...
-</div>
-
-</div></section></div><!-- ==================================================
-     MODAL OS
-================================================== --><div
-    id="modalOS"
-    class="modal"
-><div class="modal-os"><div class="modal-os-header">
+<div class="modal-header">
 
     <h3 id="modalOSTitulo">
         Nova Ordem de Serviço
     </h3>
 
-    <button
-        class="fechar"
-        onclick="fecharOS()"
-    >
-        ×
+    <button class="fechar" onclick="fecharOS()">×</button>
+
+</div>
+
+<div id="detalhesOS" class="modal-body"></div>
+
+<div class="modal-footer">
+
+    <button class="btn cinza" onclick="fecharOS()">
+        Fechar
     </button>
 
-</div>
-
-
-<div
-    id="detalhesOS"
-    class="modal-os-body"
->
-</div>
-
-
-<div class="modal-os-footer">
-
-    <div class="footer-esquerda">
-
-        <button
-            class="btn cinza"
-            onclick="fecharOS()"
-        >
-            Fechar
-        </button>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
 
         <button
             id="btnWhatsOS"
             class="btn verde"
-            style="display:none"
-        >
+            style="display:none">
             WhatsApp
         </button>
 
-    </div>
-
-
-    <div class="footer-direita">
-
         <button
             id="btnExcluirOS"
-            class="btn btn-excluir"
+            class="btn vermelho"
             style="display:none"
-            onclick="excluirOS()"
-        >
+            onclick="excluirOS()">
             🗑️ Excluir
         </button>
 
         <button
             id="btnSalvarOS"
             class="btn roxo"
-            onclick="salvarOS()"
-        >
-            Salvar OS
+            onclick="salvarOS()">
+            Criar OS
         </button>
 
     </div>
 
 </div>
 
-</div></div><!-- ==================================================
-     MODAL FINANCEIRO
-================================================== --><div
-    id="modalFinanceiro"
-    class="modal"
-><div class="modal-financeiro"><h3 id="tituloFinanceiro">
-    Nova movimentação
-</h3>
+</div>
+</div>
 
+<!-- ==================================================
+MODAL CLIENTE
+================================================== -->
 
-<input
-    type="hidden"
-    id="financeId"
->
+<div id="modalCliente" class="modal">
 
+<div class="modal-box">
 
-<div class="form-group">
+<div class="modal-header">
 
-    <label>
-        Tipo
-    </label>
+    <h3 id="tituloCliente">Novo Cliente</h3>
 
-    <select id="financeTipo">
-
-        <option value="entrada">
-            Entrada
-        </option>
-
-        <option value="saida">
-            Saída
-        </option>
-
-    </select>
+    <button class="fechar" onclick="fecharCliente()">×</button>
 
 </div>
 
+<div class="modal-body">
 
-<div class="form-group" style="margin-top:14px">
+<input type="hidden" id="clienteId">
 
-    <label>
-        Descrição
-    </label>
+<div class="form-grid">
 
-    <input
-        id="financeDescricao"
-        type="text"
-        placeholder="Ex: Pagamento de cliente"
-    >
+    <div class="form-group full">
+        <label>Nome *</label>
+        <input id="clienteNome" placeholder="Nome completo">
+    </div>
 
-</div>
+    <div class="form-group">
+        <label>WhatsApp</label>
+        <input id="clienteWhatsapp" placeholder="(88) 99999-9999">
+    </div>
 
+    <div class="form-group">
+        <label>Cidade</label>
+        <input id="clienteCidade" placeholder="Cidade">
+    </div>
 
-<div class="form-group" style="margin-top:14px">
-
-    <label>
-        Valor
-    </label>
-
-    <input
-        id="financeValor"
-        type="number"
-        step="0.01"
-        min="0"
-        placeholder="0,00"
-    >
+    <div class="form-group full">
+        <label>Data</label>
+        <input id="clienteData" type="date">
+    </div>
 
 </div>
 
-
-<div class="form-group" style="margin-top:14px">
-
-    <label>
-        Data
-    </label>
-
-    <input
-        id="financeData"
-        type="date"
-    >
-
 </div>
 
+<div class="modal-footer">
 
-<div class="modal-buttons">
-
-    <button
-        class="btn cinza"
-        onclick="fecharFinanceiro()"
-    >
+    <button class="btn cinza" onclick="fecharCliente()">
         Cancelar
     </button>
 
-    <button
-        class="btn roxo"
-        onclick="salvarFinanceiro()"
-    >
+    <button class="btn roxo" onclick="salvarCliente()">
         Salvar
     </button>
 
 </div>
 
-</div></div><div
-    id="toast"
-    class="toast"
-></div><script>
+</div>
+</div>
+
+<!-- ==================================================
+MODAL FINANCEIRO
+================================================== -->
+
+<div id="modalFinanceiro" class="modal">
+
+<div class="modal-financeiro">
+
+<h3 id="tituloFinanceiro">
+    Nova movimentação
+</h3>
+
+<input type="hidden" id="financeId">
+
+<div class="form-group" style="margin-top:14px">
+
+<label>Tipo</label>
+
+<select id="financeTipo">
+
+<option value="entrada">Entrada</option>
+<option value="saida">Saída</option>
+
+</select>
+
+</div>
+
+<div class="form-group" style="margin-top:14px">
+
+<label>Descrição</label>
+
+<input
+    id="financeDescricao"
+    placeholder="Ex: Pagamento de cliente">
+
+</div>
+
+<div class="form-group" style="margin-top:14px">
+
+<label>Valor</label>
+
+<input
+    id="financeValor"
+    type="number"
+    step="0.01"
+    min="0"
+    placeholder="0,00">
+
+</div>
+
+<div class="form-group" style="margin-top:14px">
+
+<label>Data</label>
+
+<input id="financeData" type="date">
+
+</div>
+
+<div style="display:flex;justify-content:flex-end;gap:8px;margin-top:18px">
+
+<button class="btn cinza" onclick="fecharFinanceiro()">
+    Cancelar
+</button>
+
+<button class="btn roxo" onclick="salvarFinanceiro()">
+    Salvar
+</button>
+
+</div>
+
+</div>
+</div>
+
+<!-- ==================================================
+MODAL SERVIÇO
+================================================== -->
+
+<div id="modalServico" class="modal">
+
+<div class="modal-box">
+
+<div class="modal-header">
+
+    <h3 id="tituloServico">Novo Serviço</h3>
+
+    <button class="fechar" onclick="fecharServico()">×</button>
+
+</div>
+
+<div class="modal-body">
+
+<input type="hidden" id="servicoId">
+
+<div class="form-grid">
+
+    <div class="form-group full">
+        <label>Cliente</label>
+        <input id="servicoCliente" placeholder="Nome do cliente">
+    </div>
+
+    <div class="form-group">
+        <label>Serviço</label>
+        <input id="servicoNome" placeholder="Ex: Instalação de câmera">
+    </div>
+
+    <div class="form-group">
+        <label>Valor</label>
+        <input id="servicoValor" type="number" step="0.01" min="0">
+    </div>
+
+    <div class="form-group full">
+        <label>Status</label>
+
+        <select id="servicoStatus">
+            <option value="aguardando">Aguardando</option>
+            <option value="andamento">Em andamento</option>
+            <option value="concluido">Concluído</option>
+            <option value="cancelado">Cancelado</option>
+        </select>
+
+    </div>
+
+</div>
+
+</div>
+
+<div class="modal-footer">
+
+    <button class="btn cinza" onclick="fecharServico()">
+        Cancelar
+    </button>
+
+    <button class="btn roxo" onclick="salvarServico()">
+        Salvar
+    </button>
+
+</div>
+
+</div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
 
 /* ==================================================
-   SUPABASE
+SUPABASE
 ================================================== */
 
 const SUPABASE_URL =
@@ -1452,1878 +1321,657 @@ window.supabase.createClient(
     SUPABASE_KEY
 );
 
-
 /* ==================================================
-   VARIÁVEIS
+VARIÁVEIS
 ================================================== */
 
-let agendamentos = [];
+let agendamentos=[];
+let movimentacoes=[];
+let clientes=[];
+let servicos=[];
 
-let movimentacoes = [];
+let dataAtualSelecionada=obterDataHoje();
 
-let clientes = [];
+let osAbertaId=null;
+let statusSelecionado="aguardando";
 
-let dataAtualSelecionada =
-    obterDataHoje();
-
-let osAbertaId = null;
-
-let statusSelecionado = null;
-
+let carregando=false;
 
 /* ==================================================
-   INICIAR
+INICIAR
 ================================================== */
 
-document.addEventListener(
-    "DOMContentLoaded",
-    async function(){
+document.addEventListener("DOMContentLoaded",async()=>{
 
-        carregarTema();
+    carregarTema();
 
-        document.getElementById(
-            "dataEscolhida"
-        ).value =
-            dataAtualSelecionada;
+    document.getElementById("dataEscolhida").value=
+        dataAtualSelecionada;
 
-        atualizarTituloData();
+    atualizarTituloData();
 
-        await carregarTudo();
+    await carregarTudo();
 
-        iniciarRealtime();
+    iniciarRealtime();
 
-    }
-);
+    setInterval(()=>{
+        if(!document.querySelector(".modal.show")){
+            carregarTudo();
+        }
+    },2000);
 
+});
 
 /* ==================================================
-   CARREGAR TUDO
+CARREGAR TUDO
 ================================================== */
 
 async function carregarTudo(){
 
-    await Promise.all([
+    if(carregando) return;
 
-        carregarAgendamentos(),
+    carregando=true;
 
-        carregarFinanceiro(),
+    try{
 
-        carregarClientes()
+        await Promise.all([
+            carregarAgendamentos(),
+            carregarFinanceiro(),
+            carregarClientes(),
+            carregarServicos()
+        ]);
 
-    ]);
+        atualizarDashboard();
+
+    }finally{
+
+        carregando=false;
+
+    }
 
 }
 
-
 /* ==================================================
-   AGENDAMENTOS
+OS
 ================================================== */
 
 async function carregarAgendamentos(){
 
-    const {data,error} =
-        await supabaseClient
+    const {data,error}=await supabaseClient
         .from("agendamentos")
         .select("*")
+        .order("data",{ascending:true})
         .order("hora",{ascending:true});
-
 
     if(error){
 
         console.error(error);
-
-        mostrarToast(
-            "Erro ao carregar OS."
-        );
+        mostrarToast("Erro ao carregar OS.");
 
         return;
     }
 
-
-    agendamentos =
-        data || [];
-
+    agendamentos=data||[];
 
     renderizarOS();
 
 }
 
-
-/* ==================================================
-   RENDERIZAR OS
-================================================== */
-
 function renderizarOS(){
 
-    const container =
-        document.getElementById(
-            "listaOS"
+    const container=
+        document.getElementById("listaOS");
+
+    const osDoDia=
+        agendamentos.filter(os=>
+            converterDataInput(os.data)===
+            dataAtualSelecionada
         );
-
-
-    const osDoDia =
-        agendamentos.filter(
-            os =>
-                os.data ===
-                dataAtualSelecionada
-        );
-
 
     if(!osDoDia.length){
 
-        container.innerHTML = `
+        container.innerHTML=`
+        <div class="vazio">
 
-            <div class="vazio">
-
-                <div
-                    style="
-                    font-size:40px;
-                    margin-bottom:10px
-                    "
-                >
-                    📋
-                </div>
-
-                <strong>
-                    Nenhuma OS para este dia.
-                </strong>
-
-                <p
-                    style="
-                    margin-top:7px;
-                    font-size:13px
-                    "
-                >
-                    Escolha outra data acima
-                    ou cadastre uma nova OS.
-                </p>
-
+            <div style="font-size:40px;margin-bottom:10px">
+                📋
             </div>
 
-        `;
+            <strong>
+                Nenhuma OS para este dia.
+            </strong>
+
+            <p style="margin-top:7px;font-size:13px">
+                Escolha outra data ou cadastre uma nova OS.
+            </p>
+
+        </div>`;
 
         return;
     }
 
-
-    const concluidas =
-        osDoDia.filter(
-            x =>
-                normalizarStatus(x.status) ===
-                "concluido"
+    const concluidas=
+        osDoDia.filter(x=>
+            normalizarStatus(x.status)==="concluido"
         ).length;
 
+    let html=`
 
-    let html = `
+    <div class="os-dia">
 
-        <div class="os-dia">
+        <div class="os-dia-header">
 
-            <div class="os-dia-header">
+            <strong>
+                📅 ${formatarDataBR(dataAtualSelecionada)}
+            </strong>
 
-                <strong>
-                    📅
-                    ${formatarDataBR(
-                        dataAtualSelecionada
-                    )}
-                </strong>
+            <span>
+                ${concluidas}/${osDoDia.length} concluídas
+            </span>
 
-                <span>
-                    ${concluidas}/${osDoDia.length}
-                    concluídas
-                </span>
+        </div>
 
-            </div>
-
-            <div class="os-list">
-
+        <div class="os-list">
     `;
 
+    osDoDia.forEach(os=>{
 
-    osDoDia.forEach(os => {
+        const status=normalizarStatus(os.status);
 
-        const status =
-            normalizarStatus(
-                os.status
-            );
+        const concluida=status==="concluido";
 
+        const telefone=
+            somenteNumeros(os.whatsapp||"");
 
-        const concluida =
-            status ===
-            "concluido";
+        html+=`
 
+        <div class="os ${concluida?"concluida":""}">
 
-        const telefone =
-            somenteNumeros(
-                os.whatsapp || ""
-            );
+            <input
+                class="check"
+                type="checkbox"
+                ${concluida?"checked":""}
+                onchange="marcarConcluida(${os.id},this.checked)">
 
+            <div class="os-conteudo">
 
-        html += `
+                <div class="os-linha">
 
-            <div
-                class="
-                    os
-                    ${
-                        concluida
-                        ? "concluida"
-                        : ""
-                    }
-                "
-            >
-
-                <input
-                    class="check"
-                    type="checkbox"
-                    ${
-                        concluida
-                        ? "checked"
-                        : ""
-                    }
-                    onchange="
-                        marcarConcluida(
-                            ${os.id},
-                            this.checked
-                        )
-                    "
-                >
-
-
-                <div class="os-conteudo">
-
-                    <div class="os-linha">
-
-                        <div class="os-cliente">
-
-                            ${escapeHTML(
-                                os.nome ||
-                                "Cliente"
-                            )}
-
-                        </div>
-
-
-                        <div class="os-hora">
-
-                            ${formatarHora(
-                                os.hora
-                            )}
-
-                        </div>
-
+                    <div class="os-cliente">
+                        ${escapeHTML(os.nome||"Cliente")}
                     </div>
 
-
-                    <div class="os-info">
-
-                        <strong>
-
-                            ${escapeHTML(
-                                os.aparelho ||
-                                "Serviço"
-                            )}
-
-                        </strong>
-
-
-                        ${
-                            os.defeito
-                            ?
-                            `
-                            <br>
-                            ${escapeHTML(
-                                os.defeito
-                            )}
-                            `
-                            :
-                            `
-                            <br>
-                            <span style="opacity:.7">
-                                Sem diagnóstico informado
-                            </span>
-                            `
-                        }
-
-
-                        <br>
-
-
-                        <span
-                            class="
-                                status
-                                s-${status}
-                            "
-                        >
-
-                            ${textoStatus(
-                                os.status
-                            )}
-
-                        </span>
-
-                    </div>
-
-
-                    <div class="os-acoes">
-
-                        <button
-                            class="
-                                btn
-                                cinza
-                                pequeno
-                            "
-                            onclick="
-                                abrirDetalhesOS(
-                                    ${os.id}
-                                )
-                            "
-                        >
-                            👁️ Detalhes / Editar
-                        </button>
-
-
-                        ${
-                            telefone
-                            ?
-                            `
-                            <button
-                                class="
-                                    btn
-                                    verde
-                                    pequeno
-                                "
-                                onclick="
-                                    abrirWhatsApp(
-                                        '${telefone}'
-                                    )
-                                "
-                            >
-                                WhatsApp
-                            </button>
-                            `
-                            :
-                            ""
-                        }
-
+                    <div class="os-hora">
+                        ${formatarHora(os.hora)}
                     </div>
 
                 </div>
 
+                <div class="os-info">
+
+                    <strong>
+                        ${escapeHTML(os.aparelho||"Serviço")}
+                    </strong>
+
+                    ${
+                        os.defeito
+                        ? `<br>${escapeHTML(os.defeito)}`
+                        : `<br><span style="opacity:.7">Sem diagnóstico informado</span>`
+                    }
+
+                    <br>
+
+                    <span class="status s-${status}">
+                        ${textoStatus(os.status)}
+                    </span>
+
+                </div>
+
+                <div class="os-acoes">
+
+                    <button
+                        class="btn cinza pequeno"
+                        onclick="abrirDetalhesOS(${os.id})">
+                        👁️ Detalhes / Editar
+                    </button>
+
+                    ${
+                        telefone
+                        ?
+                        `<button
+                            class="btn verde pequeno"
+                            onclick="abrirWhatsApp('${telefone}')">
+                            WhatsApp
+                        </button>`
+                        :
+                        ""
+                    }
+
+                </div>
+
             </div>
+
+        </div>
 
         `;
 
     });
 
-
-    html += `
-            </div>
+    html+=`
         </div>
-    `;
+    </div>`;
 
-
-    container.innerHTML =
-        html;
+    container.innerHTML=html;
 
 }
 
+async function marcarConcluida(id,checked){
 
-/* ==================================================
-   CHECKBOX
-================================================== */
+    const status=checked?"concluido":"aguardando";
 
-async function marcarConcluida(
-    id,
-    checked
-){
-
-    const status =
-        checked
-        ? "concluido"
-        : "aguardando";
-
-
-    const {error} =
-        await supabaseClient
+    const {error}=await supabaseClient
         .from("agendamentos")
-        .update({
-            status
-        })
+        .update({status})
         .eq("id",id);
-
 
     if(error){
 
-        console.error(error);
-
-        mostrarToast(
-            "Erro ao atualizar OS."
-        );
-
+        mostrarToast("Erro ao atualizar OS.");
         await carregarAgendamentos();
-
         return;
-    }
-
-
-    const os =
-        agendamentos.find(
-            x => x.id === id
-        );
-
-
-    if(os){
-
-        os.status =
-            status;
 
     }
 
+    const os=agendamentos.find(x=>x.id===id);
+
+    if(os) os.status=status;
 
     renderizarOS();
 
+    atualizarDashboard();
 
     mostrarToast(
         checked
-        ? "OS concluída ✅"
-        : "OS voltou para aguardando."
+        ?"OS concluída ✅"
+        :"OS voltou para aguardando."
     );
 
 }
 
-
 /* ==================================================
-   NOVA OS
+MODAL OS
 ================================================== */
 
 function abrirNovaOS(){
 
-    osAbertaId =
-        null;
+    osAbertaId=null;
 
-    statusSelecionado =
-        "aguardando";
+    statusSelecionado="aguardando";
 
-
-    document.getElementById(
-        "modalOSTitulo"
-    ).textContent =
+    document.getElementById("modalOSTitulo").textContent=
         "Nova Ordem de Serviço";
 
-
-    document.getElementById(
-        "btnSalvarOS"
-    ).textContent =
+    document.getElementById("btnSalvarOS").textContent=
         "Criar OS";
 
-
-    document.getElementById(
-        "btnExcluirOS"
-    ).style.display =
+    document.getElementById("btnExcluirOS").style.display=
         "none";
 
-
-    document.getElementById(
-        "btnWhatsOS"
-    ).style.display =
+    document.getElementById("btnWhatsOS").style.display=
         "none";
 
+    document.getElementById("detalhesOS").innerHTML=
+        montarFormularioOS({
 
-    document.getElementById(
-        "detalhesOS"
-    ).innerHTML = montarFormularioOS({
+            nome:"",
+            whatsapp:"",
+            aparelho:"",
+            defeito:"",
+            data:dataAtualSelecionada,
+            hora:"",
+            status:"aguardando"
 
-        nome:"",
-
-        whatsapp:"",
-
-        aparelho:"",
-
-        defeito:"",
-
-        data:dataAtualSelecionada,
-
-        hora:"",
-
-        status:"aguardando"
-
-    });
-
+        });
 
     atualizarBotoesStatus();
 
-
-    document.getElementById(
-        "modalOS"
-    ).classList.add(
-        "show"
-    );
+    document.getElementById("modalOS").classList.add("show");
 
 }
-
-
-/* ==================================================
-   ABRIR DETALHES / EDITAR OS
-================================================== */
 
 function abrirDetalhesOS(id){
 
-    const os =
-        agendamentos.find(
-            x => x.id === id
-        );
+    const os=agendamentos.find(x=>x.id===id);
 
+    if(!os) return;
 
-    if(!os)
-        return;
+    osAbertaId=id;
 
+    statusSelecionado=normalizarStatus(os.status);
 
-    osAbertaId =
-        id;
-
-
-    statusSelecionado =
-        normalizarStatus(
-            os.status
-        );
-
-
-    document.getElementById(
-        "modalOSTitulo"
-    ).textContent =
+    document.getElementById("modalOSTitulo").textContent=
         "Detalhes / Editar OS";
 
-
-    document.getElementById(
-        "btnSalvarOS"
-    ).textContent =
+    document.getElementById("btnSalvarOS").textContent=
         "Salvar alterações";
 
-
-    document.getElementById(
-        "btnExcluirOS"
-    ).style.display =
+    document.getElementById("btnExcluirOS").style.display=
         "block";
 
+    const telefone=
+        somenteNumeros(os.whatsapp||"");
 
-    const telefone =
-        somenteNumeros(
-            os.whatsapp || ""
-        );
-
-
-    const btnWhats =
-        document.getElementById(
-            "btnWhatsOS"
-        );
-
+    const btnWhats=
+        document.getElementById("btnWhatsOS");
 
     if(telefone){
 
-        btnWhats.style.display =
-            "block";
+        btnWhats.style.display="block";
 
-
-        btnWhats.onclick =
-            function(){
-
-                abrirWhatsApp(
-                    telefone
-                );
-
-            };
+        btnWhats.onclick=()=>{
+            abrirWhatsApp(telefone);
+        };
 
     }else{
 
-        btnWhats.style.display =
-            "none";
+        btnWhats.style.display="none";
 
     }
 
-
-    document.getElementById(
-        "detalhesOS"
-    ).innerHTML =
+    document.getElementById("detalhesOS").innerHTML=
         montarFormularioOS(os);
-
 
     atualizarBotoesStatus();
 
-
-    document.getElementById(
-        "modalOS"
-    ).classList.add(
-        "show"
-    );
+    document.getElementById("modalOS").classList.add("show");
 
 }
-
-
-/* ==================================================
-   FORMULÁRIO DA OS
-================================================== */
 
 function montarFormularioOS(os){
 
     return `
 
-        <div class="os-identificacao">
+    <div class="status-box">
 
-            <strong>
-                ${
-                    escapeHTML(
-                        os.nome ||
-                        "Nova OS"
-                    )
-                }
-            </strong>
-
-            <span>
-                ${
-                    os.id
-                    ? "Ordem de serviço #" + os.id
-                    : "Preencha os dados da ordem de serviço"
-                }
-            </span>
-
+        <div class="status-box-titulo">
+            STATUS DA ORDEM DE SERVIÇO
         </div>
 
+        <div class="status-botoes">
 
-        <!-- STATUS -->
-
-        <div class="status-box">
-
-            <div class="status-box-titulo">
-
-                STATUS DA ORDEM DE SERVIÇO
-
-            </div>
-
-
-            <div class="status-botoes">
-
-                ${criarBotaoStatus(
-                    "aguardando",
-                    "🟡",
-                    "Aguardando"
-                )}
-
-                ${criarBotaoStatus(
-                    "confirmado",
-                    "🔵",
-                    "Confirmado"
-                )}
-
-                ${criarBotaoStatus(
-                    "andamento",
-                    "🟣",
-                    "Em andamento"
-                )}
-
-                ${criarBotaoStatus(
-                    "concluido",
-                    "🟢",
-                    "Concluído"
-                )}
-
-                ${criarBotaoStatus(
-                    "cancelado",
-                    "🔴",
-                    "Cancelado"
-                )}
-
-            </div>
+            ${criarBotaoStatus("aguardando","🟡","Aguardando")}
+            ${criarBotaoStatus("confirmado","🔵","Confirmado")}
+            ${criarBotaoStatus("andamento","🟣","Em andamento")}
+            ${criarBotaoStatus("concluido","🟢","Concluído")}
+            ${criarBotaoStatus("cancelado","🔴","Cancelado")}
 
         </div>
-
-
-        <!-- CAMPOS -->
-
-        <div class="form-os">
-
-
-            <div class="form-group">
-
-                <label>
-                    Cliente *
-                </label>
-
-                <input
-                    id="osNome"
-                    type="text"
-                    value="${escapeHTML(
-                        os.nome || ""
-                    )}"
-                    placeholder="Nome do cliente"
-                >
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label>
-                    WhatsApp
-                </label>
-
-                <input
-                    id="osWhatsapp"
-                    type="text"
-                    value="${escapeHTML(
-                        os.whatsapp || ""
-                    )}"
-                    placeholder="Ex: (88) 99999-9999"
-                >
-
-            </div>
-
-
-            <div class="form-group full">
-
-                <label>
-                    Aparelho / Serviço *
-                </label>
-
-                <input
-                    id="osAparelho"
-                    type="text"
-                    value="${escapeHTML(
-                        os.aparelho || ""
-                    )}"
-                    placeholder="Ex: Micro-ondas, TV, instalação..."
-                >
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label>
-                    Data *
-                </label>
-
-                <input
-                    id="osData"
-                    type="date"
-                    value="${converterDataInput(
-                        os.data ||
-                        dataAtualSelecionada
-                    )}"
-                >
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label>
-                    Horário
-                </label>
-
-                <input
-                    id="osHora"
-                    type="time"
-                    value="${formatarHoraInput(
-                        os.hora || ""
-                    )}"
-                >
-
-            </div>
-
-
-            <div class="form-group full">
-
-                <label>
-                    Defeito / Diagnóstico
-                </label>
-
-                <textarea
-                    id="osDefeito"
-                    placeholder="Aqui você pode colocar o defeito encontrado, diagnóstico, peças necessárias, observações técnicas etc."
-                >${escapeHTML(
-                    os.defeito || ""
-                )}</textarea>            <div class="form-ajuda">
-
-                Esse campo é opcional no cadastro.
-                Você pode preencher depois, quando avaliar o aparelho.
-
-            </div>
-
-        </div>
-
 
     </div>
 
-`;
+    <div class="form-grid">
+
+        <div class="form-group">
+            <label>Cliente *</label>
+
+            <input
+                id="osNome"
+                value="${escapeHTML(os.nome||"")}"
+                placeholder="Nome do cliente">
+        </div>
+
+        <div class="form-group">
+
+            <label>WhatsApp</label>
+
+            <input
+                id="osWhatsapp"
+                value="${escapeHTML(os.whatsapp||"")}"
+                placeholder="(88) 99999-9999">
+
+        </div>
+
+        <div class="form-group full">
+
+            <label>Aparelho / Serviço *</label>
+
+            <input
+                id="osAparelho"
+                value="${escapeHTML(os.aparelho||"")}"
+                placeholder="Ex: Micro-ondas, TV, instalação...">
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Data *</label>
+
+            <input
+                id="osData"
+                type="date"
+                value="${converterDataInput(os.data||dataAtualSelecionada)}">
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Horário</label>
+
+            <input
+                id="osHora"
+                type="time"
+                value="${formatarHoraInput(os.hora||"")}">
+
+        </div>
+
+        <div class="form-group full">
+
+            <label>Defeito / Diagnóstico / Observações</label>
+
+            <textarea
+                id="osDefeito"
+                placeholder="Diagnóstico, peças, observações técnicas...">${escapeHTML(os.defeito||"")}</textarea>
+
+        </div>
+
+    </div>
+
+    `;
 
 }
 
-/* ==================================================
-BOTÕES DE STATUS
-================================================== */
+function criarBotaoStatus(status,emoji,texto){
 
-function criarBotaoStatus(
-status,
-emoji,
-texto
-){
-
-return `
+    return `
 
     <button
         type="button"
-        class="
-            status-btn
-            ${
-                statusSelecionado === status
-                ? "selected"
-                : ""
-            }
-        "
+        class="status-btn ${statusSelecionado===status?"selected":""}"
         id="statusBtn-${status}"
-        onclick="
-            selecionarStatus('${status}')
-        "
-    >
+        onclick="selecionarStatus('${status}')">
 
-        <span class="emoji">
-            ${emoji}
-        </span>
+        <span class="emoji">${emoji}</span>
 
         ${texto}
 
     </button>
 
-`;
+    `;
 
 }
 
 function selecionarStatus(status){
 
-statusSelecionado =
-    normalizarStatus(
-        status
-    );
+    statusSelecionado=normalizarStatus(status);
 
-
-atualizarBotoesStatus();
+    atualizarBotoesStatus();
 
 }
 
 function atualizarBotoesStatus(){
 
-document
-    .querySelectorAll(
-        ".status-btn"
-    )
-    .forEach(
-        btn => {
+    document
+        .querySelectorAll(".status-btn")
+        .forEach(btn=>
+            btn.classList.remove("selected")
+        );
 
-            btn.classList.remove(
-                "selected"
-            );
+    const botao=
+        document.getElementById(
+            "statusBtn-"+statusSelecionado
+        );
 
-        }
-    );
-
-
-const botao =
-    document.getElementById(
-        "statusBtn-" +
-        statusSelecionado
-    );
-
-
-if(botao){
-
-    botao.classList.add(
-        "selected"
-    );
+    if(botao)
+        botao.classList.add("selected");
 
 }
-
-}
-
-/* ==================================================
-SALVAR / CRIAR OS
-================================================== */
 
 async function salvarOS(){
 
-const nome =
-    document.getElementById(
-        "osNome"
-    ).value.trim();
+    const nome=
+        document.getElementById("osNome").value.trim();
 
+    const whatsapp=
+        document.getElementById("osWhatsapp").value.trim();
 
-const whatsapp =
-    document.getElementById(
-        "osWhatsapp"
-    ).value.trim();
+    const aparelho=
+        document.getElementById("osAparelho").value.trim();
 
+    const defeito=
+        document.getElementById("osDefeito").value.trim();
 
-const aparelho =
-    document.getElementById(
-        "osAparelho"
-    ).value.trim();
+    const data=
+        document.getElementById("osData").value;
 
+    const hora=
+        document.getElementById("osHora").value;
 
-const defeito =
-    document.getElementById(
-        "osDefeito"
-    ).value.trim();
+    if(!nome){
 
+        mostrarToast("Digite o nome do cliente.");
+        return;
 
-const data =
-    document.getElementById(
-        "osData"
-    ).value;
+    }
 
+    if(!aparelho){
 
-const hora =
-    document.getElementById(
-        "osHora"
-    ).value;
+        mostrarToast("Digite o aparelho ou serviço.");
+        return;
 
+    }
 
-if(!nome){
+    if(!data){
 
-    mostrarToast(
-        "Digite o nome do cliente."
-    );
+        mostrarToast("Escolha a data.");
+        return;
 
-    return;
-}
+    }
 
+    const dados={
+        nome,
+        whatsapp,
+        aparelho,
+        defeito,
+        data,
+        hora:hora||null,
+        status:statusSelecionado||"aguardando"
+    };
 
-if(!aparelho){
+    let resposta;
 
-    mostrarToast(
-        "Digite o aparelho ou serviço."
-    );
+    if(osAbertaId){
 
-    return;
-}
+        resposta=await supabaseClient
+            .from("agendamentos")
+            .update(dados)
+            .eq("id",osAbertaId);
 
+    }else{
 
-if(!data){
+        resposta=await supabaseClient
+            .from("agendamentos")
+            .insert(dados);
 
-    mostrarToast(
-        "Escolha a data da OS."
-    );
+    }
 
-    return;
-}
+    if(resposta.error){
 
+        console.error(resposta.error);
 
-const dados = {
-
-    nome,
-
-    whatsapp,
-
-    aparelho,
-
-    defeito,
-
-    data,
-
-    hora:hora || null,
-
-    status:
-        statusSelecionado ||
-        "aguardando"
-
-};
-
-
-let resposta;
-
-
-if(osAbertaId){
-
-    resposta =
-        await supabaseClient
-        .from("agendamentos")
-        .update(dados)
-        .eq(
-            "id",
-            osAbertaId
+        mostrarToast(
+            "Erro ao salvar: "+
+            resposta.error.message
         );
 
-}else{
+        return;
 
-    resposta =
-        await supabaseClient
-        .from("agendamentos")
-        .insert(dados);
+    }
 
-}
+    const edicao=!!osAbertaId;
 
+    fecharOS();
 
-if(resposta.error){
+    await carregarAgendamentos();
 
-    console.error(
-        resposta.error
-    );
+    atualizarDashboard();
 
     mostrarToast(
-        "Erro ao salvar OS: " +
-        resposta.error.message
+        edicao
+        ?"OS atualizada ✅"
+        :"OS criada com sucesso ✅"
     );
 
-    return;
 }
-
-
-const eraEdicao =
-    !!osAbertaId;
-
-
-fecharOS();
-
-
-await carregarAgendamentos();
-
-
-mostrarToast(
-    eraEdicao
-    ? "OS atualizada ✅"
-    : "OS criada com sucesso ✅"
-);
-
-}
-
-/* ==================================================
-EXCLUIR OS
-================================================== */
 
 async function excluirOS(){
 
-if(!osAbertaId)
-    return;
+    if(!osAbertaId) return;
 
+    const os=
+        agendamentos.find(x=>x.id===osAbertaId);
 
-const os =
-    agendamentos.find(
-        x =>
-            x.id ===
-            osAbertaId
-    );
+    if(!os) return;
 
-
-if(!os)
-    return;
-
-
-const confirmou =
-    confirm(
-        "Deseja realmente excluir a OS #" +
-        os.id +
-        " de " +
-        (os.nome || "este cliente") +
+    if(!confirm(
+        "Deseja realmente excluir a OS #"+
+        os.id+
+        " de "+
+        (os.nome||"este cliente")+
         "?"
-    );
+    )) return;
 
+    const {error}=await supabaseClient
+        .from("agendamentos")
+        .delete()
+        .eq("id",osAbertaId);
 
-if(!confirmou)
-    return;
+    if(error){
 
+        mostrarToast(
+            "Erro ao excluir: "+
+            error.message
+        );
 
-const {error} =
-    await supabaseClient
-    .from("agendamentos")
-    .delete()
-    .eq(
-        "id",
-        osAbertaId
-    );
+        return;
 
+    }
 
-if(error){
+    fecharOS();
 
-    console.error(error);
+    await carregarAgendamentos();
 
-    mostrarToast(
-        "Erro ao excluir OS: " +
-        error.message
-    );
+    atualizarDashboard();
 
-    return;
-}
-
-
-fecharOS();
-
-
-await carregarAgendamentos();
-
-
-mostrarToast(
-    "OS excluída."
-);
+    mostrarToast("OS excluída 🗑️");
 
 }
-
-/* ==================================================
-FECHAR OS
-================================================== */
 
 function fecharOS(){
 
-document
-    .getElementById(
-        "modalOS"
-    )
-    .classList.remove(
-        "show"
-    );
+    document.getElementById("modalOS")
+        .classList.remove("show");
 
-
-osAbertaId =
-    null;
-
-statusSelecionado =
-    null;
-
-}
-
-/* ==================================================
-DATA
-================================================== */
-
-function obterDataHoje(){
-
-const d =
-    new Date();
-
-
-const ano =
-    d.getFullYear();
-
-
-const mes =
-    String(
-        d.getMonth()+1
-    ).padStart(
-        2,
-        "0"
-    );
-
-
-const dia =
-    String(
-        d.getDate()
-    ).padStart(
-        2,
-        "0"
-    );
-
-
-return `${ano}-${mes}-${dia}`;
-
-}
-
-function atualizarTituloData(){
-
-if(!dataAtualSelecionada)
-    return;
-
-
-const partes =
-    dataAtualSelecionada
-    .split("-");
-
-
-if(partes.length !== 3)
-    return;
-
-
-const d =
-    new Date(
-        Number(partes[0]),
-        Number(partes[1])-1,
-        Number(partes[2])
-    );
-
-
-const hoje =
-    obterDataHoje();
-
-
-const nomes = [
-
-    "Domingo",
-
-    "Segunda-feira",
-
-    "Terça-feira",
-
-    "Quarta-feira",
-
-    "Quinta-feira",
-
-    "Sexta-feira",
-
-    "Sábado"
-
-];
-
-
-document.getElementById(
-    "diaSelecionado"
-).textContent =
-
-    dataAtualSelecionada === hoje
-
-    ? "Hoje"
-
-    : formatarDataBR(
-        dataAtualSelecionada
-    );
-
-
-document.getElementById(
-    "diaSemana"
-).textContent =
-    nomes[d.getDay()];
-
-
-document.getElementById(
-    "dataEscolhida"
-).value =
-    dataAtualSelecionada;
-
-}
-
-function mudarDia(valor){
-
-const partes =
-    dataAtualSelecionada
-    .split("-");
-
-
-const d =
-    new Date(
-        Number(partes[0]),
-        Number(partes[1])-1,
-        Number(partes[2])
-    );
-
-
-d.setDate(
-    d.getDate() +
-    valor
-);
-
-
-const ano =
-    d.getFullYear();
-
-
-const mes =
-    String(
-        d.getMonth()+1
-    ).padStart(
-        2,
-        "0"
-    );
-
-
-const dia =
-    String(
-        d.getDate()
-    ).padStart(
-        2,
-        "0"
-    );
-
-
-dataAtualSelecionada =
-    `${ano}-${mes}-${dia}`;
-
-
-atualizarTituloData();
-
-renderizarOS();
-
-}
-
-function selecionarData(){
-
-const valor =
-    document.getElementById(
-        "dataEscolhida"
-    ).value;
-
-
-if(!valor)
-    return;
-
-
-dataAtualSelecionada =
-    valor;
-
-
-atualizarTituloData();
-
-renderizarOS();
-
-}
-
-/* ==================================================
-FINANCEIRO
-================================================== */
-
-async function carregarFinanceiro(){
-
-const {data,error} =
-    await supabaseClient
-    .from("movimentacoes")
-    .select("*")
-    .order(
-        "id",
-        {
-            ascending:false
-        }
-    );
-
-
-if(error){
-
-    console.error(error);
-
-    mostrarToast(
-        "Erro ao carregar financeiro."
-    );
-
-    return;
-}
-
-
-movimentacoes =
-    data || [];
-
-
-calcularFinanceiro();
-
-renderizarFinanceiro();
-
-}
-
-function calcularFinanceiro(){
-
-let entradas = 0;
-
-let saidas = 0;
-
-
-movimentacoes.forEach(
-    item => {
-
-        const valor =
-            Number(
-                item.valor
-            ) || 0;
-
-
-        if(
-            String(item.tipo)
-            .toLowerCase()
-            === "entrada"
-        ){
-
-            entradas +=
-                valor;
-
-        }else{
-
-            saidas +=
-                valor;
-
-        }
-
-    }
-);
-
-
-document.getElementById(
-    "totalEntradas"
-).textContent =
-    dinheiro(
-        entradas
-    );
-
-
-document.getElementById(
-    "totalSaidas"
-).textContent =
-    dinheiro(
-        saidas
-    );
-
-
-document.getElementById(
-    "saldo"
-).textContent =
-    dinheiro(
-        entradas -
-        saidas
-    );
-
-}
-
-function renderizarFinanceiro(){
-
-const container =
-    document.getElementById(
-        "listaFinanceiro"
-    );
-
-
-if(!movimentacoes.length){
-
-    container.innerHTML = `
-
-        <div class="vazio">
-
-            Nenhuma movimentação.
-
-        </div>
-
-    `;
-
-    return;
-}
-
-
-let html = "";
-
-
-movimentacoes.forEach(
-    item => {
-
-        const entrada =
-            String(item.tipo)
-            .toLowerCase()
-            === "entrada";
-
-
-        const valor =
-            Number(
-                item.valor
-            ) || 0;
-
-
-        html += `
-
-            <div class="finance-item">
-
-                <div class="finance-top">
-
-                    <div class="finance-descricao">
-
-                        ${
-                            entrada
-                            ? "🟢"
-                            : "🔴"
-                        }
-
-                        ${escapeHTML(
-                            item.descricao ||
-                            "Sem descrição"
-                        )}
-
-                    </div>
-
-
-                    <div
-                        class="
-                            finance-valor
-                            ${
-                                entrada
-                                ? "entrada"
-                                : "saida"
-                            }
-                        "
-                    >
-
-                        ${
-                            entrada
-                            ? "+"
-                            : "-"
-                        }
-
-                        ${dinheiro(
-                            valor
-                        )}
-
-                    </div>
-
-                </div>
-
-
-                <div class="finance-meta">
-
-                    ${
-                        entrada
-                        ? "Entrada"
-                        : "Saída"
-                    }
-
-                    •
-
-                    ${escapeHTML(
-                        item.data ||
-                        "-"
-                    )}
-
-                </div>
-
-
-                <div class="finance-acoes">
-
-                    <button
-                        class="btn cinza pequeno"
-                        onclick="
-                            editarFinanceiro(
-                                ${item.id}
-                            )
-                        "
-                    >
-                        ✏️ Editar
-                    </button>
-
-
-                    <button
-                        class="btn vermelho pequeno"
-                        onclick="
-                            excluirFinanceiro(
-                                ${item.id}
-                            )
-                        "
-                    >
-                        🗑️ Excluir
-                    </button>
-
-                </div>
-
-            </div>
-
-        `;
-
-    }
-);
-
-
-container.innerHTML =
-    html;
-
-}
-
-/* ==================================================
-NOVO FINANCEIRO
-================================================== */
-
-function abrirNovoFinanceiro(){
-
-document.getElementById(
-    "financeId"
-).value =
-    "";
-
-
-document.getElementById(
-    "financeTipo"
-).value =
-    "entrada";
-
-
-document.getElementById(
-    "financeDescricao"
-).value =
-    "";
-
-
-document.getElementById(
-    "financeValor"
-).value =
-    "";
-
-
-document.getElementById(
-    "financeData"
-).value =
-    obterDataHoje();
-
-
-document.getElementById(
-    "tituloFinanceiro"
-).textContent =
-    "Nova movimentação";
-
-
-document.getElementById(
-    "modalFinanceiro"
-).classList.add(
-    "show"
-);
-
-}
-
-/* ==================================================
-EDITAR FINANCEIRO
-================================================== */
-
-function editarFinanceiro(id){
-
-const item =
-    movimentacoes.find(
-        x =>
-            x.id === id
-    );
-
-
-if(!item)
-    return;
-
-
-document.getElementById(
-    "financeId"
-).value =
-    item.id;
-
-
-document.getElementById(
-    "financeTipo"
-).value =
-    item.tipo ||
-    "entrada";
-
-
-document.getElementById(
-    "financeDescricao"
-).value =
-    item.descricao ||
-    "";
-
-
-document.getElementById(
-    "financeValor"
-).value =
-    item.valor ||
-    0;
-
-
-document.getElementById(
-    "financeData"
-).value =
-    converterDataInput(
-        item.data
-    );
-
-
-document.getElementById(
-    "tituloFinanceiro"
-).textContent =
-    "Editar movimentação";
-
-
-document.getElementById(
-    "modalFinanceiro"
-).classList.add(
-    "show"
-);
-
-}
-
-/* ==================================================
-SALVAR FINANCEIRO
-================================================== */
-
-async function salvarFinanceiro(){
-
-const id =
-    document.getElementById(
-        "financeId"
-    ).value;
-
-
-const tipo =
-    document.getElementById(
-        "financeTipo"
-    ).value;
-
-
-const descricao =
-    document.getElementById(
-        "financeDescricao"
-    ).value.trim();
-
-
-const valor =
-    Number(
-        document.getElementById(
-            "financeValor"
-        ).value
-    );
-
-
-const dataInput =
-    document.getElementById(
-        "financeData"
-    ).value;
-
-
-if(!descricao){
-
-    mostrarToast(
-        "Digite a descrição."
-    );
-
-    return;
-}
-
-
-if(!valor || valor <= 0){
-
-    mostrarToast(
-        "Digite um valor válido."
-    );
-
-    return;
-}
-
-
-const data =
-    converterDataBanco(
-        dataInput
-    );
-
-
-let error;
-
-
-if(id){
-
-    const resposta =
-        await supabaseClient
-        .from("movimentacoes")
-        .update({
-
-            tipo,
-
-            descricao,
-
-            valor,
-
-            data
-
-        })
-        .eq(
-            "id",
-            id
-        );
-
-
-    error =
-        resposta.error;
-
-}else{
-
-    const resposta =
-        await supabaseClient
-        .from("movimentacoes")
-        .insert({
-
-            tipo,
-
-            descricao,
-
-            valor,
-
-            data
-
-        });
-
-
-    error =
-        resposta.error;
-
-}
-
-
-if(error){
-
-    console.error(error);
-
-    mostrarToast(
-        "Erro ao salvar: " +
-        error.message
-    );
-
-    return;
-}
-
-
-fecharFinanceiro();
-
-
-await carregarFinanceiro();
-
-
-mostrarToast(
-    id
-    ? "Movimentação editada ✅"
-    : "Movimentação adicionada ✅"
-);
-
-}
-
-/* ==================================================
-EXCLUIR FINANCEIRO
-================================================== */
-
-async function excluirFinanceiro(id){
-
-if(
-    !confirm(
-        "Deseja realmente excluir esta movimentação?"
-    )
-){
-
-    return;
-
-}
-
-
-const {error} =
-    await supabaseClient
-    .from("movimentacoes")
-    .delete()
-    .eq(
-        "id",
-        id
-    );
-
-
-if(error){
-
-    console.error(error);
-
-    mostrarToast(
-        "Erro ao excluir."
-    );
-
-    return;
-}
-
-
-await carregarFinanceiro();
-
-
-mostrarToast(
-    "Movimentação excluída."
-);
+    osAbertaId=null;
 
 }
 
@@ -3333,155 +1981,1034 @@ CLIENTES
 
 async function carregarClientes(){
 
-const {data,error} =
-    await supabaseClient
-    .from("clientes")
-    .select("*")
-    .order(
-        "id",
-        {
-            ascending:false
-        }
-    );
+    const {data,error}=await supabaseClient
+        .from("clientes")
+        .select("*")
+        .order("id",{ascending:false});
 
+    if(error){
 
-if(error){
+        console.error(error);
+        mostrarToast("Erro ao carregar clientes.");
+        return;
 
-    console.error(error);
+    }
 
-    return;
-}
+    clientes=data||[];
 
-
-clientes =
-    data || [];
-
-
-renderizarClientes();
+    renderizarClientes();
 
 }
 
 function renderizarClientes(){
 
-const container =
-    document.getElementById(
-        "listaClientes"
-    );
+    const container=
+        document.getElementById("listaClientes");
 
+    const busca=
+        (
+            document.getElementById("buscaCliente")?.value||
+            ""
+        ).toLowerCase();
 
-if(!clientes.length){
+    const lista=
+        clientes.filter(c=>
+            String(c.nome||"")
+                .toLowerCase()
+                .includes(busca) ||
+            String(c.whatsapp||"")
+                .toLowerCase()
+                .includes(busca) ||
+            String(c.cidade||"")
+                .toLowerCase()
+                .includes(busca)
+        );
 
-    container.innerHTML = `
+    if(!lista.length){
 
-        <div class="vazio">
+        container.innerHTML=
+            `<div class="vazio">Nenhum cliente encontrado.</div>`;
 
-            Nenhum cliente cadastrado.
+        return;
 
-        </div>
+    }
 
-    `;
+    let html="";
 
-    return;
-}
+    lista.forEach(cliente=>{
 
+        const telefone=
+            somenteNumeros(cliente.whatsapp||"");
 
-let html = "";
+        html+=`
 
+        <div class="item">
 
-clientes.forEach(
-    cliente => {
+            <div class="item-top">
 
-        const telefone =
-            somenteNumeros(
-                cliente.whatsapp ||
-                ""
-            );
-
-
-        html += `
-
-            <div class="cliente">
-
-                <div class="cliente-nome">
-
-                    👤
-
-                    ${escapeHTML(
-                        cliente.nome ||
-                        "-"
-                    )}
-
+                <div class="item-titulo">
+                    👤 ${escapeHTML(cliente.nome||"-")}
                 </div>
 
-
-                <div class="cliente-info">
-
-                    WhatsApp:
-
-                    ${escapeHTML(
-                        cliente.whatsapp ||
-                        "-"
-                    )}
-
-                    ${
-                        cliente.cidade
-                        ?
-                        `
-                        <br>
-                        Cidade:
-
-                        ${escapeHTML(
-                            cliente.cidade
-                        )}
-                        `
-                        :
-                        ""
-                    }
-
+                <div>
+                    ${escapeHTML(cliente.cidade||"")}
                 </div>
 
+            </div>
+
+            <div class="item-info">
+
+                WhatsApp:
+                ${escapeHTML(cliente.whatsapp||"-")}
 
                 ${
-                    telefone
+                    cliente.data
                     ?
-                    `
-                    <div
-                        style="
-                        margin-top:10px
-                        "
-                    >
-
-                        <button
-                            class="
-                                btn
-                                verde
-                                pequeno
-                            "
-                            onclick="
-                                abrirWhatsApp(
-                                    '${telefone}'
-                                )
-                            "
-                        >
-                            WhatsApp
-                        </button>
-
-                    </div>
-                    `
+                    `<br>Cadastro: ${formatarDataBR(converterDataInput(cliente.data))}`
                     :
                     ""
                 }
 
             </div>
 
+            <div class="item-acoes">
+
+                ${
+                    telefone
+                    ?
+                    `<button
+                        class="btn verde pequeno"
+                        onclick="abrirWhatsApp('${telefone}')">
+                        WhatsApp
+                    </button>`
+                    :
+                    ""
+                }
+
+                <button
+                    class="btn cinza pequeno"
+                    onclick="editarCliente(${cliente.id})">
+                    ✏️ Editar
+                </button>
+
+                <button
+                    class="btn vermelho pequeno"
+                    onclick="excluirCliente(${cliente.id})">
+                    🗑️ Excluir
+                </button>
+
+            </div>
+
+        </div>
+
         `;
 
+    });
+
+    container.innerHTML=html;
+
+}
+
+function abrirNovoCliente(){
+
+    document.getElementById("clienteId").value="";
+    document.getElementById("clienteNome").value="";
+    document.getElementById("clienteWhatsapp").value="";
+    document.getElementById("clienteCidade").value="";
+    document.getElementById("clienteData").value=obterDataHoje();
+
+    document.getElementById("tituloCliente").textContent=
+        "Novo Cliente";
+
+    document.getElementById("modalCliente")
+        .classList.add("show");
+
+}
+
+function editarCliente(id){
+
+    const cliente=
+        clientes.find(x=>x.id===id);
+
+    if(!cliente) return;
+
+    document.getElementById("clienteId").value=cliente.id;
+    document.getElementById("clienteNome").value=cliente.nome||"";
+    document.getElementById("clienteWhatsapp").value=cliente.whatsapp||"";
+    document.getElementById("clienteCidade").value=cliente.cidade||"";
+    document.getElementById("clienteData").value=
+        converterDataInput(cliente.data);
+
+    document.getElementById("tituloCliente").textContent=
+        "Editar Cliente";
+
+    document.getElementById("modalCliente")
+        .classList.add("show");
+
+}
+
+async function salvarCliente(){
+
+    const id=
+        document.getElementById("clienteId").value;
+
+    const nome=
+        document.getElementById("clienteNome").value.trim();
+
+    const whatsapp=
+        document.getElementById("clienteWhatsapp").value.trim();
+
+    const cidade=
+        document.getElementById("clienteCidade").value.trim();
+
+    const data=
+        document.getElementById("clienteData").value;
+
+    if(!nome){
+
+        mostrarToast("Digite o nome do cliente.");
+        return;
+
     }
-);
 
+    const dados={
+        nome,
+        whatsapp,
+        cidade,
+        data:data||null
+    };
 
-container.innerHTML =
-    html;
+    let resposta;
+
+    if(id){
+
+        resposta=await supabaseClient
+            .from("clientes")
+            .update(dados)
+            .eq("id",id);
+
+    }else{
+
+        resposta=await supabaseClient
+            .from("clientes")
+            .insert(dados);
+
+    }
+
+    if(resposta.error){
+
+        mostrarToast(
+            "Erro ao salvar cliente: "+
+            resposta.error.message
+        );
+
+        return;
+
+    }
+
+    fecharCliente();
+
+    await carregarClientes();
+
+    atualizarDashboard();
+
+    mostrarToast(
+        id
+        ?"Cliente atualizado ✅"
+        :"Cliente cadastrado ✅"
+    );
+
+}
+
+async function excluirCliente(id){
+
+    const cliente=
+        clientes.find(x=>x.id===id);
+
+    if(!cliente) return;
+
+    if(!confirm(
+        "Excluir o cliente "+
+        (cliente.nome||"")+
+        "?"
+    )) return;
+
+    const {error}=await supabaseClient
+        .from("clientes")
+        .delete()
+        .eq("id",id);
+
+    if(error){
+
+        mostrarToast(
+            "Erro ao excluir: "+
+            error.message
+        );
+
+        return;
+
+    }
+
+    await carregarClientes();
+
+    atualizarDashboard();
+
+    mostrarToast("Cliente excluído 🗑️");
+
+}
+
+function fecharCliente(){
+
+    document.getElementById("modalCliente")
+        .classList.remove("show");
+
+}
+
+/* ==================================================
+FINANCEIRO
+================================================== */
+
+async function carregarFinanceiro(){
+
+    const {data,error}=await supabaseClient
+        .from("movimentacoes")
+        .select("*")
+        .order("id",{ascending:false});
+
+    if(error){
+
+        console.error(error);
+        mostrarToast("Erro ao carregar financeiro.");
+        return;
+
+    }
+
+    movimentacoes=data||[];
+
+    calcularFinanceiro();
+
+    renderizarFinanceiro();
+
+}
+
+function calcularFinanceiro(){
+
+    let entradas=0;
+    let saidas=0;
+
+    movimentacoes.forEach(item=>{
+
+        const valor=Number(item.valor)||0;
+
+        if(
+            String(item.tipo).toLowerCase()==="entrada"
+        )
+            entradas+=valor;
+        else
+            saidas+=valor;
+
+    });
+
+    document.getElementById("totalEntradas").textContent=
+        dinheiro(entradas);
+
+    document.getElementById("totalSaidas").textContent=
+        dinheiro(saidas);
+
+    document.getElementById("saldo").textContent=
+        dinheiro(entradas-saidas);
+
+}
+
+function renderizarFinanceiro(){
+
+    const container=
+        document.getElementById("listaFinanceiro");
+
+    const busca=
+        (
+            document.getElementById("buscaFinanceiro")?.value||
+            ""
+        ).toLowerCase();
+
+    const lista=
+        movimentacoes.filter(item=>
+            String(item.descricao||"")
+                .toLowerCase()
+                .includes(busca) ||
+            String(item.tipo||"")
+                .toLowerCase()
+                .includes(busca)
+        );
+
+    if(!lista.length){
+
+        container.innerHTML=
+            `<div class="vazio">Nenhuma movimentação encontrada.</div>`;
+
+        return;
+
+    }
+
+    let html="";
+
+    lista.forEach(item=>{
+
+        const entrada=
+            String(item.tipo).toLowerCase()==="entrada";
+
+        const valor=Number(item.valor)||0;
+
+        html+=`
+
+        <div class="item">
+
+            <div class="item-top">
+
+                <div class="item-titulo">
+
+                    ${entrada?"🟢":"🔴"}
+
+                    ${escapeHTML(
+                        item.descricao||"Sem descrição"
+                    )}
+
+                </div>
+
+                <strong class="${entrada?"entrada":"saida"}">
+
+                    ${entrada?"+":"-"}
+
+                    ${dinheiro(valor)}
+
+                </strong>
+
+            </div>
+
+            <div class="item-info">
+
+                ${entrada?"Entrada":"Saída"}
+
+                •
+
+                ${escapeHTML(item.data||"-")}
+
+            </div>
+
+            <div class="item-acoes">
+
+                <button
+                    class="btn cinza pequeno"
+                    onclick="editarFinanceiro(${item.id})">
+                    ✏️ Editar
+                </button>
+
+                <button
+                    class="btn vermelho pequeno"
+                    onclick="excluirFinanceiro(${item.id})">
+                    🗑️ Excluir
+                </button>
+
+            </div>
+
+        </div>
+
+        `;
+
+    });
+
+    container.innerHTML=html;
+
+}
+
+function abrirNovoFinanceiro(){
+
+    document.getElementById("financeId").value="";
+    document.getElementById("financeTipo").value="entrada";
+    document.getElementById("financeDescricao").value="";
+    document.getElementById("financeValor").value="";
+    document.getElementById("financeData").value=obterDataHoje();
+
+    document.getElementById("tituloFinanceiro").textContent=
+        "Nova movimentação";
+
+    document.getElementById("modalFinanceiro")
+        .classList.add("show");
+
+}
+
+function editarFinanceiro(id){
+
+    const item=
+        movimentacoes.find(x=>x.id===id);
+
+    if(!item) return;
+
+    document.getElementById("financeId").value=item.id;
+    document.getElementById("financeTipo").value=item.tipo||"entrada";
+    document.getElementById("financeDescricao").value=item.descricao||"";
+    document.getElementById("financeValor").value=item.valor||0;
+    document.getElementById("financeData").value=
+        converterDataInput(item.data);
+
+    document.getElementById("tituloFinanceiro").textContent=
+        "Editar movimentação";
+
+    document.getElementById("modalFinanceiro")
+        .classList.add("show");
+
+}
+
+async function salvarFinanceiro(){
+
+    const id=
+        document.getElementById("financeId").value;
+
+    const tipo=
+        document.getElementById("financeTipo").value;
+
+    const descricao=
+        document.getElementById("financeDescricao").value.trim();
+
+    const valor=
+        Number(
+            document.getElementById("financeValor").value
+        );
+
+    const data=
+        document.getElementById("financeData").value;
+
+    if(!descricao){
+
+        mostrarToast("Digite a descrição.");
+        return;
+
+    }
+
+    if(!valor||valor<=0){
+
+        mostrarToast("Digite um valor válido.");
+        return;
+
+    }
+
+    const dados={
+        tipo,
+        descricao,
+        valor,
+        data:data||null
+    };
+
+    let resposta;
+
+    if(id){
+
+        resposta=await supabaseClient
+            .from("movimentacoes")
+            .update(dados)
+            .eq("id",id);
+
+    }else{
+
+        resposta=await supabaseClient
+            .from("movimentacoes")
+            .insert(dados);
+
+    }
+
+    if(resposta.error){
+
+        mostrarToast(
+            "Erro ao salvar: "+
+            resposta.error.message
+        );
+
+        return;
+
+    }
+
+    fecharFinanceiro();
+
+    await carregarFinanceiro();
+
+    atualizarDashboard();
+
+    mostrarToast(
+        id
+        ?"Movimentação editada ✅"
+        :"Movimentação adicionada ✅"
+    );
+
+}
+
+async function excluirFinanceiro(id){
+
+    if(!confirm(
+        "Deseja realmente excluir esta movimentação?"
+    ))
+        return;
+
+    const {error}=await supabaseClient
+        .from("movimentacoes")
+        .delete()
+        .eq("id",id);
+
+    if(error){
+
+        mostrarToast(
+            "Erro ao excluir: "+
+            error.message
+        );
+
+        return;
+
+    }
+
+    await carregarFinanceiro();
+
+    atualizarDashboard();
+
+    mostrarToast("Movimentação excluída 🗑️");
+
+}
+
+function fecharFinanceiro(){
+
+    document.getElementById("modalFinanceiro")
+        .classList.remove("show");
+
+}
+
+/* ==================================================
+SERVIÇOS
+================================================== */
+
+async function carregarServicos(){
+
+    const {data,error}=await supabaseClient
+        .from("servicos")
+        .select("*")
+        .order("id",{ascending:false});
+
+    if(error){
+
+        console.error(error);
+        mostrarToast("Erro ao carregar serviços.");
+        return;
+
+    }
+
+    servicos=data||[];
+
+    renderizarServicos();
+
+}
+
+function renderizarServicos(){
+
+    const container=
+        document.getElementById("listaServicos");
+
+    const busca=
+        (
+            document.getElementById("buscaServico")?.value||
+            ""
+        ).toLowerCase();
+
+    const lista=
+        servicos.filter(s=>
+            String(s.cliente||"")
+                .toLowerCase()
+                .includes(busca) ||
+            String(s.nome||"")
+                .toLowerCase()
+                .includes(busca) ||
+            String(s.status||"")
+                .toLowerCase()
+                .includes(busca)
+        );
+
+    if(!lista.length){
+
+        container.innerHTML=
+            `<div class="vazio">Nenhum serviço encontrado.</div>`;
+
+        return;
+
+    }
+
+    let html="";
+
+    lista.forEach(servico=>{
+
+        const status=
+            normalizarStatus(servico.status);
+
+        html+=`
+
+        <div class="item">
+
+            <div class="item-top">
+
+                <div class="item-titulo">
+
+                    🛠️
+
+                    ${escapeHTML(
+                        servico.nome||"Serviço"
+                    )}
+
+                </div>
+
+                <strong>
+                    ${dinheiro(servico.valor)}
+                </strong>
+
+            </div>
+
+            <div class="item-info">
+
+                Cliente:
+                ${escapeHTML(servico.cliente||"-")}
+
+                <br>
+
+                <span class="status s-${status}">
+                    ${textoStatus(status)}
+                </span>
+
+            </div>
+
+            <div class="item-acoes">
+
+                <button
+                    class="btn cinza pequeno"
+                    onclick="editarServico(${servico.id})">
+                    ✏️ Editar
+                </button>
+
+                <button
+                    class="btn vermelho pequeno"
+                    onclick="excluirServico(${servico.id})">
+                    🗑️ Excluir
+                </button>
+
+            </div>
+
+        </div>
+
+        `;
+
+    });
+
+    container.innerHTML=html;
+
+}
+
+function abrirNovoServico(){
+
+    document.getElementById("servicoId").value="";
+    document.getElementById("servicoCliente").value="";
+    document.getElementById("servicoNome").value="";
+    document.getElementById("servicoValor").value="";
+    document.getElementById("servicoStatus").value="aguardando";
+
+    document.getElementById("tituloServico").textContent=
+        "Novo Serviço";
+
+    document.getElementById("modalServico")
+        .classList.add("show");
+
+}
+
+function editarServico(id){
+
+    const servico=
+        servicos.find(x=>x.id===id);
+
+    if(!servico) return;
+
+    document.getElementById("servicoId").value=servico.id;
+    document.getElementById("servicoCliente").value=servico.cliente||"";
+    document.getElementById("servicoNome").value=servico.nome||"";
+    document.getElementById("servicoValor").value=servico.valor||0;
+    document.getElementById("servicoStatus").value=
+        servico.status||"aguardando";
+
+    document.getElementById("tituloServico").textContent=
+        "Editar Serviço";
+
+    document.getElementById("modalServico")
+        .classList.add("show");
+
+}
+
+async function salvarServico(){
+
+    const id=
+        document.getElementById("servicoId").value;
+
+    const cliente=
+        document.getElementById("servicoCliente").value.trim();
+
+    const nome=
+        document.getElementById("servicoNome").value.trim();
+
+    const valor=
+        Number(
+            document.getElementById("servicoValor").value
+        );
+
+    const status=
+        document.getElementById("servicoStatus").value;
+
+    if(!nome){
+
+        mostrarToast("Digite o nome do serviço.");
+        return;
+
+    }
+
+    const dados={
+        cliente,
+        nome,
+        valor:valor||0,
+        status
+    };
+
+    let resposta;
+
+    if(id){
+
+        resposta=await supabaseClient
+            .from("servicos")
+            .update(dados)
+            .eq("id",id);
+
+    }else{
+
+        resposta=await supabaseClient
+            .from("servicos")
+            .insert(dados);
+
+    }
+
+    if(resposta.error){
+
+        mostrarToast(
+            "Erro ao salvar serviço: "+
+            resposta.error.message
+        );
+
+        return;
+
+    }
+
+    fecharServico();
+
+    await carregarServicos();
+
+    mostrarToast(
+        id
+        ?"Serviço atualizado ✅"
+        :"Serviço cadastrado ✅"
+    );
+
+}
+
+async function excluirServico(id){
+
+    const servico=
+        servicos.find(x=>x.id===id);
+
+    if(!servico) return;
+
+    if(!confirm(
+        "Excluir o serviço "+
+        (servico.nome||"")+
+        "?"
+    ))
+        return;
+
+    const {error}=await supabaseClient
+        .from("servicos")
+        .delete()
+        .eq("id",id);
+
+    if(error){
+
+        mostrarToast(
+            "Erro ao excluir: "+
+            error.message
+        );
+
+        return;
+
+    }
+
+    await carregarServicos();
+
+    mostrarToast("Serviço excluído 🗑️");
+
+}
+
+function fecharServico(){
+
+    document.getElementById("modalServico")
+        .classList.remove("show");
+
+}
+
+/* ==================================================
+DASHBOARD
+================================================== */
+
+function atualizarDashboard(){
+
+    document.getElementById("dashClientes").textContent=
+        clientes.length;
+
+    document.getElementById("dashOS").textContent=
+        agendamentos.length;
+
+    const pendentes=
+        agendamentos.filter(x=>{
+            const s=normalizarStatus(x.status);
+            return s!=="concluido" && s!=="cancelado";
+        }).length;
+
+    document.getElementById("dashPendentes").textContent=
+        pendentes;
+
+    let entradas=0;
+    let saidas=0;
+
+    movimentacoes.forEach(x=>{
+
+        const valor=Number(x.valor)||0;
+
+        if(
+            String(x.tipo).toLowerCase()==="entrada"
+        )
+            entradas+=valor;
+        else
+            saidas+=valor;
+
+    });
+
+    document.getElementById("dashSaldo").textContent=
+        dinheiro(entradas-saidas);
+
+}
+
+/* ==================================================
+DATA
+================================================== */
+
+function obterDataHoje(){
+
+    const d=new Date();
+
+    return d.getFullYear()+"-"+
+        String(d.getMonth()+1).padStart(2,"0")+"-"+
+        String(d.getDate()).padStart(2,"0");
+
+}
+
+function atualizarTituloData(){
+
+    const partes=
+        dataAtualSelecionada.split("-");
+
+    const d=new Date(
+        Number(partes[0]),
+        Number(partes[1])-1,
+        Number(partes[2])
+    );
+
+    const nomes=[
+        "Domingo",
+        "Segunda-feira",
+        "Terça-feira",
+        "Quarta-feira",
+        "Quinta-feira",
+        "Sexta-feira",
+        "Sábado"
+    ];
+
+    document.getElementById("diaSelecionado").textContent=
+        dataAtualSelecionada===obterDataHoje()
+        ?"Hoje"
+        :formatarDataBR(dataAtualSelecionada);
+
+    document.getElementById("diaSemana").textContent=
+        nomes[d.getDay()];
+
+    document.getElementById("dataEscolhida").value=
+        dataAtualSelecionada;
+
+}
+
+function mudarDia(valor){
+
+    const p=
+        dataAtualSelecionada.split("-");
+
+    const d=new Date(
+        Number(p[0]),
+        Number(p[1])-1,
+        Number(p[2])
+    );
+
+    d.setDate(d.getDate()+valor);
+
+    dataAtualSelecionada=
+        d.getFullYear()+"-"+
+        String(d.getMonth()+1).padStart(2,"0")+"-"+
+        String(d.getDate()).padStart(2,"0");
+
+    atualizarTituloData();
+    renderizarOS();
+
+}
+
+function selecionarData(){
+
+    const valor=
+        document.getElementById("dataEscolhida").value;
+
+    if(!valor) return;
+
+    dataAtualSelecionada=valor;
+
+    atualizarTituloData();
+    renderizarOS();
+
+}
+
+/* ==================================================
+NAVEGAÇÃO
+================================================== */
+
+function abrirPagina(pagina,botao){
+
+    document
+        .querySelectorAll(".page")
+        .forEach(p=>
+            p.classList.remove("active")
+        );
+
+    document
+        .getElementById(pagina)
+        .classList.add("active");
+
+    document
+        .querySelectorAll("nav button")
+        .forEach(b=>
+            b.classList.remove("active")
+        );
+
+    botao.classList.add("active");
 
 }
 
@@ -3491,136 +3018,61 @@ REALTIME
 
 function iniciarRealtime(){
 
-supabaseClient
-.channel("ws-painel")
+    supabaseClient
+        .channel("ws-painel-profissional")
 
-.on(
-    "postgres_changes",
-    {
-        event:"*",
-        schema:"public",
-        table:"agendamentos"
-    },
-    function(){
+        .on(
+            "postgres_changes",
+            {
+                event:"*",
+                schema:"public",
+                table:"agendamentos"
+            },
+            ()=>{
+                carregarAgendamentos();
+                atualizarDashboard();
+            }
+        )
 
-        carregarAgendamentos();
+        .on(
+            "postgres_changes",
+            {
+                event:"*",
+                schema:"public",
+                table:"clientes"
+            },
+            ()=>{
+                carregarClientes();
+                atualizarDashboard();
+            }
+        )
 
-    }
-)
+        .on(
+            "postgres_changes",
+            {
+                event:"*",
+                schema:"public",
+                table:"movimentacoes"
+            },
+            ()=>{
+                carregarFinanceiro();
+                atualizarDashboard();
+            }
+        )
 
-.on(
-    "postgres_changes",
-    {
-        event:"*",
-        schema:"public",
-        table:"movimentacoes"
-    },
-    function(){
+        .on(
+            "postgres_changes",
+            {
+                event:"*",
+                schema:"public",
+                table:"servicos"
+            },
+            ()=>{
+                carregarServicos();
+            }
+        )
 
-        carregarFinanceiro();
-
-    }
-)
-
-.on(
-    "postgres_changes",
-    {
-        event:"*",
-        schema:"public",
-        table:"clientes"
-    },
-    function(){
-
-        carregarClientes();
-
-    }
-)
-
-.subscribe();
-
-}
-
-/* ==================================================
-NAVEGAÇÃO
-================================================== */
-
-function abrirPagina(
-pagina,
-botao
-){
-
-document
-    .querySelectorAll(
-        ".page"
-    )
-    .forEach(
-        p =>
-            p.classList.remove(
-                "active"
-            )
-    );
-
-
-document
-    .getElementById(
-        pagina
-    )
-    .classList.add(
-        "active"
-    );
-
-
-document
-    .querySelectorAll(
-        "nav button"
-    )
-    .forEach(
-        b =>
-            b.classList.remove(
-                "active"
-            )
-    );
-
-
-botao.classList.add(
-    "active"
-);
-
-
-if(
-    pagina ===
-    "financeiro"
-){
-
-    carregarFinanceiro();
-
-}
-
-
-if(
-    pagina ===
-    "clientes"
-){
-
-    carregarClientes();
-
-}
-
-}
-
-/* ==================================================
-MODAL FINANCEIRO
-================================================== */
-
-function fecharFinanceiro(){
-
-document
-    .getElementById(
-        "modalFinanceiro"
-    )
-    .classList.remove(
-        "show"
-    );
+        .subscribe();
 
 }
 
@@ -3630,32 +3082,18 @@ WHATSAPP
 
 function abrirWhatsApp(numero){
 
-let telefone =
-    somenteNumeros(
-        numero
+    let telefone=
+        somenteNumeros(numero);
+
+    if(!telefone) return;
+
+    if(!telefone.startsWith("55"))
+        telefone="55"+telefone;
+
+    window.open(
+        "https://wa.me/"+telefone,
+        "_blank"
     );
-
-
-if(!telefone)
-    return;
-
-
-if(
-    !telefone.startsWith("55")
-){
-
-    telefone =
-        "55" +
-        telefone;
-
-}
-
-
-window.open(
-    "https://wa.me/" +
-    telefone,
-    "_blank"
-);
 
 }
 
@@ -3665,129 +3103,68 @@ FORMATAÇÕES
 
 function formatarHora(hora){
 
-if(!hora)
-    return "Sem horário";
+    if(!hora)
+        return "Sem horário";
 
-
-return String(hora)
-    .substring(
-        0,
-        5
-    );
+    return String(hora).substring(0,5);
 
 }
 
 function formatarHoraInput(hora){
 
-if(!hora)
-    return "";
+    if(!hora) return "";
 
-
-return String(hora)
-    .substring(
-        0,
-        5
-    );
+    return String(hora).substring(0,5);
 
 }
 
 function formatarDataBR(data){
 
-if(!data)
-    return "-";
+    if(!data) return "-";
 
+    const p=data.split("-");
 
-const partes =
-    data.split("-");
+    if(p.length!==3)
+        return data;
 
-
-if(partes.length !== 3)
-    return data;
-
-
-return `
-    ${partes[2]}/
-    ${partes[1]}/
-    ${partes[0]}
-`.replace(
-    /\s/g,
-    ""
-);
+    return p[2]+"/"+p[1]+"/"+p[0];
 
 }
 
 function dinheiro(valor){
 
-return Number(
-    valor || 0
-).toLocaleString(
-    "pt-BR",
-    {
-        style:"currency",
-        currency:"BRL"
-    }
-);
-
-}
-
-/* ==================================================
-DATA
-================================================== */
-
-function converterDataBanco(data){
-
-if(!data)
-    return "";
-
-
-/*
-   Agora mantemos a data no formato
-   YYYY-MM-DD, que é o formato ideal
-   para coluna DATE no Supabase.
-*/
-
-return data;
+    return Number(valor||0).toLocaleString(
+        "pt-BR",
+        {
+            style:"currency",
+            currency:"BRL"
+        }
+    );
 
 }
 
 function converterDataInput(data){
 
-if(!data)
-    return obterDataHoje();
+    if(!data)
+        return obterDataHoje();
 
+    if(
+        /^\d{4}-\d{2}-\d{2}$/.test(
+            String(data)
+        )
+    )
+        return String(data);
 
-if(
-    /^\d{4}-\d{2}-\d{2}$/.test(data)
-){
+    if(String(data).includes("/")){
 
-    return data;
+        const p=String(data).split("/");
 
-}
-
-
-if(data.includes("/")){
-
-    const partes =
-        data.split("/");
-
-
-    if(partes.length === 3){
-
-        return `
-            ${partes[2]}-
-            ${partes[1]}-
-            ${partes[0]}
-        `.replace(
-            /\s/g,
-            ""
-        );
+        if(p.length===3)
+            return p[2]+"-"+p[1]+"-"+p[0];
 
     }
 
-}
-
-
-return obterDataHoje();
+    return obterDataHoje();
 
 }
 
@@ -3797,56 +3174,45 @@ STATUS
 
 function normalizarStatus(status){
 
-const s =
-    String(
-        status ||
-        "aguardando"
-    ).toLowerCase();
+    const s=
+        String(status||"aguardando")
+        .toLowerCase()
+        .trim();
 
+    const permitidos=[
+        "aguardando",
+        "confirmado",
+        "andamento",
+        "concluido",
+        "cancelado"
+    ];
 
-const permitidos = [
-
-    "aguardando",
-
-    "confirmado",
-
-    "andamento",
-
-    "concluido",
-
-    "cancelado"
-
-];
-
-
-return permitidos.includes(s)
-    ? s
-    : "aguardando";
+    return permitidos.includes(s)
+        ?s
+        :"aguardando";
 
 }
 
 function textoStatus(status){
 
-switch(
-    normalizarStatus(status)
-){
+    switch(normalizarStatus(status)){
 
-    case "confirmado":
-        return "Confirmado";
+        case "confirmado":
+            return "Confirmado";
 
-    case "andamento":
-        return "Em andamento";
+        case "andamento":
+            return "Em andamento";
 
-    case "concluido":
-        return "Concluído";
+        case "concluido":
+            return "Concluído";
 
-    case "cancelado":
-        return "Cancelado";
+        case "cancelado":
+            return "Cancelado";
 
-    default:
-        return "Aguardando";
+        default:
+            return "Aguardando";
 
-}
+    }
 
 }
 
@@ -3856,44 +3222,19 @@ SEGURANÇA
 
 function escapeHTML(text){
 
-return String(
-    text ?? ""
-)
-.replace(
-    /&/g,
-    "&amp;"
-)
-.replace(
-    /</g,
-    "&lt;"
-)
-.replace(
-    />/g,
-    "&gt;"
-)
-.replace(
-    /"/g,
-    "&quot;"
-)
-.replace(
-    /'/g,
-    "&#039;"
-);
+    return String(text??"")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
 
 }
 
-/* ==================================================
-TELEFONE
-================================================== */
-
 function somenteNumeros(numero){
 
-return String(
-    numero || ""
-).replace(
-    /\D/g,
-    ""
-);
+    return String(numero||"")
+        .replace(/\D/g,"");
 
 }
 
@@ -3905,37 +3246,18 @@ let toastTimer;
 
 function mostrarToast(mensagem){
 
-const toast =
-    document.getElementById(
-        "toast"
-    );
+    const toast=
+        document.getElementById("toast");
 
+    toast.textContent=mensagem;
 
-toast.textContent =
-    mensagem;
+    toast.classList.add("show");
 
+    clearTimeout(toastTimer);
 
-toast.classList.add(
-    "show"
-);
-
-
-clearTimeout(
-    toastTimer
-);
-
-
-toastTimer =
-    setTimeout(
-        function(){
-
-            toast.classList.remove(
-                "show"
-            );
-
-        },
-        3000
-    );
+    toastTimer=setTimeout(()=>{
+        toast.classList.remove("show");
+    },3000);
 
 }
 
@@ -3945,122 +3267,75 @@ TEMA
 
 function alternarTema(){
 
-document.body
-    .classList
-    .toggle(
-        "dark"
+    document.body.classList.toggle("dark");
+
+    const dark=
+        document.body.classList.contains("dark");
+
+    localStorage.setItem(
+        "ws_tema",
+        dark?"dark":"light"
     );
 
-
-const dark =
-    document.body
-    .classList
-    .contains(
-        "dark"
-    );
-
-
-localStorage.setItem(
-    "ws_tema",
-    dark
-    ? "dark"
-    : "light"
-);
-
-
-document.getElementById(
-    "temaBtn"
-).textContent =
-    dark
-    ? "☀️"
-    : "🌙";
+    document.getElementById("temaBtn").textContent=
+        dark?"☀️":"🌙";
 
 }
 
 function carregarTema(){
 
-if(
-    localStorage.getItem(
-        "ws_tema"
-    ) ===
-    "dark"
-){
+    if(
+        localStorage.getItem("ws_tema")==="dark"
+    ){
 
-    document.body
-        .classList
-        .add(
-            "dark"
-        );
+        document.body.classList.add("dark");
 
+        document.getElementById("temaBtn").textContent=
+            "☀️";
 
-    document.getElementById(
-        "temaBtn"
-    ).textContent =
-        "☀️";
-
-}
+    }
 
 }
 
 /* ==================================================
-CLIQUE FORA / ESC
+CLIQUES FORA / ESC
 ================================================== */
 
-document
-.getElementById(
-"modalOS"
-)
-.addEventListener(
-"click",
-function(e){
+[
+    "modalOS",
+    "modalCliente",
+    "modalFinanceiro",
+    "modalServico"
+].forEach(id=>{
 
-        if(
-            e.target === this
-        ){
+    document.getElementById(id)
+        .addEventListener("click",function(e){
 
-            fecharOS();
+            if(e.target===this){
 
-        }
+                if(id==="modalOS") fecharOS();
+                if(id==="modalCliente") fecharCliente();
+                if(id==="modalFinanceiro") fecharFinanceiro();
+                if(id==="modalServico") fecharServico();
 
-    }
-);
+            }
 
-document
-.getElementById(
-"modalFinanceiro"
-)
-.addEventListener(
-"click",
-function(e){
+        });
 
-        if(
-            e.target === this
-        ){
+});
 
-            fecharFinanceiro();
+document.addEventListener("keydown",e=>{
 
-        }
+    if(e.key!=="Escape") return;
 
-    }
-);
+    fecharOS();
+    fecharCliente();
+    fecharFinanceiro();
+    fecharServico();
 
-document.addEventListener(
-"keydown",
-function(e){
+});
 
-    if(
-        e.key === "Escape"
-    ){
+</script>
 
-        fecharOS();
-
-        fecharFinanceiro();
-
-    }
-
-}
-
-);
-
-</script></body>
+</body>
 </html>
