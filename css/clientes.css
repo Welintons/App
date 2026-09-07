@@ -1,759 +1,641 @@
 /* =========================================================
-   WS SOLUÇÕES — CLIENTES
-   CRUD completo
+   WS SOLUÇÕES — CLIENTES.CSS
+   Visual exclusivo do módulo Clientes
 ========================================================= */
 
-document.addEventListener("DOMContentLoaded", () => {
 
-    /* =====================================================
-       ELEMENTOS
-    ===================================================== */
+/* =========================================================
+   CABEÇALHO DA PÁGINA
+========================================================= */
 
-    const btnNovo = document.getElementById("btnNovoCliente");
-    const btnFechar = document.getElementById("btnFecharModal");
-    const btnCancelar = document.getElementById("btnCancelar");
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 28px;
+}
 
-    const modal = document.getElementById("modalCliente");
-    const form = document.getElementById("formCliente");
+.page-header h1 {
+    margin: 6px 0 8px;
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
 
-    const modalTitulo = document.getElementById("modalTitulo");
-
-    const busca = document.getElementById("buscaCliente");
-    const lista = document.getElementById("listaClientes");
-
-    const totalClientes = document.getElementById("totalClientes");
-    const clientesAtivos = document.getElementById("clientesAtivos");
-    const clientesInativos = document.getElementById("clientesInativos");
-
-    let clientes = [];
+.page-header p {
+    margin: 0;
+    opacity: 0.65;
+    font-size: 15px;
+}
 
 
-    /* =====================================================
-       TOAST
-    ===================================================== */
+/* =========================================================
+   BOTÃO PRINCIPAL
+========================================================= */
 
-    function mostrarMensagem(mensagem) {
+.btn-primary {
+    border: 0;
+    border-radius: 12px;
+    padding: 13px 18px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s ease;
+    white-space: nowrap;
+}
 
-        const toast = document.getElementById("toast");
-        const toastMessage = document.getElementById("toastMessage");
+.btn-primary:hover {
+    transform: translateY(-1px);
+}
 
-        if (!toast || !toastMessage) {
-            alert(mensagem);
-            return;
-        }
+.btn-primary:active {
+    transform: scale(0.98);
+}
 
-        toastMessage.textContent = mensagem;
+.btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
 
-        toast.classList.add("show");
 
-        setTimeout(() => {
-            toast.classList.remove("show");
-        }, 2500);
+/* =========================================================
+   CARDS
+========================================================= */
 
+.card {
+    border-radius: 18px;
+    padding: 22px;
+    margin-bottom: 22px;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+
+/* =========================================================
+   BUSCA
+========================================================= */
+
+.search-box {
+    position: relative;
+    width: 100%;
+}
+
+.search-box::before {
+    content: "⌕";
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 21px;
+    opacity: 0.45;
+    pointer-events: none;
+}
+
+.search-box input {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    border-radius: 13px;
+    padding: 14px 16px 14px 46px;
+    font-size: 15px;
+    outline: none;
+    transition: 0.2s ease;
+}
+
+.search-box input:focus {
+    border-color: #7c3aed;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.12);
+}
+
+
+/* =========================================================
+   ESTATÍSTICAS
+========================================================= */
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 22px;
+}
+
+.stat-card {
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    transition: 0.2s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+}
+
+.stat-card span {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    opacity: 0.55;
+}
+
+.stat-card strong {
+    font-size: 30px;
+    font-weight: 800;
+}
+
+
+/* =========================================================
+   TÍTULO DA LISTA
+========================================================= */
+
+.section-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+}
+
+.section-title h2 {
+    margin: 6px 0 0;
+    font-size: 20px;
+}
+
+
+/* =========================================================
+   LISTA DE CLIENTES
+========================================================= */
+
+.clients-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+
+/* =========================================================
+   CLIENTE
+========================================================= */
+
+.client-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 17px 18px;
+    border-radius: 15px;
+    border: 1px solid rgba(0, 0, 0, 0.07);
+    transition: 0.2s ease;
+}
+
+.client-item:hover {
+    transform: translateY(-1px);
+}
+
+.client-main {
+    min-width: 0;
+    flex: 1;
+}
+
+.client-code {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.6px;
+    opacity: 0.45;
+    margin-bottom: 5px;
+}
+
+.client-name {
+    font-size: 17px;
+    font-weight: 750;
+    margin-bottom: 8px;
+    word-break: break-word;
+}
+
+.client-info {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    font-size: 13px;
+    opacity: 0.65;
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.client-status {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 9px;
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+}
+
+.client-status.ativo {
+    background: rgba(34, 197, 94, 0.12);
+    color: #16a34a;
+}
+
+.client-status.inativo {
+    background: rgba(239, 68, 68, 0.12);
+    color: #dc2626;
+}
+
+
+/* =========================================================
+   AÇÕES DO CLIENTE
+========================================================= */
+
+.client-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.client-action {
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    background: transparent;
+    border-radius: 10px;
+    padding: 9px 11px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.client-action:hover {
+    transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   ESTADO VAZIO
+========================================================= */
+
+.clients-empty,
+.empty-state {
+    text-align: center;
+    padding: 48px 20px;
+}
+
+.clients-empty-icon,
+.empty-icon {
+    width: 58px;
+    height: 58px;
+    margin: 0 auto 14px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 27px;
+}
+
+.clients-empty strong,
+.empty-state h3 {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 16px;
+}
+
+.clients-empty p,
+.empty-state p {
+    margin: 0;
+    font-size: 13px;
+    opacity: 0.6;
+}
+
+
+/* =========================================================
+   CARREGANDO
+========================================================= */
+
+.clients-loading {
+    text-align: center;
+    padding: 40px 20px;
+    font-size: 14px;
+    opacity: 0.6;
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+.modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(4px);
+}
+
+.modal-content {
+    position: relative;
+    z-index: 2;
+    width: min(680px, 100%);
+    max-height: 90vh;
+    overflow-y: auto;
+    border-radius: 20px;
+    padding: 25px;
+    box-sizing: border-box;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.25);
+    animation: clienteModalEntrada 0.2s ease;
+}
+
+@keyframes clienteModalEntrada {
+
+    from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.98);
     }
 
-
-    /* =====================================================
-       MODAL
-    ===================================================== */
-
-    function abrirModal(cliente = null) {
-
-        if (!modal) return;
-
-        modal.classList.add("show");
-        modal.setAttribute("aria-hidden", "false");
-
-        if (cliente) {
-
-            modalTitulo.textContent = "Editar cliente";
-
-            document.getElementById("clienteId").value =
-                cliente.id || "";
-
-            document.getElementById("nome").value =
-                cliente.nome || "";
-
-            document.getElementById("whatsapp").value =
-                cliente.whatsapp || "";
-
-            document.getElementById("cpf").value =
-                cliente.cpf || "";
-
-            document.getElementById("email").value =
-                cliente.email || "";
-
-            document.getElementById("endereco").value =
-                cliente.endereco || "";
-
-            document.getElementById("numero").value =
-                cliente.numero || "";
-
-            document.getElementById("complemento").value =
-                cliente.complemento || "";
-
-            document.getElementById("bairro").value =
-                cliente.bairro || "";
-
-            document.getElementById("cidade").value =
-                cliente.cidade || "";
-
-            document.getElementById("estado").value =
-                cliente.estado || "";
-
-            document.getElementById("cep").value =
-                cliente.cep || "";
-
-            document.getElementById("status").value =
-                cliente.status || "ativo";
-
-            document.getElementById("observacoes").value =
-                cliente.observacoes || "";
-
-        } else {
-
-            modalTitulo.textContent = "Novo cliente";
-
-            form.reset();
-
-            document.getElementById("clienteId").value = "";
-
-            document.getElementById("status").value = "ativo";
-
-        }
-
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
     }
 
+}
 
-    function fecharModal() {
 
-        if (!modal) return;
+/* =========================================================
+   CABEÇALHO DO MODAL
+========================================================= */
 
-        modal.classList.remove("show");
-        modal.setAttribute("aria-hidden", "true");
+.modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 24px;
+}
 
+.modal-header h2 {
+    margin: 6px 0 0;
+    font-size: 23px;
+}
+
+.modal-close {
+    width: 38px;
+    height: 38px;
+    border: 0;
+    border-radius: 10px;
+    background: transparent;
+    font-size: 27px;
+    line-height: 1;
+    cursor: pointer;
+    opacity: 0.65;
+    transition: 0.2s ease;
+}
+
+.modal-close:hover {
+    opacity: 1;
+    transform: rotate(90deg);
+}
+
+
+/* =========================================================
+   FORMULÁRIO
+========================================================= */
+
+#formCliente {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.form-group label {
+    font-size: 12px;
+    font-weight: 750;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid rgba(0, 0, 0, 0.11);
+    border-radius: 11px;
+    padding: 12px 13px;
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+    transition: 0.2s ease;
+}
+
+.form-group textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #7c3aed;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.12);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.form-small {
+    max-width: 180px;
+}
+
+
+/* =========================================================
+   AÇÕES DO MODAL
+========================================================= */
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding-top: 8px;
+}
+
+.btn-secondary {
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    border-radius: 11px;
+    padding: 12px 17px;
+    background: transparent;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.btn-secondary:hover {
+    transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+.toast {
+    position: fixed;
+    left: 50%;
+    bottom: 25px;
+    transform: translate(-50%, 20px);
+    z-index: 2000;
+    opacity: 0;
+    pointer-events: none;
+    padding: 13px 18px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 650;
+    transition: 0.25s ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+
+/* =========================================================
+   MODO ESCURO
+========================================================= */
+
+body.dark .card,
+body.dark .stat-card,
+body.dark .client-item {
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+body.dark .search-box input,
+body.dark .form-group input,
+body.dark .form-group select,
+body.dark .form-group textarea,
+body.dark .client-action,
+body.dark .btn-secondary {
+    border-color: rgba(255, 255, 255, 0.10);
+}
+
+body.dark .modal-content {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+
+/* =========================================================
+   RESPONSIVIDADE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .page-header {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 16px;
     }
 
-
-    /* =====================================================
-       CARREGAR CLIENTES
-    ===================================================== */
-
-    async function carregarClientes() {
-
-        lista.innerHTML = `
-            <div class="clients-loading">
-                Carregando clientes...
-            </div>
-        `;
-
-        try {
-
-            const { data, error } = await supabaseClient
-                .from("clientes")
-                .select("*")
-                .order("nome", { ascending: true });
-
-            if (error) {
-                throw error;
-            }
-
-            clientes = data || [];
-
-            atualizarEstatisticas();
-
-            renderizarClientes();
-
-        } catch (erro) {
-
-            console.error("Erro ao carregar clientes:", erro);
-
-            lista.innerHTML = `
-                <div class="clients-empty">
-                    <div class="clients-empty-icon">⚠️</div>
-                    <strong>Erro ao carregar clientes</strong>
-                    <p>Verifique a conexão com o Supabase.</p>
-                </div>
-            `;
-
-            mostrarMensagem(
-                "Erro ao carregar clientes."
-            );
-
-        }
-
+    .page-header h1 {
+        font-size: 27px;
     }
 
-
-    /* =====================================================
-       ESTATÍSTICAS
-    ===================================================== */
-
-    function atualizarEstatisticas() {
-
-        const ativos =
-            clientes.filter(
-                cliente => cliente.status === "ativo"
-            ).length;
-
-        const inativos =
-            clientes.filter(
-                cliente => cliente.status === "inativo"
-            ).length;
-
-        if (totalClientes) {
-            totalClientes.textContent =
-                clientes.length;
-        }
-
-        if (clientesAtivos) {
-            clientesAtivos.textContent =
-                ativos;
-        }
-
-        if (clientesInativos) {
-            clientesInativos.textContent =
-                inativos;
-        }
-
+    .btn-primary {
+        width: 100%;
     }
 
-
-    /* =====================================================
-       RENDERIZAR LISTA
-    ===================================================== */
-
-    function renderizarClientes() {
-
-        const termo =
-            (busca?.value || "")
-                .trim()
-                .toLowerCase();
-
-        const filtrados = clientes.filter(cliente => {
-
-            const nome =
-                (cliente.nome || "").toLowerCase();
-
-            const whatsapp =
-                (cliente.whatsapp || "").toLowerCase();
-
-            const codigo =
-                (cliente.codigo || "").toLowerCase();
-
-            return (
-                nome.includes(termo) ||
-                whatsapp.includes(termo) ||
-                codigo.includes(termo)
-            );
-
-        });
-
-
-        if (!filtrados.length) {
-
-            lista.innerHTML = `
-                <div class="clients-empty">
-
-                    <div class="clients-empty-icon">
-                        👥
-                    </div>
-
-                    <strong>
-                        ${termo
-                            ? "Nenhum cliente encontrado"
-                            : "Nenhum cliente cadastrado"}
-                    </strong>
-
-                    <p>
-                        ${termo
-                            ? "Tente outro nome, WhatsApp ou código."
-                            : 'Clique em "Novo cliente" para começar.'}
-                    </p>
-
-                </div>
-            `;
-
-            return;
-        }
-
-
-        lista.innerHTML = filtrados.map(cliente => {
-
-            const status =
-                cliente.status || "ativo";
-
-            return `
-
-                <div class="client-item">
-
-                    <div class="client-main">
-
-                        <span class="client-code">
-                            ${escapar(cliente.codigo)}
-                        </span>
-
-                        <div class="client-name">
-                            ${escapar(cliente.nome)}
-                        </div>
-
-                        <div class="client-info">
-
-                            ${
-                                cliente.whatsapp
-                                    ? `<span>📱 ${escapar(cliente.whatsapp)}</span>`
-                                    : ""
-                            }
-
-                            ${
-                                cliente.email
-                                    ? `<span>✉️ ${escapar(cliente.email)}</span>`
-                                    : ""
-                            }
-
-                            <span class="client-status ${status}">
-                                ${status === "ativo"
-                                    ? "ATIVO"
-                                    : "INATIVO"}
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="client-actions">
-
-                        <button
-                            type="button"
-                            class="client-action"
-                            data-action="edit"
-                            data-id="${cliente.id}">
-                            ✏️ Editar
-                        </button>
-
-                        <button
-                            type="button"
-                            class="client-action"
-                            data-action="delete"
-                            data-id="${cliente.id}">
-                            🗑️ Excluir
-                        </button>
-
-                    </div>
-
-                </div>
-
-            `;
-
-        }).join("");
-
+    .stats-grid {
+        grid-template-columns: 1fr;
     }
 
-
-    /* =====================================================
-       SALVAR CLIENTE
-    ===================================================== */
-
-    async function salvarCliente(event) {
-
-        event.preventDefault();
-
-        const id =
-            document.getElementById("clienteId").value;
-
-        const dados = {
-
-            nome:
-                document.getElementById("nome").value.trim(),
-
-            whatsapp:
-                document.getElementById("whatsapp").value.trim() || null,
-
-            cpf:
-                document.getElementById("cpf").value.trim() || null,
-
-            email:
-                document.getElementById("email").value.trim() || null,
-
-            endereco:
-                document.getElementById("endereco").value.trim() || null,
-
-            numero:
-                document.getElementById("numero").value.trim() || null,
-
-            complemento:
-                document.getElementById("complemento").value.trim() || null,
-
-            bairro:
-                document.getElementById("bairro").value.trim() || null,
-
-            cidade:
-                document.getElementById("cidade").value.trim() || null,
-
-            estado:
-                document.getElementById("estado").value.trim().toUpperCase() || null,
-
-            cep:
-                document.getElementById("cep").value.trim() || null,
-
-            status:
-                document.getElementById("status").value,
-
-            observacoes:
-                document.getElementById("observacoes").value.trim() || null
-
-        };
-
-
-        if (!dados.nome) {
-
-            mostrarMensagem(
-                "Informe o nome do cliente."
-            );
-
-            return;
-        }
-
-
-        const botao =
-            document.getElementById("btnSalvarCliente");
-
-        if (botao) {
-            botao.disabled = true;
-            botao.textContent = "Salvando...";
-        }
-
-
-        try {
-
-            if (id) {
-
-                /* ===============================
-                   ATUALIZAR
-                =============================== */
-
-                const { error } =
-                    await supabaseClient
-                        .from("clientes")
-                        .update(dados)
-                        .eq("id", id);
-
-                if (error) {
-                    throw error;
-                }
-
-                mostrarMensagem(
-                    "Cliente atualizado com sucesso."
-                );
-
-            } else {
-
-                /* ===============================
-                   NOVO CLIENTE
-                =============================== */
-
-                const { error } =
-                    await supabaseClient
-                        .from("clientes")
-                        .insert(dados);
-
-                if (error) {
-                    throw error;
-                }
-
-                mostrarMensagem(
-                    "Cliente cadastrado com sucesso."
-                );
-
-            }
-
-
-            fecharModal();
-
-            await carregarClientes();
-
-        } catch (erro) {
-
-            console.error(
-                "Erro ao salvar cliente:",
-                erro
-            );
-
-            mostrarMensagem(
-                "Não foi possível salvar o cliente."
-            );
-
-        } finally {
-
-            if (botao) {
-                botao.disabled = false;
-                botao.textContent = "Salvar cliente";
-            }
-
-        }
-
+    .stat-card {
+        padding: 17px;
     }
 
-
-    /* =====================================================
-       EXCLUIR CLIENTE
-    ===================================================== */
-
-    async function excluirCliente(id) {
-
-        const cliente =
-            clientes.find(
-                item => item.id === id
-            );
-
-        if (!cliente) return;
-
-
-        const confirmar =
-            confirm(
-                `Excluir o cliente "${cliente.nome}"?\n\nEssa ação não poderá ser desfeita.`
-            );
-
-
-        if (!confirmar) return;
-
-
-        try {
-
-            const { error } =
-                await supabaseClient
-                    .from("clientes")
-                    .delete()
-                    .eq("id", id);
-
-
-            if (error) {
-                throw error;
-            }
-
-
-            mostrarMensagem(
-                "Cliente excluído com sucesso."
-            );
-
-
-            await carregarClientes();
-
-        } catch (erro) {
-
-            console.error(
-                "Erro ao excluir cliente:",
-                erro
-            );
-
-            mostrarMensagem(
-                "Não foi possível excluir o cliente. Ele pode possuir registros vinculados."
-            );
-
-        }
-
+    .client-item {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 14px;
     }
 
-
-    /* =====================================================
-       EVENTOS DA LISTA
-    ===================================================== */
-
-    lista.addEventListener("click", event => {
-
-        const botao =
-            event.target.closest("[data-action]");
-
-        if (!botao) return;
-
-        const id =
-            botao.dataset.id;
-
-        const acao =
-            botao.dataset.action;
-
-
-        if (acao === "edit") {
-
-            const cliente =
-                clientes.find(
-                    item => item.id === id
-                );
-
-            if (cliente) {
-                abrirModal(cliente);
-            }
-
-        }
-
-
-        if (acao === "delete") {
-
-            excluirCliente(id);
-
-        }
-
-    });
-
-
-    /* =====================================================
-       EVENTOS
-    ===================================================== */
-
-    if (btnNovo) {
-        btnNovo.addEventListener(
-            "click",
-            () => abrirModal()
-        );
+    .client-actions {
+        width: 100%;
     }
 
-
-    if (btnFechar) {
-        btnFechar.addEventListener(
-            "click",
-            fecharModal
-        );
+    .client-action {
+        flex: 1;
     }
 
-
-    if (btnCancelar) {
-        btnCancelar.addEventListener(
-            "click",
-            fecharModal
-        );
+    .modal {
+        padding: 10px;
     }
 
-
-    if (form) {
-        form.addEventListener(
-            "submit",
-            salvarCliente
-        );
+    .modal-content {
+        max-height: 94vh;
+        padding: 20px;
+        border-radius: 17px;
     }
 
-
-    if (busca) {
-
-        busca.addEventListener(
-            "input",
-            renderizarClientes
-        );
-
+    .form-row {
+        grid-template-columns: 1fr;
     }
 
-
-    if (modal) {
-
-        modal.addEventListener(
-            "click",
-            event => {
-
-                if (
-                    event.target.classList.contains(
-                        "modal-overlay"
-                    )
-                ) {
-                    fecharModal();
-                }
-
-                if (
-                    event.target.classList.contains(
-                        "client-modal-overlay"
-                    )
-                ) {
-                    fecharModal();
-                }
-
-            }
-        );
-
+    .form-small {
+        max-width: none;
     }
 
-
-    /* =====================================================
-       SEGURANÇA — ESCAPAR HTML
-    ===================================================== */
-
-    function escapar(valor) {
-
-        if (valor === null || valor === undefined) {
-            return "";
-        }
-
-        return String(valor)
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
-
+    .modal-actions {
+        flex-direction: column-reverse;
     }
 
-
-    /* =====================================================
-       MODO NOTURNO
-    ===================================================== */
-
-    const themeToggle =
-        document.getElementById("themeToggle");
-
-
-    function atualizarBotaoTema() {
-
-        if (!themeToggle) return;
-
-        if (document.body.classList.contains("dark")) {
-
-            themeToggle.textContent = "☀";
-
-        } else {
-
-            themeToggle.textContent = "☾";
-
-        }
-
+    .modal-actions button {
+        width: 100%;
     }
 
-
-    const modoSalvo =
-        localStorage.getItem("ws_modo_noturno");
+}
 
 
-    if (modoSalvo === "true") {
+@media (max-width: 420px) {
 
-        document.body.classList.add("dark");
-
+    .card {
+        padding: 16px;
     }
 
-
-    if (themeToggle) {
-
-        themeToggle.addEventListener(
-            "click",
-            () => {
-
-                document.body.classList.toggle("dark");
-
-                localStorage.setItem(
-                    "ws_modo_noturno",
-                    document.body.classList.contains("dark")
-                );
-
-                atualizarBotaoTema();
-
-            }
-        );
-
+    .client-name {
+        font-size: 16px;
     }
 
+    .client-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+    }
 
-    /* =====================================================
-       INICIAR
-    ===================================================== */
-
-    atualizarBotaoTema();
-
-    carregarClientes();
-
-});
+}
