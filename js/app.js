@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const toastMessage = document.getElementById("toastMessage");
 
     const moduleCards = document.querySelectorAll(".module-card");
+    const summaryCards = document.querySelectorAll(".summary-card");
 
     const totalClientes = document.getElementById("totalClientes");
     const osAbertas = document.getElementById("osAbertas");
@@ -223,43 +224,79 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
- /* =====================================================
-   MÓDULOS
-===================================================== */
+    /* =====================================================
+       MÓDULOS
+    ===================================================== */
 
-moduleCards.forEach(card => {
+    moduleCards.forEach(card => {
 
-    card.addEventListener("click", () => {
+        card.addEventListener("click", () => {
 
-        const modulo = card.dataset.module;
+            const modulo = card.dataset.module;
 
-        switch (modulo) {
+            switch (modulo) {
 
-            case "clientes":
-                window.location.href = "clientes.html";
-                break;
+                case "clientes":
+                    window.location.href = "clientes.html";
+                    break;
 
-            case "os":
-                window.location.href = "os.html";
-                break;
+                case "os":
+                    window.location.href = "os.html";
+                    break;
 
-            case "agenda":
-                window.location.href = "agenda.html";
-                break;
+                case "agenda":
+                    window.location.href = "agenda.html";
+                    break;
 
-            case "financeiro":
-                window.location.href = "financeiro.html";
-                break;
+                case "financeiro":
+                    window.location.href = "financeiro.html";
+                    break;
 
-            default:
-                mostrarToast("Módulo não encontrado");
+                default:
+                    mostrarToast("Módulo não encontrado");
 
-        }
+            }
+
+        });
 
     });
 
-});
-}); =====================================================
+
+    /* =====================================================
+       CARDS DE RESUMO
+    ===================================================== */
+
+    summaryCards.forEach(card => {
+
+        card.addEventListener("click", () => {
+
+            const modulo = card.dataset.summary;
+
+            switch (modulo) {
+
+                case "clientes":
+                    window.location.href = "clientes.html";
+                    break;
+
+                case "os":
+                    window.location.href = "os.html";
+                    break;
+
+                case "agenda":
+                    window.location.href = "agenda.html";
+                    break;
+
+                default:
+                    mostrarToast("Módulo não encontrado");
+
+            }
+
+        });
+
+    });
+
+
+    /* =====================================================
        INICIALIZAÇÃO
     ===================================================== */
 
