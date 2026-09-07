@@ -11,10 +11,7 @@
 
     <title>Clientes — WS SOLUÇÕES</title>
 
-    <!-- CSS GLOBAL -->
-    <link rel="stylesheet" href="css/style.css">
-
-    <!-- CSS ESPECÍFICO DA PÁGINA CLIENTES -->
+    <!-- CSS EXCLUSIVO DA PÁGINA -->
     <link rel="stylesheet" href="css/clientes.css">
 
 </head>
@@ -55,6 +52,7 @@
             <button
                 id="themeToggle"
                 class="theme-btn"
+                type="button"
                 aria-label="Ativar modo noturno">
 
                 ☾
@@ -74,9 +72,7 @@
     <main class="container">
 
 
-        <!-- =================================================
-             CABEÇALHO
-        ================================================== -->
+        <!-- CABEÇALHO -->
 
         <section class="page-header">
 
@@ -110,9 +106,7 @@
 
 
 
-        <!-- =================================================
-             BUSCA
-        ================================================== -->
+        <!-- BUSCA -->
 
         <section class="card">
 
@@ -130,9 +124,7 @@
 
 
 
-        <!-- =================================================
-             RESUMO
-        ================================================== -->
+        <!-- RESUMO -->
 
         <section class="stats-grid">
 
@@ -180,9 +172,7 @@
 
 
 
-        <!-- =================================================
-             LISTA DE CLIENTES
-        ================================================== -->
+        <!-- LISTA DE CLIENTES -->
 
         <section class="card">
 
@@ -207,9 +197,6 @@
                 id="listaClientes"
                 class="clients-list">
 
-
-                <!-- ESTADO VAZIO -->
-
                 <div class="empty-state">
 
                     <div class="empty-icon">
@@ -226,7 +213,6 @@
 
                 </div>
 
-
             </div>
 
         </section>
@@ -237,7 +223,7 @@
 
 
     <!-- =====================================================
-         MODAL — CLIENTE
+         MODAL CLIENTE
     ====================================================== -->
 
     <div
@@ -251,8 +237,6 @@
 
         <div class="modal-content">
 
-
-            <!-- CABEÇALHO DO MODAL -->
 
             <div class="modal-header">
 
@@ -283,22 +267,16 @@
 
 
 
-            <!-- =================================================
-                 FORMULÁRIO
-            ================================================== -->
+            <!-- FORMULÁRIO -->
 
             <form id="formCliente">
 
-
-                <!-- ID -->
 
                 <input
                     type="hidden"
                     id="clienteId">
 
 
-
-                <!-- NOME -->
 
                 <div class="form-group">
 
@@ -317,8 +295,6 @@
 
 
 
-                <!-- WHATSAPP -->
-
                 <div class="form-group">
 
                     <label for="whatsapp">
@@ -334,8 +310,6 @@
                 </div>
 
 
-
-                <!-- CPF -->
 
                 <div class="form-group">
 
@@ -353,8 +327,6 @@
 
 
 
-                <!-- EMAIL -->
-
                 <div class="form-group">
 
                     <label for="email">
@@ -371,10 +343,7 @@
 
 
 
-                <!-- ENDEREÇO / NÚMERO -->
-
                 <div class="form-row">
-
 
                     <div class="form-group">
 
@@ -405,12 +374,9 @@
 
                     </div>
 
-
                 </div>
 
 
-
-                <!-- COMPLEMENTO -->
 
                 <div class="form-group">
 
@@ -428,10 +394,7 @@
 
 
 
-                <!-- BAIRRO / CIDADE -->
-
                 <div class="form-row">
-
 
                     <div class="form-group">
 
@@ -460,15 +423,11 @@
 
                     </div>
 
-
                 </div>
 
 
 
-                <!-- ESTADO / CEP -->
-
                 <div class="form-row">
-
 
                     <div class="form-group form-small">
 
@@ -500,12 +459,9 @@
 
                     </div>
 
-
                 </div>
 
 
-
-                <!-- STATUS -->
 
                 <div class="form-group">
 
@@ -531,8 +487,6 @@
 
 
 
-                <!-- OBSERVAÇÕES -->
-
                 <div class="form-group">
 
                     <label for="observacoes">
@@ -549,12 +503,9 @@
 
 
 
-                <!-- =================================================
-                     AÇÕES
-                ================================================== -->
+                <!-- AÇÕES -->
 
                 <div class="modal-actions">
-
 
                     <button
                         type="button"
@@ -574,7 +525,6 @@
                         Salvar cliente
 
                     </button>
-
 
                 </div>
 
@@ -603,13 +553,16 @@
 
 
     <!-- =====================================================
-         SCRIPTS
+         JAVASCRIPT
     ====================================================== -->
 
+    <!-- Biblioteca Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+    <!-- Conexão Supabase -->
     <script src="js/supabase.js"></script>
 
+    <!-- Lógica da página Clientes -->
     <script src="js/clientes.js"></script>
 
 
