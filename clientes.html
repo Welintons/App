@@ -2,16 +2,26 @@
 <html lang="pt-BR">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
 
     <title>Clientes — WS SOLUÇÕES</title>
 
+    <!-- CSS GLOBAL -->
     <link rel="stylesheet" href="css/style.css">
+
+    <!-- CSS ESPECÍFICO DA PÁGINA CLIENTES -->
+    <link rel="stylesheet" href="css/clientes.css">
+
 </head>
 
+
 <body>
+
 
     <!-- =====================================================
          TOPO
@@ -25,9 +35,16 @@
                 WS
             </div>
 
-            <div>
-                <h1>WS SOLUÇÕES</h1>
-                <span>Clientes</span>
+            <div class="brand-info">
+
+                <strong>
+                    WS SOLUÇÕES
+                </strong>
+
+                <span>
+                    Clientes
+                </span>
+
             </div>
 
         </div>
@@ -37,14 +54,17 @@
 
             <button
                 id="themeToggle"
-                class="theme-toggle"
+                class="theme-btn"
                 aria-label="Ativar modo noturno">
+
                 ☾
+
             </button>
 
         </div>
 
     </header>
+
 
 
     <!-- =====================================================
@@ -54,7 +74,9 @@
     <main class="container">
 
 
-        <!-- CABEÇALHO DA PÁGINA -->
+        <!-- =================================================
+             CABEÇALHO
+        ================================================== -->
 
         <section class="page-header">
 
@@ -64,9 +86,9 @@
                     CADASTRO
                 </span>
 
-                <h2>
+                <h1>
                     Clientes
-                </h2>
+                </h1>
 
                 <p>
                     Gerencie os clientes da WS SOLUÇÕES.
@@ -76,6 +98,7 @@
 
 
             <button
+                type="button"
                 id="btnNovoCliente"
                 class="btn-primary">
 
@@ -84,6 +107,7 @@
             </button>
 
         </section>
+
 
 
         <!-- =================================================
@@ -105,11 +129,13 @@
         </section>
 
 
+
         <!-- =================================================
              RESUMO
         ================================================== -->
 
         <section class="stats-grid">
+
 
             <div class="stat-card">
 
@@ -149,7 +175,9 @@
 
             </div>
 
+
         </section>
+
 
 
         <!-- =================================================
@@ -166,21 +194,21 @@
                         BASE DE DADOS
                     </span>
 
-                    <h3>
+                    <h2>
                         Clientes cadastrados
-                    </h3>
+                    </h2>
 
                 </div>
 
             </div>
 
 
-            <div id="listaClientes" class="clients-list">
+            <div
+                id="listaClientes"
+                class="clients-list">
 
-                <!--
-                    Os clientes serão carregados
-                    pelo clientes.js
-                -->
+
+                <!-- ESTADO VAZIO -->
 
                 <div class="empty-state">
 
@@ -198,11 +226,14 @@
 
                 </div>
 
+
             </div>
 
         </section>
 
+
     </main>
+
 
 
     <!-- =====================================================
@@ -214,11 +245,14 @@
         class="modal"
         aria-hidden="true">
 
+
         <div class="modal-overlay"></div>
 
 
         <div class="modal-content">
 
+
+            <!-- CABEÇALHO DO MODAL -->
 
             <div class="modal-header">
 
@@ -240,21 +274,28 @@
                     id="btnFecharModal"
                     class="modal-close"
                     aria-label="Fechar">
+
                     ×
+
                 </button>
 
             </div>
 
 
-            <!-- FORMULÁRIO -->
+
+            <!-- =================================================
+                 FORMULÁRIO
+            ================================================== -->
 
             <form id="formCliente">
 
-                <!-- ID INTERNO -->
+
+                <!-- ID -->
 
                 <input
                     type="hidden"
                     id="clienteId">
+
 
 
                 <!-- NOME -->
@@ -275,6 +316,7 @@
                 </div>
 
 
+
                 <!-- WHATSAPP -->
 
                 <div class="form-group">
@@ -290,6 +332,7 @@
                         placeholder="(88) 99999-9999">
 
                 </div>
+
 
 
                 <!-- CPF -->
@@ -309,6 +352,7 @@
                 </div>
 
 
+
                 <!-- EMAIL -->
 
                 <div class="form-group">
@@ -326,9 +370,11 @@
                 </div>
 
 
-                <!-- ENDEREÇO -->
+
+                <!-- ENDEREÇO / NÚMERO -->
 
                 <div class="form-row">
+
 
                     <div class="form-group">
 
@@ -359,7 +405,9 @@
 
                     </div>
 
+
                 </div>
+
 
 
                 <!-- COMPLEMENTO -->
@@ -379,9 +427,11 @@
                 </div>
 
 
+
                 <!-- BAIRRO / CIDADE -->
 
                 <div class="form-row">
+
 
                     <div class="form-group">
 
@@ -410,12 +460,15 @@
 
                     </div>
 
+
                 </div>
+
 
 
                 <!-- ESTADO / CEP -->
 
                 <div class="form-row">
+
 
                     <div class="form-group form-small">
 
@@ -447,7 +500,9 @@
 
                     </div>
 
+
                 </div>
+
 
 
                 <!-- STATUS -->
@@ -475,6 +530,7 @@
                 </div>
 
 
+
                 <!-- OBSERVAÇÕES -->
 
                 <div class="form-group">
@@ -492,9 +548,13 @@
                 </div>
 
 
-                <!-- BOTÕES -->
+
+                <!-- =================================================
+                     AÇÕES
+                ================================================== -->
 
                 <div class="modal-actions">
+
 
                     <button
                         type="button"
@@ -515,13 +575,17 @@
 
                     </button>
 
+
                 </div>
 
+
             </form>
+
 
         </div>
 
     </div>
+
 
 
     <!-- =====================================================
@@ -537,6 +601,7 @@
     </div>
 
 
+
     <!-- =====================================================
          SCRIPTS
     ====================================================== -->
@@ -546,6 +611,7 @@
     <script src="js/supabase.js"></script>
 
     <script src="js/clientes.js"></script>
+
 
 </body>
 
