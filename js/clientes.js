@@ -1,6 +1,7 @@
 /* =========================================================
    WS SOLUÇÕES — CLIENTES
-   CRUD completo
+   CRUD COMPLETO
+   Código automático
 ========================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -54,22 +55,64 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
+       GERAR CÓDIGO DO CLIENTE
+    ===================================================== */
+
+    function gerarProximoCodigo() {
+
+        let maiorNumero = 0;
+
+        clientes.forEach(cliente => {
+
+            const codigo = String(cliente.codigo || "");
+
+            const resultado =
+                codigo.match(/^CLI-(\d+)$/i);
+
+            if (resultado) {
+
+                const numero =
+                    parseInt(resultado[1], 10);
+
+                if (!isNaN(numero) && numero > maiorNumero) {
+                    maiorNumero = numero;
+                }
+
+            }
+
+        });
+
+        const proximoNumero = maiorNumero + 1;
+
+        return `CLI-${String(proximoNumero).padStart(6, "0")}`;
+
+    }
+
+
+    /* =====================================================
        MODAL
     ===================================================== */
 
     function abrirModal(cliente = null) {
 
-        if (!modal) return;
+        if (!modal || !form) return;
 
         modal.classList.add("show");
         modal.setAttribute("aria-hidden", "false");
 
         if (cliente) {
 
+            /* =============================================
+               EDITAR CLIENTE
+            ============================================= */
+
             modalTitulo.textContent = "Editar cliente";
 
             document.getElementById("clienteId").value =
                 cliente.id || "";
+
+            document.getElementById("codigo").value =
+                cliente.codigo || "";
 
             document.getElementById("nome").value =
                 cliente.nome || "";
@@ -77,11 +120,8 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("whatsapp").value =
                 cliente.whatsapp || "";
 
-            document.getElementById("cpf").value =
-                cliente.cpf || "";
-
-            document.getElementById("email").value =
-                cliente.email || "";
+            document.getElementById("cep").value =
+                cliente.cep || "";
 
             document.getElementById("endereco").value =
                 cliente.endereco || "";
@@ -95,22 +135,14 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("bairro").value =
                 cliente.bairro || "";
 
-            document.getElementById("cidade").value =
-                cliente.cidade || "";
-
-            document.getElementById("estado").value =
-                cliente.estado || "";
-
-            document.getElementById("cep").value =
-                cliente.cep || "";
-
-            document.getElementById("status").value =
-                cliente.status || "ativo";
-
             document.getElementById("observacoes").value =
                 cliente.observacoes || "";
 
         } else {
+
+            /* =============================================
+               NOVO CLIENTE
+            ============================================= */
 
             modalTitulo.textContent = "Novo cliente";
 
@@ -118,7 +150,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
             document.getElementById("clienteId").value = "";
 
-            document.getElementById("status").value = "ativo";
+            document.getElementById("codigo").value =
+                gerarProximoCodigo();
+
+            document.getElementById("nome").focus();
 
         }
 
@@ -140,6 +175,8 @@ document.addEventListener("DOMContentLoaded", () => {
     ===================================================== */
 
     async function carregarClientes() {
+
+        if (!lista) return;
 
         lista.innerHTML = `
             <div class="clients-loading">
@@ -166,13 +203,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
         } catch (erro) {
 
-            console.error("Erro ao carregar clientes:", erro);
+            console.error(
+                "Erro ao carregar clientes:",
+                erro
+            );
 
             lista.innerHTML = `
                 <div class="clients-empty">
-                    <div class="clients-empty-icon">⚠️</div>
-                    <strong>Erro ao carregar clientes</strong>
-                    <p>Verifique a conexão com o Supabase.</p>
+
+                    <div class="clients-empty-icon">
+                        ⚠️
+                    </div>
+
+                    <strong>
+                        Erro ao carregar clientes
+                    </strong>
+
+                    <p>
+                        Verifique a conexão com o Supabase.
+                    </p>
+
                 </div>
             `;
 
@@ -191,29 +241,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function atualizarEstatisticas() {
 
-        const ativos =
-            clientes.filter(
-                cliente => cliente.status === "ativo"
-            ).length;
-
-        const inativos =
-            clientes.filter(
-                cliente => cliente.status === "inativo"
-            ).length;
-
         if (totalClientes) {
+
             totalClientes.textContent =
                 clientes.length;
+
         }
 
+        /*
+         * Os campos Ativos/Inativos podem ser removidos
+         * posteriormente do HTML.
+         *
+         * Mantemos esta proteção para que o JS não quebre
+         * caso esses elementos ainda existam.
+         */
+
         if (clientesAtivos) {
-            clientesAtivos.textContent =
-                ativos;
+            clientesAtivos.textContent = "";
         }
 
         if (clientesInativos) {
-            clientesInativos.textContent =
-                inativos;
+            clientesInativos.textContent = "";
         }
 
     }
@@ -225,29 +273,36 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function renderizarClientes() {
 
+        if (!lista) return;
+
         const termo =
             (busca?.value || "")
                 .trim()
                 .toLowerCase();
 
-        const filtrados = clientes.filter(cliente => {
 
-            const nome =
-                (cliente.nome || "").toLowerCase();
+        const filtrados =
+            clientes.filter(cliente => {
 
-            const whatsapp =
-                (cliente.whatsapp || "").toLowerCase();
+                const nome =
+                    String(cliente.nome || "")
+                        .toLowerCase();
 
-            const codigo =
-                (cliente.codigo || "").toLowerCase();
+                const whatsapp =
+                    String(cliente.whatsapp || "")
+                        .toLowerCase();
 
-            return (
-                nome.includes(termo) ||
-                whatsapp.includes(termo) ||
-                codigo.includes(termo)
-            );
+                const codigo =
+                    String(cliente.codigo || "")
+                        .toLowerCase();
 
-        });
+                return (
+                    nome.includes(termo) ||
+                    whatsapp.includes(termo) ||
+                    codigo.includes(termo)
+                );
+
+            });
 
 
         if (!filtrados.length) {
@@ -260,15 +315,19 @@ document.addEventListener("DOMContentLoaded", () => {
                     </div>
 
                     <strong>
-                        ${termo
-                            ? "Nenhum cliente encontrado"
-                            : "Nenhum cliente cadastrado"}
+                        ${
+                            termo
+                                ? "Nenhum cliente encontrado"
+                                : "Nenhum cliente cadastrado"
+                        }
                     </strong>
 
                     <p>
-                        ${termo
-                            ? "Tente outro nome, WhatsApp ou código."
-                            : 'Clique em "Novo cliente" para começar.'}
+                        ${
+                            termo
+                                ? "Tente outro nome, WhatsApp ou código."
+                                : 'Clique em "Novo cliente" para começar.'
+                        }
                     </p>
 
                 </div>
@@ -278,75 +337,71 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        lista.innerHTML = filtrados.map(cliente => {
+        lista.innerHTML =
+            filtrados.map(cliente => {
 
-            const status =
-                cliente.status || "ativo";
+                return `
 
-            return `
+                    <div class="client-item">
 
-                <div class="client-item">
+                        <div class="client-main">
 
-                    <div class="client-main">
-
-                        <span class="client-code">
-                            ${escapar(cliente.codigo)}
-                        </span>
-
-                        <div class="client-name">
-                            ${escapar(cliente.nome)}
-                        </div>
-
-                        <div class="client-info">
-
-                            ${
-                                cliente.whatsapp
-                                    ? `<span>📱 ${escapar(cliente.whatsapp)}</span>`
-                                    : ""
-                            }
-
-                            ${
-                                cliente.email
-                                    ? `<span>✉️ ${escapar(cliente.email)}</span>`
-                                    : ""
-                            }
-
-                            <span class="client-status ${status}">
-                                ${status === "ativo"
-                                    ? "ATIVO"
-                                    : "INATIVO"}
+                            <span class="client-code">
+                                ${escapar(cliente.codigo)}
                             </span>
 
+                            <div class="client-name">
+                                ${escapar(cliente.nome)}
+                            </div>
+
+                            <div class="client-info">
+
+                                ${
+                                    cliente.whatsapp
+                                        ? `
+                                            <span>
+                                                📱
+                                                ${escapar(cliente.whatsapp)}
+                                            </span>
+                                          `
+                                        : ""
+                                }
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="client-actions">
+
+                            <button
+                                type="button"
+                                class="client-action"
+                                data-action="edit"
+                                data-id="${escapar(cliente.id)}">
+
+                                ✏️ Editar
+
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="client-action"
+                                data-action="delete"
+                                data-id="${escapar(cliente.id)}">
+
+                                🗑️ Excluir
+
+                            </button>
+
                         </div>
 
                     </div>
 
+                `;
 
-                    <div class="client-actions">
-
-                        <button
-                            type="button"
-                            class="client-action"
-                            data-action="edit"
-                            data-id="${cliente.id}">
-                            ✏️ Editar
-                        </button>
-
-                        <button
-                            type="button"
-                            class="client-action"
-                            data-action="delete"
-                            data-id="${cliente.id}">
-                            🗑️ Excluir
-                        </button>
-
-                    </div>
-
-                </div>
-
-            `;
-
-        }).join("");
+            }).join("");
 
     }
 
@@ -359,54 +414,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
         event.preventDefault();
 
+
         const id =
             document.getElementById("clienteId").value;
 
-        const dados = {
 
-            nome:
-                document.getElementById("nome").value.trim(),
-
-            whatsapp:
-                document.getElementById("whatsapp").value.trim() || null,
-
-            cpf:
-                document.getElementById("cpf").value.trim() || null,
-
-            email:
-                document.getElementById("email").value.trim() || null,
-
-            endereco:
-                document.getElementById("endereco").value.trim() || null,
-
-            numero:
-                document.getElementById("numero").value.trim() || null,
-
-            complemento:
-                document.getElementById("complemento").value.trim() || null,
-
-            bairro:
-                document.getElementById("bairro").value.trim() || null,
-
-            cidade:
-                document.getElementById("cidade").value.trim() || null,
-
-            estado:
-                document.getElementById("estado").value.trim().toUpperCase() || null,
-
-            cep:
-                document.getElementById("cep").value.trim() || null,
-
-            status:
-                document.getElementById("status").value,
-
-            observacoes:
-                document.getElementById("observacoes").value.trim() || null
-
-        };
+        const nome =
+            document.getElementById("nome")
+                .value
+                .trim();
 
 
-        if (!dados.nome) {
+        if (!nome) {
 
             mostrarMensagem(
                 "Informe o nome do cliente."
@@ -416,22 +435,92 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
+        /*
+         * Código:
+         *
+         * - Novo cliente → gera automaticamente.
+         * - Edição → mantém o código existente.
+         */
+
+        let codigo =
+            document.getElementById("codigo")
+                .value
+                .trim();
+
+
+        if (!id && !codigo) {
+
+            codigo =
+                gerarProximoCodigo();
+
+        }
+
+
+        const dados = {
+
+            codigo: codigo,
+
+            nome: nome,
+
+            whatsapp:
+                document.getElementById("whatsapp")
+                    .value
+                    .trim() || null,
+
+            cep:
+                document.getElementById("cep")
+                    .value
+                    .trim() || null,
+
+            endereco:
+                document.getElementById("endereco")
+                    .value
+                    .trim() || null,
+
+            numero:
+                document.getElementById("numero")
+                    .value
+                    .trim() || null,
+
+            complemento:
+                document.getElementById("complemento")
+                    .value
+                    .trim() || null,
+
+            bairro:
+                document.getElementById("bairro")
+                    .value
+                    .trim() || null,
+
+            observacoes:
+                document.getElementById("observacoes")
+                    .value
+                    .trim() || null
+
+        };
+
+
         const botao =
             document.getElementById("btnSalvarCliente");
 
+
         if (botao) {
+
             botao.disabled = true;
-            botao.textContent = "Salvando...";
+
+            botao.textContent =
+                "Salvando...";
+
         }
 
 
         try {
 
-            if (id) {
+            /* =============================================
+               ATUALIZAR
+            ============================================= */
 
-                /* ===============================
-                   ATUALIZAR
-                =============================== */
+            if (id) {
 
                 const { error } =
                     await supabaseClient
@@ -439,28 +528,34 @@ document.addEventListener("DOMContentLoaded", () => {
                         .update(dados)
                         .eq("id", id);
 
+
                 if (error) {
                     throw error;
                 }
+
 
                 mostrarMensagem(
                     "Cliente atualizado com sucesso."
                 );
 
-            } else {
+            }
 
-                /* ===============================
-                   NOVO CLIENTE
-                =============================== */
+            /* =============================================
+               NOVO CLIENTE
+            ============================================= */
+
+            else {
 
                 const { error } =
                     await supabaseClient
                         .from("clientes")
                         .insert(dados);
 
+
                 if (error) {
                     throw error;
                 }
+
 
                 mostrarMensagem(
                     "Cliente cadastrado com sucesso."
@@ -487,8 +582,12 @@ document.addEventListener("DOMContentLoaded", () => {
         } finally {
 
             if (botao) {
+
                 botao.disabled = false;
-                botao.textContent = "Salvar cliente";
+
+                botao.textContent =
+                    "Salvar cliente";
+
             }
 
         }
@@ -504,8 +603,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const cliente =
             clientes.find(
-                item => item.id === id
+                item => String(item.id) === String(id)
             );
+
 
         if (!cliente) return;
 
@@ -560,76 +660,101 @@ document.addEventListener("DOMContentLoaded", () => {
        EVENTOS DA LISTA
     ===================================================== */
 
-    lista.addEventListener("click", event => {
+    if (lista) {
 
-        const botao =
-            event.target.closest("[data-action]");
+        lista.addEventListener(
+            "click",
+            event => {
 
-        if (!botao) return;
-
-        const id =
-            botao.dataset.id;
-
-        const acao =
-            botao.dataset.action;
+                const botao =
+                    event.target.closest(
+                        "[data-action]"
+                    );
 
 
-        if (acao === "edit") {
+                if (!botao) return;
 
-            const cliente =
-                clientes.find(
-                    item => item.id === id
-                );
 
-            if (cliente) {
-                abrirModal(cliente);
+                const id =
+                    botao.dataset.id;
+
+
+                const acao =
+                    botao.dataset.action;
+
+
+                if (acao === "edit") {
+
+                    const cliente =
+                        clientes.find(
+                            item =>
+                                String(item.id) ===
+                                String(id)
+                        );
+
+
+                    if (cliente) {
+
+                        abrirModal(cliente);
+
+                    }
+
+                }
+
+
+                if (acao === "delete") {
+
+                    excluirCliente(id);
+
+                }
+
             }
+        );
 
-        }
-
-
-        if (acao === "delete") {
-
-            excluirCliente(id);
-
-        }
-
-    });
+    }
 
 
     /* =====================================================
-       EVENTOS
+       EVENTOS DO MODAL
     ===================================================== */
 
     if (btnNovo) {
+
         btnNovo.addEventListener(
             "click",
             () => abrirModal()
         );
+
     }
 
 
     if (btnFechar) {
+
         btnFechar.addEventListener(
             "click",
             fecharModal
         );
+
     }
 
 
     if (btnCancelar) {
+
         btnCancelar.addEventListener(
             "click",
             fecharModal
         );
+
     }
 
 
     if (form) {
+
         form.addEventListener(
             "submit",
             salvarCliente
         );
+
     }
 
 
@@ -643,6 +768,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
+    /* =====================================================
+       FECHAR MODAL CLICANDO FORA
+    ===================================================== */
+
     if (modal) {
 
         modal.addEventListener(
@@ -654,15 +783,9 @@ document.addEventListener("DOMContentLoaded", () => {
                         "modal-overlay"
                     )
                 ) {
-                    fecharModal();
-                }
 
-                if (
-                    event.target.classList.contains(
-                        "client-modal-overlay"
-                    )
-                ) {
                     fecharModal();
+
                 }
 
             }
@@ -672,21 +795,68 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
+       TECLA ESC
+    ===================================================== */
+
+    document.addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key === "Escape" &&
+                modal?.classList.contains("show")
+            ) {
+
+                fecharModal();
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
        SEGURANÇA — ESCAPAR HTML
     ===================================================== */
 
     function escapar(valor) {
 
-        if (valor === null || valor === undefined) {
+        if (
+            valor === null ||
+            valor === undefined
+        ) {
+
             return "";
+
         }
 
+
         return String(valor)
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
+
+            .replace(
+                /&/g,
+                "&amp;"
+            )
+
+            .replace(
+                /</g,
+                "&lt;"
+            )
+
+            .replace(
+                />/g,
+                "&gt;"
+            )
+
+            .replace(
+                /"/g,
+                "&quot;"
+            )
+
+            .replace(
+                /'/g,
+                "&#039;"
+            );
 
     }
 
@@ -703,7 +873,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!themeToggle) return;
 
-        if (document.body.classList.contains("dark")) {
+
+        if (
+            document.body.classList.contains("dark")
+        ) {
 
             themeToggle.textContent = "☀";
 
@@ -717,7 +890,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     const modoSalvo =
-        localStorage.getItem("ws_modo_noturno");
+        localStorage.getItem(
+            "ws_modo_noturno"
+        );
 
 
     if (modoSalvo === "true") {
@@ -733,12 +908,18 @@ document.addEventListener("DOMContentLoaded", () => {
             "click",
             () => {
 
-                document.body.classList.toggle("dark");
+                document.body.classList.toggle(
+                    "dark"
+                );
+
 
                 localStorage.setItem(
                     "ws_modo_noturno",
-                    document.body.classList.contains("dark")
+                    document.body.classList.contains(
+                        "dark"
+                    )
                 );
+
 
                 atualizarBotaoTema();
 
