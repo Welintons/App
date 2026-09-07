@@ -2,11 +2,17 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Configurações PWA e Mobile -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#4c1d95">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="WS Soluções">
+<link rel="apple-touch-icon" href="icon-192.png">
 
 <title>Painel da Mila - WS SOLUÇÕES</title>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 :root{
@@ -14,21 +20,21 @@
     --roxo2:#6d28d9;
     --roxo3:#4c1d95;
     --fundo:#f5f3ff;
-    --card:#ffffff;
-    --texto:#1f2937;
+    --branco:#fff;
+    --texto:#21172f;
     --cinza:#6b7280;
     --borda:#e5e7eb;
     --verde:#16a34a;
     --vermelho:#dc2626;
-    --amarelo:#d97706;
-    --azul:#2563eb;
+    --amarelo:#f59e0b;
+    --sombra:0 8px 25px rgba(76,29,149,.10);
 }
 
 *{
-    box-sizing:border-box;
     margin:0;
     padding:0;
-    font-family:Arial,Helvetica,sans-serif;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
 }
 
 body{
@@ -36,288 +42,229 @@ body{
     color:var(--texto);
 }
 
-button,
-input,
-select,
-textarea{
-    font:inherit;
-}
-
-button{
-    cursor:pointer;
-    border:0;
-}
-
-.app{
-    min-height:100vh;
-}
-
-/* ================= HEADER ================= */
-
 header{
     background:linear-gradient(135deg,var(--roxo3),var(--roxo));
     color:white;
-    padding:18px 20px;
+    padding:16px 22px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
     position:sticky;
     top:0;
     z-index:100;
-    box-shadow:0 4px 15px rgba(0,0,0,.12);
-}
-
-.header-inner{
-    max-width:1200px;
-    margin:auto;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:15px;
+    box-shadow:var(--sombra);
 }
 
 .logo{
-    display:flex;
-    align-items:center;
-    gap:12px;
+    font-size:21px;
+    font-weight:bold;
 }
 
-.logo-icon{
-    width:45px;
-    height:45px;
-    border-radius:13px;
-    background:rgba(255,255,255,.16);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:23px;
-}
-
-.logo h1{
-    font-size:20px;
-}
-
-.logo span{
+.logo small{
     display:block;
-    font-size:12px;
-    opacity:.8;
+    font-size:11px;
+    opacity:.75;
     margin-top:3px;
 }
 
-.menu-btn{
-    background:rgba(255,255,255,.14);
-    color:white;
-    width:42px;
-    height:42px;
-    border-radius:11px;
-    font-size:21px;
-}
-
-/* ================= NAV ================= */
-
-nav{
-    background:white;
-    border-bottom:1px solid var(--borda);
-    padding:10px;
-    overflow-x:auto;
-    position:sticky;
-    top:81px;
-    z-index:90;
-}
-
-.nav-inner{
-    max-width:1200px;
-    margin:auto;
+.usuario{
     display:flex;
-    gap:8px;
-}
-
-.nav-btn{
-    white-space:nowrap;
-    padding:11px 15px;
-    border-radius:10px;
-    background:transparent;
-    color:var(--cinza);
-    font-weight:bold;
-}
-
-.nav-btn.active{
-    background:#ede9fe;
-    color:var(--roxo);
-}
-
-/* ================= CONTAINER ================= */
-
-main{
-    max-width:1200px;
-    margin:auto;
-    padding:20px;
-}
-
-.page{
-    display:none;
-}
-
-.page.active{
-    display:block;
-}
-
-.page-title{
-    margin-bottom:18px;
-}
-
-.page-title h2{
-    font-size:24px;
-}
-
-.page-title p{
-    color:var(--cinza);
-    margin-top:5px;
-    font-size:14px;
-}
-
-/* ================= CARDS RESUMO ================= */
-
-.resumo-grid{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:14px;
-    margin-bottom:20px;
-}
-
-.resumo{
-    background:var(--card);
-    border:1px solid var(--borda);
-    border-radius:16px;
-    padding:18px;
-    box-shadow:0 3px 10px rgba(0,0,0,.04);
-}
-
-.resumo-top{
-    display:flex;
-    justify-content:space-between;
     align-items:center;
+    gap:10px;
 }
 
-.resumo-icon{
+.avatar{
     width:40px;
     height:40px;
-    border-radius:12px;
-    background:#ede9fe;
+    border-radius:50%;
+    background:white;
     color:var(--roxo);
     display:flex;
     align-items:center;
     justify-content:center;
-    font-size:20px;
-}
-
-.resumo small{
-    color:var(--cinza);
-    display:block;
-    margin-top:13px;
-}
-
-.resumo strong{
-    display:block;
-    font-size:23px;
-    margin-top:4px;
-}
-
-/* ================= SECTION ================= */
-
-.section{
-    background:white;
-    border:1px solid var(--borda);
-    border-radius:18px;
-    padding:18px;
-    margin-bottom:20px;
-    box-shadow:0 3px 10px rgba(0,0,0,.035);
-}
-
-.section-header{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:10px;
-    margin-bottom:15px;
-}
-
-.section-header h3{
-    font-size:18px;
-}
-
-.add-btn{
-    background:var(--roxo);
-    color:white;
-    padding:10px 14px;
-    border-radius:10px;
     font-weight:bold;
 }
 
-.add-btn:hover{
-    background:var(--roxo2);
+nav{
+    background:white;
+    display:flex;
+    gap:8px;
+    padding:10px 15px;
+    overflow-x:auto;
+    border-bottom:1px solid var(--borda);
 }
 
-/* ================= CALENDÁRIO ================= */
+nav button{
+    border:0;
+    padding:10px 14px;
+    border-radius:10px;
+    background:#f3f0ff;
+    color:var(--roxo3);
+    font-weight:bold;
+    cursor:pointer;
+    white-space:nowrap;
+}
 
-.calendar-head{
+nav button.active,
+nav button:hover{
+    background:var(--roxo);
+    color:white;
+}
+
+main{
+    max-width:1250px;
+    margin:auto;
+    padding:22px;
+}
+
+.tela{
+    display:none;
+}
+
+.tela.ativa{
+    display:block;
+}
+
+.titulo{
+    margin-bottom:20px;
+}
+
+.titulo h1{
+    font-size:27px;
+}
+
+.titulo p{
+    color:var(--cinza);
+    margin-top:5px;
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+    gap:15px;
+    margin-bottom:20px;
+}
+
+.card{
+    background:white;
+    padding:19px;
+    border-radius:16px;
+    box-shadow:var(--sombra);
+}
+
+.card .icone{
+    font-size:25px;
+    margin-bottom:10px;
+}
+
+.card h3{
+    color:var(--cinza);
+    font-size:13px;
+}
+
+.card strong{
+    display:block;
+    margin-top:5px;
+    font-size:25px;
+    color:var(--roxo3);
+}
+
+.painel{
+    background:white;
+    border-radius:16px;
+    padding:20px;
+    box-shadow:var(--sombra);
+    margin-bottom:20px;
+}
+
+.painel-titulo{
     display:flex;
-    align-items:center;
     justify-content:space-between;
-    margin-bottom:15px;
+    align-items:center;
+    gap:10px;
+    margin-bottom:18px;
 }
 
-.calendar-head strong{
-    font-size:17px;
+.painel-titulo h2{
+    font-size:19px;
 }
 
-.calendar-actions{
+.calendario-topo{
     display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+}
+
+.calendario-topo h2{
+    font-size:21px;
+    text-transform:capitalize;
+}
+
+.navegacao-calendario{
+    display:flex;
+    gap:7px;
+}
+
+.btn-nav{
+    border:0;
+    background:#f3f0ff;
+    color:var(--roxo3);
+    width:38px;
+    height:38px;
+    border-radius:9px;
+    cursor:pointer;
+    font-size:18px;
+    font-weight:bold;
+}
+
+.btn-nav:hover{
+    background:var(--roxo);
+    color:white;
+}
+
+.calendario{
+    width:100%;
+}
+
+.dias-semana,
+.dias{
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
     gap:6px;
 }
 
-.calendar-actions button{
-    background:#ede9fe;
-    color:var(--roxo);
-    width:35px;
-    height:35px;
-    border-radius:9px;
-    font-weight:bold;
-}
-
-.calendar-week{
-    display:grid;
-    grid-template-columns:repeat(7,1fr);
-    gap:5px;
-    margin-bottom:5px;
-}
-
-.calendar-week div{
+.dia-semana{
     text-align:center;
-    font-size:11px;
+    font-size:12px;
     color:var(--cinza);
     font-weight:bold;
-}
-
-.calendar{
-    display:grid;
-    grid-template-columns:repeat(7,1fr);
-    gap:5px;
+    padding:8px 2px;
 }
 
 .dia{
     height:75px;
-    border:1px solid var(--borda);
+    background:#fafafa;
+    border:1px solid #eee;
     border-radius:10px;
     padding:8px;
-    position:relative;
     cursor:pointer;
-    background:#fff;
+    position:relative;
+    transition:.15s;
 }
 
 .dia:hover{
-    border-color:#c4b5fd;
+    border-color:var(--roxo);
+    transform:translateY(-1px);
 }
 
-.dia.outro{
+.dia.outro-mes{
     opacity:.35;
+}
+
+.numero{
+    font-weight:bold;
+    font-size:14px;
 }
 
 .dia.hoje{
@@ -325,211 +272,112 @@ main{
 }
 
 .dia.selecionado{
-    background:#f3e8ff;
+    background:#f0eaff;
+    border:2px solid var(--roxo);
 }
 
-.numero{
-    font-weight:bold;
-    font-size:13px;
-}
-
+/* BOLINHA DO AGENDAMENTO */
 .bolinha-agendamento{
-    width:7px;
-    height:7px;
+    width:9px;
+    height:9px;
     border-radius:50%;
     background:var(--roxo);
     position:absolute;
-    bottom:8px;
     left:50%;
+    bottom:9px;
     transform:translateX(-50%);
+    box-shadow:0 0 0 3px rgba(124,58,237,.12);
 }
 
-/* ================= OS DO DIA ================= */
+@media(max-width:650px){
 
-.os-dia{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
+    .dia{
+        height:58px;
+        padding:5px;
+    }
+
+    .numero{
+        font-size:12px;
+    }
+
+    .bolinha-agendamento{
+        width:7px;
+        height:7px;
+        bottom:6px;
+    }
 }
 
-.os-mini{
+.agendamentos-dia{
+    margin-top:20px;
+}
+
+.agendamento-item{
     border:1px solid var(--borda);
-    border-radius:12px;
+    border-left:4px solid var(--roxo);
+    border-radius:10px;
     padding:13px;
-    display:flex;
-    justify-content:space-between;
-    gap:10px;
-    align-items:center;
+    margin-bottom:10px;
+    background:#fafafa;
 }
 
-.os-mini-info strong{
+.agendamento-item strong{
     display:block;
     margin-bottom:4px;
 }
 
-.os-mini-info span{
+.agendamento-info{
     color:var(--cinza);
     font-size:13px;
-}
-
-.os-actions{
-    display:flex;
-    gap:6px;
-}
-
-.icon-btn{
-    width:36px;
-    height:36px;
-    border-radius:9px;
-    background:#f3f4f6;
-}
-
-.icon-btn.edit{
-    color:var(--azul);
-}
-
-.icon-btn.delete{
-    color:var(--vermelho);
-}
-
-/* ================= OS CARDS ================= */
-
-.os-toolbar{
-    display:flex;
-    gap:10px;
-    margin-bottom:18px;
-    flex-wrap:wrap;
-}
-
-.search{
-    flex:1;
-    min-width:220px;
-}
-
-.search input,
-.toolbar-select{
-    width:100%;
-    padding:12px 14px;
-    border:1px solid var(--borda);
-    border-radius:11px;
-    outline:none;
-    background:white;
-}
-
-.search input:focus,
-.toolbar-select:focus{
-    border-color:var(--roxo);
-}
-
-.toolbar-select{
-    width:190px;
-}
-
-.os-grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:15px;
-}
-
-.os-card{
-    background:white;
-    border:1px solid var(--borda);
-    border-radius:17px;
-    padding:17px;
-    box-shadow:0 4px 12px rgba(0,0,0,.04);
-}
-
-.os-card-top{
-    display:flex;
-    align-items:flex-start;
-    justify-content:space-between;
-    gap:10px;
-    margin-bottom:14px;
-}
-
-.os-number{
-    color:var(--cinza);
-    font-size:11px;
-    font-weight:bold;
-}
-
-.os-card h3{
-    font-size:17px;
     margin-top:4px;
 }
 
-.status{
-    padding:6px 9px;
-    border-radius:20px;
-    font-size:11px;
-    font-weight:bold;
-    white-space:nowrap;
-}
-
-.status-aguardando{
-    background:#fef3c7;
-    color:#92400e;
-}
-
-.status-confirmado{
-    background:#dbeafe;
-    color:#1d4ed8;
-}
-
-.status-concluido{
-    background:#dcfce7;
-    color:#166534;
-}
-
-.status-cancelado{
-    background:#fee2e2;
-    color:#991b1b;
-}
-
-.os-info{
-    display:flex;
-    flex-direction:column;
-    gap:8px;
-    color:#4b5563;
-    font-size:13px;
-}
-
-.os-info div{
-    display:flex;
-    gap:8px;
-}
-
-.os-defeito{
-    margin-top:13px;
-    padding:10px;
-    border-radius:10px;
-    background:#f9fafb;
-    font-size:13px;
-    color:#4b5563;
-}
-
-.os-card-bottom{
-    border-top:1px solid var(--borda);
-    margin-top:15px;
-    padding-top:12px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-
-.os-data{
-    font-size:12px;
+.sem-agendamento{
+    text-align:center;
+    padding:25px;
     color:var(--cinza);
 }
 
-.os-card-actions{
-    display:flex;
-    gap:6px;
+.btn{
+    border:0;
+    border-radius:9px;
+    padding:10px 14px;
+    font-weight:bold;
+    cursor:pointer;
 }
 
-/* ================= TABELAS ================= */
+.btn-roxo{
+    background:var(--roxo);
+    color:white;
+}
 
-.table-wrap{
+.btn-verde{
+    background:var(--verde);
+    color:white;
+}
+
+.btn-vermelho{
+    background:var(--vermelho);
+    color:white;
+}
+
+.btn-cinza{
+    background:#e5e7eb;
+    color:#374151;
+}
+
+.btn-editar{
+    background:#ede9fe;
+    color:var(--roxo3);
+}
+
+.acoes-os{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-top:10px;
+}
+
+.tabela-container{
     overflow-x:auto;
 }
 
@@ -538,304 +386,178 @@ table{
     border-collapse:collapse;
 }
 
-th,
-td{
-    text-align:left;
+th,td{
     padding:12px 10px;
-    border-bottom:1px solid var(--borda);
-    font-size:13px;
+    border-bottom:1px solid #eee;
+    text-align:left;
+    white-space:nowrap;
 }
 
 th{
     color:var(--cinza);
-    font-size:11px;
-    text-transform:uppercase;
+    font-size:12px;
 }
 
-.table-actions{
-    display:flex;
-    gap:6px;
-}
-
-.empty{
-    text-align:center;
-    color:var(--cinza);
-    padding:25px;
-}
-
-/* ================= FINANCEIRO ================= */
-
-.finance-grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:14px;
-    margin-bottom:20px;
-}
-
-.finance-card{
-    padding:18px;
-    background:white;
-    border:1px solid var(--borda);
-    border-radius:16px;
-}
-
-.finance-card small{
-    color:var(--cinza);
-}
-
-.finance-card strong{
-    display:block;
-    font-size:24px;
-    margin-top:8px;
-}
-
-.finance-entrada strong{
-    color:var(--verde);
-}
-
-.finance-saida strong{
-    color:var(--vermelho);
-}
-
-.finance-saldo strong{
-    color:var(--roxo);
-}
-
-/* ================= MODAL ================= */
-
-.modal-bg{
-    position:fixed;
-    inset:0;
-    background:rgba(17,24,39,.65);
-    z-index:500;
-    display:none;
-    align-items:center;
-    justify-content:center;
-    padding:15px;
-}
-
-.modal-bg.show{
-    display:flex;
-}
-
-.modal{
-    width:min(600px,100%);
-    max-height:94vh;
-    overflow-y:auto;
-    background:white;
+.status{
+    padding:5px 9px;
     border-radius:20px;
-    padding:20px;
-    box-shadow:0 20px 60px rgba(0,0,0,.25);
+    font-size:11px;
+    font-weight:bold;
 }
 
-.modal.large{
-    width:min(800px,100%);
+.aguardando{
+    background:#fef3c7;
+    color:#92400e;
 }
 
-.modal-head{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:18px;
+.confirmado{
+    background:#dbeafe;
+    color:#1d4ed8;
 }
 
-.modal-head h3{
-    font-size:20px;
+.concluido{
+    background:#dcfce7;
+    color:#166534;
 }
 
-.close{
-    width:36px;
-    height:36px;
-    border-radius:10px;
-    background:#f3f4f6;
-    font-size:18px;
+.cancelado{
+    background:#fee2e2;
+    color:#991b1b;
 }
 
 .form-grid{
     display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:12px;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:15px;
 }
 
-.form-group{
-    margin-bottom:12px;
+.campo{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
 }
 
-.form-group.full{
-    grid-column:1/-1;
-}
-
-label{
-    display:block;
-    margin-bottom:6px;
-    font-size:12px;
-    color:var(--cinza);
+.campo label{
+    font-size:13px;
     font-weight:bold;
+    color:#4b5563;
 }
 
-input,
-select,
-textarea{
-    width:100%;
-    border:1px solid var(--borda);
-    border-radius:10px;
-    padding:11px 12px;
+.campo input,
+.campo select,
+.campo textarea{
+    padding:11px;
+    border:1px solid #ddd;
+    border-radius:9px;
     outline:none;
-    background:white;
+    font-size:15px;
 }
 
-textarea{
+.campo input:focus,
+.campo select:focus,
+.campo textarea:focus{
+    border-color:var(--roxo);
+}
+
+.campo textarea{
     min-height:90px;
     resize:vertical;
 }
 
-input:focus,
-select:focus,
-textarea:focus{
-    border-color:var(--roxo);
-}
-
-.modal-footer{
+.form-acoes{
     display:flex;
-    gap:8px;
-    justify-content:flex-end;
-    margin-top:10px;
+    gap:10px;
+    margin-top:18px;
+    padding-top:12px;
+    background:white;
+    position:sticky;
+    bottom:0;
+    border-top:1px solid var(--borda);
+    flex-wrap:wrap;
 }
 
-.btn{
-    padding:11px 16px;
-    border-radius:10px;
-    font-weight:bold;
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.5);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:15px;
+    z-index:300;
 }
 
-.btn-primary{
-    background:var(--roxo);
-    color:white;
+.modal.aberto{
+    display:flex;
 }
 
-.btn-secondary{
-    background:#f3f4f6;
-}
-
-.btn-danger{
-    background:#fee2e2;
-    color:var(--vermelho);
-}
-
-/* ================= DETALHES ================= */
-
-.detalhes{
+.modal-box{
+    width:100%;
+    max-width:600px;
+    max-height:85vh;
     display:flex;
     flex-direction:column;
-    gap:12px;
+    background:white;
+    border-radius:18px;
+    padding:22px;
+    box-shadow:0 10px 25px rgba(0,0,0,.2);
 }
 
-.detalhe{
-    padding:13px;
-    border-radius:12px;
-    background:#f9fafb;
+.modal-topo{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:15px;
+    padding-bottom:10px;
+    border-bottom:1px solid var(--borda);
 }
 
-.detalhe small{
+.modal-corpo{
+    overflow-y:auto;
+    padding-right:5px;
+    flex:1;
+}
+
+.fechar{
+    border:0;
+    background:none;
+    font-size:28px;
+    cursor:pointer;
+}
+
+.toast{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    background:#111827;
+    color:white;
+    padding:13px 17px;
+    border-radius:10px;
+    display:none;
+    z-index:500;
+}
+
+.toast.mostrar{
     display:block;
-    color:var(--cinza);
-    margin-bottom:4px;
-}
-
-.detalhe strong{
-    font-size:14px;
-}
-
-/* ================= MOBILE ================= */
-
-@media(max-width:900px){
-    .resumo-grid{
-        grid-template-columns:repeat(2,1fr);
-    }
-
-    .os-grid{
-        grid-template-columns:repeat(2,1fr);
-    }
 }
 
 @media(max-width:650px){
-    header{
-        padding:14px;
-    }
-
-    nav{
-        top:73px;
-    }
 
     main{
         padding:14px;
     }
 
-    .resumo-grid{
-        grid-template-columns:repeat(2,1fr);
-        gap:9px;
+    header{
+        padding:13px 15px;
     }
 
-    .resumo{
-        padding:13px;
-        border-radius:13px;
+    .logo{
+        font-size:18px;
     }
 
-    .resumo strong{
-        font-size:19px;
-    }
-
-    .resumo-icon{
-        width:34px;
-        height:34px;
-    }
-
-    .section{
-        padding:13px;
-        border-radius:15px;
-    }
-
-    .calendar{
-        gap:3px;
-    }
-
-    .dia{
-        height:58px;
-        padding:5px;
-    }
-
-    .numero{
-        font-size:11px;
-    }
-
-    .bolinha-agendamento{
-        bottom:5px;
-        width:6px;
-        height:6px;
-    }
-
-    .os-grid{
-        grid-template-columns:1fr;
-    }
-
-    .form-grid{
-        grid-template-columns:1fr;
-    }
-
-    .form-group.full{
-        grid-column:auto;
-    }
-
-    .toolbar-select{
-        width:100%;
-    }
-
-    .os-mini{
-        align-items:flex-start;
-    }
-
-    .page-title h2{
-        font-size:21px;
+    .modal-box{
+        max-height:92vh;
+        padding:17px;
     }
 }
 </style>
@@ -843,1542 +565,901 @@ textarea:focus{
 
 <body>
 
-<div class="app">
-
 <header>
-    <div class="header-inner">
-        <div class="logo">
-            <div class="logo-icon">⚡</div>
-            <div>
-                <h1>WS SOLUÇÕES</h1>
-                <span>Painel da Mila</span>
-            </div>
-        </div>
 
-        <button class="menu-btn" onclick="carregarTudo()">↻</button>
-    </div>
+<div class="logo">
+WS SOLUÇÕES
+<small>Painel da equipe</small>
+</div>
+
+<div class="usuario">
+
+<div>
+<strong>Mila</strong>
+<small style="display:block;opacity:.75;">Assistente</small>
+</div>
+
+<div class="avatar">M</div>
+
+</div>
+
 </header>
 
+
 <nav>
-    <div class="nav-inner">
-        <button class="nav-btn active" onclick="mostrarPagina('inicio',this)">🏠 Início</button>
-        <button class="nav-btn" onclick="mostrarPagina('os',this)">📋 Ordens de Serviço</button>
-        <button class="nav-btn" onclick="mostrarPagina('clientes',this)">👥 Clientes</button>
-        <button class="nav-btn" onclick="mostrarPagina('financeiro',this)">💰 Financeiro</button>
-    </div>
+
+<button class="active" onclick="abrirTela('inicio',this)">
+🏠 Início
+</button>
+
+<button onclick="abrirTela('clientes',this)">
+👥 Clientes
+</button>
+
+<button onclick="abrirTela('financeiro',this)">
+💰 Financeiro
+</button>
+
 </nav>
+
 
 <main>
 
-<!-- ================= INÍCIO ================= -->
 
-<section id="inicio" class="page active">
+<!-- ================================
+     INÍCIO
+================================ -->
 
-    <div class="page-title">
-        <h2>Olá, Mila 👋</h2>
-        <p>Visão geral da WS SOLUÇÕES</p>
-    </div>
+<section id="inicio" class="tela ativa">
 
-    <div class="resumo-grid">
+<div class="titulo">
 
-        <div class="resumo">
-            <div class="resumo-top">
-                <div class="resumo-icon">👥</div>
-            </div>
-            <small>Clientes</small>
-            <strong id="totalClientes">0</strong>
-        </div>
+<h1>Olá, Mila 👋</h1>
 
-        <div class="resumo">
-            <div class="resumo-top">
-                <div class="resumo-icon">📋</div>
-            </div>
-            <small>Ordens de serviço</small>
-            <strong id="totalOS">0</strong>
-        </div>
+<p>Controle da WS SOLUÇÕES</p>
 
-        <div class="resumo">
-            <div class="resumo-top">
-                <div class="resumo-icon">⏳</div>
-            </div>
-            <small>OS pendentes</small>
-            <strong id="totalPendentes">0</strong>
-        </div>
-
-        <div class="resumo">
-            <div class="resumo-top">
-                <div class="resumo-icon">💰</div>
-            </div>
-            <small>Saldo total</small>
-            <strong id="saldoHome">R$ 0,00</strong>
-        </div>
-
-    </div>
-
-    <!-- CALENDÁRIO -->
-
-    <div class="section">
-
-        <div class="section-header">
-            <h3>📅 Agenda</h3>
-            <button class="add-btn" onclick="abrirModalOS()">+ Nova OS</button>
-        </div>
-
-        <div class="calendar-head">
-            <strong id="mesAno"></strong>
-
-            <div class="calendar-actions">
-                <button onclick="mesAnterior()">‹</button>
-                <button onclick="irHoje()">Hoje</button>
-                <button onclick="mesProximo()">›</button>
-            </div>
-        </div>
-
-        <div class="calendar-week">
-            <div>DOM</div>
-            <div>SEG</div>
-            <div>TER</div>
-            <div>QUA</div>
-            <div>QUI</div>
-            <div>SEX</div>
-            <div>SÁB</div>
-        </div>
-
-        <div id="calendar" class="calendar"></div>
-
-    </div>
-
-    <!-- OS DO DIA -->
-
-    <div class="section">
-
-        <div class="section-header">
-            <h3 id="tituloDia">OS do dia</h3>
-        </div>
-
-        <div id="osDia" class="os-dia"></div>
-
-    </div>
-
-</section>
+</div>
 
 
-<!-- ================= ORDENS DE SERVIÇO ================= -->
+<div class="cards">
 
-<section id="os" class="page">
+<div class="card">
 
-    <div class="page-title">
-        <h2>📋 Ordens de Serviço</h2>
-        <p>Gerencie todas as OS da WS SOLUÇÕES</p>
-    </div>
+<div class="icone">👥</div>
 
-    <div class="section">
+<h3>Clientes</h3>
 
-        <div class="section-header">
-            <h3>Lista de OS</h3>
-            <button class="add-btn" onclick="abrirModalOS()">+ Nova OS</button>
-        </div>
+<strong id="totalClientes">0</strong>
 
-        <div class="os-toolbar">
-
-            <div class="search">
-                <input
-                    id="buscaOS"
-                    type="text"
-                    placeholder="🔎 Buscar cliente, aparelho ou defeito..."
-                    oninput="renderOSCards()">
-            </div>
-
-            <select id="filtroStatus" class="toolbar-select" onchange="renderOSCards()">
-                <option value="">Todos os status</option>
-                <option value="aguardando">Aguardando</option>
-                <option value="confirmado">Confirmado</option>
-                <option value="concluido">Concluído</option>
-                <option value="cancelado">Cancelado</option>
-            </select>
-
-        </div>
-
-        <div id="osGrid" class="os-grid"></div>
-
-    </div>
-
-</section>
+</div>
 
 
-<!-- ================= CLIENTES ================= -->
+<div class="card">
 
-<section id="clientes" class="page">
+<div class="icone">📅</div>
 
-    <div class="page-title">
-        <h2>👥 Clientes</h2>
-        <p>Cadastre e gerencie seus clientes</p>
-    </div>
+<h3>Agendamentos</h3>
 
-    <div class="section">
+<strong id="totalAgendamentos">0</strong>
 
-        <div class="section-header">
-            <h3>Clientes cadastrados</h3>
-            <button class="add-btn" onclick="abrirModalCliente()">+ Novo cliente</button>
-        </div>
+</div>
 
-        <div class="table-wrap">
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>Nome</th>
-                        <th>WhatsApp</th>
-                        <th>Telefone</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
+<div class="card">
 
-                <tbody id="clientesTabela"></tbody>
-            </table>
+<div class="icone">⏳</div>
 
-        </div>
+<h3>Pendentes</h3>
 
-    </div>
+<strong id="totalPendentes">0</strong>
+
+</div>
+
+
+<div class="card">
+
+<div class="icone">💰</div>
+
+<h3>Saldo total</h3>
+
+<strong id="totalSaldo">R$ 0,00</strong>
+
+</div>
+
+</div>
+
+
+<div class="painel">
+
+<div class="calendario-topo">
+
+<h2 id="mesAno"></h2>
+
+<div class="navegacao-calendario">
+
+<button class="btn-nav" onclick="mesAnterior()">‹</button>
+
+<button class="btn-nav" onclick="irParaHoje()">●</button>
+
+<button class="btn-nav" onclick="mesProximo()">›</button>
+
+</div>
+
+</div>
+
+
+<div class="calendario">
+
+<div class="dias-semana">
+
+<div class="dia-semana">DOM</div>
+<div class="dia-semana">SEG</div>
+<div class="dia-semana">TER</div>
+<div class="dia-semana">QUA</div>
+<div class="dia-semana">QUI</div>
+<div class="dia-semana">SEX</div>
+<div class="dia-semana">SÁB</div>
+
+</div>
+
+<div id="diasCalendario" class="dias"></div>
+
+</div>
+
+
+<div class="agendamentos-dia">
+
+<div class="painel-titulo">
+
+<h2 id="tituloDia">Agendamentos</h2>
+
+<button
+class="btn btn-roxo"
+onclick="abrirModalAgendamento()">
++ Agendar
+</button>
+
+</div>
+
+<div id="listaDia"></div>
+
+</div>
+
+</div>
+
+
+<div class="painel">
+
+<div class="painel-titulo">
+
+<h2>📌 Próximos agendamentos</h2>
+
+</div>
+
+
+<div class="tabela-container">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Cliente</th>
+<th>Serviço</th>
+<th>Data</th>
+<th>Hora</th>
+<th>Status</th>
+<th>Ação</th>
+
+</tr>
+
+</thead>
+
+<tbody id="tabelaInicio"></tbody>
+
+</table>
+
+</div>
+
+</div>
 
 </section>
 
 
-<!-- ================= FINANCEIRO ================= -->
+<!-- ================================
+     CLIENTES
+================================ -->
 
-<section id="financeiro" class="page">
+<section id="clientes" class="tela">
 
-    <div class="page-title">
-        <h2>💰 Financeiro</h2>
-        <p>Controle de entradas, saídas e saldo</p>
-    </div>
+<div class="titulo">
 
-    <div class="finance-grid">
+<h1>👥 Clientes</h1>
 
-        <div class="finance-card finance-entrada">
-            <small>Entradas</small>
-            <strong id="totalEntradas">R$ 0,00</strong>
-        </div>
+<p>Cadastro de clientes</p>
 
-        <div class="finance-card finance-saida">
-            <small>Saídas</small>
-            <strong id="totalSaidas">R$ 0,00</strong>
-        </div>
+</div>
 
-        <div class="finance-card finance-saldo">
-            <small>Saldo</small>
-            <strong id="totalSaldo">R$ 0,00</strong>
-        </div>
 
-    </div>
+<div class="painel">
 
-    <div class="section">
+<div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:15px;">
 
-        <div class="section-header">
-            <h3>Movimentações</h3>
-            <button class="add-btn" onclick="abrirModalFinanceiro()">+ Nova movimentação</button>
-        </div>
+<input
+id="buscarCliente"
+type="search"
+placeholder="🔎 Buscar cliente..."
+oninput="filtrarClientes()"
+style="flex:1;min-width:200px;padding:11px;border:1px solid #ddd;border-radius:9px;"
+>
 
-        <div class="table-wrap">
+<button
+class="btn btn-roxo"
+onclick="abrirModalCliente()">
++ Novo cliente
+</button>
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>Descrição</th>
-                        <th>Tipo</th>
-                        <th>Valor</th>
-                        <th>Data</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
+</div>
 
-                <tbody id="financeTabela"></tbody>
-            </table>
 
-        </div>
+<div class="tabela-container">
 
-    </div>
+<table>
+
+<thead>
+
+<tr>
+
+<th>Nome</th>
+<th>WhatsApp</th>
+<th>Endereço</th>
+<th>Cadastro</th>
+<th>Ação</th>
+
+</tr>
+
+</thead>
+
+<tbody id="tabelaClientes"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================================
+     FINANCEIRO
+================================ -->
+
+<section id="financeiro" class="tela">
+
+<div class="titulo">
+
+<h1>💰 Financeiro</h1>
+
+<p>Movimentações da empresa</p>
+
+</div>
+
+
+<div class="cards">
+
+<div class="card">
+
+<h3>Entradas</h3>
+
+<strong id="financeiroEntradas">
+R$ 0,00
+</strong>
+
+</div>
+
+
+<div class="card">
+
+<h3>Saídas</h3>
+
+<strong id="financeiroSaidas">
+R$ 0,00
+</strong>
+
+</div>
+
+
+<div class="card">
+
+<h3>Saldo</h3>
+
+<strong id="financeiroSaldo">
+R$ 0,00
+</strong>
+
+</div>
+
+</div>
+
+
+<div class="painel">
+
+<button
+class="btn btn-roxo"
+onclick="abrirModalFinanceiro()">
++ Nova movimentação
+</button>
+
+</div>
+
+
+<div class="painel">
+
+<div class="tabela-container">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Tipo</th>
+<th>Descrição</th>
+<th>Valor</th>
+<th>Data</th>
+<th>Ação</th>
+
+</tr>
+
+</thead>
+
+<tbody id="tabelaFinanceiro"></tbody>
+
+</table>
+
+</div>
+
+</div>
 
 </section>
 
 </main>
-</div>
 
 
-<!-- ================= MODAL OS ================= -->
+<!-- ================================
+     MODAL CLIENTE
+================================ -->
 
-<div id="modalOS" class="modal-bg">
+<div id="modalCliente" class="modal">
 
-    <div class="modal">
+<div class="modal-box">
 
-        <div class="modal-head">
-            <h3 id="tituloModalOS">Nova Ordem de Serviço</h3>
-            <button class="close" onclick="fecharModal('modalOS')">×</button>
-        </div>
+<div class="modal-topo">
 
-        <input type="hidden" id="osId">
+<h2 id="tituloModalCliente">
+Novo cliente
+</h2>
 
-        <div class="form-grid">
-
-            <div class="form-group">
-                <label>Cliente</label>
-                <input id="osNome" placeholder="Nome do cliente">
-            </div>
-
-            <div class="form-group">
-                <label>WhatsApp</label>
-                <input id="osWhatsapp" placeholder="WhatsApp">
-            </div>
-
-            <div class="form-group">
-                <label>Aparelho</label>
-                <input id="osAparelho" placeholder="Ex.: TV, micro-ondas...">
-            </div>
-
-            <div class="form-group">
-                <label>Data</label>
-                <input id="osData" type="date">
-            </div>
-
-            <div class="form-group">
-                <label>Horário</label>
-                <input id="osHora" type="time">
-            </div>
-
-            <div class="form-group">
-                <label>Status</label>
-
-                <select id="osStatus">
-                    <option value="aguardando">Aguardando</option>
-                    <option value="confirmado">Confirmado</option>
-                    <option value="concluido">Concluído</option>
-                    <option value="cancelado">Cancelado</option>
-                </select>
-
-            </div>
-
-            <div class="form-group full">
-                <label>Defeito / Serviço</label>
-                <textarea id="osDefeito" placeholder="Descreva o defeito ou serviço..."></textarea>
-            </div>
-
-        </div>
-
-        <div class="modal-footer">
-
-            <button
-                id="btnExcluirOSModal"
-                class="btn btn-danger"
-                style="display:none"
-                onclick="excluirOSModal()">
-                🗑️ Excluir
-            </button>
-
-            <button class="btn btn-secondary" onclick="fecharModal('modalOS')">
-                Cancelar
-            </button>
-
-            <button class="btn btn-primary" onclick="salvarOS()">
-                💾 Salvar
-            </button>
-
-        </div>
-
-    </div>
+<button class="fechar" onclick="fecharModais()">
+×
+</button>
 
 </div>
 
 
-<!-- ================= MODAL DETALHES ================= -->
+<div class="modal-corpo">
 
-<div id="modalDetalhes" class="modal-bg">
+<input type="hidden" id="clienteId">
 
-    <div class="modal large">
+<div class="form-grid">
 
-        <div class="modal-head">
-            <h3>Detalhes da OS</h3>
-            <button class="close" onclick="fecharModal('modalDetalhes')">×</button>
-        </div>
+<div class="campo">
 
-        <div id="detalhesConteudo" class="detalhes"></div>
+<label>Nome</label>
 
-        <div class="modal-footer">
-
-            <button class="btn btn-secondary" onclick="fecharModal('modalDetalhes')">
-                Fechar
-            </button>
-
-            <button class="btn btn-primary" id="btnEditarDetalhes">
-                ✏️ Editar OS
-            </button>
-
-        </div>
-
-    </div>
+<input id="clienteNome">
 
 </div>
 
 
-<!-- ================= MODAL CLIENTE ================= -->
+<div class="campo">
 
-<div id="modalCliente" class="modal-bg">
+<label>WhatsApp</label>
 
-    <div class="modal">
-
-        <div class="modal-head">
-            <h3 id="tituloModalCliente">Novo Cliente</h3>
-            <button class="close" onclick="fecharModal('modalCliente')">×</button>
-        </div>
-
-        <input type="hidden" id="clienteId">
-
-        <div class="form-group">
-            <label>Nome</label>
-            <input id="clienteNome" placeholder="Nome completo">
-        </div>
-
-        <div class="form-group">
-            <label>WhatsApp</label>
-            <input id="clienteWhatsapp" placeholder="WhatsApp">
-        </div>
-
-        <div class="form-group">
-            <label>Telefone</label>
-            <input id="clienteTelefone" placeholder="Telefone">
-        </div>
-
-        <div class="form-group">
-            <label>Endereço</label>
-            <input id="clienteEndereco" placeholder="Endereço">
-        </div>
-
-        <div class="modal-footer">
-
-            <button
-                id="btnExcluirCliente"
-                class="btn btn-danger"
-                style="display:none"
-                onclick="excluirClienteModal()">
-                🗑️ Excluir
-            </button>
-
-            <button class="btn btn-secondary" onclick="fecharModal('modalCliente')">
-                Cancelar
-            </button>
-
-            <button class="btn btn-primary" onclick="salvarCliente()">
-                💾 Salvar
-            </button>
-
-        </div>
-
-    </div>
+<input id="clienteWhatsapp">
 
 </div>
 
 
-<!-- ================= MODAL FINANCEIRO ================= -->
+<div class="campo">
 
-<div id="modalFinanceiro" class="modal-bg">
+<label>Cidade / Endereço</label>
 
-    <div class="modal">
-
-        <div class="modal-head">
-            <h3 id="tituloModalFinanceiro">Nova Movimentação</h3>
-            <button class="close" onclick="fecharModal('modalFinanceiro')">×</button>
-        </div>
-
-        <input type="hidden" id="finId">
-
-        <div class="form-group">
-            <label>Descrição</label>
-            <input id="finDescricao" placeholder="Ex.: Serviço, material, combustível...">
-        </div>
-
-        <div class="form-grid">
-
-            <div class="form-group">
-                <label>Tipo</label>
-
-                <select id="finTipo">
-                    <option value="entrada">Entrada</option>
-                    <option value="saida">Saída</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Valor</label>
-                <input id="finValor" type="number" step="0.01" placeholder="0,00">
-            </div>
-
-        </div>
-
-        <div class="modal-footer">
-
-            <button
-                id="btnExcluirFinanceiro"
-                class="btn btn-danger"
-                style="display:none"
-                onclick="excluirFinanceiroModal()">
-                🗑️ Excluir
-            </button>
-
-            <button class="btn btn-secondary" onclick="fecharModal('modalFinanceiro')">
-                Cancelar
-            </button>
-
-            <button class="btn btn-primary" onclick="salvarFinanceiro()">
-                💾 Salvar
-            </button>
-
-        </div>
-
-    </div>
+<input id="clienteCidade">
 
 </div>
 
+</div>
+
+</div>
+
+
+<div class="form-acoes">
+
+<button
+id="btnSalvarCliente"
+class="btn btn-roxo"
+onclick="salvarCliente()">
+Salvar
+</button>
+
+<button
+class="btn btn-cinza"
+onclick="fecharModais()">
+Cancelar
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ================================
+     MODAL AGENDAMENTO
+================================ -->
+
+<div id="modalAgendamento" class="modal">
+
+<div class="modal-box">
+
+<div class="modal-topo">
+
+<h2 id="tituloModalAgendamento">
+Novo agendamento
+</h2>
+
+<button class="fechar" onclick="fecharModais()">
+×
+</button>
+
+</div>
+
+
+<div class="modal-corpo">
+
+<input type="hidden" id="agId">
+
+<div class="form-grid">
+
+<div class="campo">
+
+<label>Cliente</label>
+
+<input id="agNome">
+
+</div>
+
+
+<div class="campo">
+
+<label>WhatsApp</label>
+
+<input id="agWhatsapp">
+
+</div>
+
+
+<div class="campo">
+
+<label>Aparelho</label>
+
+<input id="agAparelho">
+
+</div>
+
+
+<div class="campo">
+
+<label>Data</label>
+
+<input id="agData" type="date">
+
+</div>
+
+
+<div class="campo">
+
+<label>Hora</label>
+
+<input id="agHora" type="time">
+
+</div>
+
+
+<div class="campo">
+
+<label>Status</label>
+
+<select id="agStatus">
+
+<option value="aguardando">Aguardando</option>
+<option value="confirmado">Confirmado</option>
+<option value="concluido">Concluído</option>
+<option value="cancelado">Cancelado</option>
+
+</select>
+
+</div>
+
+</div>
+
+
+<div class="campo" style="margin-top:15px;">
+
+<label>Defeito / serviço</label>
+
+<textarea id="agDefeito"></textarea>
+
+</div>
+
+</div>
+
+
+<div class="form-acoes">
+
+<button
+id="btnSalvarAgendamento"
+class="btn btn-roxo"
+onclick="salvarAgendamento()">
+Salvar agendamento
+</button>
+
+<button
+class="btn btn-cinza"
+onclick="fecharModais()">
+Cancelar
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ================================
+     MODAL FINANCEIRO
+================================ -->
+
+<div id="modalFinanceiro" class="modal">
+
+<div class="modal-box">
+
+<div class="modal-topo">
+
+<h2 id="tituloModalFinanceiro">
+Nova movimentação
+</h2>
+
+<button class="fechar" onclick="fecharModais()">
+×
+</button>
+
+</div>
+
+
+<div class="modal-corpo">
+
+<input type="hidden" id="finId">
+
+<div class="form-grid">
+
+<div class="campo">
+
+<label>Tipo</label>
+
+<select id="finTipo">
+
+<option value="entrada">Entrada</option>
+<option value="saida">Saída</option>
+
+</select>
+
+</div>
+
+
+<div class="campo">
+
+<label>Valor</label>
+
+<input
+id="finValor"
+type="number"
+step="0.01"
+>
+
+</div>
+
+</div>
+
+
+<div class="campo" style="margin-top:15px;">
+
+<label>Descrição</label>
+
+<input id="finDescricao">
+
+</div>
+
+</div>
+
+
+<div class="form-acoes">
+
+<button
+id="btnSalvarFinanceiro"
+class="btn btn-roxo"
+onclick="salvarFinanceiro()">
+Salvar
+</button>
+
+<button
+class="btn btn-cinza"
+onclick="fecharModais()">
+Cancelar
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div id="toast" class="toast"></div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
 
-/* =====================================================
+/* =========================================
    SUPABASE
-===================================================== */
+========================================= */
 
-const SUPABASE_URL = "https://xcncqpjxghujwbyklhel.supabase.co";
+const SUPABASE_URL =
+"https://xcncqpjxghujwbyklhel.supabase.co";
 
-const SUPABASE_KEY = "sb_publishable_xJqknenrg3H20jeGum1bkg_Ir-GLZsl";
+const SUPABASE_KEY =
+"sb_publishable_xJqknenrg3H20jeGum1bkg_Ir-GLZsl";
 
 const supabaseClient =
-    window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
-    );
+window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
 
 
-/* =====================================================
-   VARIÁVEIS
-===================================================== */
+/* =========================================
+   DADOS
+========================================= */
 
+let agendamentos = [];
 let clientes = [];
-let osLista = [];
-let financeiro = [];
+let movimentacoes = [];
 
 let dataCalendario = new Date();
-let dataSelecionada = formatarDataISO(new Date());
 
-let modalAberto = false;
+let diaSelecionado =
+dataCalendario.getFullYear() +
+"-" +
+String(dataCalendario.getMonth()+1).padStart(2,"0") +
+"-" +
+String(dataCalendario.getDate()).padStart(2,"0");
+
+let carregando = false;
 
 
-/* =====================================================
-   UTILITÁRIOS
-===================================================== */
+/* =========================================
+   MENSAGEM
+========================================= */
+
+function mensagem(msg){
+
+    const toast =
+    document.getElementById("toast");
+
+    toast.innerText = msg;
+
+    toast.classList.add("mostrar");
+
+    setTimeout(() => {
+
+        toast.classList.remove("mostrar");
+
+    },3000);
+}
+
+
+/* =========================================
+   FORMATAÇÃO
+========================================= */
 
 function moeda(valor){
 
-    return Number(valor || 0).toLocaleString(
+    return Number(valor || 0)
+    .toLocaleString("pt-BR",{
+        style:"currency",
+        currency:"BRL"
+    });
+}
+
+
+/* =========================================
+   CALENDÁRIO
+========================================= */
+
+function renderizarCalendario(){
+
+    const ano =
+    dataCalendario.getFullYear();
+
+    const mes =
+    dataCalendario.getMonth();
+
+    document.getElementById("mesAno").innerText =
+    dataCalendario.toLocaleDateString(
         "pt-BR",
         {
-            style:"currency",
-            currency:"BRL"
+            month:"long",
+            year:"numeric"
         }
     );
 
-}
+    const primeiroDia =
+    new Date(ano,mes,1).getDay();
 
-function escapeHTML(text){
+    const ultimoDia =
+    new Date(ano,mes+1,0).getDate();
 
-    if(text === null || text === undefined) return "";
-
-    return String(text)
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
-
-}
-
-function formatarDataISO(data){
-
-    const ano = data.getFullYear();
-
-    const mes = String(data.getMonth()+1).padStart(2,"0");
-
-    const dia = String(data.getDate()).padStart(2,"0");
-
-    return `${ano}-${mes}-${dia}`;
-
-}
-
-function dataBR(data){
-
-    if(!data) return "-";
-
-    const partes = String(data).split("-");
-
-    if(partes.length === 3){
-
-        return `${partes[2]}/${partes[1]}/${partes[0]}`;
-
-    }
-
-    return data;
-
-}
-
-function nomeStatus(status){
-
-    const nomes = {
-        aguardando:"Aguardando",
-        confirmado:"Confirmado",
-        concluido:"Concluído",
-        cancelado:"Cancelado"
-    };
-
-    return nomes[status] || status || "Aguardando";
-
-}
-
-function classeStatus(status){
-
-    return "status status-" + (status || "aguardando");
-
-}
-
-
-/* =====================================================
-   NAVEGAÇÃO
-===================================================== */
-
-function mostrarPagina(id, botao){
-
-    document.querySelectorAll(".page")
-        .forEach(p => p.classList.remove("active"));
-
-    document.getElementById(id)
-        .classList.add("active");
-
-    document.querySelectorAll(".nav-btn")
-        .forEach(b => b.classList.remove("active"));
-
-    if(botao){
-
-        botao.classList.add("active");
-
-    }
-
-}
-
-
-/* =====================================================
-   MODAIS
-===================================================== */
-
-function abrirModal(id){
-
-    document.getElementById(id)
-        .classList.add("show");
-
-    modalAberto = true;
-
-}
-
-function fecharModal(id){
-
-    document.getElementById(id)
-        .classList.remove("show");
-
-    modalAberto =
-        document.querySelector(".modal-bg.show") !== null;
-
-}
-
-
-/* =====================================================
-   CARREGAMENTO
-===================================================== */
-
-async function carregarTudo(){
-
-    if(modalAberto) return;
-
-    await Promise.all([
-        carregarClientes(),
-        carregarOS(),
-        carregarFinanceiro()
-    ]);
-
-    atualizarResumo();
-    renderCalendario();
-    renderOSDia();
-    renderOSCards();
-    renderFinanceiro();
-    renderClientes();
-
-}
-
-
-/* =====================================================
-   CLIENTES
-===================================================== */
-
-async function carregarClientes(){
-
-    const {data,error} =
-        await supabaseClient
-        .from("clientes")
-        .select("*")
-        .order("id",{ascending:false});
-
-    if(error){
-
-        console.error(error);
-
-        return;
-
-    }
-
-    clientes = data || [];
-
-}
-
-
-function renderClientes(){
-
-    const tbody =
-        document.getElementById("clientesTabela");
-
-    if(!clientes.length){
-
-        tbody.innerHTML =
-            `<tr>
-                <td colspan="4" class="empty">
-                    Nenhum cliente cadastrado.
-                </td>
-            </tr>`;
-
-        return;
-
-    }
-
-    tbody.innerHTML = clientes.map(c => `
-
-        <tr>
-
-            <td>
-                <strong>${escapeHTML(c.nome || "-")}</strong>
-            </td>
-
-            <td>${escapeHTML(c.whatsapp || "-")}</td>
-
-            <td>${escapeHTML(c.telefone || "-")}</td>
-
-            <td>
-
-                <div class="table-actions">
-
-                    <button
-                        class="icon-btn edit"
-                        onclick="editarCliente('${c.id}')">
-                        ✏️
-                    </button>
-
-                    <button
-                        class="icon-btn delete"
-                        onclick="excluirCliente('${c.id}')">
-                        🗑️
-                    </button>
-
-                </div>
-
-            </td>
-
-        </tr>
-
-    `).join("");
-
-}
-
-
-function abrirModalCliente(cliente=null){
-
-    document.getElementById("clienteId").value =
-        cliente?.id || "";
-
-    document.getElementById("clienteNome").value =
-        cliente?.nome || "";
-
-    document.getElementById("clienteWhatsapp").value =
-        cliente?.whatsapp || "";
-
-    document.getElementById("clienteTelefone").value =
-        cliente?.telefone || "";
-
-    document.getElementById("clienteEndereco").value =
-        cliente?.endereco || "";
-
-    const editando = !!cliente;
-
-    document.getElementById("tituloModalCliente")
-        .textContent =
-        editando ? "Editar Cliente" : "Novo Cliente";
-
-    document.getElementById("btnExcluirCliente")
-        .style.display =
-        editando ? "block" : "none";
-
-    abrirModal("modalCliente");
-
-}
-
-
-function editarCliente(id){
-
-    const cliente =
-        clientes.find(c => String(c.id) === String(id));
-
-    if(cliente){
-
-        abrirModalCliente(cliente);
-
-    }
-
-}
-
-
-async function salvarCliente(){
-
-    const id =
-        document.getElementById("clienteId").value;
-
-    const dados = {
-
-        nome:
-            document.getElementById("clienteNome").value.trim(),
-
-        whatsapp:
-            document.getElementById("clienteWhatsapp").value.trim(),
-
-        telefone:
-            document.getElementById("clienteTelefone").value.trim(),
-
-        endereco:
-            document.getElementById("clienteEndereco").value.trim()
-
-    };
-
-    if(!dados.nome){
-
-        alert("Informe o nome do cliente.");
-
-        return;
-
-    }
-
-    let resultado;
-
-    if(id){
-
-        resultado =
-            await supabaseClient
-            .from("clientes")
-            .update(dados)
-            .eq("id",id);
-
-    }else{
-
-        resultado =
-            await supabaseClient
-            .from("clientes")
-            .insert([dados]);
-
-    }
-
-    if(resultado.error){
-
-        alert("Erro ao salvar cliente.");
-
-        console.error(resultado.error);
-
-        return;
-
-    }
-
-    fecharModal("modalCliente");
-
-    await carregarTudo();
-
-}
-
-
-async function excluirCliente(id){
-
-    if(!confirm("Excluir este cliente?")) return;
-
-    const {error} =
-        await supabaseClient
-        .from("clientes")
-        .delete()
-        .eq("id",id);
-
-    if(error){
-
-        alert("Erro ao excluir cliente.");
-
-        console.error(error);
-
-        return;
-
-    }
-
-    await carregarTudo();
-
-}
-
-
-async function excluirClienteModal(){
-
-    const id =
-        document.getElementById("clienteId").value;
-
-    if(id){
-
-        await excluirCliente(id);
-
-        fecharModal("modalCliente");
-
-    }
-
-}
-
-
-/* =====================================================
-   ORDENS DE SERVIÇO
-===================================================== */
-
-async function carregarOS(){
-
-    const {data,error} =
-        await supabaseClient
-        .from("agendamentos")
-        .select("*")
-        .order("data",{ascending:true})
-        .order("hora",{ascending:true});
-
-    if(error){
-
-        console.error(error);
-
-        return;
-
-    }
-
-    osLista = data || [];
-
-}
-
-
-function atualizarResumo(){
-
-    document.getElementById("totalClientes")
-        .textContent = clientes.length;
-
-    document.getElementById("totalOS")
-        .textContent = osLista.length;
-
-    const pendentes =
-        osLista.filter(o =>
-            o.status === "aguardando" ||
-            o.status === "confirmado"
-        ).length;
-
-    document.getElementById("totalPendentes")
-        .textContent = pendentes;
-
-    const entradas =
-        financeiro
-        .filter(f => f.tipo === "entrada")
-        .reduce((s,f)=>s + Number(f.valor || 0),0);
-
-    const saidas =
-        financeiro
-        .filter(f => f.tipo === "saida")
-        .reduce((s,f)=>s + Number(f.valor || 0),0);
-
-    document.getElementById("saldoHome")
-        .textContent = moeda(entradas-saidas);
-
-}
-
-
-function abrirModalOS(os=null){
-
-    document.getElementById("osId").value =
-        os?.id || "";
-
-    document.getElementById("osNome").value =
-        os?.nome || "";
-
-    document.getElementById("osWhatsapp").value =
-        os?.whatsapp || "";
-
-    document.getElementById("osAparelho").value =
-        os?.aparelho || "";
-
-    document.getElementById("osDefeito").value =
-        os?.defeito || "";
-
-    document.getElementById("osData").value =
-        os?.data || formatarDataISO(new Date());
-
-    document.getElementById("osHora").value =
-        os?.hora || "";
-
-    document.getElementById("osStatus").value =
-        os?.status || "aguardando";
-
-    const editando = !!os;
-
-    document.getElementById("tituloModalOS")
-        .textContent =
-        editando
-        ? "Editar Ordem de Serviço"
-        : "Nova Ordem de Serviço";
-
-    document.getElementById("btnExcluirOSModal")
-        .style.display =
-        editando ? "block" : "none";
-
-    abrirModal("modalOS");
-
-}
-
-
-async function salvarOS(){
-
-    const id =
-        document.getElementById("osId").value;
-
-    const dados = {
-
-        nome:
-            document.getElementById("osNome").value.trim(),
-
-        whatsapp:
-            document.getElementById("osWhatsapp").value.trim(),
-
-        aparelho:
-            document.getElementById("osAparelho").value.trim(),
-
-        defeito:
-            document.getElementById("osDefeito").value.trim(),
-
-        data:
-            document.getElementById("osData").value,
-
-        hora:
-            document.getElementById("osHora").value,
-
-        status:
-            document.getElementById("osStatus").value
-
-    };
-
-    if(!dados.nome){
-
-        alert("Informe o nome do cliente.");
-
-        return;
-
-    }
-
-    if(!dados.data){
-
-        alert("Informe a data.");
-
-        return;
-
-    }
-
-    let resultado;
-
-    if(id){
-
-        resultado =
-            await supabaseClient
-            .from("agendamentos")
-            .update(dados)
-            .eq("id",id);
-
-    }else{
-
-        resultado =
-            await supabaseClient
-            .from("agendamentos")
-            .insert([dados]);
-
-    }
-
-    if(resultado.error){
-
-        alert("Erro ao salvar OS.");
-
-        console.error(resultado.error);
-
-        return;
-
-    }
-
-    fecharModal("modalOS");
-
-    await carregarTudo();
-
-}
-
-
-async function excluirOS(id){
-
-    if(!confirm("Excluir esta Ordem de Serviço?")) return;
-
-    const {error} =
-        await supabaseClient
-        .from("agendamentos")
-        .delete()
-        .eq("id",id);
-
-    if(error){
-
-        alert("Erro ao excluir OS.");
-
-        console.error(error);
-
-        return;
-
-    }
-
-    await carregarTudo();
-
-}
-
-
-async function excluirOSModal(){
-
-    const id =
-        document.getElementById("osId").value;
-
-    if(id){
-
-        await excluirOS(id);
-
-        fecharModal("modalOS");
-
-    }
-
-}
-
-
-/* =====================================================
-   CARDS DE OS
-===================================================== */
-
-function renderOSCards(){
-
-    const grid =
-        document.getElementById("osGrid");
-
-    const busca =
-        (document.getElementById("buscaOS")?.value || "")
-        .toLowerCase()
-        .trim();
-
-    const filtro =
-        document.getElementById("filtroStatus")?.value || "";
-
-    let lista =
-        [...osLista];
-
-    if(filtro){
-
-        lista =
-            lista.filter(o =>
-                (o.status || "aguardando") === filtro
-            );
-
-    }
-
-    if(busca){
-
-        lista =
-            lista.filter(o => {
-
-                const texto = [
-
-                    o.nome,
-                    o.aparelho,
-                    o.defeito,
-                    o.whatsapp
-
-                ].join(" ").toLowerCase();
-
-                return texto.includes(busca);
-
-            });
-
-    }
-
-    if(!lista.length){
-
-        grid.innerHTML =
-            `<div class="empty" style="grid-column:1/-1">
-                Nenhuma OS encontrada.
-            </div>`;
-
-        return;
-
-    }
-
-    grid.innerHTML = lista.map(os => `
-
-        <div class="os-card">
-
-            <div class="os-card-top">
-
-                <div>
-
-                    <div class="os-number">
-                        OS #${escapeHTML(os.id)}
-                    </div>
-
-                    <h3>
-                        ${escapeHTML(os.nome || "Sem nome")}
-                    </h3>
-
-                </div>
-
-                <span class="${classeStatus(os.status)}">
-                    ${nomeStatus(os.status)}
-                </span>
-
-            </div>
-
-            <div class="os-info">
-
-                <div>
-                    🔧
-                    <span>${escapeHTML(os.aparelho || "-")}</span>
-                </div>
-
-                <div>
-                    📱
-                    <span>${escapeHTML(os.whatsapp || "-")}</span>
-                </div>
-
-                <div>
-                    📅
-                    <span>
-                        ${dataBR(os.data)}
-                        ${os.hora ? " • " + escapeHTML(os.hora) : ""}
-                    </span>
-                </div>
-
-            </div>
-
-            <div class="os-defeito">
-                ${escapeHTML(os.defeito || "Sem descrição")}
-            </div>
-
-            <div class="os-card-bottom">
-
-                <div class="os-data">
-                    ${os.data ? dataBR(os.data) : ""}
-                </div>
-
-                <div class="os-card-actions">
-
-                    <button
-                        class="icon-btn"
-                        title="Detalhes"
-                        onclick="verDetalhesOS('${os.id}')">
-                        👁️
-                    </button>
-
-                    <button
-                        class="icon-btn edit"
-                        title="Editar"
-                        onclick="editarOS('${os.id}')">
-                        ✏️
-                    </button>
-
-                    <button
-                        class="icon-btn delete"
-                        title="Excluir"
-                        onclick="excluirOS('${os.id}')">
-                        🗑️
-                    </button>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    `).join("");
-
-}
-
-
-function editarOS(id){
-
-    const os =
-        osLista.find(o => String(o.id) === String(id));
-
-    if(os){
-
-        abrirModalOS(os);
-
-    }
-
-}
-
-
-function verDetalhesOS(id){
-
-    const os =
-        osLista.find(o => String(o.id) === String(id));
-
-    if(!os) return;
-
-    document.getElementById("detalhesConteudo").innerHTML = `
-
-        <div class="detalhe">
-            <small>Cliente</small>
-            <strong>${escapeHTML(os.nome || "-")}</strong>
-        </div>
-
-        <div class="detalhe">
-            <small>WhatsApp</small>
-            <strong>${escapeHTML(os.whatsapp || "-")}</strong>
-        </div>
-
-        <div class="detalhe">
-            <small>Aparelho</small>
-            <strong>${escapeHTML(os.aparelho || "-")}</strong>
-        </div>
-
-        <div class="detalhe">
-            <small>Data</small>
-            <strong>
-                ${dataBR(os.data)}
-                ${os.hora ? " às " + escapeHTML(os.hora) : ""}
-            </strong>
-        </div>
-
-        <div class="detalhe">
-            <small>Status</small>
-            <strong class="${classeStatus(os.status)}">
-                ${nomeStatus(os.status)}
-            </strong>
-        </div>
-
-        <div class="detalhe">
-            <small>Defeito / Serviço</small>
-            <strong>${escapeHTML(os.defeito || "-")}</strong>
-        </div>
-
-    `;
-
-    document.getElementById("btnEditarDetalhes")
-        .onclick = function(){
-
-            fecharModal("modalDetalhes");
-
-            abrirModalOS(os);
-
-        };
-
-    abrirModal("modalDetalhes");
-
-}
-
-
-/* =====================================================
-   CALENDÁRIO
-===================================================== */
-
-function renderCalendario(){
-
-    const calendario =
-        document.getElementById("calendar");
-
-    const ano =
-        dataCalendario.getFullYear();
-
-    const mes =
-        dataCalendario.getMonth();
-
-    const primeiro =
-        new Date(ano,mes,1);
-
-    const ultimo =
-        new Date(ano,mes+1,0);
-
-    const inicio =
-        primeiro.getDay();
-
-    const dias =
-        ultimo.getDate();
-
-    const hoje =
-        formatarDataISO(new Date());
-
-    const nomesMeses = [
-
-        "Janeiro",
-        "Fevereiro",
-        "Março",
-        "Abril",
-        "Maio",
-        "Junho",
-        "Julho",
-        "Agosto",
-        "Setembro",
-        "Outubro",
-        "Novembro",
-        "Dezembro"
-
-    ];
-
-    document.getElementById("mesAno")
-        .textContent =
-        `${nomesMeses[mes]} ${ano}`;
-
-    let html = "";
-
-    for(let i=0;i<inicio;i++){
-
-        html += `<div class="dia outro"></div>`;
-
-    }
-
-    for(let d=1;d<=dias;d++){
-
-        const data =
-            formatarDataISO(new Date(ano,mes,d));
-
-        const temOS =
-            osLista.some(o => o.data === data);
-
-        const classes = [
-
-            "dia",
-
-            data === hoje ? "hoje" : "",
-
-            data === dataSelecionada ? "selecionado" : ""
-
-        ].join(" ");
-
-        html += `
-
-            <div
-                class="${classes}"
-                onclick="selecionarDia('${data}')">
-
-                <div class="numero">
-                    ${d}
-                </div>
-
-                ${
-                    temOS
-                    ? `<div class="bolinha-agendamento"></div>`
-                    : ""
-                }
-
-            </div>
-
-        `;
-
-    }
-
-    calendario.innerHTML = html;
-
-}
-
-
-function selecionarDia(data){
-
-    dataSelecionada = data;
-
-    renderCalendario();
-    renderOSDia();
-
-}
-
-
-function renderOSDia(){
+    const diasMesAnterior =
+    new Date(ano,mes,0).getDate();
 
     const container =
-        document.getElementById("osDia");
+    document.getElementById("diasCalendario");
 
-    document.getElementById("tituloDia")
-        .textContent =
-        `OS de ${dataBR(dataSelecionada)}`;
+    container.innerHTML = "";
 
-    const lista =
-        osLista.filter(o =>
-            o.data === dataSelecionada
+
+    for(let i=primeiroDia-1;i>=0;i--){
+
+        container.appendChild(
+            criarDia(
+                diasMesAnterior-i,
+                true,
+                new Date(
+                    ano,
+                    mes-1,
+                    diasMesAnterior-i
+                )
+            )
         );
-
-    if(!lista.length){
-
-        container.innerHTML =
-            `<div class="empty">
-                Nenhuma OS agendada para este dia.
-            </div>`;
-
-        return;
 
     }
 
-    container.innerHTML = lista.map(os => `
 
-        <div class="os-mini">
+    for(let d=1;d<=ultimoDia;d++){
 
-            <div class="os-mini-info">
+        container.appendChild(
+            criarDia(
+                d,
+                false,
+                new Date(ano,mes,d)
+            )
+        );
 
-                <strong>
-                    ${escapeHTML(os.nome || "-")}
-                </strong>
+    }
 
-                <span>
-                    ${escapeHTML(os.aparelho || "-")}
-                    ${os.hora ? " • " + escapeHTML(os.hora) : ""}
-                    •
-                    ${nomeStatus(os.status)}
-                </span>
 
-            </div>
+    const total =
+    container.children.length;
 
-            <div class="os-actions">
+    const faltam =
+    (7-(total%7))%7;
 
-                <button
-                    class="icon-btn edit"
-                    onclick="editarOS('${os.id}')">
-                    ✏️
-                </button>
 
-                <button
-                    class="icon-btn delete"
-                    onclick="excluirOS('${os.id}')">
-                    🗑️
-                </button>
+    for(let d=1;d<=faltam;d++){
 
-            </div>
+        container.appendChild(
+            criarDia(
+                d,
+                true,
+                new Date(ano,mes+1,d)
+            )
+        );
 
-        </div>
+    }
 
-    `).join("");
+}
 
+
+function criarDia(numero,outroMes,data){
+
+    const div =
+    document.createElement("div");
+
+    div.className = "dia";
+
+
+    const dataISO =
+    data.getFullYear() +
+    "-" +
+    String(data.getMonth()+1).padStart(2,"0") +
+    "-" +
+    String(data.getDate()).padStart(2,"0");
+
+
+    if(outroMes)
+        div.classList.add("outro-mes");
+
+
+    const hoje = new Date();
+
+    const hojeISO =
+    hoje.getFullYear() +
+    "-" +
+    String(hoje.getMonth()+1).padStart(2,"0") +
+    "-" +
+    String(hoje.getDate()).padStart(2,"0");
+
+
+    if(dataISO === hojeISO)
+        div.classList.add("hoje");
+
+
+    if(dataISO === diaSelecionado)
+        div.classList.add("selecionado");
+
+
+    div.innerHTML =
+    `<div class="numero">${numero}</div>`;
+
+
+    const temAgendamento =
+    agendamentos.some(
+        item => item.data === dataISO
+    );
+
+
+    if(temAgendamento){
+
+        const bolinha =
+        document.createElement("div");
+
+        bolinha.className =
+        "bolinha-agendamento";
+
+        div.appendChild(bolinha);
+
+    }
+
+
+    div.onclick = () => {
+
+        diaSelecionado = dataISO;
+
+        mostrarAgendamentosDoDia();
+
+        renderizarCalendario();
+
+    };
+
+
+    return div;
 }
 
 
@@ -2388,7 +1469,7 @@ function mesAnterior(){
         dataCalendario.getMonth()-1
     );
 
-    renderCalendario();
+    renderizarCalendario();
 
 }
 
@@ -2399,199 +1480,867 @@ function mesProximo(){
         dataCalendario.getMonth()+1
     );
 
-    renderCalendario();
+    renderizarCalendario();
 
 }
 
 
-function irHoje(){
+function irParaHoje(){
 
-    const hoje = new Date();
+    dataCalendario = new Date();
 
-    dataCalendario =
-        new Date(
-            hoje.getFullYear(),
-            hoje.getMonth(),
-            1
+    diaSelecionado =
+    dataCalendario.getFullYear() +
+    "-" +
+    String(dataCalendario.getMonth()+1).padStart(2,"0") +
+    "-" +
+    String(dataCalendario.getDate()).padStart(2,"0");
+
+    renderizarCalendario();
+
+    mostrarAgendamentosDoDia();
+
+}
+
+
+/* =========================================
+   STATUS
+========================================= */
+
+function classeStatus(status){
+
+    switch(
+        (status || "").toLowerCase()
+    ){
+
+        case "confirmado":
+            return "confirmado";
+
+        case "concluido":
+            return "concluido";
+
+        case "cancelado":
+            return "cancelado";
+
+        default:
+            return "aguardando";
+    }
+
+}
+
+
+/* =========================================
+   AGENDAMENTOS DO DIA
+========================================= */
+
+function mostrarAgendamentosDoDia(){
+
+    const lista =
+    document.getElementById("listaDia");
+
+    const titulo =
+    document.getElementById("tituloDia");
+
+
+    const eventos =
+    agendamentos
+    .filter(
+        item => item.data === diaSelecionado
+    )
+    .sort(
+        (a,b) =>
+        (a.hora || "")
+        .localeCompare(b.hora || "")
+    );
+
+
+    const data =
+    new Date(
+        diaSelecionado + "T12:00:00"
+    );
+
+
+    titulo.innerText =
+    "Agendamentos de " +
+    data.toLocaleDateString("pt-BR");
+
+
+    lista.innerHTML = "";
+
+
+    if(!eventos.length){
+
+        lista.innerHTML = `
+        <div class="sem-agendamento">
+            Nenhum agendamento para este dia.
+        </div>`;
+
+        return;
+    }
+
+
+    eventos.forEach(item => {
+
+        const div =
+        document.createElement("div");
+
+        div.className =
+        "agendamento-item";
+
+
+        div.innerHTML = `
+
+            <strong>
+                ⏰ ${item.hora || "--:--"} —
+                ${item.nome || "Cliente"}
+            </strong>
+
+            <div class="agendamento-info">
+                📱 ${item.whatsapp || "Sem WhatsApp"}
+            </div>
+
+            <div class="agendamento-info">
+                🔧 ${item.aparelho || "Serviço"}
+            </div>
+
+            <div class="agendamento-info">
+                📝 ${item.defeito || ""}
+            </div>
+
+            <div style="margin-top:8px;">
+
+                <span class="status ${classeStatus(item.status)}">
+                    ${item.status || "aguardando"}
+                </span>
+
+            </div>
+
+            <div class="acoes-os">
+
+                <button
+                    class="btn btn-editar"
+                    onclick="editarAgendamento('${item.id}')">
+                    ✏️ Editar
+                </button>
+
+                <button
+                    class="btn btn-vermelho"
+                    onclick="excluirAgendamento('${item.id}')">
+                    🗑️ Excluir
+                </button>
+
+            </div>
+
+        `;
+
+        lista.appendChild(div);
+
+    });
+
+}
+
+
+/* =========================================
+   NAVEGAÇÃO
+========================================= */
+
+function abrirTela(id,botao){
+
+    document.querySelectorAll(".tela")
+    .forEach(
+        tela =>
+        tela.classList.remove("ativa")
+    );
+
+
+    document
+    .getElementById(id)
+    .classList.add("ativa");
+
+
+    document.querySelectorAll("nav button")
+    .forEach(
+        btn =>
+        btn.classList.remove("active")
+    );
+
+
+    botao.classList.add("active");
+
+}
+
+
+/* =========================================
+   MODAIS
+========================================= */
+
+function fecharModais(){
+
+    document.querySelectorAll(".modal")
+    .forEach(
+        modal =>
+        modal.classList.remove("aberto")
+    );
+
+}
+
+
+/* =========================================
+   CLIENTE
+========================================= */
+
+function abrirModalCliente(){
+
+    document
+    .getElementById("modalCliente")
+    .classList.add("aberto");
+
+
+    document
+    .getElementById("tituloModalCliente")
+    .innerText =
+    "Novo cliente";
+
+
+    document
+    .getElementById("btnSalvarCliente")
+    .innerText =
+    "Salvar";
+
+
+    document.getElementById("clienteId").value = "";
+    document.getElementById("clienteNome").value = "";
+    document.getElementById("clienteWhatsapp").value = "";
+    document.getElementById("clienteCidade").value = "";
+
+}
+
+
+function editarCliente(id){
+
+    const cliente =
+    clientes.find(
+        c =>
+        String(c.id) === String(id)
+    );
+
+
+    if(!cliente){
+
+        mensagem("Cliente não encontrado.");
+
+        return;
+    }
+
+
+    document
+    .getElementById("modalCliente")
+    .classList.add("aberto");
+
+
+    document
+    .getElementById("tituloModalCliente")
+    .innerText =
+    "Editar cliente";
+
+
+    document
+    .getElementById("btnSalvarCliente")
+    .innerText =
+    "💾 Salvar alterações";
+
+
+    document.getElementById("clienteId").value =
+    cliente.id;
+
+    document.getElementById("clienteNome").value =
+    cliente.nome || "";
+
+    document.getElementById("clienteWhatsapp").value =
+    cliente.whatsapp || "";
+
+    document.getElementById("clienteCidade").value =
+    cliente.cidade || "";
+
+}
+
+
+async function salvarCliente(){
+
+    const id =
+    document
+    .getElementById("clienteId")
+    .value;
+
+
+    const nome =
+    document
+    .getElementById("clienteNome")
+    .value
+    .trim();
+
+
+    if(!nome){
+
+        mensagem(
+            "Digite o nome do cliente."
         );
 
-    dataSelecionada =
-        formatarDataISO(hoje);
+        return;
+    }
 
-    renderCalendario();
-    renderOSDia();
+
+    const dados = {
+
+        nome: nome,
+
+        whatsapp:
+        document
+        .getElementById("clienteWhatsapp")
+        .value,
+
+        cidade:
+        document
+        .getElementById("clienteCidade")
+        .value
+
+    };
+
+
+    let resultado;
+
+
+    if(id){
+
+        resultado =
+        await supabaseClient
+        .from("clientes")
+        .update(dados)
+        .eq("id",id);
+
+    }else{
+
+        dados.data =
+        new Date()
+        .toLocaleDateString("pt-BR");
+
+        resultado =
+        await supabaseClient
+        .from("clientes")
+        .insert([dados]);
+
+    }
+
+
+    if(resultado.error){
+
+        console.error(resultado.error);
+
+        mensagem(
+            id
+            ? "Erro ao atualizar cliente."
+            : "Erro ao salvar cliente."
+        );
+
+        return;
+    }
+
+
+    fecharModais();
+
+
+    mensagem(
+        id
+        ? "✅ Cliente atualizado!"
+        : "✅ Cliente cadastrado!"
+    );
+
+
+    await carregarTudo();
 
 }
 
 
-/* =====================================================
-   FINANCEIRO
-===================================================== */
+async function excluirCliente(id){
 
-async function carregarFinanceiro(){
+    const cliente =
+    clientes.find(
+        c =>
+        String(c.id) === String(id)
+    );
 
-    const {data,error} =
-        await supabaseClient
-        .from("movimentacoes")
-        .select("*")
-        .order("id",{ascending:false});
+
+    if(!cliente){
+
+        mensagem("Cliente não encontrado.");
+
+        return;
+    }
+
+
+    const confirmar =
+    confirm(
+        "⚠️ Tem certeza que deseja excluir este cliente?\n\n" +
+        "Cliente: " +
+        (cliente.nome || "Não informado")
+    );
+
+
+    if(!confirmar)
+        return;
+
+
+    const {error} =
+    await supabaseClient
+    .from("clientes")
+    .delete()
+    .eq("id",id);
+
 
     if(error){
 
         console.error(error);
 
-        return;
+        mensagem(
+            "Erro ao excluir cliente."
+        );
 
+        return;
     }
 
-    financeiro = data || [];
+
+    mensagem(
+        "🗑️ Cliente excluído com sucesso!"
+    );
+
+
+    await carregarTudo();
 
 }
 
 
-function renderFinanceiro(){
+/* =========================================
+   FILTRAR CLIENTES
+========================================= */
 
-    const entradas =
-        financeiro
-        .filter(f => f.tipo === "entrada")
-        .reduce(
-            (s,f) =>
-            s + Number(f.valor || 0),
-            0
-        );
+function filtrarClientes(){
 
-    const saidas =
-        financeiro
-        .filter(f => f.tipo === "saida")
-        .reduce(
-            (s,f) =>
-            s + Number(f.valor || 0),
-            0
-        );
+    const busca =
+    document
+    .getElementById("buscarCliente")
+    .value
+    .toLowerCase();
 
-    const saldo =
-        entradas - saidas;
 
-    document.getElementById("totalEntradas")
-        .textContent = moeda(entradas);
+    const tabela =
+    document
+    .getElementById("tabelaClientes");
 
-    document.getElementById("totalSaidas")
-        .textContent = moeda(saidas);
 
-    document.getElementById("totalSaldo")
-        .textContent = moeda(saldo);
+    tabela.innerHTML = "";
 
-    const tbody =
-        document.getElementById("financeTabela");
 
-    if(!financeiro.length){
+    clientes
+    .filter(
+        c =>
+        (c.nome || "")
+        .toLowerCase()
+        .includes(busca)
+    )
+    .forEach(cliente => {
 
-        tbody.innerHTML =
-            `<tr>
-                <td colspan="5" class="empty">
-                    Nenhuma movimentação cadastrada.
-                </td>
-            </tr>`;
+        const tr =
+        document.createElement("tr");
 
-        return;
 
-    }
+        tr.innerHTML = `
 
-    tbody.innerHTML =
-        financeiro.map(f => `
+            <td>${cliente.nome || "-"}</td>
 
-            <tr>
+            <td>${cliente.whatsapp || "-"}</td>
 
-                <td>
-                    ${escapeHTML(f.descricao || "-")}
-                </td>
+            <td>${cliente.cidade || "-"}</td>
 
-                <td>
-                    ${f.tipo === "entrada"
-                        ? "🟢 Entrada"
-                        : "🔴 Saída"}
-                </td>
+            <td>${cliente.data || "-"}</td>
 
-                <td>
-                    <strong>
-                        ${moeda(f.valor)}
-                    </strong>
-                </td>
+            <td>
 
-                <td>
-                    ${escapeHTML(f.data || "-")}
-                </td>
+                <div class="acoes-os">
 
-                <td>
+                    <button
+                        class="btn btn-editar"
+                        onclick="editarCliente('${cliente.id}')">
+                        ✏️ Editar
+                    </button>
 
-                    <div class="table-actions">
+                    <button
+                        class="btn btn-vermelho"
+                        onclick="excluirCliente('${cliente.id}')">
+                        🗑️ Excluir
+                    </button>
 
-                        <button
-                            class="icon-btn edit"
-                            onclick="editarFinanceiro('${f.id}')">
-                            ✏️
-                        </button>
+                </div>
 
-                        <button
-                            class="icon-btn delete"
-                            onclick="excluirFinanceiro('${f.id}')">
-                            🗑️
-                        </button>
+            </td>
 
-                    </div>
+        `;
 
-                </td>
 
-            </tr>
+        tabela.appendChild(tr);
 
-        `).join("");
+    });
 
 }
 
 
-function abrirModalFinanceiro(fin=null){
+/* =========================================
+   AGENDAMENTO
+========================================= */
 
-    document.getElementById("finId").value =
-        fin?.id || "";
+function abrirModalAgendamento(){
 
-    document.getElementById("finDescricao").value =
-        fin?.descricao || "";
+    document
+    .getElementById("modalAgendamento")
+    .classList.add("aberto");
 
-    document.getElementById("finTipo").value =
-        fin?.tipo || "entrada";
 
-    document.getElementById("finValor").value =
-        fin?.valor || "";
+    document
+    .getElementById("tituloModalAgendamento")
+    .innerText =
+    "Novo agendamento";
 
-    const editando = !!fin;
 
-    document.getElementById("tituloModalFinanceiro")
-        .textContent =
-        editando
-        ? "Editar Movimentação"
-        : "Nova Movimentação";
+    document
+    .getElementById("btnSalvarAgendamento")
+    .innerText =
+    "Salvar agendamento";
 
-    document.getElementById("btnExcluirFinanceiro")
-        .style.display =
-        editando ? "block" : "none";
 
-    abrirModal("modalFinanceiro");
+    document.getElementById("agId").value = "";
+    document.getElementById("agNome").value = "";
+    document.getElementById("agWhatsapp").value = "";
+    document.getElementById("agAparelho").value = "";
+    document.getElementById("agHora").value = "";
+    document.getElementById("agDefeito").value = "";
+    document.getElementById("agStatus").value = "aguardando";
+    document.getElementById("agData").value = diaSelecionado;
+
+}
+
+
+function editarAgendamento(id){
+
+    const item =
+    agendamentos.find(
+        ag =>
+        String(ag.id) === String(id)
+    );
+
+
+    if(!item){
+
+        mensagem("OS não encontrada.");
+
+        return;
+    }
+
+
+    document
+    .getElementById("modalAgendamento")
+    .classList.add("aberto");
+
+
+    document
+    .getElementById("tituloModalAgendamento")
+    .innerText =
+    "Editar OS";
+
+
+    document
+    .getElementById("btnSalvarAgendamento")
+    .innerText =
+    "💾 Salvar alterações";
+
+
+    document.getElementById("agId").value =
+    item.id;
+
+    document.getElementById("agNome").value =
+    item.nome || "";
+
+    document.getElementById("agWhatsapp").value =
+    item.whatsapp || "";
+
+    document.getElementById("agAparelho").value =
+    item.aparelho || "";
+
+    document.getElementById("agData").value =
+    item.data || "";
+
+    document.getElementById("agHora").value =
+    item.hora || "";
+
+    document.getElementById("agDefeito").value =
+    item.defeito || "";
+
+    document.getElementById("agStatus").value =
+    item.status || "aguardando";
+
+}
+
+
+async function salvarAgendamento(){
+
+    const id =
+    document
+    .getElementById("agId")
+    .value;
+
+
+    const nome =
+    document
+    .getElementById("agNome")
+    .value
+    .trim();
+
+
+    if(!nome){
+
+        mensagem(
+            "Preencha o nome do cliente."
+        );
+
+        return;
+    }
+
+
+    const dados = {
+
+        nome: nome,
+
+        whatsapp:
+        document
+        .getElementById("agWhatsapp")
+        .value,
+
+        aparelho:
+        document
+        .getElementById("agAparelho")
+        .value,
+
+        data:
+        document
+        .getElementById("agData")
+        .value || null,
+
+        hora:
+        document
+        .getElementById("agHora")
+        .value || null,
+
+        defeito:
+        document
+        .getElementById("agDefeito")
+        .value,
+
+        status:
+        document
+        .getElementById("agStatus")
+        .value
+
+    };
+
+
+    let resultado;
+
+
+    if(id){
+
+        resultado =
+        await supabaseClient
+        .from("agendamentos")
+        .update(dados)
+        .eq("id",id);
+
+    }else{
+
+        resultado =
+        await supabaseClient
+        .from("agendamentos")
+        .insert([dados]);
+
+    }
+
+
+    if(resultado.error){
+
+        console.error(resultado.error);
+
+        mensagem(
+            id
+            ? "Erro ao atualizar OS."
+            : "Erro ao salvar agendamento."
+        );
+
+        return;
+    }
+
+
+    fecharModais();
+
+
+    mensagem(
+        id
+        ? "✅ OS atualizada com sucesso!"
+        : "✅ Agendamento salvo!"
+    );
+
+
+    await carregarTudo();
+
+}
+
+
+async function excluirAgendamento(id){
+
+    const item =
+    agendamentos.find(
+        ag =>
+        String(ag.id) === String(id)
+    );
+
+
+    if(!item){
+
+        mensagem("OS não encontrada.");
+
+        return;
+    }
+
+
+    const confirmar =
+    confirm(
+        "⚠️ Tem certeza que deseja excluir esta OS?\n\n" +
+        "Cliente: " +
+        (item.nome || "Não informado") +
+        "\nData: " +
+        (item.data || "Não informada") +
+        "\nHora: " +
+        (item.hora || "Não informada")
+    );
+
+
+    if(!confirmar)
+        return;
+
+
+    const {error} =
+    await supabaseClient
+    .from("agendamentos")
+    .delete()
+    .eq("id",id);
+
+
+    if(error){
+
+        console.error(error);
+
+        mensagem(
+            "Erro ao excluir a OS."
+        );
+
+        return;
+    }
+
+
+    mensagem(
+        "🗑️ OS excluída com sucesso!"
+    );
+
+
+    await carregarTudo();
+
+}
+
+
+/* =========================================
+   FINANCEIRO
+========================================= */
+
+function abrirModalFinanceiro(){
+
+    document
+    .getElementById("modalFinanceiro")
+    .classList.add("aberto");
+
+
+    document
+    .getElementById("tituloModalFinanceiro")
+    .innerText =
+    "Nova movimentação";
+
+
+    document
+    .getElementById("btnSalvarFinanceiro")
+    .innerText =
+    "Salvar";
+
+
+    document.getElementById("finId").value = "";
+    document.getElementById("finTipo").value = "entrada";
+    document.getElementById("finValor").value = "";
+    document.getElementById("finDescricao").value = "";
 
 }
 
 
 function editarFinanceiro(id){
 
-    const fin =
-        financeiro.find(f =>
-            String(f.id) === String(id)
+    const item =
+    movimentacoes.find(
+        m =>
+        String(m.id) === String(id)
+    );
+
+
+    if(!item){
+
+        mensagem(
+            "Movimentação não encontrada."
         );
 
-    if(fin){
-
-        abrirModalFinanceiro(fin);
-
+        return;
     }
+
+
+    document
+    .getElementById("modalFinanceiro")
+    .classList.add("aberto");
+
+
+    document
+    .getElementById("tituloModalFinanceiro")
+    .innerText =
+    "Editar movimentação";
+
+
+    document
+    .getElementById("btnSalvarFinanceiro")
+    .innerText =
+    "💾 Salvar alterações";
+
+
+    document.getElementById("finId").value =
+    item.id;
+
+    document.getElementById("finTipo").value =
+    item.tipo || "entrada";
+
+    document.getElementById("finValor").value =
+    item.valor || "";
+
+    document.getElementById("finDescricao").value =
+    item.descricao || "";
 
 }
 
@@ -2599,72 +2348,94 @@ function editarFinanceiro(id){
 async function salvarFinanceiro(){
 
     const id =
-        document.getElementById("finId").value;
+    document
+    .getElementById("finId")
+    .value;
+
+
+    const valor =
+    parseFloat(
+        document
+        .getElementById("finValor")
+        .value
+    );
+
+
+    if(!valor || valor <= 0){
+
+        mensagem(
+            "Informe um valor válido."
+        );
+
+        return;
+    }
+
 
     const dados = {
 
-        descricao:
-            document.getElementById("finDescricao").value.trim(),
-
         tipo:
-            document.getElementById("finTipo").value,
+        document
+        .getElementById("finTipo")
+        .value,
 
-        valor:
-            Number(
-                document.getElementById("finValor").value
-            ),
+        valor:valor,
 
-        data:
-            new Date().toLocaleDateString("pt-BR")
+        descricao:
+        document
+        .getElementById("finDescricao")
+        .value
 
     };
 
-    if(!dados.descricao){
-
-        alert("Informe a descrição.");
-
-        return;
-
-    }
-
-    if(!dados.valor || dados.valor <= 0){
-
-        alert("Informe um valor válido.");
-
-        return;
-
-    }
 
     let resultado;
+
 
     if(id){
 
         resultado =
-            await supabaseClient
-            .from("movimentacoes")
-            .update(dados)
-            .eq("id",id);
+        await supabaseClient
+        .from("movimentacoes")
+        .update(dados)
+        .eq("id",id);
 
     }else{
 
+        dados.data =
+        new Date()
+        .toLocaleDateString("pt-BR");
+
         resultado =
-            await supabaseClient
-            .from("movimentacoes")
-            .insert([dados]);
+        await supabaseClient
+        .from("movimentacoes")
+        .insert([dados]);
 
     }
+
 
     if(resultado.error){
 
-        alert("Erro ao salvar movimentação.");
-
         console.error(resultado.error);
 
-        return;
+        mensagem(
+            id
+            ? "Erro ao atualizar movimentação."
+            : "Erro ao registrar movimentação."
+        );
 
+        return;
     }
 
-    fecharModal("modalFinanceiro");
+
+    fecharModais();
+
+
+    mensagem(
+        id
+        ? "✅ Movimentação atualizada!"
+        : "✅ Movimentação registrada!"
+    );
+
 
     await carregarTudo();
 
@@ -2673,81 +2444,431 @@ async function salvarFinanceiro(){
 
 async function excluirFinanceiro(id){
 
-    if(!confirm("Excluir esta movimentação?")) return;
+    const item =
+    movimentacoes.find(
+        m =>
+        String(m.id) === String(id)
+    );
+
+
+    if(!item){
+
+        mensagem(
+            "Movimentação não encontrada."
+        );
+
+        return;
+    }
+
+
+    const confirmar =
+    confirm(
+        "⚠️ Tem certeza que deseja excluir esta movimentação?\n\n" +
+        "Descrição: " +
+        (item.descricao || "Sem descrição") +
+        "\nValor: " +
+        moeda(item.valor)
+    );
+
+
+    if(!confirmar)
+        return;
+
 
     const {error} =
-        await supabaseClient
-        .from("movimentacoes")
-        .delete()
-        .eq("id",id);
+    await supabaseClient
+    .from("movimentacoes")
+    .delete()
+    .eq("id",id);
+
 
     if(error){
 
-        alert("Erro ao excluir movimentação.");
-
         console.error(error);
 
-        return;
+        mensagem(
+            "Erro ao excluir movimentação."
+        );
 
+        return;
     }
+
+
+    mensagem(
+        "🗑️ Movimentação excluída!"
+    );
+
 
     await carregarTudo();
 
 }
 
 
-async function excluirFinanceiroModal(){
+/* =========================================
+   CARREGAR DADOS
+========================================= */
 
-    const id =
-        document.getElementById("finId").value;
+async function carregarTudo(){
 
-    if(id){
+    if(carregando)
+        return;
 
-        await excluirFinanceiro(id);
 
-        fecharModal("modalFinanceiro");
+    if(document.querySelector(".modal.aberto"))
+        return;
+
+
+    carregando = true;
+
+
+    try{
+
+        const [
+            clientesResult,
+            agendamentosResult,
+            movimentacoesResult
+        ] = await Promise.all([
+
+            supabaseClient
+            .from("clientes")
+            .select("*")
+            .order("id",{ascending:false}),
+
+
+            supabaseClient
+            .from("agendamentos")
+            .select("*")
+            .order("data",{ascending:true})
+            .order("hora",{ascending:true}),
+
+
+            supabaseClient
+            .from("movimentacoes")
+            .select("*")
+            .order("id",{ascending:false})
+
+        ]);
+
+
+        if(clientesResult.error)
+            throw clientesResult.error;
+
+
+        if(agendamentosResult.error)
+            throw agendamentosResult.error;
+
+
+        if(movimentacoesResult.error)
+            throw movimentacoesResult.error;
+
+
+        clientes =
+        clientesResult.data || [];
+
+
+        agendamentos =
+        agendamentosResult.data || [];
+
+
+        movimentacoes =
+        movimentacoesResult.data || [];
+
+
+        /* ==========================
+           TOTAIS
+        ========================== */
+
+        const entradas =
+        movimentacoes
+        .filter(
+            m =>
+            m.tipo === "entrada"
+        )
+        .reduce(
+            (acc,m) =>
+            acc +
+            (parseFloat(m.valor) || 0),
+            0
+        );
+
+
+        const saidas =
+        movimentacoes
+        .filter(
+            m =>
+            m.tipo === "saida"
+        )
+        .reduce(
+            (acc,m) =>
+            acc +
+            (parseFloat(m.valor) || 0),
+            0
+        );
+
+
+        const saldo =
+        entradas - saidas;
+
+
+        document
+        .getElementById("totalClientes")
+        .innerText =
+        clientes.length;
+
+
+        document
+        .getElementById("totalAgendamentos")
+        .innerText =
+        agendamentos.length;
+
+
+        document
+        .getElementById("totalPendentes")
+        .innerText =
+        agendamentos.filter(
+            a =>
+            a.status === "aguardando"
+        ).length;
+
+
+        document
+        .getElementById("totalSaldo")
+        .innerText =
+        moeda(saldo);
+
+
+        /* ==========================
+           CALENDÁRIO
+        ========================== */
+
+        renderizarCalendario();
+
+        mostrarAgendamentosDoDia();
+
+
+        /* ==========================
+           CLIENTES
+        ========================== */
+
+        filtrarClientes();
+
+
+        /* ==========================
+           TABELA INÍCIO
+        ========================== */
+
+        const tabelaInicio =
+        document
+        .getElementById("tabelaInicio");
+
+
+        tabelaInicio.innerHTML = "";
+
+
+        agendamentos
+        .slice(0,5)
+        .forEach(item => {
+
+            const tr =
+            document.createElement("tr");
+
+
+            tr.innerHTML = `
+
+                <td>${item.nome || "-"}</td>
+
+                <td>${item.aparelho || "-"}</td>
+
+                <td>${item.data || "-"}</td>
+
+                <td>${item.hora || "-"}</td>
+
+                <td>
+
+                    <span class="status ${classeStatus(item.status)}">
+                        ${item.status || "aguardando"}
+                    </span>
+
+                </td>
+
+                <td>
+
+                    <div class="acoes-os">
+
+                        <button
+                            class="btn btn-editar"
+                            onclick="editarAgendamento('${item.id}')">
+                            ✏️
+                        </button>
+
+                        <button
+                            class="btn btn-vermelho"
+                            onclick="excluirAgendamento('${item.id}')">
+                            🗑️
+                        </button>
+
+                    </div>
+
+                </td>
+
+            `;
+
+
+            tabelaInicio.appendChild(tr);
+
+        });
+
+
+        /* ==========================
+           FINANCEIRO
+        ========================== */
+
+        const tabelaFin =
+        document
+        .getElementById("tabelaFinanceiro");
+
+
+        tabelaFin.innerHTML = "";
+
+
+        movimentacoes.forEach(item => {
+
+            const valor =
+            parseFloat(item.valor) || 0;
+
+
+            const tr =
+            document.createElement("tr");
+
+
+            tr.innerHTML = `
+
+                <td>
+                    <span class="status ${
+                        item.tipo === "entrada"
+                        ? "concluido"
+                        : "cancelado"
+                    }">
+                        ${item.tipo || "-"}
+                    </span>
+                </td>
+
+                <td>
+                    ${item.descricao || "-"}
+                </td>
+
+                <td>
+                    ${moeda(valor)}
+                </td>
+
+                <td>
+                    ${item.data || "-"}
+                </td>
+
+                <td>
+
+                    <div class="acoes-os">
+
+                        <button
+                            class="btn btn-editar"
+                            onclick="editarFinanceiro('${item.id}')">
+                            ✏️ Editar
+                        </button>
+
+                        <button
+                            class="btn btn-vermelho"
+                            onclick="excluirFinanceiro('${item.id}')">
+                            🗑️ Excluir
+                        </button>
+
+                    </div>
+
+                </td>
+
+            `;
+
+
+            tabelaFin.appendChild(tr);
+
+        });
+
+
+        /* ==========================
+           CARDS FINANCEIRO
+        ========================== */
+
+        document
+        .getElementById("financeiroEntradas")
+        .innerText =
+        moeda(entradas);
+
+
+        document
+        .getElementById("financeiroSaidas")
+        .innerText =
+        moeda(saidas);
+
+
+        document
+        .getElementById("financeiroSaldo")
+        .innerText =
+        moeda(saldo);
+
+
+    }catch(error){
+
+        console.error(
+            "Erro ao carregar dados:",
+            error
+        );
+
+    }finally{
+
+        carregando = false;
 
     }
 
 }
 
 
-/* =====================================================
-   FECHAR MODAL CLICANDO FORA
-===================================================== */
-
-document.querySelectorAll(".modal-bg")
-.forEach(modal => {
-
-    modal.addEventListener("click",function(e){
-
-        if(e.target === modal){
-
-            fecharModal(modal.id);
-
-        }
-
-    });
-
-});
-
-
-/* =====================================================
+/* =========================================
    INICIALIZAÇÃO
-===================================================== */
+========================================= */
+
+renderizarCalendario();
+
+mostrarAgendamentosDoDia();
 
 carregarTudo();
 
 
-/* =====================================================
+/* =========================================
    ATUALIZAÇÃO AUTOMÁTICA
-===================================================== */
+========================================= */
 
 setInterval(() => {
 
     carregarTudo();
 
 },2000);
+
+
+/* =========================================
+   REGISTRO SERVICE WORKER (PWA)
+========================================= */
+
+if ('serviceWorker' in navigator) {
+
+    window.addEventListener('load', () => {
+
+        navigator.serviceWorker.register('./sw.js')
+        .catch(err => {
+            console.log('Erro ao registrar Service Worker:', err);
+        });
+
+    });
+
+}
 
 </script>
 
