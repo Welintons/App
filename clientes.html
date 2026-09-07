@@ -49,6 +49,21 @@
 
         <div class="topbar-actions">
 
+            <!-- VOLTAR PARA A TELA INICIAL -->
+
+            <button
+                type="button"
+                class="btn-back"
+                id="btnVoltar"
+                aria-label="Voltar para a tela inicial">
+
+                ← Voltar
+
+            </button>
+
+
+            <!-- MODO NOTURNO -->
+
             <button
                 id="themeToggle"
                 class="theme-btn"
@@ -128,7 +143,6 @@
 
         <section class="stats-grid">
 
-
             <div class="stat-card">
 
                 <span>
@@ -166,7 +180,6 @@
                 </strong>
 
             </div>
-
 
         </section>
 
@@ -235,15 +248,21 @@
         <div class="modal-overlay"></div>
 
 
-        <div class="modal-content">
+        <div
+            class="modal-content"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modalTitulo">
 
+
+            <!-- CABEÇALHO DO MODAL -->
 
             <div class="modal-header">
 
                 <div>
 
                     <span class="section-label">
-                        CLIENTE
+                        CADASTRO DE CLIENTE
                     </span>
 
                     <h2 id="modalTitulo">
@@ -272,28 +291,64 @@
             <form id="formCliente">
 
 
+                <!-- ID INTERNO DO BANCO -->
+
                 <input
                     type="hidden"
                     id="clienteId">
 
 
 
+                <!-- =================================================
+                     CÓDIGO DO CLIENTE
+                ================================================== -->
+
+                <div class="form-group client-code-field">
+
+                    <label for="codigo">
+                        Código do cliente
+                    </label>
+
+                    <input
+                        type="text"
+                        id="codigo"
+                        name="codigo"
+                        placeholder="Será gerado automaticamente"
+                        readonly>
+
+                    <small>
+                        O código é gerado automaticamente pelo sistema.
+                    </small>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     NOME
+                ================================================== -->
+
                 <div class="form-group">
 
                     <label for="nome">
-                        Nome *
+                        Nome completo *
                     </label>
 
                     <input
                         type="text"
                         id="nome"
                         name="nome"
-                        placeholder="Nome completo"
+                        placeholder="Digite o nome completo"
+                        autocomplete="name"
                         required>
 
                 </div>
 
 
+
+                <!-- =================================================
+                     WHATSAPP
+                ================================================== -->
 
                 <div class="form-group">
 
@@ -305,45 +360,34 @@
                         type="tel"
                         id="whatsapp"
                         name="whatsapp"
-                        placeholder="(88) 99999-9999">
+                        placeholder="(88) 99999-9999"
+                        autocomplete="tel">
 
                 </div>
 
 
 
-                <div class="form-group">
-
-                    <label for="cpf">
-                        CPF
-                    </label>
-
-                    <input
-                        type="text"
-                        id="cpf"
-                        name="cpf"
-                        placeholder="000.000.000-00">
-
-                </div>
-
-
-
-                <div class="form-group">
-
-                    <label for="email">
-                        E-mail
-                    </label>
-
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        placeholder="cliente@email.com">
-
-                </div>
-
-
+                <!-- =================================================
+                     ENDEREÇO
+                ================================================== -->
 
                 <div class="form-row">
+
+                    <div class="form-group">
+
+                        <label for="cep">
+                            CEP
+                        </label>
+
+                        <input
+                            type="text"
+                            id="cep"
+                            name="cep"
+                            placeholder="63000-000"
+                            autocomplete="postal-code">
+
+                    </div>
+
 
                     <div class="form-group">
 
@@ -355,10 +399,20 @@
                             type="text"
                             id="endereco"
                             name="endereco"
-                            placeholder="Rua / Avenida">
+                            placeholder="Rua / Avenida"
+                            autocomplete="street-address">
 
                     </div>
 
+                </div>
+
+
+
+                <!-- =================================================
+                     NÚMERO / COMPLEMENTO
+                ================================================== -->
+
+                <div class="form-row">
 
                     <div class="form-group form-small">
 
@@ -374,118 +428,49 @@
 
                     </div>
 
+
+                    <div class="form-group">
+
+                        <label for="complemento">
+                            Complemento
+                        </label>
+
+                        <input
+                            type="text"
+                            id="complemento"
+                            name="complemento"
+                            placeholder="Casa, apartamento, etc.">
+
+                    </div>
+
                 </div>
 
 
 
+                <!-- =================================================
+                     BAIRRO
+                ================================================== -->
+
                 <div class="form-group">
 
-                    <label for="complemento">
-                        Complemento
+                    <label for="bairro">
+                        Bairro
                     </label>
 
                     <input
                         type="text"
-                        id="complemento"
-                        name="complemento"
-                        placeholder="Casa, apartamento, etc.">
+                        id="bairro"
+                        name="bairro"
+                        placeholder="Nome do bairro"
+                        autocomplete="address-level3">
 
                 </div>
 
 
 
-                <div class="form-row">
-
-                    <div class="form-group">
-
-                        <label for="bairro">
-                            Bairro
-                        </label>
-
-                        <input
-                            type="text"
-                            id="bairro"
-                            name="bairro">
-
-                    </div>
-
-
-                    <div class="form-group">
-
-                        <label for="cidade">
-                            Cidade
-                        </label>
-
-                        <input
-                            type="text"
-                            id="cidade"
-                            name="cidade">
-
-                    </div>
-
-                </div>
-
-
-
-                <div class="form-row">
-
-                    <div class="form-group form-small">
-
-                        <label for="estado">
-                            Estado
-                        </label>
-
-                        <input
-                            type="text"
-                            id="estado"
-                            name="estado"
-                            maxlength="2"
-                            placeholder="CE">
-
-                    </div>
-
-
-                    <div class="form-group">
-
-                        <label for="cep">
-                            CEP
-                        </label>
-
-                        <input
-                            type="text"
-                            id="cep"
-                            name="cep"
-                            placeholder="63000-000">
-
-                    </div>
-
-                </div>
-
-
-
-                <div class="form-group">
-
-                    <label for="status">
-                        Status
-                    </label>
-
-                    <select
-                        id="status"
-                        name="status">
-
-                        <option value="ativo">
-                            Ativo
-                        </option>
-
-                        <option value="inativo">
-                            Inativo
-                        </option>
-
-                    </select>
-
-                </div>
-
-
+                <!-- =================================================
+                     OBSERVAÇÕES
+                ================================================== -->
 
                 <div class="form-group">
 
@@ -497,13 +482,15 @@
                         id="observacoes"
                         name="observacoes"
                         rows="4"
-                        placeholder="Informações adicionais..."></textarea>
+                        placeholder="Informações adicionais sobre o cliente..."></textarea>
 
                 </div>
 
 
 
-                <!-- AÇÕES -->
+                <!-- =================================================
+                     AÇÕES
+                ================================================== -->
 
                 <div class="modal-actions">
 
@@ -564,6 +551,21 @@
 
     <!-- Lógica da página Clientes -->
     <script src="js/clientes.js"></script>
+
+
+    <!-- VOLTAR PARA A TELA INICIAL -->
+
+    <script>
+
+        document
+            .getElementById("btnVoltar")
+            .addEventListener("click", () => {
+
+                window.location.href = "index.html";
+
+            });
+
+    </script>
 
 
 </body>
