@@ -15,6 +15,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const moduleCards = document.querySelectorAll(".module-card");
 
+    const totalClientes = document.getElementById("totalClientes");
+    const osAbertas = document.getElementById("osAbertas");
+    const agendaHoje = document.getElementById("agendaHoje");
+
 
     /* =====================================================
        MODO NOTURNO
@@ -24,7 +28,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (modoSalvo === "true") {
         document.body.classList.add("dark");
-        atualizarBotaoTema();
     }
 
 
@@ -33,18 +36,25 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!themeToggle) return;
 
         if (document.body.classList.contains("dark")) {
+
             themeToggle.textContent = "☀";
+
             themeToggle.setAttribute(
                 "aria-label",
                 "Ativar modo claro"
             );
+
         } else {
+
             themeToggle.textContent = "☾";
+
             themeToggle.setAttribute(
                 "aria-label",
                 "Ativar modo noturno"
             );
+
         }
+
     }
 
 
@@ -96,6 +106,124 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
+       SUPABASE
+    ===================================================== */
+
+    async function carregarDashboard() {
+
+        try {
+
+            /* =================================================
+               CLIENTES
+            ================================================= */
+
+            const { count: clientes, error: erroClientes } =
+                await supabaseClient
+                    .from("clientes")
+                    .select("*", {
+                        count: "exact",
+                        head: true
+                    })
+                    .eq("status", "ativo");
+
+
+            if (erroClientes) {
+                throw erroClientes;
+            }
+
+
+            /* =================================================
+               ORDENS DE SERVIÇO ABERTAS
+            ================================================= */
+
+            const { count: os, error: erroOS } =
+                await supabaseClient
+                    .from("ordens_servico")
+                    .select("*", {
+                        count: "exact",
+                        head: true
+                    })
+                    .in("status", [
+                        "aberta",
+                        "aguardando",
+                        "em_andamento",
+                        "aguardando_peca"
+                    ]);
+
+
+            if (erroOS) {
+                throw erroOS;
+            }
+
+
+            /* =================================================
+               AGENDA DE HOJE
+            ================================================= */
+
+            const hoje = new Date();
+
+            const ano = hoje.getFullYear();
+
+            const mes =
+                String(hoje.getMonth() + 1).padStart(2, "0");
+
+            const dia =
+                String(hoje.getDate()).padStart(2, "0");
+
+            const dataHoje =
+                `${ano}-${mes}-${dia}`;
+
+
+            const { count: agenda, error: erroAgenda } =
+                await supabaseClient
+                    .from("agendamentos")
+                    .select("*", {
+                        count: "exact",
+                        head: true
+                    })
+                    .eq("data", dataHoje)
+                    .not("status", "eq", "cancelado");
+
+
+            if (erroAgenda) {
+                throw erroAgenda;
+            }
+
+
+            /* =================================================
+               ATUALIZAR CARDS
+            ================================================= */
+
+            if (totalClientes) {
+                totalClientes.textContent = clientes ?? 0;
+            }
+
+            if (osAbertas) {
+                osAbertas.textContent = os ?? 0;
+            }
+
+            if (agendaHoje) {
+                agendaHoje.textContent = agenda ?? 0;
+            }
+
+
+        } catch (erro) {
+
+            console.error(
+                "Erro ao carregar dashboard:",
+                erro
+            );
+
+            mostrarToast(
+                "Não foi possível carregar os dados do painel."
+            );
+
+        }
+
+    }
+
+
+    /* =====================================================
        MÓDULOS
     ===================================================== */
 
@@ -109,34 +237,43 @@ document.addEventListener("DOMContentLoaded", () => {
             switch (modulo) {
 
                 case "clientes":
+
                     mostrarToast(
                         "Clientes — em desenvolvimento"
                     );
+
                     break;
 
 
                 case "os":
+
                     mostrarToast(
                         "Ordens de Serviço — em desenvolvimento"
                     );
+
                     break;
 
 
                 case "agenda":
+
                     mostrarToast(
                         "Agenda — em desenvolvimento"
                     );
+
                     break;
 
 
                 case "financeiro":
+
                     mostrarToast(
                         "Financeiro — em desenvolvimento"
                     );
+
                     break;
 
 
                 default:
+
                     mostrarToast(
                         "Módulo não encontrado"
                     );
@@ -153,5 +290,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ===================================================== */
 
     atualizarBotaoTema();
+
+    carregarDashboard();
 
 });
