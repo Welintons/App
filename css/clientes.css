@@ -1,7 +1,6 @@
 /* =========================================================
-   WS SOLUÇÕES — CLIENTES.CSS
-   Módulo Clientes
-   Visual padronizado com o painel principal
+   WS SOLUÇÕES — CLIENTES
+   CSS EXCLUSIVO DA PÁGINA
 ========================================================= */
 
 
@@ -16,29 +15,33 @@
 
     --fundo: #f5f5f7;
     --card: #ffffff;
+
     --texto: #18181b;
     --texto-secundario: #71717a;
+
     --borda: #e4e4e7;
 
     --sucesso: #16a34a;
     --perigo: #dc2626;
 
     --sombra: 0 8px 30px rgba(0, 0, 0, 0.05);
-    --raio: 18px;
 
+    --raio: 18px;
     --transicao: 0.25s ease;
 }
 
 
 /* =========================================================
-   MODO NOTURNO
+   MODO ESCURO
 ========================================================= */
 
 body.dark {
     --fundo: #09090b;
     --card: #18181b;
+
     --texto: #f4f4f5;
     --texto-secundario: #a1a1aa;
+
     --borda: #27272a;
 
     --roxo-claro: #2e1065;
@@ -52,49 +55,62 @@ body.dark {
 ========================================================= */
 
 * {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
 }
+
 
 html {
     scroll-behavior: smooth;
 }
 
+
 body {
     min-height: 100vh;
 
+    background: var(--fundo);
+    color: var(--texto);
+
     font-family:
-        Inter,
-        system-ui,
         -apple-system,
         BlinkMacSystemFont,
         "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
         sans-serif;
-
-    background: var(--fundo);
-    color: var(--texto);
 
     transition:
         background var(--transicao),
         color var(--transicao);
 }
 
+
 button,
 input,
-select,
 textarea {
-    font-family: inherit;
+    font: inherit;
+}
+
+
+button {
+    cursor: pointer;
+}
+
+
+input,
+textarea {
+    color: var(--texto);
 }
 
 
 /* =========================================================
-   TOPBAR
+   TOPO
 ========================================================= */
 
 .topbar {
     width: 100%;
-
     min-height: 76px;
 
     padding: 0 32px;
@@ -123,6 +139,7 @@ textarea {
     gap: 12px;
 }
 
+
 .brand-logo {
     width: 42px;
     height: 42px;
@@ -131,24 +148,24 @@ textarea {
     align-items: center;
     justify-content: center;
 
-    border-radius: 12px;
-
-    background: linear-gradient(
-        135deg,
-        var(--roxo),
-        var(--roxo-escuro)
-    );
+    background:
+        linear-gradient(
+            135deg,
+            var(--roxo),
+            var(--roxo-escuro)
+        );
 
     color: #ffffff;
 
     font-size: 14px;
     font-weight: 900;
 
-    letter-spacing: -0.5px;
+    border-radius: 12px;
 
     box-shadow:
         0 6px 15px rgba(124, 58, 237, 0.25);
 }
+
 
 .brand-info {
     display: flex;
@@ -156,11 +173,14 @@ textarea {
     gap: 2px;
 }
 
+
 .brand-info strong {
     font-size: 14px;
     font-weight: 800;
-    letter-spacing: 0.3px;
+
+    color: var(--texto);
 }
+
 
 .brand-info span {
     font-size: 11px;
@@ -175,7 +195,7 @@ textarea {
 .topbar-actions {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
 }
 
 
@@ -186,13 +206,11 @@ textarea {
 .btn-back {
     min-height: 42px;
 
-    display: inline-flex;
+    padding: 0 14px;
+
+    display: flex;
     align-items: center;
     justify-content: center;
-
-    gap: 7px;
-
-    padding: 0 14px;
 
     border: 1px solid var(--borda);
     border-radius: 12px;
@@ -203,25 +221,15 @@ textarea {
     font-size: 13px;
     font-weight: 700;
 
-    cursor: pointer;
-
-    text-decoration: none;
-
-    transition:
-        background var(--transicao),
-        border-color var(--transicao),
-        color var(--transicao),
-        transform var(--transicao);
+    transition: var(--transicao);
 }
+
 
 .btn-back:hover {
     border-color: var(--roxo);
     color: var(--roxo);
-    transform: translateY(-2px);
-}
 
-.btn-back:active {
-    transform: scale(0.97);
+    transform: translateY(-2px);
 }
 
 
@@ -233,35 +241,28 @@ textarea {
     width: 42px;
     height: 42px;
 
-    border: 1px solid var(--borda);
-
-    border-radius: 12px;
-
-    background: var(--card);
-
-    color: var(--texto);
-
-    cursor: pointer;
-
     display: flex;
     align-items: center;
     justify-content: center;
 
+    border: 1px solid var(--borda);
+    border-radius: 12px;
+
+    background: var(--card);
+    color: var(--texto);
+
     font-size: 19px;
 
-    transition:
-        background var(--transicao),
-        border-color var(--transicao),
-        transform var(--transicao);
+    transition: var(--transicao);
 }
+
 
 .theme-btn:hover {
     border-color: var(--roxo);
-    transform: translateY(-2px);
-}
 
-.theme-btn:active {
-    transform: scale(0.95);
+    color: var(--roxo);
+
+    transform: translateY(-2px);
 }
 
 
@@ -284,39 +285,14 @@ textarea {
 
 .page-header {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: space-between;
 
-    gap: 24px;
+    gap: 25px;
 
     margin-bottom: 28px;
 }
 
-.page-header > div:first-child {
-    min-width: 0;
-}
-
-.page-header h1 {
-    margin: 6px 0 9px;
-
-    font-size: clamp(27px, 4vw, 38px);
-
-    line-height: 1.1;
-
-    font-weight: 800;
-
-    letter-spacing: -1.2px;
-}
-
-.page-header p {
-    margin: 0;
-
-    color: var(--texto-secundario);
-
-    font-size: 14px;
-
-    line-height: 1.6;
-}
 
 .section-label {
     display: block;
@@ -326,10 +302,29 @@ textarea {
     color: var(--roxo);
 
     font-size: 10px;
-
     font-weight: 900;
 
     letter-spacing: 1.5px;
+}
+
+
+.page-header h1 {
+    margin-bottom: 9px;
+
+    color: var(--texto);
+
+    font-size: clamp(27px, 4vw, 38px);
+    line-height: 1.1;
+
+    letter-spacing: -1.2px;
+}
+
+
+.page-header p {
+    color: var(--texto-secundario);
+
+    font-size: 14px;
+    line-height: 1.6;
 }
 
 
@@ -340,67 +335,57 @@ textarea {
 .btn-primary {
     min-height: 44px;
 
+    padding: 0 18px;
+
     display: inline-flex;
     align-items: center;
     justify-content: center;
 
-    gap: 7px;
-
     border: 0;
-
     border-radius: 12px;
 
-    padding: 12px 18px;
-
-    background: linear-gradient(
-        135deg,
-        var(--roxo),
-        var(--roxo-escuro)
-    );
+    background:
+        linear-gradient(
+            135deg,
+            var(--roxo),
+            var(--roxo-escuro)
+        );
 
     color: #ffffff;
 
     font-size: 13px;
-
     font-weight: 800;
-
-    cursor: pointer;
 
     box-shadow:
         0 6px 15px rgba(124, 58, 237, 0.20);
 
-    transition:
-        transform var(--transicao),
-        box-shadow var(--transicao),
-        opacity var(--transicao);
+    transition: var(--transicao);
 }
+
 
 .btn-primary:hover {
     transform: translateY(-2px);
 
     box-shadow:
-        0 9px 20px rgba(124, 58, 237, 0.25);
+        0 9px 20px rgba(124, 58, 237, 0.28);
 }
+
 
 .btn-primary:active {
-    transform: scale(0.98);
-}
-
-.btn-primary:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    transform: none;
+    transform: translateY(0);
 }
 
 
 /* =========================================================
-   CARDS
+   CARD
 ========================================================= */
 
 .card {
+    width: 100%;
+
     padding: 22px;
 
-    margin-bottom: 22px;
+    margin-bottom: 20px;
 
     background: var(--card);
 
@@ -422,62 +407,43 @@ textarea {
 ========================================================= */
 
 .search-box {
-    position: relative;
-
     width: 100%;
 }
 
-.search-box::before {
-    content: "⌕";
-
-    position: absolute;
-
-    left: 16px;
-    top: 50%;
-
-    transform: translateY(-50%);
-
-    color: var(--texto-secundario);
-
-    font-size: 21px;
-
-    pointer-events: none;
-
-    opacity: 0.7;
-}
 
 .search-box input {
     width: 100%;
 
-    padding: 14px 16px 14px 46px;
+    height: 46px;
+
+    padding: 0 15px;
 
     border: 1px solid var(--borda);
 
-    border-radius: 13px;
+    border-radius: 12px;
 
-    background: var(--card);
+    outline: none;
+
+    background: var(--fundo);
 
     color: var(--texto);
 
     font-size: 14px;
 
-    outline: none;
-
-    transition:
-        border-color var(--transicao),
-        box-shadow var(--transicao),
-        background var(--transicao);
+    transition: var(--transicao);
 }
+
 
 .search-box input::placeholder {
     color: var(--texto-secundario);
 }
 
+
 .search-box input:focus {
     border-color: var(--roxo);
 
     box-shadow:
-        0 0 0 3px rgba(124, 58, 237, 0.12);
+        0 0 0 3px rgba(124, 58, 237, 0.10);
 }
 
 
@@ -489,24 +455,16 @@ textarea {
     display: grid;
 
     grid-template-columns:
-        repeat(3, 1fr);
+        repeat(3, minmax(0, 1fr));
 
     gap: 16px;
 
-    margin-bottom: 22px;
+    margin-bottom: 20px;
 }
 
+
 .stat-card {
-    min-height: 100px;
-
     padding: 20px;
-
-    display: flex;
-    flex-direction: column;
-
-    justify-content: center;
-
-    gap: 7px;
 
     background: var(--card);
 
@@ -516,11 +474,9 @@ textarea {
 
     box-shadow: var(--sombra);
 
-    transition:
-        transform var(--transicao),
-        border-color var(--transicao),
-        background var(--transicao);
+    transition: var(--transicao);
 }
+
 
 .stat-card:hover {
     transform: translateY(-3px);
@@ -529,24 +485,26 @@ textarea {
         rgba(124, 58, 237, 0.35);
 }
 
+
 .stat-card span {
+    display: block;
+
+    margin-bottom: 7px;
+
     color: var(--texto-secundario);
 
-    font-size: 10px;
-
-    font-weight: 800;
-
-    text-transform: uppercase;
-
-    letter-spacing: 1px;
+    font-size: 12px;
+    font-weight: 600;
 }
 
+
 .stat-card strong {
-    font-size: 27px;
+    color: var(--texto);
+
+    font-size: 28px;
+    font-weight: 800;
 
     line-height: 1;
-
-    letter-spacing: -0.8px;
 }
 
 
@@ -556,20 +514,18 @@ textarea {
 
 .section-title {
     display: flex;
-
-    align-items: flex-end;
-
+    align-items: center;
     justify-content: space-between;
 
     margin-bottom: 18px;
 }
 
+
 .section-title h2 {
-    margin: 0;
+    color: var(--texto);
 
-    font-size: 21px;
-
-    letter-spacing: -0.5px;
+    font-size: 19px;
+    font-weight: 800;
 }
 
 
@@ -579,10 +535,9 @@ textarea {
 
 .clients-list {
     display: flex;
-
     flex-direction: column;
 
-    gap: 12px;
+    gap: 10px;
 }
 
 
@@ -592,42 +547,37 @@ textarea {
 
 .client-item {
     display: flex;
-
     align-items: center;
-
     justify-content: space-between;
 
-    gap: 20px;
+    gap: 15px;
 
-    padding: 17px 18px;
-
-    background: var(--card);
+    padding: 16px;
 
     border: 1px solid var(--borda);
 
-    border-radius: 15px;
+    border-radius: 14px;
 
-    box-shadow:
-        0 4px 18px rgba(0, 0, 0, 0.025);
+    background: var(--fundo);
 
-    transition:
-        transform var(--transicao),
-        border-color var(--transicao),
-        background var(--transicao);
+    transition: var(--transicao);
 }
+
 
 .client-item:hover {
-    transform: translateY(-2px);
-
     border-color:
-        rgba(124, 58, 237, 0.30);
+        rgba(124, 58, 237, 0.35);
+
+    transform: translateY(-2px);
 }
+
 
 .client-main {
     min-width: 0;
 
     flex: 1;
 }
+
 
 .client-code {
     display: inline-block;
@@ -637,124 +587,73 @@ textarea {
     color: var(--roxo);
 
     font-size: 10px;
-
     font-weight: 900;
 
     letter-spacing: 0.8px;
 }
 
+
 .client-name {
-    margin-bottom: 8px;
+    margin-bottom: 5px;
 
     color: var(--texto);
 
-    font-size: 17px;
-
+    font-size: 15px;
     font-weight: 800;
 
-    line-height: 1.25;
-
-    word-break: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
+
 
 .client-info {
-    display: flex;
-
-    align-items: center;
-
-    flex-wrap: wrap;
-
-    gap: 8px 14px;
-
     color: var(--texto-secundario);
 
-    font-size: 13px;
+    font-size: 12px;
+
+    line-height: 1.5;
 }
 
-
-/* =========================================================
-   STATUS — MANTIDO PARA COMPATIBILIDADE
-========================================================= */
-
-.client-status {
-    display: inline-flex;
-
-    align-items: center;
-
-    padding: 5px 9px;
-
-    border-radius: 999px;
-
-    font-size: 10px;
-
-    font-weight: 800;
-
-    letter-spacing: 0.5px;
-}
-
-.client-status.ativo {
-    background: rgba(22, 163, 74, 0.12);
-
-    color: var(--sucesso);
-}
-
-.client-status.inativo {
-    background: rgba(220, 38, 38, 0.12);
-
-    color: var(--perigo);
-}
-
-
-/* =========================================================
-   AÇÕES DO CLIENTE
-========================================================= */
 
 .client-actions {
     display: flex;
-
     align-items: center;
 
-    gap: 8px;
+    gap: 7px;
 
     flex-shrink: 0;
 }
 
+
 .client-action {
-    min-height: 38px;
+    min-width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     border: 1px solid var(--borda);
 
     border-radius: 10px;
 
-    padding: 8px 12px;
-
     background: var(--card);
 
     color: var(--texto);
 
-    font-size: 12px;
+    font-size: 14px;
 
-    font-weight: 800;
-
-    cursor: pointer;
-
-    transition:
-        transform var(--transicao),
-        border-color var(--transicao),
-        color var(--transicao),
-        background var(--transicao);
+    transition: var(--transicao);
 }
 
-.client-action:hover {
-    transform: translateY(-2px);
 
+.client-action:hover {
     border-color: var(--roxo);
 
     color: var(--roxo);
-}
 
-.client-action:active {
-    transform: scale(0.97);
+    transform: translateY(-2px);
 }
 
 
@@ -762,17 +661,16 @@ textarea {
    ESTADO VAZIO
 ========================================================= */
 
-.clients-empty,
 .empty-state {
-    text-align: center;
+    padding: 45px 20px;
 
-    padding: 48px 20px;
+    text-align: center;
 }
 
-.clients-empty-icon,
+
 .empty-icon {
-    width: 58px;
-    height: 58px;
+    width: 54px;
+    height: 54px;
 
     margin: 0 auto 14px;
 
@@ -784,44 +682,48 @@ textarea {
 
     background: var(--roxo-claro);
 
-    font-size: 27px;
+    font-size: 24px;
 }
 
-.clients-empty strong,
-.empty-state h3 {
-    display: block;
 
-    margin-bottom: 7px;
+.empty-state h3 {
+    margin-bottom: 6px;
 
     color: var(--texto);
 
-    font-size: 16px;
+    font-size: 15px;
+    font-weight: 800;
 }
 
-.clients-empty p,
-.empty-state p {
-    margin: 0;
 
+.empty-state p {
     color: var(--texto-secundario);
 
     font-size: 13px;
-
     line-height: 1.5;
 }
 
 
 /* =========================================================
-   CARREGANDO
+   LOADING / ESTADOS GERADOS PELO JS
 ========================================================= */
 
-.clients-loading {
-    text-align: center;
-
+.clients-loading,
+.clients-empty {
     padding: 40px 20px;
+
+    text-align: center;
 
     color: var(--texto-secundario);
 
-    font-size: 14px;
+    font-size: 13px;
+}
+
+
+.clients-empty-icon {
+    margin-bottom: 10px;
+
+    font-size: 28px;
 }
 
 
@@ -839,43 +741,42 @@ textarea {
     display: none;
 
     align-items: center;
-
     justify-content: center;
 
     padding: 20px;
 }
 
-.modal.show {
+
+.modal.active {
     display: flex;
 }
+
 
 .modal-overlay {
     position: absolute;
 
     inset: 0;
 
-    background:
-        rgba(0, 0, 0, 0.55);
+    background: rgba(0, 0, 0, 0.60);
 
     backdrop-filter: blur(4px);
 }
 
+
 .modal-content {
     position: relative;
 
-    z-index: 2;
+    z-index: 1;
 
-    width: min(680px, 100%);
+    width: min(620px, 100%);
 
-    max-height: 90vh;
+    max-height: calc(100vh - 40px);
 
     overflow-y: auto;
 
     padding: 25px;
 
     background: var(--card);
-
-    color: var(--texto);
 
     border: 1px solid var(--borda);
 
@@ -885,27 +786,20 @@ textarea {
         0 25px 70px rgba(0, 0, 0, 0.25);
 
     animation:
-        clienteModalEntrada 0.2s ease;
+        modalEntrada 0.2s ease;
 }
 
-@keyframes clienteModalEntrada {
 
+@keyframes modalEntrada {
     from {
         opacity: 0;
-
-        transform:
-            translateY(12px)
-            scale(0.98);
+        transform: translateY(10px) scale(0.98);
     }
 
     to {
         opacity: 1;
-
-        transform:
-            translateY(0)
-            scale(1);
+        transform: translateY(0) scale(1);
     }
-
 }
 
 
@@ -915,25 +809,22 @@ textarea {
 
 .modal-header {
     display: flex;
-
     align-items: flex-start;
-
     justify-content: space-between;
 
-    gap: 20px;
+    gap: 15px;
 
     margin-bottom: 24px;
 }
 
-.modal-header h2 {
-    margin: 6px 0 0;
 
+.modal-header h2 {
     color: var(--texto);
 
-    font-size: 23px;
-
-    letter-spacing: -0.5px;
+    font-size: 21px;
+    font-weight: 800;
 }
+
 
 .modal-close {
     width: 38px;
@@ -941,37 +832,29 @@ textarea {
 
     flex-shrink: 0;
 
-    border: 1px solid transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid var(--borda);
 
     border-radius: 10px;
 
-    background: transparent;
+    background: var(--card);
 
-    color: var(--texto);
+    color: var(--texto-secundario);
 
-    font-size: 27px;
-
+    font-size: 24px;
     line-height: 1;
 
-    cursor: pointer;
-
-    opacity: 0.65;
-
-    transition:
-        opacity var(--transicao),
-        transform var(--transicao),
-        border-color var(--transicao),
-        background var(--transicao);
+    transition: var(--transicao);
 }
 
+
 .modal-close:hover {
-    opacity: 1;
+    border-color: var(--perigo);
 
-    border-color: var(--borda);
-
-    background: var(--roxo-claro);
-
-    color: var(--roxo);
+    color: var(--perigo);
 
     transform: rotate(90deg);
 }
@@ -981,56 +864,60 @@ textarea {
    FORMULÁRIO
 ========================================================= */
 
-#formCliente {
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 16px;
-}
-
 .form-group {
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 7px;
+    margin-bottom: 16px;
 }
+
 
 .form-group label {
+    display: block;
+
+    margin-bottom: 7px;
+
     color: var(--texto);
 
     font-size: 12px;
-
-    font-weight: 800;
+    font-weight: 700;
 }
 
+
 .form-group input,
-.form-group select,
 .form-group textarea {
     width: 100%;
-
-    padding: 12px 13px;
 
     border: 1px solid var(--borda);
 
     border-radius: 11px;
 
-    background: var(--card);
+    outline: none;
+
+    background: var(--fundo);
 
     color: var(--texto);
 
-    font-family: inherit;
+    font-size: 13px;
 
-    font-size: 14px;
-
-    outline: none;
-
-    transition:
-        border-color var(--transicao),
-        box-shadow var(--transicao),
-        background var(--transicao);
+    transition: var(--transicao);
 }
+
+
+.form-group input {
+    height: 44px;
+
+    padding: 0 13px;
+}
+
+
+.form-group textarea {
+    min-height: 100px;
+
+    padding: 12px 13px;
+
+    resize: vertical;
+
+    line-height: 1.5;
+}
+
 
 .form-group input::placeholder,
 .form-group textarea::placeholder {
@@ -1039,50 +926,61 @@ textarea {
     opacity: 0.75;
 }
 
+
 .form-group input:focus,
-.form-group select:focus,
 .form-group textarea:focus {
     border-color: var(--roxo);
 
     box-shadow:
-        0 0 0 3px rgba(124, 58, 237, 0.12);
+        0 0 0 3px rgba(124, 58, 237, 0.10);
 }
 
-.form-group input[readonly] {
+
+/* =========================================================
+   CÓDIGO DO CLIENTE
+========================================================= */
+
+.client-code-field input {
     background: var(--roxo-claro);
 
     color: var(--roxo);
 
+    border-color:
+        rgba(124, 58, 237, 0.25);
+
     font-weight: 800;
 
-    cursor: default;
+    letter-spacing: 0.5px;
 }
 
-.form-group small {
+
+.client-code-field small {
+    display: block;
+
+    margin-top: 6px;
+
     color: var(--texto-secundario);
 
-    font-size: 11px;
-
-    line-height: 1.4;
+    font-size: 10px;
 }
 
-.form-group textarea {
-    min-height: 100px;
 
-    resize: vertical;
-}
+/* =========================================================
+   LINHAS DO FORMULÁRIO
+========================================================= */
 
 .form-row {
     display: grid;
 
     grid-template-columns:
-        1fr 1fr;
+        1fr 2fr;
 
     gap: 14px;
 }
 
+
 .form-small {
-    max-width: 180px;
+    min-width: 0;
 }
 
 
@@ -1092,50 +990,44 @@ textarea {
 
 .modal-actions {
     display: flex;
-
     justify-content: flex-end;
 
     gap: 10px;
 
-    padding-top: 8px;
+    padding-top: 7px;
+
+    margin-top: 8px;
+
+    border-top: 1px solid var(--borda);
 }
 
+
 .btn-secondary {
-    min-height: 42px;
+    min-height: 44px;
+
+    padding: 0 18px;
 
     border: 1px solid var(--borda);
 
-    border-radius: 11px;
-
-    padding: 11px 17px;
+    border-radius: 12px;
 
     background: var(--card);
 
     color: var(--texto);
 
     font-size: 13px;
+    font-weight: 700;
 
-    font-weight: 800;
-
-    cursor: pointer;
-
-    transition:
-        transform var(--transicao),
-        border-color var(--transicao),
-        color var(--transicao),
-        background var(--transicao);
+    transition: var(--transicao);
 }
 
-.btn-secondary:hover {
-    transform: translateY(-1px);
 
+.btn-secondary:hover {
     border-color: var(--roxo);
 
     color: var(--roxo);
-}
 
-.btn-secondary:active {
-    transform: scale(0.98);
+    transform: translateY(-2px);
 }
 
 
@@ -1147,19 +1039,17 @@ textarea {
     position: fixed;
 
     left: 50%;
-
     bottom: 25px;
 
     z-index: 9999;
 
     min-width: 220px;
-
     max-width: calc(100% - 30px);
 
     padding: 13px 18px;
 
     transform:
-        translate(-50%, 30px);
+        translate(-50%, 20px);
 
     opacity: 0;
 
@@ -1171,11 +1061,10 @@ textarea {
 
     border-radius: 12px;
 
-    text-align: center;
-
     font-size: 13px;
-
     font-weight: 600;
+
+    text-align: center;
 
     box-shadow:
         0 10px 30px rgba(0, 0, 0, 0.20);
@@ -1184,6 +1073,7 @@ textarea {
         opacity 0.25s ease,
         transform 0.25s ease;
 }
+
 
 .toast.show {
     opacity: 1;
@@ -1194,21 +1084,7 @@ textarea {
 
 
 /* =========================================================
-   ACESSIBILIDADE
-========================================================= */
-
-button:focus-visible,
-input:focus-visible,
-select:focus-visible,
-textarea:focus-visible {
-    outline: 3px solid rgba(124, 58, 237, 0.20);
-
-    outline-offset: 2px;
-}
-
-
-/* =========================================================
-   RESPONSIVIDADE — TABLET
+   RESPONSIVIDADE
 ========================================================= */
 
 @media (max-width: 800px) {
@@ -1217,26 +1093,20 @@ textarea:focus-visible {
         padding: 0 20px;
     }
 
+
     .container {
         width: min(100% - 30px, 700px);
 
         padding-top: 32px;
     }
 
-    .stats-grid {
-        gap: 10px;
-    }
 
-    .stat-card {
-        padding: 15px;
+    .page-header {
+        align-items: flex-start;
     }
 
 }
 
-
-/* =========================================================
-   RESPONSIVIDADE — CELULAR
-========================================================= */
 
 @media (max-width: 600px) {
 
@@ -1246,6 +1116,7 @@ textarea:focus-visible {
         padding: 0 15px;
     }
 
+
     .brand-logo {
         width: 39px;
         height: 39px;
@@ -1253,34 +1124,35 @@ textarea:focus-visible {
         border-radius: 11px;
     }
 
+
     .brand-info strong {
         font-size: 13px;
     }
+
 
     .brand-info span {
         font-size: 10px;
     }
 
-    .topbar-actions {
-        gap: 6px;
-    }
 
+    .theme-btn,
     .btn-back {
         min-height: 39px;
+        height: 39px;
+    }
 
+
+    .theme-btn {
+        width: 39px;
+    }
+
+
+    .btn-back {
         padding: 0 11px;
-
-        border-radius: 11px;
 
         font-size: 12px;
     }
 
-    .theme-btn {
-        width: 39px;
-        height: 39px;
-
-        border-radius: 11px;
-    }
 
     .container {
         width: calc(100% - 24px);
@@ -1288,31 +1160,20 @@ textarea:focus-visible {
         padding: 28px 0 45px;
     }
 
-    .page-header {
-        align-items: stretch;
 
+    .page-header {
         flex-direction: column;
 
-        gap: 16px;
+        gap: 18px;
 
-        margin-bottom: 24px;
+        margin-bottom: 22px;
     }
 
-    .page-header h1 {
-        font-size: 27px;
-    }
 
-    .page-header p {
-        font-size: 13px;
-    }
-
-    .btn-primary {
+    .page-header .btn-primary {
         width: 100%;
     }
 
-    .card {
-        padding: 16px;
-    }
 
     .stats-grid {
         grid-template-columns: 1fr;
@@ -1320,73 +1181,61 @@ textarea:focus-visible {
         gap: 10px;
     }
 
+
     .stat-card {
-        min-height: 78px;
-
-        padding: 14px 16px;
+        padding: 16px;
     }
 
-    .stat-card strong {
-        font-size: 22px;
+
+    .card {
+        padding: 16px;
+
+        border-radius: 16px;
     }
 
-    .section-title {
-        margin-bottom: 14px;
-    }
-
-    .section-title h2 {
-        font-size: 19px;
-    }
 
     .client-item {
-        align-items: stretch;
+        align-items: flex-start;
 
-        flex-direction: column;
-
-        gap: 14px;
-
-        padding: 15px;
+        padding: 14px;
     }
+
 
     .client-actions {
-        width: 100%;
+        gap: 5px;
     }
+
 
     .client-action {
-        flex: 1;
+        min-width: 36px;
+        height: 36px;
     }
+
 
     .modal {
-        padding: 10px;
+        padding: 12px;
     }
 
+
     .modal-content {
-        max-height: 94vh;
+        max-height: calc(100vh - 24px);
 
         padding: 20px;
 
-        border-radius: 17px;
+        border-radius: 18px;
     }
 
-    .modal-header {
-        margin-bottom: 20px;
-    }
-
-    .modal-header h2 {
-        font-size: 21px;
-    }
 
     .form-row {
         grid-template-columns: 1fr;
+        gap: 0;
     }
 
-    .form-small {
-        max-width: none;
-    }
 
     .modal-actions {
         flex-direction: column-reverse;
     }
+
 
     .modal-actions button {
         width: 100%;
@@ -1395,42 +1244,42 @@ textarea:focus-visible {
 }
 
 
-/* =========================================================
-   CELULARES PEQUENOS
-========================================================= */
-
 @media (max-width: 360px) {
 
     .brand-info span {
         display: none;
     }
 
-    .btn-back {
-        padding: 0 9px;
-    }
 
     .page-header h1 {
         font-size: 24px;
     }
 
-    .client-name {
-        font-size: 16px;
+
+    .topbar-actions {
+        gap: 6px;
     }
 
-    .client-info {
-        flex-direction: column;
 
-        align-items: flex-start;
-
-        gap: 6px;
+    .btn-back {
+        padding: 0 9px;
     }
 
 }
 
 
 /* =========================================================
-   REDUÇÃO DE MOVIMENTO
+   ACESSIBILIDADE
 ========================================================= */
+
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+    outline: 2px solid var(--roxo);
+
+    outline-offset: 2px;
+}
+
 
 @media (prefers-reduced-motion: reduce) {
 
@@ -1439,11 +1288,10 @@ textarea:focus-visible {
     *::after {
         scroll-behavior: auto !important;
 
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+
         transition-duration: 0.01ms !important;
     }
 
 }
-
-Esse CSS já está preparado para o código automático do cliente, o modal atual e o modo claro/escuro. Pode substituir o arquivo inteiro por ele.
-
-Depois de testar, não precisamos mexer no "style.css". Se algo ficar diferente do painel, ajustamos somente o "clientes.css".
