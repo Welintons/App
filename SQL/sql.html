@@ -1,0 +1,899 @@
+-- ============================================================
+-- WS SOLUÇÕES
+-- BANCO DE DADOS V1
+-- ============================================================
+-- Banco novo e independente
+-- Códigos públicos automáticos
+-- IDs internos em UUID
+-- ============================================================
+
+
+-- ============================================================
+-- 1. EXTENSÕES
+-- ============================================================
+
+create extension if not exists pgcrypto;
+
+
+-- ============================================================
+-- 2. FUNÇÃO GENÉRICA PARA updated_at
+-- ============================================================
+
+create or replace function public.atualizar_updated_at()
+returns trigger
+language plpgsql
+as $$
+begin
+    new.atualizado_em = now();
+    return new;
+end;
+$$;
+
+
+-- ============================================================
+-- 3. SEQUÊNCIAS DOS CÓDIGOS WS
+-- ============================================================
+
+create sequence if not exists public.seq_cliente start 1;
+create sequence if not exists public.seq_os start 1;
+create sequence if not exists public.seq_orcamento start 1;
+create sequence if not exists public.seq_agendamento start 1;
+create sequence if not exists public.seq_produto start 1;
+create sequence if not exists public.seq_financeiro start 1;
+create sequence if not exists public.seq_pagamento start 1;
+create sequence if not exists public.seq_usuario start 1;
+create sequence if not exists public.seq_equipamento start 1;
+create sequence if not exists public.seq_tarefa start 1;
+create sequence if not exists public.seq_historico start 1;
+create sequence if not exists public.seq_estoque start 1;
+create sequence if not exists public.seq_anexo start 1;
+create sequence if not exists public.seq_notificacao start 1;
+
+
+-- ============================================================
+-- 4. CLIENTES
+-- ============================================================
+
+create table public.clientes (
+
+    id uuid primary key default gen_random_uuid(),
+
+    codigo text not null unique
+        default (
+            'WS-CLI-' ||
+            lpad(nextval('public.seq_cliente')::text, 6, '0')
+        ),
+
+    nome text not null,
+
+    whatsapp text not null,
+
+    cpf text,
+
+    email text,
+
+    endereco text,
+
+    numero text,
+
+    complemento text,
+
+    bairro text,
+
+    cidade text,
+
+    estado text,
+
+    cep text,
+
+    observacoes text,
+
+    status text not null default 'ativo'
+        check (status in ('ativo', 'inativo')),
+
+    criado_em timestamptz not null default now(),
+
+    atualizado_em timestamptz not null default now()
+);
+
+
+-- ============================================================
+-- 5. EQUIPAMENTOS
+-- ============================================================
+
+create table public.equipamentos (
+
+    id uuid primary key default gen_random_uuid(),
+
+    codigo text not null unique
+        default (
+            'WS-EQP-' ||
+            lpad(nextval('public.seq_equipamento')::text, 6, '0')
+        ),
+
+    cliente_id uuid not null
+        references public.clientes(id)
+        on delete cascade,
+
+    tipo text not null,
+
+    marca text,
+
+    modelo text,
+
+    numero_serie text,
+
+    descricao text,
+
+    observacoes text,
+
+    criado_em timestamptz not null default now(),
+
+    atualizado_em timestamptz not null default now()
+);
+
+
+-- ============================================================
+-- 6. ORÇAMENTOS
+-- ============================================================
+
+create table public.orcamentos (
+
+    id uuid primary key default gen_random_uuid(),
+
+    codigo text not null unique
+        default (
+            'WS-ORC-' ||
+            lpad(nextval('public.seq_orcamento')::text, 6, '0')
+        ),
+
+    cliente_id uuid not null
+        references public.clientes(id)
+        on delete restrict,
+
+    equipamento_id uuid
+        references public.equipamentos(id)
+        on delete set null,
+
+    descricao text not null,
+
+    valor numeric(12,2) not null default 0
+        check (valor >= 0),
+
+    desconto numeric(12,2) not null default 0
+        check (desconto >= 0),
+
+    valor_total numeric(12,2)
+        generated always as (greatest(valor - desconto, 0)) stored,
+
+    validade date,
+
+    status text not null default 'pendente'
+        check (
+            status in (
+                'pendente',
+                'aprovado',
+                'recusado',
+                'cancelado',
+                'expirado'
+            )
+        ),
+
+    observacoes text,
+
+    criado_em timestamptz not null default now(),
+
+    atualizado_em timestamptz not null default now()
+);
+
+
+-- ============================================================
+-- 7. ORDENS DE SERVIÇO
+-- ============================================================
+
+create table public.ordens_servico (
+
+    id uuid primary key default gen_random_uuid(),
+
+    codigo text not null unique
+        default (
+            'WS-OS-' ||
+            lpad(nextval('public.seq_os')::text, 6, '0')
+        ),
+
+    cliente_id uuid not null
+        references public.clientes(id)
+        on delete restrict,
+
+    equipamento_id uuid
+        references public.equipamentos(id)
+        on delete set null,
+
+    orcamento_id uuid
+        references public.orcamentos(id)
+        on delete set null,
+
+    tipo_servico text,
+
+    aparelho text,
+
+    marca text,
+
+    modelo text,
+
+    defeito text,
+
+    diagnostico text,
+
+    servico_realizado text,
+
+    valor numeric(12,2) not null default 0
+        check (valor >= 0),
+
+    desconto numeric(12,2) not null default 0
+        check (desconto >= 0),
+
+    valor_total numeric(12,2)
+        generated always as (greatest(valor - desconto, 0)) stored,
+
+    status text not null default 'aberta'
+        check (
+            status in (
+                'aberta',
+                'aguardando',
+                'em_andamento',
+                'aguardando_peca',
+                'concluida',
+                'entregue',
+                'cancelada'
+            )
+        ),
+
+    prioridade text not null default 'normal'
+        check (
+            prioridade in (
+                'baixa',
+                'normal',
+                'alta',
+                'urgente'
+            )
+        ),
+
+    data_entrada timestamptz not null default now(),
+
+    data_conclusao timestamptz,
+
+    observacoes text,
+
+    criado_em timestamptz not null default now(),
+
+    atualizado_em timestamptz not null default now()
+);
+
+
+-- ============================================================
+-- 8. AGENDAMENTOS
+-- ============================================================
+
+create table public.agendamentos (
+
+    id uuid primary key default gen_random_uuid(),
+
+    codigo text not null unique
+        default (
+            'WS-AGE-' ||
+            lpad(nextval('public.seq_agendamento')::text, 6, '0')
+        ),
+
+    cliente_id uuid not null
+        references public.clientes(id)
+        on delete restrict,
+
+    os_id uuid
+        references public.ordens_servico(id)
+        on delete set null,
+
+    data date not null,
+
+    hora time not null,
+
+    servico text not null,
+
+    status text not null default 'agendado'
+        check (
+            status in (
+                'agendado',
+                'confirmado',
+                'em_atendimento',
+                'concluido',
+                'cancelado',
+                'faltou'
+            )
+        ),
+
+    observacoes text,
+
+    criado_em timestamptz not null default now(),
+
+    atualizado_em timestamptz not null default now()
+);
+
+
+-- ============================================================
+-- 9. PRODUTOS / PEÇAS
+-- ============================================================
+
+create table public.produtos (
+
+    id uuid primary key default gen_random_uuid(),
+
+    codigo text not null unique
+        default (
+            'WS-PRO-' ||
+            lpad(nextval('public.seq_produto')::text, 6, '0')
+        ),
+
+    nome text not null,
+
+    categoria text,
+
+    descricao text,
+
+    unidade text not null default 'un',
+
+    estoque_atual numeric(12,3) not null default 0
+        check (estoque_atual >= 0),
+
+    estoque_minimo numeric(12,3) not null default 0
+        check (estoque_minimo >= 0),
+
+    custo numeric(12,2) not null default 0
+        check (custo >= 0),
+
+    preco_venda numeric(12,2) not null default 0
+        check (preco_venda >= 0),
+
+    status text not null default 'ativo'
+        check (status in ('ativo', 'inativo')),
+
+    criado_em timestamptz not null default now(),
+
+    atualizado_em timestamptz not null default now()
+);
+
+
+-- ============================================================
+-- 10. MOVIMENTAÇÕES DE ESTOQUE
+-- ============================================================
+
+create table public.estoque_movimentacoes (
+
+    id uuid primary key default gen_random_uuid(),
+
+    codigo text not null unique
+        default (
+            'WS-EST-' ||
+            lpad(nextval('public.seq_estoque')::text, 6, '0')
+        ),
+
+    produto_id uuid not null
+        references public.produtos(id)
+        on delete restrict,
+
+    os_id uuid
+        references public.ordens_servico(id)
+        on delete set null,
+
+    tipo text not null
+        check (tipo in ('entrada', 'saida', 'ajuste')),
+
+    quantidade numeric(12,3) not null
+        check (quantidade > 0),
+
+    motivo text,
+
+    criado_em timestamptz not null default now()
+);
+
+
+-- ============================================================
+-- 11. FINANCEIRO
+-- ============================================================
+
+create table public.financeiro (
+
+    id uuid primary key default gen_random_uuid(),
+
+    codigo text not null unique
+        default (
+            'WS-FIN-' ||
+            lpad(nextval('public.seq_financeiro')::text, 6, '0')
+        ),
+
+    cliente_id uuid
+        references public.clientes(id)
+        on delete set null,
+
+    os_id uuid
+        references public.ordens_servico(id)
+        on delete set null,
+
+    tipo text not null
+        check (tipo in ('entrada', 'saida')),
+
+    categoria text not null,
+
+    descricao text not null,
+
+    valor numeric(12,2) not null
+        check (valor > 0),
+
+    forma_pagamento text,
+
+    data date not null default current_date,
+
+    status text not null default 'confirmado'
+        check (
+            status in (
+                'pendente',
+                'confirmado',
+                'cancelado'
+            )
+        ),
+
+    observacoes text,
+
+    criado_em timestamptz not null default now(),
+
+    atualizado_em timestamptz not null default now()
+);
+
+
+-- ============================================================
+-- 12. PAGAMENTOS
+-- ============================================================
+
+create table public.pagamentos (
+
+    id uuid primary key default gen_random_uuid(),
+
+    codigo text not null unique
+        default (
+            'WS-PAG-' ||
+            lpad(nextval('public.seq_pagamento')::text, 6, '0')
+        ),
+
+    cliente_id uuid
+        references public.clientes(id)
+        on delete set null,
+
+    os_id uuid
+        references public.ordens_servico(id)
+        on delete set null,
+
+    financeiro_id uuid
+        references public.financeiro(id)
+        on delete set null,
+
+    valor numeric(12,2) not null
+        check (valor > 0),
+
+    forma_pagamento text not null,
+
+    data_pagamento timestamptz not null default now(),
+
+    status text not null default 'confirmado'
+        check (
+            status in (
+                'pendente',
+                'confirmado',
+                'cancelado'
+            )
+        ),
+
+    observacoes text,
+
+    criado_em timestamptz not null default now()
+);
+
+
+-- ============================================================
+-- 13. USUÁRIOS DO SISTEMA
+-- ============================================================
+
+create table public.usuarios (
+
+    id uuid primary key default gen_random_uuid(),
+
+    codigo text not null unique
+        default (
+            'WS-USR-' ||
+            lpad(nextval('public.seq_usuario')::text, 6, '0')
+        ),
+
+    auth_id uuid unique,
+
+    nome text not null,
+
+    email text,
+
+    perfil text not null default 'atendimento'
+        check (
+            perfil in (
+                'admin',
+                'gerente',
+                'atendimento',
+                'tecnico',
+                'financeiro'
+            )
+        ),
+
+    status text not null default 'ativo'
+        check (status in ('ativo', 'inativo')),
+
+    criado_em timestamptz not null default now(),
+
+    atualizado_em timestamptz not null default now()
+);
+
+
+-- ============================================================
+-- 14. TAREFAS
+-- ============================================================
+
+create table public.tarefas (
+
+    id uuid primary key default gen_random_uuid(),
+
+    codigo text not null unique
+        default (
+            'WS-TAR-' ||
+            lpad(nextval('public.seq_tarefa')::text, 6, '0')
+        ),
+
+    usuario_id uuid
+        references public.usuarios(id)
+        on delete set null,
+
+    cliente_id uuid
+        references public.clientes(id)
+        on delete set null,
+
+    os_id uuid
+        references public.ordens_servico(id)
+        on delete set null,
+
+    titulo text not null,
+
+    descricao text,
+
+    prioridade text not null default 'normal'
+        check (
+            prioridade in (
+                'baixa',
+                'normal',
+                'alta',
+                'urgente'
+            )
+        ),
+
+    status text not null default 'pendente'
+        check (
+            status in (
+                'pendente',
+                'em_andamento',
+                'concluida',
+                'cancelada'
+            )
+        ),
+
+    prazo timestamptz,
+
+    criado_em timestamptz not null default now(),
+
+    atualizado_em timestamptz not null default now()
+);
+
+
+-- ============================================================
+-- 15. ANEXOS
+-- ============================================================
+
+create table public.anexos (
+
+    id uuid primary key default gen_random_uuid(),
+
+    codigo text not null unique
+        default (
+            'WS-ANX-' ||
+            lpad(nextval('public.seq_anexo')::text, 6, '0')
+        ),
+
+    cliente_id uuid
+        references public.clientes(id)
+        on delete cascade,
+
+    os_id uuid
+        references public.ordens_servico(id)
+        on delete cascade,
+
+    nome_arquivo text not null,
+
+    caminho_arquivo text not null,
+
+    tipo_arquivo text,
+
+    tamanho bigint,
+
+    criado_em timestamptz not null default now()
+);
+
+
+-- ============================================================
+-- 16. NOTIFICAÇÕES
+-- ============================================================
+
+create table public.notificacoes (
+
+    id uuid primary key default gen_random_uuid(),
+
+    codigo text not null unique
+        default (
+            'WS-NOT-' ||
+            lpad(nextval('public.seq_notificacao')::text, 6, '0')
+        ),
+
+    usuario_id uuid
+        references public.usuarios(id)
+        on delete cascade,
+
+    titulo text not null,
+
+    mensagem text not null,
+
+    tipo text not null default 'info'
+        check (
+            tipo in (
+                'info',
+                'sucesso',
+                'alerta',
+                'erro'
+            )
+        ),
+
+    lida boolean not null default false,
+
+    criado_em timestamptz not null default now()
+);
+
+
+-- ============================================================
+-- 17. HISTÓRICO / AUDITORIA
+-- ============================================================
+
+create table public.historico (
+
+    id uuid primary key default gen_random_uuid(),
+
+    codigo text not null unique
+        default (
+            'WS-HIS-' ||
+            lpad(nextval('public.seq_historico')::text, 6, '0')
+        ),
+
+    usuario_id uuid
+        references public.usuarios(id)
+        on delete set null,
+
+    cliente_id uuid
+        references public.clientes(id)
+        on delete set null,
+
+    os_id uuid
+        references public.ordens_servico(id)
+        on delete set null,
+
+    tabela text not null,
+
+    registro_id uuid,
+
+    acao text not null,
+
+    descricao text,
+
+    dados_anteriores jsonb,
+
+    dados_novos jsonb,
+
+    criado_em timestamptz not null default now()
+);
+
+
+-- ============================================================
+-- 18. CONFIGURAÇÕES
+-- ============================================================
+
+create table public.configuracoes (
+
+    id uuid primary key default gen_random_uuid(),
+
+    chave text not null unique,
+
+    valor text,
+
+    descricao text,
+
+    atualizado_em timestamptz not null default now()
+);
+
+
+-- ============================================================
+-- 19. ÍNDICES
+-- ============================================================
+
+create index if not exists idx_clientes_nome
+on public.clientes(nome);
+
+create index if not exists idx_clientes_whatsapp
+on public.clientes(whatsapp);
+
+create index if not exists idx_clientes_codigo
+on public.clientes(codigo);
+
+
+create index if not exists idx_equipamentos_cliente
+on public.equipamentos(cliente_id);
+
+
+create index if not exists idx_orcamentos_cliente
+on public.orcamentos(cliente_id);
+
+create index if not exists idx_orcamentos_status
+on public.orcamentos(status);
+
+
+create index if not exists idx_os_cliente
+on public.ordens_servico(cliente_id);
+
+create index if not exists idx_os_status
+on public.ordens_servico(status);
+
+create index if not exists idx_os_codigo
+on public.ordens_servico(codigo);
+
+
+create index if not exists idx_agendamentos_cliente
+on public.agendamentos(cliente_id);
+
+create index if not exists idx_agendamentos_data
+on public.agendamentos(data);
+
+create index if not exists idx_agendamentos_status
+on public.agendamentos(status);
+
+
+create index if not exists idx_produtos_nome
+on public.produtos(nome);
+
+
+create index if not exists idx_estoque_produto
+on public.estoque_movimentacoes(produto_id);
+
+
+create index if not exists idx_financeiro_data
+on public.financeiro(data);
+
+create index if not exists idx_financeiro_tipo
+on public.financeiro(tipo);
+
+create index if not exists idx_financeiro_cliente
+on public.financeiro(cliente_id);
+
+
+create index if not exists idx_pagamentos_cliente
+on public.pagamentos(cliente_id);
+
+create index if not exists idx_pagamentos_os
+on public.pagamentos(os_id);
+
+
+create index if not exists idx_tarefas_usuario
+on public.tarefas(usuario_id);
+
+create index if not exists idx_tarefas_status
+on public.tarefas(status);
+
+
+create index if not exists idx_historico_cliente
+on public.historico(cliente_id);
+
+create index if not exists idx_historico_os
+on public.historico(os_id);
+
+create index if not exists idx_historico_data
+on public.historico(criado_em);
+
+
+-- ============================================================
+-- 20. TRIGGERS updated_at
+-- ============================================================
+
+create trigger trg_clientes_updated
+before update on public.clientes
+for each row
+execute function public.atualizar_updated_at();
+
+
+create trigger trg_equipamentos_updated
+before update on public.equipamentos
+for each row
+execute function public.atualizar_updated_at();
+
+
+create trigger trg_orcamentos_updated
+before update on public.orcamentos
+for each row
+execute function public.atualizar_updated_at();
+
+
+create trigger trg_os_updated
+before update on public.ordens_servico
+for each row
+execute function public.atualizar_updated_at();
+
+
+create trigger trg_agendamentos_updated
+before update on public.agendamentos
+for each row
+execute function public.atualizar_updated_at();
+
+
+create trigger trg_produtos_updated
+before update on public.produtos
+for each row
+execute function public.atualizar_updated_at();
+
+
+create trigger trg_financeiro_updated
+before update on public.financeiro
+for each row
+execute function public.atualizar_updated_at();
+
+
+create trigger trg_usuarios_updated
+before update on public.usuarios
+for each row
+execute function public.atualizar_updated_at();
+
+
+create trigger trg_tarefas_updated
+before update on public.tarefas
+for each row
+execute function public.atualizar_updated_at();
+
+
+create trigger trg_configuracoes_updated
+before update on public.configuracoes
+for each row
+execute function public.atualizar_updated_at();
+
+
+-- ============================================================
+-- 21. CONFIGURAÇÕES INICIAIS
+-- ============================================================
+
+insert into public.configuracoes
+(chave, valor, descricao)
+values
+('empresa_nome', 'WS SOLUÇÕES', 'Nome da empresa'),
+('empresa_whatsapp', '', 'WhatsApp principal'),
+('empresa_email', '', 'E-mail principal'),
+('empresa_endereco', '', 'Endereço da empresa'),
+('horario_inicio', '08:00', 'Horário inicial de atendimento'),
+('horario_fim', '15:00', 'Horário final de atendimento')
+on conflict (chave) do nothing;
+
+
+-- ============================================================
+-- FIM DA V1
+-- ============================================================
