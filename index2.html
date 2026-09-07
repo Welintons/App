@@ -1,47 +1,82 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
 
     <title>WS SOLUÇÕES — Painel</title>
 
     <link rel="stylesheet" href="css/style.css">
+
 </head>
+
 
 <body>
 
-    <!-- =========================
+
+    <!-- =====================================================
          CABEÇALHO
-    ========================== -->
+    ====================================================== -->
+
     <header class="topbar">
 
         <div class="brand">
-            <div class="brand-logo">WS</div>
+
+            <div class="brand-logo">
+                WS
+            </div>
 
             <div class="brand-info">
-                <strong>WS SOLUÇÕES</strong>
-                <span>Painel administrativo</span>
+
+                <strong>
+                    WS SOLUÇÕES
+                </strong>
+
+                <span>
+                    Painel administrativo
+                </span>
+
             </div>
+
         </div>
 
-        <button id="themeToggle" class="theme-btn" aria-label="Alterar tema">
+
+        <button
+            id="themeToggle"
+            class="theme-btn"
+            aria-label="Alterar tema">
+
             ☾
+
         </button>
 
     </header>
 
 
-    <!-- =========================
+
+    <!-- =====================================================
          CONTEÚDO PRINCIPAL
-    ========================== -->
+    ====================================================== -->
+
     <main class="container">
 
-        <!-- Boas-vindas -->
+
+        <!-- =================================================
+             BOAS-VINDAS
+        ================================================== -->
+
         <section class="welcome">
 
             <div>
-                <span class="section-label">PAINEL PRINCIPAL</span>
+
+                <span class="section-label">
+                    PAINEL PRINCIPAL
+                </span>
 
                 <h1>
                     Olá, Wellington 👋
@@ -50,84 +85,145 @@
                 <p>
                     Tudo que você precisa da sua empresa em um só lugar.
                 </p>
+
             </div>
 
         </section>
 
 
-        <!-- =========================
+
+        <!-- =================================================
              RESUMO
-        ========================== -->
+        ================================================== -->
+
         <section class="summary-grid">
 
-            <div class="summary-card">
+
+            <div
+                class="summary-card"
+                data-summary="clientes">
 
                 <div class="summary-icon">
                     👥
                 </div>
 
                 <div>
-                    <span>CLIENTES</span>
-                    <strong id="totalClientes">0</strong>
+
+                    <span>
+                        CLIENTES
+                    </span>
+
+                    <strong id="totalClientes">
+                        0
+                    </strong>
+
                 </div>
 
             </div>
 
 
-            <div class="summary-card">
+
+            <div
+                class="summary-card"
+                data-summary="os">
 
                 <div class="summary-icon">
                     🛠
                 </div>
 
                 <div>
-                    <span>OS ABERTAS</span>
-                    <strong id="osAbertas">0</strong>
+
+                    <span>
+                        OS ABERTAS
+                    </span>
+
+                    <strong id="osAbertas">
+                        0
+                    </strong>
+
                 </div>
 
             </div>
 
 
-            <div class="summary-card">
+
+            <div
+                class="summary-card"
+                data-summary="agenda">
 
                 <div class="summary-icon">
                     📅
                 </div>
 
                 <div>
-                    <span>AGENDA HOJE</span>
-                    <strong id="agendaHoje">0</strong>
+
+                    <span>
+                        AGENDA HOJE
+                    </span>
+
+                    <strong id="agendaHoje">
+                        0
+                    </strong>
+
                 </div>
 
             </div>
+
 
         </section>
 
 
-        <!-- =========================
+
+        <!-- =================================================
              ACESSO RÁPIDO
-        ========================== -->
+        ================================================== -->
+
         <section class="section">
 
+
             <div class="section-header">
+
                 <div>
-                    <span class="section-label">ACESSO RÁPIDO</span>
-                    <h2>Módulos</h2>
+
+                    <span class="section-label">
+                        ACESSO RÁPIDO
+                    </span>
+
+                    <h2>
+                        Módulos
+                    </h2>
+
                 </div>
+
             </div>
+
 
 
             <div class="modules-grid">
 
-                <button class="module-card" data-module="clientes">
+
+                <!-- CLIENTES -->
+
+                <button
+                    type="button"
+                    class="module-card"
+                    data-module="clientes"
+                    data-page="clientes.html">
 
                     <div class="module-icon">
                         👥
                     </div>
 
                     <div class="module-content">
-                        <strong>Clientes</strong>
-                        <span>Cadastro e histórico</span>
+
+                        <strong>
+                            Clientes
+                        </strong>
+
+                        <span>
+                            Cadastro e histórico
+                        </span>
+
                     </div>
 
                     <div class="module-arrow">
@@ -137,15 +233,29 @@
                 </button>
 
 
-                <button class="module-card" data-module="os">
+
+                <!-- ORDENS DE SERVIÇO -->
+
+                <button
+                    type="button"
+                    class="module-card"
+                    data-module="os"
+                    data-page="os.html">
 
                     <div class="module-icon">
                         🛠
                     </div>
 
                     <div class="module-content">
-                        <strong>Ordens de Serviço</strong>
-                        <span>Serviços e equipamentos</span>
+
+                        <strong>
+                            Ordens de Serviço
+                        </strong>
+
+                        <span>
+                            Serviços e equipamentos
+                        </span>
+
                     </div>
 
                     <div class="module-arrow">
@@ -155,15 +265,29 @@
                 </button>
 
 
-                <button class="module-card" data-module="agenda">
+
+                <!-- AGENDA -->
+
+                <button
+                    type="button"
+                    class="module-card"
+                    data-module="agenda"
+                    data-page="agenda.html">
 
                     <div class="module-icon">
                         📅
                     </div>
 
                     <div class="module-content">
-                        <strong>Agenda</strong>
-                        <span>Serviços e compromissos</span>
+
+                        <strong>
+                            Agenda
+                        </strong>
+
+                        <span>
+                            Serviços e compromissos
+                        </span>
+
                     </div>
 
                     <div class="module-arrow">
@@ -173,15 +297,29 @@
                 </button>
 
 
-                <button class="module-card" data-module="financeiro">
+
+                <!-- FINANCEIRO -->
+
+                <button
+                    type="button"
+                    class="module-card"
+                    data-module="financeiro"
+                    data-page="financeiro.html">
 
                     <div class="module-icon">
                         💰
                     </div>
 
                     <div class="module-content">
-                        <strong>Financeiro</strong>
-                        <span>Entradas e saídas</span>
+
+                        <strong>
+                            Financeiro
+                        </strong>
+
+                        <span>
+                            Entradas e saídas
+                        </span>
+
                     </div>
 
                     <div class="module-arrow">
@@ -190,24 +328,36 @@
 
                 </button>
 
+
             </div>
 
         </section>
 
 
-        <!-- =========================
+
+        <!-- =================================================
              ATIVIDADE
-        ========================== -->
+        ================================================== -->
+
         <section class="activity-section">
+
 
             <div class="section-header">
 
                 <div>
-                    <span class="section-label">ATIVIDADE</span>
-                    <h2>Atividade recente</h2>
+
+                    <span class="section-label">
+                        ATIVIDADE
+                    </span>
+
+                    <h2>
+                        Atividade recente
+                    </h2>
+
                 </div>
 
             </div>
+
 
 
             <div class="activity-empty">
@@ -226,23 +376,39 @@
 
             </div>
 
+
         </section>
+
 
     </main>
 
 
-    <!-- =========================
+
+    <!-- =====================================================
          NOTIFICAÇÃO
-    ========================== -->
-    <div id="toast" class="toast">
+    ====================================================== -->
+
+    <div
+        id="toast"
+        class="toast">
+
         <span id="toastMessage"></span>
+
     </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="js/supabase.js"></script>
-<script src="js/app.js"></script>
 
-    <!-- JAVASCRIPT -->
-    
+
+    <!-- =====================================================
+         SCRIPTS
+    ====================================================== -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="js/supabase.js"></script>
+
+    <script src="js/app.js"></script>
+
+
 </body>
+
 </html>
