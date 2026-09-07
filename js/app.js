@@ -223,69 +223,31 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    /* =====================================================
-       MÓDULOS
-    ===================================================== */
+    /* /* =====================================================
+   MÓDULOS
+===================================================== */
 
-    moduleCards.forEach(card => {
+moduleCards.forEach(card => {
 
-        card.addEventListener("click", () => {
+    card.addEventListener("click", () => {
 
-            const modulo =
-                card.dataset.module;
+        const pagina = card.dataset.page;
+        const modulo = card.dataset.module;
 
-            switch (modulo) {
+        if (pagina) {
 
-                case "clientes":
+            window.location.href = pagina;
 
-                    mostrarToast(
-                        "Clientes — em desenvolvimento"
-                    );
+            return;
+        }
 
-                    break;
-
-
-                case "os":
-
-                    mostrarToast(
-                        "Ordens de Serviço — em desenvolvimento"
-                    );
-
-                    break;
-
-
-                case "agenda":
-
-                    mostrarToast(
-                        "Agenda — em desenvolvimento"
-                    );
-
-                    break;
-
-
-                case "financeiro":
-
-                    mostrarToast(
-                        "Financeiro — em desenvolvimento"
-                    );
-
-                    break;
-
-
-                default:
-
-                    mostrarToast(
-                        "Módulo não encontrado"
-                    );
-
-            }
-
-        });
+        mostrarToast(
+            "Módulo não configurado: " + modulo
+        );
 
     });
 
-
-    /* =====================================================
+}); =====================================================
        INICIALIZAÇÃO
     ===================================================== */
 
