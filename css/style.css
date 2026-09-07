@@ -1,0 +1,878 @@
+/* =========================================================
+   WS SOLUÇÕES — STYLE.CSS
+   Painel principal
+========================================================= */
+
+
+/* =========================================================
+   VARIÁVEIS
+========================================================= */
+
+:root {
+    --roxo: #7c3aed;
+    --roxo-escuro: #5b21b6;
+    --roxo-claro: #ede9fe;
+
+    --fundo: #f5f5f7;
+    --card: #ffffff;
+    --texto: #18181b;
+    --texto-secundario: #71717a;
+    --borda: #e4e4e7;
+
+    --sucesso: #16a34a;
+    --perigo: #dc2626;
+
+    --sombra: 0 8px 30px rgba(0, 0, 0, 0.05);
+    --raio: 18px;
+
+    --transicao: 0.25s ease;
+}
+
+
+/* =========================================================
+   MODO NOTURNO
+========================================================= */
+
+body.dark {
+    --fundo: #09090b;
+    --card: #18181b;
+    --texto: #f4f4f5;
+    --texto-secundario: #a1a1aa;
+    --borda: #27272a;
+
+    --roxo-claro: #2e1065;
+
+    --sombra: 0 8px 30px rgba(0, 0, 0, 0.25);
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+html {
+    scroll-behavior: smooth;
+}
+
+
+body {
+    min-height: 100vh;
+
+    font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    background: var(--fundo);
+    color: var(--texto);
+
+    transition:
+        background var(--transicao),
+        color var(--transicao);
+}
+
+
+button {
+    font-family: inherit;
+}
+
+
+/* =========================================================
+   TOPBAR
+========================================================= */
+
+.topbar {
+    width: 100%;
+
+    min-height: 76px;
+
+    padding: 0 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background: var(--card);
+
+    border-bottom: 1px solid var(--borda);
+
+    transition:
+        background var(--transicao),
+        border-color var(--transicao);
+}
+
+
+/* =========================================================
+   MARCA
+========================================================= */
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+
+.brand-logo {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: linear-gradient(
+        135deg,
+        var(--roxo),
+        var(--roxo-escuro)
+    );
+
+    color: #ffffff;
+
+    font-size: 14px;
+    font-weight: 900;
+
+    letter-spacing: -0.5px;
+
+    box-shadow:
+        0 6px 15px rgba(124, 58, 237, 0.25);
+}
+
+
+.brand-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+
+.brand-info strong {
+    font-size: 14px;
+    font-weight: 800;
+
+    letter-spacing: 0.3px;
+}
+
+
+.brand-info span {
+    font-size: 11px;
+
+    color: var(--texto-secundario);
+}
+
+
+/* =========================================================
+   BOTÃO TEMA
+========================================================= */
+
+.theme-btn {
+    width: 42px;
+    height: 42px;
+
+    border: 1px solid var(--borda);
+
+    border-radius: 12px;
+
+    background: var(--card);
+
+    color: var(--texto);
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 19px;
+
+    transition:
+        background var(--transicao),
+        border-color var(--transicao),
+        transform var(--transicao);
+}
+
+
+.theme-btn:hover {
+    border-color: var(--roxo);
+
+    transform: translateY(-2px);
+}
+
+
+.theme-btn:active {
+    transform: scale(0.95);
+}
+
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.container {
+    width: min(1180px, calc(100% - 40px));
+
+    margin: 0 auto;
+
+    padding: 42px 0 60px;
+}
+
+
+/* =========================================================
+   WELCOME
+========================================================= */
+
+.welcome {
+    margin-bottom: 30px;
+}
+
+
+.section-label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: var(--roxo);
+
+    font-size: 10px;
+    font-weight: 900;
+
+    letter-spacing: 1.5px;
+}
+
+
+.welcome h1 {
+    font-size: clamp(27px, 4vw, 38px);
+
+    line-height: 1.1;
+
+    letter-spacing: -1.2px;
+
+    margin-bottom: 9px;
+}
+
+
+.welcome p {
+    color: var(--texto-secundario);
+
+    font-size: 14px;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   RESUMO
+========================================================= */
+
+.summary-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 16px;
+
+    margin-bottom: 42px;
+}
+
+
+.summary-card {
+    min-height: 112px;
+
+    padding: 20px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 15px;
+
+    background: var(--card);
+
+    border: 1px solid var(--borda);
+
+    border-radius: var(--raio);
+
+    box-shadow: var(--sombra);
+
+    transition:
+        transform var(--transicao),
+        border-color var(--transicao),
+        background var(--transicao);
+}
+
+
+.summary-card:hover {
+    transform: translateY(-3px);
+
+    border-color: rgba(124, 58, 237, 0.35);
+}
+
+
+.summary-icon {
+    width: 48px;
+    height: 48px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    background: var(--roxo-claro);
+
+    font-size: 20px;
+}
+
+
+.summary-card > div:last-child {
+    display: flex;
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+
+.summary-card span {
+    color: var(--texto-secundario);
+
+    font-size: 10px;
+    font-weight: 800;
+
+    letter-spacing: 1px;
+}
+
+
+.summary-card strong {
+    font-size: 27px;
+
+    line-height: 1;
+
+    letter-spacing: -0.8px;
+}
+
+
+/* =========================================================
+   SEÇÕES
+========================================================= */
+
+.section {
+    margin-bottom: 42px;
+}
+
+
+.section-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    margin-bottom: 18px;
+}
+
+
+.section-header h2 {
+    font-size: 21px;
+
+    letter-spacing: -0.5px;
+}
+
+
+/* =========================================================
+   MÓDULOS
+========================================================= */
+
+.modules-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 14px;
+}
+
+
+.module-card {
+    width: 100%;
+
+    min-height: 92px;
+
+    padding: 17px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 15px;
+
+    text-align: left;
+
+    background: var(--card);
+
+    border: 1px solid var(--borda);
+
+    border-radius: var(--raio);
+
+    color: var(--texto);
+
+    cursor: pointer;
+
+    box-shadow: var(--sombra);
+
+    transition:
+        transform var(--transicao),
+        border-color var(--transicao),
+        background var(--transicao);
+}
+
+
+.module-card:hover {
+    transform: translateY(-3px);
+
+    border-color: rgba(124, 58, 237, 0.4);
+}
+
+
+.module-card:active {
+    transform: scale(0.985);
+}
+
+
+.module-icon {
+    width: 46px;
+    height: 46px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    background: var(--roxo-claro);
+
+    font-size: 19px;
+}
+
+
+.module-content {
+    min-width: 0;
+
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+
+.module-content strong {
+    font-size: 14px;
+
+    font-weight: 800;
+}
+
+
+.module-content span {
+    color: var(--texto-secundario);
+
+    font-size: 12px;
+}
+
+
+.module-arrow {
+    color: var(--texto-secundario);
+
+    font-size: 19px;
+
+    transition:
+        color var(--transicao),
+        transform var(--transicao);
+}
+
+
+.module-card:hover .module-arrow {
+    color: var(--roxo);
+
+    transform: translateX(3px);
+}
+
+
+/* =========================================================
+   ATIVIDADE
+========================================================= */
+
+.activity-section {
+    margin-top: 5px;
+}
+
+
+.activity-empty {
+    min-height: 220px;
+
+    padding: 35px 20px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    background: var(--card);
+
+    border: 1px dashed var(--borda);
+
+    border-radius: var(--raio);
+
+    transition:
+        background var(--transicao),
+        border-color var(--transicao);
+}
+
+
+.empty-icon {
+    width: 54px;
+    height: 54px;
+
+    margin-bottom: 14px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: var(--roxo-claro);
+
+    font-size: 21px;
+}
+
+
+.activity-empty strong {
+    margin-bottom: 6px;
+
+    font-size: 14px;
+}
+
+
+.activity-empty span {
+    max-width: 340px;
+
+    color: var(--texto-secundario);
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+.toast {
+    position: fixed;
+
+    left: 50%;
+
+    bottom: 25px;
+
+    z-index: 9999;
+
+    transform:
+        translate(-50%, 30px);
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    min-width: 220px;
+    max-width: calc(100% - 30px);
+
+    padding: 13px 18px;
+
+    background: #18181b;
+
+    color: #ffffff;
+
+    border-radius: 12px;
+
+    text-align: center;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.2);
+
+    transition:
+        opacity 0.25s ease,
+        transform 0.25s ease;
+}
+
+
+.toast.show {
+    opacity: 1;
+
+    transform:
+        translate(-50%, 0);
+}
+
+
+/* =========================================================
+   RESPONSIVIDADE — TABLET
+========================================================= */
+
+@media (max-width: 800px) {
+
+    .topbar {
+        padding: 0 20px;
+    }
+
+
+    .container {
+        width: min(100% - 30px, 700px);
+
+        padding-top: 32px;
+    }
+
+
+    .summary-grid {
+        grid-template-columns:
+            repeat(3, 1fr);
+
+        gap: 10px;
+    }
+
+
+    .summary-card {
+        padding: 15px;
+
+        gap: 10px;
+    }
+
+
+    .summary-icon {
+        width: 42px;
+        height: 42px;
+
+        border-radius: 12px;
+
+        font-size: 18px;
+    }
+
+
+    .summary-card strong {
+        font-size: 23px;
+    }
+
+
+    .modules-grid {
+        gap: 11px;
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVIDADE — CELULAR
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .topbar {
+        min-height: 68px;
+
+        padding: 0 15px;
+    }
+
+
+    .brand-logo {
+        width: 39px;
+        height: 39px;
+
+        border-radius: 11px;
+    }
+
+
+    .brand-info strong {
+        font-size: 13px;
+    }
+
+
+    .brand-info span {
+        font-size: 10px;
+    }
+
+
+    .theme-btn {
+        width: 39px;
+        height: 39px;
+
+        border-radius: 11px;
+    }
+
+
+    .container {
+        width: calc(100% - 24px);
+
+        padding: 28px 0 45px;
+    }
+
+
+    .welcome {
+        margin-bottom: 24px;
+    }
+
+
+    .welcome h1 {
+        font-size: 27px;
+    }
+
+
+    .welcome p {
+        font-size: 13px;
+    }
+
+
+    .summary-grid {
+        grid-template-columns: 1fr;
+
+        gap: 10px;
+
+        margin-bottom: 34px;
+    }
+
+
+    .summary-card {
+        min-height: 78px;
+
+        padding: 14px 16px;
+    }
+
+
+    .summary-icon {
+        width: 42px;
+        height: 42px;
+    }
+
+
+    .summary-card strong {
+        font-size: 22px;
+    }
+
+
+    .section {
+        margin-bottom: 34px;
+    }
+
+
+    .section-header {
+        margin-bottom: 14px;
+    }
+
+
+    .section-header h2 {
+        font-size: 19px;
+    }
+
+
+    .modules-grid {
+        grid-template-columns: 1fr;
+
+        gap: 10px;
+    }
+
+
+    .module-card {
+        min-height: 78px;
+
+        padding: 14px;
+    }
+
+
+    .module-icon {
+        width: 42px;
+        height: 42px;
+
+        border-radius: 12px;
+    }
+
+
+    .activity-empty {
+        min-height: 190px;
+
+        padding: 30px 15px;
+    }
+
+}
+
+
+/* =========================================================
+   CELULARES PEQUENOS
+========================================================= */
+
+@media (max-width: 360px) {
+
+    .brand-info span {
+        display: none;
+    }
+
+
+    .welcome h1 {
+        font-size: 24px;
+    }
+
+
+    .module-content strong {
+        font-size: 13px;
+    }
+
+
+    .module-content span {
+        font-size: 11px;
+    }
+
+}
+
+
+/* =========================================================
+   ACESSIBILIDADE
+========================================================= */
+
+button:focus-visible {
+    outline: 3px solid rgba(124, 58, 237, 0.3);
+
+    outline-offset: 2px;
+}
+
+
+/* =========================================================
+   REDUÇÃO DE MOVIMENTO
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+
+        transition-duration: 0.01ms !important;
+    }
+
+}
