@@ -223,7 +223,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    /* /* =====================================================
+ /* =====================================================
    MÓDULOS
 ===================================================== */
 
@@ -231,22 +231,34 @@ moduleCards.forEach(card => {
 
     card.addEventListener("click", () => {
 
-        const pagina = card.dataset.page;
         const modulo = card.dataset.module;
 
-        if (pagina) {
+        switch (modulo) {
 
-            window.location.href = pagina;
+            case "clientes":
+                window.location.href = "clientes.html";
+                break;
 
-            return;
+            case "os":
+                window.location.href = "os.html";
+                break;
+
+            case "agenda":
+                window.location.href = "agenda.html";
+                break;
+
+            case "financeiro":
+                window.location.href = "financeiro.html";
+                break;
+
+            default:
+                mostrarToast("Módulo não encontrado");
+
         }
-
-        mostrarToast(
-            "Módulo não configurado: " + modulo
-        );
 
     });
 
+});
 }); =====================================================
        INICIALIZAÇÃO
     ===================================================== */
