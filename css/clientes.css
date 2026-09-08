@@ -3,11 +3,6 @@
    CSS EXCLUSIVO DA PÁGINA
 ========================================================= */
 
-
-/* =========================================================
-   VARIÁVEIS
-========================================================= */
-
 :root {
     --roxo: #7c3aed;
     --roxo-escuro: #5b21b6;
@@ -60,11 +55,9 @@ body.dark {
     padding: 0;
 }
 
-
 html {
     scroll-behavior: smooth;
 }
-
 
 body {
     min-height: 100vh;
@@ -86,18 +79,15 @@ body {
         color var(--transicao);
 }
 
-
 button,
 input,
 textarea {
     font: inherit;
 }
 
-
 button {
     cursor: pointer;
 }
-
 
 input,
 textarea {
@@ -139,7 +129,6 @@ textarea {
     gap: 12px;
 }
 
-
 .brand-logo {
     width: 42px;
     height: 42px;
@@ -166,13 +155,11 @@ textarea {
         0 6px 15px rgba(124, 58, 237, 0.25);
 }
 
-
 .brand-info {
     display: flex;
     flex-direction: column;
     gap: 2px;
 }
-
 
 .brand-info strong {
     font-size: 14px;
@@ -180,7 +167,6 @@ textarea {
 
     color: var(--texto);
 }
-
 
 .brand-info span {
     font-size: 11px;
@@ -224,7 +210,6 @@ textarea {
     transition: var(--transicao);
 }
 
-
 .btn-back:hover {
     border-color: var(--roxo);
     color: var(--roxo);
@@ -255,7 +240,6 @@ textarea {
 
     transition: var(--transicao);
 }
-
 
 .theme-btn:hover {
     border-color: var(--roxo);
@@ -293,7 +277,6 @@ textarea {
     margin-bottom: 28px;
 }
 
-
 .section-label {
     display: block;
 
@@ -307,7 +290,6 @@ textarea {
     letter-spacing: 1.5px;
 }
 
-
 .page-header h1 {
     margin-bottom: 9px;
 
@@ -318,7 +300,6 @@ textarea {
 
     letter-spacing: -1.2px;
 }
-
 
 .page-header p {
     color: var(--texto-secundario);
@@ -362,14 +343,12 @@ textarea {
     transition: var(--transicao);
 }
 
-
 .btn-primary:hover {
     transform: translateY(-2px);
 
     box-shadow:
         0 9px 20px rgba(124, 58, 237, 0.28);
 }
-
 
 .btn-primary:active {
     transform: translateY(0);
@@ -410,7 +389,6 @@ textarea {
     width: 100%;
 }
 
-
 .search-box input {
     width: 100%;
 
@@ -433,11 +411,9 @@ textarea {
     transition: var(--transicao);
 }
 
-
 .search-box input::placeholder {
     color: var(--texto-secundario);
 }
-
 
 .search-box input:focus {
     border-color: var(--roxo);
@@ -462,7 +438,6 @@ textarea {
     margin-bottom: 20px;
 }
 
-
 .stat-card {
     padding: 20px;
 
@@ -477,14 +452,12 @@ textarea {
     transition: var(--transicao);
 }
 
-
 .stat-card:hover {
     transform: translateY(-3px);
 
     border-color:
         rgba(124, 58, 237, 0.35);
 }
-
 
 .stat-card span {
     display: block;
@@ -496,7 +469,6 @@ textarea {
     font-size: 12px;
     font-weight: 600;
 }
-
 
 .stat-card strong {
     color: var(--texto);
@@ -519,7 +491,6 @@ textarea {
 
     margin-bottom: 18px;
 }
-
 
 .section-title h2 {
     color: var(--texto);
@@ -563,7 +534,6 @@ textarea {
     transition: var(--transicao);
 }
 
-
 .client-item:hover {
     border-color:
         rgba(124, 58, 237, 0.35);
@@ -571,13 +541,11 @@ textarea {
     transform: translateY(-2px);
 }
 
-
 .client-main {
     min-width: 0;
 
     flex: 1;
 }
-
 
 .client-code {
     display: inline-block;
@@ -592,7 +560,6 @@ textarea {
     letter-spacing: 0.8px;
 }
 
-
 .client-name {
     margin-bottom: 5px;
 
@@ -606,7 +573,6 @@ textarea {
     white-space: nowrap;
 }
 
-
 .client-info {
     color: var(--texto-secundario);
 
@@ -614,7 +580,6 @@ textarea {
 
     line-height: 1.5;
 }
-
 
 .client-actions {
     display: flex;
@@ -624,7 +589,6 @@ textarea {
 
     flex-shrink: 0;
 }
-
 
 .client-action {
     min-width: 38px;
@@ -647,7 +611,6 @@ textarea {
     transition: var(--transicao);
 }
 
-
 .client-action:hover {
     border-color: var(--roxo);
 
@@ -667,7 +630,6 @@ textarea {
     text-align: center;
 }
 
-
 .empty-icon {
     width: 54px;
     height: 54px;
@@ -685,7 +647,6 @@ textarea {
     font-size: 24px;
 }
 
-
 .empty-state h3 {
     margin-bottom: 6px;
 
@@ -694,7 +655,6 @@ textarea {
     font-size: 15px;
     font-weight: 800;
 }
-
 
 .empty-state p {
     color: var(--texto-secundario);
@@ -718,7 +678,6 @@ textarea {
 
     font-size: 13px;
 }
-
 
 .clients-empty-icon {
     margin-bottom: 10px;
@@ -747,7 +706,9 @@ textarea {
 }
 
 
-.modal.active {
+/* CORRIGIDO: o JS usa a classe "show" */
+
+.modal.show {
     display: flex;
 }
 
@@ -817,14 +778,12 @@ textarea {
     margin-bottom: 24px;
 }
 
-
 .modal-header h2 {
     color: var(--texto);
 
     font-size: 21px;
     font-weight: 800;
 }
-
 
 .modal-close {
     width: 38px;
@@ -850,7 +809,6 @@ textarea {
     transition: var(--transicao);
 }
 
-
 .modal-close:hover {
     border-color: var(--perigo);
 
@@ -868,7 +826,6 @@ textarea {
     margin-bottom: 16px;
 }
 
-
 .form-group label {
     display: block;
 
@@ -879,7 +836,6 @@ textarea {
     font-size: 12px;
     font-weight: 700;
 }
-
 
 .form-group input,
 .form-group textarea {
@@ -900,13 +856,11 @@ textarea {
     transition: var(--transicao);
 }
 
-
 .form-group input {
     height: 44px;
 
     padding: 0 13px;
 }
-
 
 .form-group textarea {
     min-height: 100px;
@@ -918,14 +872,12 @@ textarea {
     line-height: 1.5;
 }
 
-
 .form-group input::placeholder,
 .form-group textarea::placeholder {
     color: var(--texto-secundario);
 
     opacity: 0.75;
 }
-
 
 .form-group input:focus,
 .form-group textarea:focus {
@@ -953,7 +905,6 @@ textarea {
     letter-spacing: 0.5px;
 }
 
-
 .client-code-field small {
     display: block;
 
@@ -978,7 +929,6 @@ textarea {
     gap: 14px;
 }
 
-
 .form-small {
     min-width: 0;
 }
@@ -1001,7 +951,6 @@ textarea {
     border-top: 1px solid var(--borda);
 }
 
-
 .btn-secondary {
     min-height: 44px;
 
@@ -1020,7 +969,6 @@ textarea {
 
     transition: var(--transicao);
 }
-
 
 .btn-secondary:hover {
     border-color: var(--roxo);
@@ -1074,7 +1022,6 @@ textarea {
         transform 0.25s ease;
 }
 
-
 .toast.show {
     opacity: 1;
 
@@ -1093,13 +1040,11 @@ textarea {
         padding: 0 20px;
     }
 
-
     .container {
         width: min(100% - 30px, 700px);
 
         padding-top: 32px;
     }
-
 
     .page-header {
         align-items: flex-start;
@@ -1116,7 +1061,6 @@ textarea {
         padding: 0 15px;
     }
 
-
     .brand-logo {
         width: 39px;
         height: 39px;
@@ -1124,16 +1068,13 @@ textarea {
         border-radius: 11px;
     }
 
-
     .brand-info strong {
         font-size: 13px;
     }
 
-
     .brand-info span {
         font-size: 10px;
     }
-
 
     .theme-btn,
     .btn-back {
@@ -1141,11 +1082,9 @@ textarea {
         height: 39px;
     }
 
-
     .theme-btn {
         width: 39px;
     }
-
 
     .btn-back {
         padding: 0 11px;
@@ -1153,13 +1092,11 @@ textarea {
         font-size: 12px;
     }
 
-
     .container {
         width: calc(100% - 24px);
 
         padding: 28px 0 45px;
     }
-
 
     .page-header {
         flex-direction: column;
@@ -1169,11 +1106,9 @@ textarea {
         margin-bottom: 22px;
     }
 
-
     .page-header .btn-primary {
         width: 100%;
     }
-
 
     .stats-grid {
         grid-template-columns: 1fr;
@@ -1181,11 +1116,9 @@ textarea {
         gap: 10px;
     }
 
-
     .stat-card {
         padding: 16px;
     }
-
 
     .card {
         padding: 16px;
@@ -1193,29 +1126,24 @@ textarea {
         border-radius: 16px;
     }
 
-
     .client-item {
         align-items: flex-start;
 
         padding: 14px;
     }
 
-
     .client-actions {
         gap: 5px;
     }
-
 
     .client-action {
         min-width: 36px;
         height: 36px;
     }
 
-
     .modal {
         padding: 12px;
     }
-
 
     .modal-content {
         max-height: calc(100vh - 24px);
@@ -1225,17 +1153,14 @@ textarea {
         border-radius: 18px;
     }
 
-
     .form-row {
         grid-template-columns: 1fr;
         gap: 0;
     }
 
-
     .modal-actions {
         flex-direction: column-reverse;
     }
-
 
     .modal-actions button {
         width: 100%;
@@ -1250,16 +1175,13 @@ textarea {
         display: none;
     }
 
-
     .page-header h1 {
         font-size: 24px;
     }
 
-
     .topbar-actions {
         gap: 6px;
     }
-
 
     .btn-back {
         padding: 0 9px;
