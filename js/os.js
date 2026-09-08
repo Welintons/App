@@ -19,25 +19,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const themeToggle = document.getElementById("themeToggle");
 
-    const btnFecharDetalhes =
-        document.getElementById("btnFecharDetalhes");
-
-    const btnEditarDetalhes =
-        document.getElementById("btnEditarDetalhes");
-
-    const btnExcluirDetalhes =
-        document.getElementById("btnExcluirDetalhes");
+    const btnFecharDetalhes = document.getElementById("btnFecharDetalhes");
+    const btnEditarDetalhes = document.getElementById("btnEditarDetalhes");
+    const btnExcluirDetalhes = document.getElementById("btnExcluirDetalhes");
 
 
-    /* =====================================================
-       VERIFICAÇÃO
-    ===================================================== */
-
-    console.log("WS SOLUÇÕES — OS.JS carregado");
-
-    console.log("Botão Nova OS:", btnNovaOS);
-    console.log("Modal OS:", modalOS);
-    console.log("Botão Tema:", themeToggle);
+    console.log("OS.js carregado");
+    console.log("Elementos:", {
+        btnNovaOS,
+        btnFecharModal,
+        btnCancelar,
+        modalOS,
+        modalDetalhesOS,
+        formOS,
+        buscaOS,
+        listaOS,
+        totalOS
+    });
 
 
     /* =====================================================
@@ -55,16 +53,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function mostrarToast(mensagem) {
 
-        const toast =
-            document.getElementById("toast");
+        const toast = document.getElementById("toast");
+        const toastMessage = document.getElementById("toastMessage");
 
-        const toastMessage =
-            document.getElementById("toastMessage");
-
-        if (!toast || !toastMessage) {
-            console.warn(mensagem);
-            return;
-        }
+        if (!toast || !toastMessage) return;
 
         toastMessage.textContent = mensagem;
 
@@ -77,108 +69,69 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       MODO ESCURO
+       MODO NOTURNO
     ===================================================== */
 
     function aplicarTema() {
 
-        const modo =
-            localStorage.getItem("ws_modo_noturno");
+        const modoNoturno =
+            localStorage.getItem("ws_modo_noturno") === "true";
 
-        if (modo === "dark") {
+        document.body.classList.toggle("dark", modoNoturno);
 
-            document.body.classList.add("dark");
-
-            if (themeToggle) {
-                themeToggle.textContent = "☀";
-            }
-
-        } else {
-
-            document.body.classList.remove("dark");
-
-            if (themeToggle) {
-                themeToggle.textContent = "☾";
-            }
+        if (themeToggle) {
+            themeToggle.textContent = modoNoturno ? "☀" : "☾";
         }
     }
 
+    aplicarTema();
 
     if (themeToggle) {
 
         themeToggle.addEventListener("click", () => {
 
-            document.body.classList.toggle("dark");
-
-            const ativado =
+            const modoAtual =
                 document.body.classList.contains("dark");
 
             localStorage.setItem(
                 "ws_modo_noturno",
-                ativado ? "dark" : "light"
+                String(!modoAtual)
             );
 
-            themeToggle.textContent =
-                ativado ? "☀" : "☾";
-
+            aplicarTema();
         });
-
     }
-
-
-    aplicarTema();
 
 
     /* =====================================================
        STATUS
     ===================================================== */
 
-    function textoStatus(status) {
-
-        const mapa = {
-
-            aberta: "Aberta",
-            aguardando: "Aguardando",
-            em_andamento: "Em andamento",
-            aguardando_peca: "Aguardando peça",
-            concluida: "Concluída",
-            entregue: "Entregue",
-            cancelada: "Cancelada"
-
-        };
-
-        return mapa[status] || status || "—";
-    }
-
-
-    function classeStatus(status) {
-
-        return "os-status-" +
-            String(status || "")
-                .toLowerCase()
-                .replace(/_/g, "-");
-    }
-
-
-    function textoPrioridade(prioridade) {
-
-        const mapa = {
-
-            baixa: "Baixa",
-            normal: "Normal",
-            alta: "Alta",
-            urgente: "Urgente"
-
-        };
-
-        return mapa[prioridade] ||
-            prioridade ||
-            "—";
-    }
+    const statusNomes = {
+        aberta: "Aberta",
+        aguardando: "Aguardando",
+        em_andamento: "Em andamento",
+        aguardando_peca: "Aguardando peça",
+        concluida: "Concluída",
+        entregue: "Entregue",
+        cancelada: "Cancelada"
+    };
 
 
     /* =====================================================
-       FORMATAÇÃO
+       PRIORIDADE
+    ===================================================== */
+
+    const prioridadeNomes = {
+        baixa: "Baixa",
+        normal: "Normal",
+        alta: "Alta",
+        urgente: "Urgente"
+    };
+
+
+    /* =====================================================
+       FORMATAÇÕES
     ===================================================== */
 
     function formatarMoeda(valor) {
@@ -195,13 +148,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function formatarData(data) {
 
-        if (!data) return "—";
+        if (!data) return "-";
 
-        const somenteData =
-            String(data).substring(0, 10);
-
-        const partes =
-            somenteData.split("-");
+        const partes = String(data)
+            .substring(0, 10)
+            .split("-");
 
         if (partes.length !== 3) {
             return data;
@@ -212,23 +163,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       CLIENTES
+       CARREGAR CLIENTES
+       
+       USA O CÓDIGO JÁ EXISTENTE NA TABELA CLIENTES.
+       
+       EXEMPLO:
+       CLI-000001 - João da Silva
     ===================================================== */
 
     async function carregarClientes() {
 
-        const selectCliente =
-            document.getElementById("cliente_id");
-
-        if (!selectCliente) return;
-
-        const { data, error } =
-            await supabaseClient
-                .from("clientes")
-                .select("id,codigo,nome")
-                .order("nome", {
-                    ascending: true
-                });
+        const { data, error } = await supabase
+            .from("clientes")
+            .select("id,codigo,nome")
+            .order("nome", {
+                ascending: true
+            });
 
         if (error) {
 
@@ -246,6 +196,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         clientes = data || [];
 
+        const selectCliente =
+            document.getElementById("cliente_id");
+
+        if (!selectCliente) return;
+
         selectCliente.innerHTML = `
             <option value="">
                 Selecione o cliente
@@ -259,27 +214,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
             option.value = cliente.id;
 
+            /*
+             * NÃO GERAMOS CÓDIGO AQUI.
+             * O código vem diretamente da tabela clientes.
+             */
+
             option.textContent =
-                `${cliente.codigo || ""} - ${cliente.nome}`;
+                `${cliente.codigo} - ${cliente.nome}`;
 
             selectCliente.appendChild(option);
-
         });
     }
 
 
     /* =====================================================
-       EQUIPAMENTOS
+       CARREGAR EQUIPAMENTOS DO CLIENTE
     ===================================================== */
 
-    async function carregarEquipamentos(clienteId = null) {
+    async function carregarEquipamentos(clienteId) {
 
-        const select =
+        const selectEquipamento =
             document.getElementById("equipamento_id");
 
-        if (!select) return;
+        if (!selectEquipamento) return;
 
-        select.innerHTML = `
+        selectEquipamento.innerHTML = `
             <option value="">
                 Selecione o equipamento
             </option>
@@ -287,20 +246,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!clienteId) return;
 
-        const { data, error } =
-            await supabaseClient
-                .from("equipamentos")
-                .select("id,nome,aparelho,marca,modelo")
-                .eq("cliente_id", clienteId)
-                .order("nome", {
-                    ascending: true
-                });
+        const { data, error } = await supabase
+            .from("equipamentos")
+            .select(
+                "id,nome,aparelho,marca,modelo"
+            )
+            .eq("cliente_id", clienteId)
+            .order("nome", {
+                ascending: true
+            });
 
         if (error) {
 
-            console.warn(
-                "Equipamentos não carregados:",
+            console.error(
+                "Erro ao carregar equipamentos:",
                 error
+            );
+
+            mostrarToast(
+                "Erro ao carregar equipamentos."
             );
 
             return;
@@ -311,91 +275,101 @@ document.addEventListener("DOMContentLoaded", () => {
             const option =
                 document.createElement("option");
 
-            option.value =
-                equipamento.id;
+            option.value = equipamento.id;
 
-            const nome =
+            let descricao =
                 equipamento.nome ||
                 equipamento.aparelho ||
                 "Equipamento";
 
-            const marca =
-                equipamento.marca || "";
+            if (
+                equipamento.marca ||
+                equipamento.modelo
+            ) {
 
-            const modelo =
-                equipamento.modelo || "";
+                descricao += " - ";
 
-            option.textContent =
-                [nome, marca, modelo]
-                    .filter(Boolean)
-                    .join(" - ");
+                descricao += [
+                    equipamento.marca,
+                    equipamento.modelo
+                ]
+                .filter(Boolean)
+                .join(" ");
+            }
 
-            select.appendChild(option);
+            option.textContent = descricao;
 
+            selectEquipamento.appendChild(option);
         });
     }
 
 
-    document
-        .getElementById("cliente_id")
-        ?.addEventListener(
+    /* =====================================================
+       EVENTO CLIENTE
+    ===================================================== */
+
+    const selectCliente =
+        document.getElementById("cliente_id");
+
+    if (selectCliente) {
+
+        selectCliente.addEventListener(
             "change",
-            event => {
+            () => {
 
                 carregarEquipamentos(
-                    event.target.value || null
+                    selectCliente.value
                 );
-
             }
         );
+    }
 
 
     /* =====================================================
-       CÓDIGO
+       GERAR PRÓXIMO CÓDIGO DA OS
     ===================================================== */
 
     function gerarProximoCodigo() {
 
-        let maior = 0;
+        let maiorNumero = 0;
 
         ordens.forEach(os => {
 
-            const codigo =
-                String(os.codigo || "");
+            if (!os.codigo) return;
 
             const match =
-                codigo.match(/OS-(\d+)/i);
+                String(os.codigo).match(
+                    /OS-(\d+)/
+                );
 
             if (match) {
 
                 const numero =
                     parseInt(match[1], 10);
 
-                if (numero > maior) {
-                    maior = numero;
+                if (numero > maiorNumero) {
+                    maiorNumero = numero;
                 }
             }
         });
 
-        return "WS-OS-" +
-            String(maior + 1).padStart(6, "0");
+        const proximo =
+            maiorNumero + 1;
+
+        return (
+            "WS-OS-" +
+            String(proximo).padStart(6, "0")
+        );
     }
 
 
     /* =====================================================
-       ABRIR NOVA OS
+       ABRIR MODAL OS
     ===================================================== */
 
     async function abrirModalOS(os = null) {
 
-        if (!modalOS || !formOS) {
-
-            console.error(
-                "Modal ou formulário da OS não encontrado."
-            );
-
-            return;
-        }
+        if (!modalOS || !formOS) return;
 
         await carregarClientes();
 
@@ -415,6 +389,10 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
 
+        /* =================================================
+           NOVA OS
+        ================================================= */
+
         if (!os) {
 
             formOS.reset();
@@ -425,8 +403,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             document.getElementById(
                 "codigo"
-            ).value =
-                gerarProximoCodigo();
+            ).value = gerarProximoCodigo();
 
             document.getElementById(
                 "status"
@@ -453,7 +430,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 "data_entrada"
             ).value = hoje;
 
-            await carregarEquipamentos(null);
+            const equipamento =
+                document.getElementById(
+                    "equipamento_id"
+                );
+
+            if (equipamento) {
+
+                equipamento.innerHTML = `
+                    <option value="">
+                        Selecione o equipamento
+                    </option>
+                `;
+            }
 
             const titulo =
                 document.getElementById(
@@ -464,96 +453,137 @@ document.addEventListener("DOMContentLoaded", () => {
                 titulo.textContent = "Nova OS";
             }
 
-        } else {
+            calcularValorTotal();
 
-            await preencherFormulario(os);
+            return;
+        }
 
-            const titulo =
-                document.getElementById(
-                    "modalTitulo"
-                );
 
-            if (titulo) {
-                titulo.textContent = "Editar OS";
-            }
+        /* =================================================
+           EDITAR OS
+        ================================================= */
+
+        preencherFormulario(os);
+
+        const titulo =
+            document.getElementById(
+                "modalTitulo"
+            );
+
+        if (titulo) {
+            titulo.textContent = "Editar OS";
         }
     }
 
 
     /* =====================================================
-       PREENCHER
+       PREENCHER FORMULÁRIO
     ===================================================== */
 
     async function preencherFormulario(os) {
 
-        const set = (id, valor) => {
+        document.getElementById(
+            "osId"
+        ).value = os.id || "";
 
-            const elemento =
-                document.getElementById(id);
+        document.getElementById(
+            "codigo"
+        ).value = os.codigo || "";
 
-            if (elemento) {
-                elemento.value =
-                    valor ?? "";
-            }
-        };
-
-        set("osId", os.id);
-        set("codigo", os.codigo);
-        set("cliente_id", os.cliente_id);
+        document.getElementById(
+            "cliente_id"
+        ).value = os.cliente_id || "";
 
         await carregarEquipamentos(
             os.cliente_id
         );
 
-        set(
-            "equipamento_id",
-            os.equipamento_id
-        );
+        document.getElementById(
+            "equipamento_id"
+        ).value =
+            os.equipamento_id || "";
 
-        set("tipo_servico", os.tipo_servico);
-        set("aparelho", os.aparelho);
-        set("marca", os.marca);
-        set("modelo", os.modelo);
+        document.getElementById(
+            "tipo_servico"
+        ).value =
+            os.tipo_servico || "";
 
-        set("defeito", os.defeito);
-        set("diagnostico", os.diagnostico);
-        set(
-            "servico_realizado",
-            os.servico_realizado
-        );
+        document.getElementById(
+            "aparelho"
+        ).value =
+            os.aparelho || "";
 
-        set("valor", os.valor);
-        set("desconto", os.desconto);
-        set("valor_total", os.valor_total);
+        document.getElementById(
+            "marca"
+        ).value =
+            os.marca || "";
 
-        set("status", os.status);
-        set("prioridade", os.prioridade);
+        document.getElementById(
+            "modelo"
+        ).value =
+            os.modelo || "";
 
-        set(
-            "data_entrada",
-            os.data_entrada
-                ? String(os.data_entrada)
-                    .substring(0, 10)
-                : ""
-        );
+        document.getElementById(
+            "defeito"
+        ).value =
+            os.defeito || "";
 
-        set(
-            "data_conclusao",
-            os.data_conclusao
-                ? String(os.data_conclusao)
-                    .substring(0, 10)
-                : ""
-        );
+        document.getElementById(
+            "diagnostico"
+        ).value =
+            os.diagnostico || "";
 
-        set(
-            "observacoes",
-            os.observacoes
-        );
+        document.getElementById(
+            "servico_realizado"
+        ).value =
+            os.servico_realizado || "";
+
+        document.getElementById(
+            "valor"
+        ).value =
+            os.valor ?? 0;
+
+        document.getElementById(
+            "desconto"
+        ).value =
+            os.desconto ?? 0;
+
+        document.getElementById(
+            "valor_total"
+        ).value =
+            os.valor_total ?? 0;
+
+        document.getElementById(
+            "status"
+        ).value =
+            os.status || "aberta";
+
+        document.getElementById(
+            "prioridade"
+        ).value =
+            os.prioridade || "normal";
+
+        document.getElementById(
+            "data_entrada"
+        ).value =
+            os.data_entrada || "";
+
+        document.getElementById(
+            "data_conclusao"
+        ).value =
+            os.data_conclusao || "";
+
+        document.getElementById(
+            "observacoes"
+        ).value =
+            os.observacoes || "";
+
+        calcularValorTotal();
     }
 
 
     /* =====================================================
-       FECHAR MODAL
+       FECHAR MODAL OS
     ===================================================== */
 
     function fecharModalOS() {
@@ -577,23 +607,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    /* =====================================================
-       BOTÃO NOVA OS
-    ===================================================== */
-
     if (btnNovaOS) {
 
         btnNovaOS.addEventListener(
             "click",
-            () => {
-                abrirModalOS();
-            }
-        );
-
-    } else {
-
-        console.error(
-            "btnNovaOS não encontrado."
+            () => abrirModalOS()
         );
     }
 
@@ -604,7 +622,6 @@ document.addEventListener("DOMContentLoaded", () => {
             "click",
             fecharModalOS
         );
-
     }
 
 
@@ -614,34 +631,31 @@ document.addEventListener("DOMContentLoaded", () => {
             "click",
             fecharModalOS
         );
-
     }
 
 
     /* =====================================================
-       FUNDO DO MODAL
+       FECHAR CLICANDO FORA
     ===================================================== */
 
-    modalOS?.addEventListener(
-        "click",
-        event => {
+    if (modalOS) {
 
-            if (
-                event.target ===
-                modalOS.querySelector(
-                    ".modal-overlay"
-                )
-            ) {
+        modalOS.addEventListener(
+            "click",
+            event => {
 
-                fecharModalOS();
+                if (
+                    event.target === modalOS
+                ) {
+                    fecharModalOS();
+                }
             }
-
-        }
-    );
+        );
+    }
 
 
     /* =====================================================
-       VALOR TOTAL
+       CALCULAR VALOR TOTAL
     ===================================================== */
 
     function calcularValorTotal() {
@@ -666,226 +680,271 @@ document.addEventListener("DOMContentLoaded", () => {
                 0
             );
 
-        const campo =
+        const campoTotal =
             document.getElementById(
                 "valor_total"
             );
 
-        if (campo) {
+        if (campoTotal) {
 
-            campo.value =
+            campoTotal.value =
                 total.toFixed(2);
         }
     }
 
 
-    document
-        .getElementById("valor")
-        ?.addEventListener(
-            "input",
-            calcularValorTotal
-        );
+    const campoValor =
+        document.getElementById("valor");
 
-    document
-        .getElementById("desconto")
-        ?.addEventListener(
+    const campoDesconto =
+        document.getElementById("desconto");
+
+
+    if (campoValor) {
+
+        campoValor.addEventListener(
             "input",
             calcularValorTotal
         );
+    }
+
+
+    if (campoDesconto) {
+
+        campoDesconto.addEventListener(
+            "input",
+            calcularValorTotal
+        );
+    }
 
 
     /* =====================================================
-       SALVAR
+       SALVAR OS
     ===================================================== */
 
-    formOS?.addEventListener(
-        "submit",
-        async event => {
+    if (formOS) {
 
-            event.preventDefault();
+        formOS.addEventListener(
+            "submit",
+            async event => {
 
-            const clienteId =
-                document.getElementById(
-                    "cliente_id"
-                )?.value || null;
+                event.preventDefault();
 
-            if (!clienteId) {
+                const clienteId =
+                    document.getElementById(
+                        "cliente_id"
+                    ).value;
+
+                if (!clienteId) {
+
+                    mostrarToast(
+                        "Selecione um cliente."
+                    );
+
+                    return;
+                }
+
+
+                const valor =
+                    parseFloat(
+                        document.getElementById(
+                            "valor"
+                        ).value
+                    ) || 0;
+
+
+                const desconto =
+                    parseFloat(
+                        document.getElementById(
+                            "desconto"
+                        ).value
+                    ) || 0;
+
+
+                const dados = {
+
+                    cliente_id:
+                        clienteId,
+
+                    equipamento_id:
+                        document.getElementById(
+                            "equipamento_id"
+                        ).value || null,
+
+                    orcamento_id:
+                        null,
+
+                    tipo_servico:
+                        document.getElementById(
+                            "tipo_servico"
+                        ).value || null,
+
+                    aparelho:
+                        document.getElementById(
+                            "aparelho"
+                        ).value || null,
+
+                    marca:
+                        document.getElementById(
+                            "marca"
+                        ).value || null,
+
+                    modelo:
+                        document.getElementById(
+                            "modelo"
+                        ).value || null,
+
+                    defeito:
+                        document.getElementById(
+                            "defeito"
+                        ).value || null,
+
+                    diagnostico:
+                        document.getElementById(
+                            "diagnostico"
+                        ).value || null,
+
+                    servico_realizado:
+                        document.getElementById(
+                            "servico_realizado"
+                        ).value || null,
+
+                    valor:
+                        valor,
+
+                    desconto:
+                        desconto,
+
+                    status:
+                        document.getElementById(
+                            "status"
+                        ).value,
+
+                    prioridade:
+                        document.getElementById(
+                            "prioridade"
+                        ).value,
+
+                    data_entrada:
+                        document.getElementById(
+                            "data_entrada"
+                        ).value || null,
+
+                    data_conclusao:
+                        document.getElementById(
+                            "data_conclusao"
+                        ).value || null,
+
+                    observacoes:
+                        document.getElementById(
+                            "observacoes"
+                        ).value || null
+                };
+
+
+                const osId =
+                    document.getElementById(
+                        "osId"
+                    ).value;
+
+
+                let resultado;
+
+
+                /* =========================================
+                   ATUALIZAR
+                ========================================= */
+
+                if (osId) {
+
+                    resultado =
+                        await supabase
+                            .from(
+                                "ordens_servico"
+                            )
+                            .update(dados)
+                            .eq(
+                                "id",
+                                osId
+                            )
+                            .select()
+                            .single();
+
+                }
+
+                /* =========================================
+                   INSERIR
+                ========================================= */
+
+                else {
+
+                    resultado =
+                        await supabase
+                            .from(
+                                "ordens_servico"
+                            )
+                            .insert(dados)
+                            .select()
+                            .single();
+                }
+
+
+                if (resultado.error) {
+
+                    console.error(
+                        "Erro ao salvar OS:",
+                        resultado.error
+                    );
+
+                    mostrarToast(
+                        resultado.error.message ||
+                        "Erro ao salvar OS."
+                    );
+
+                    return;
+                }
+
 
                 mostrarToast(
-                    "Selecione um cliente."
+                    osId
+                        ? "OS atualizada com sucesso!"
+                        : "OS criada com sucesso!"
                 );
 
-                return;
+
+                fecharModalOS();
+
+                await carregarOS();
             }
-
-            const valor =
-                parseFloat(
-                    document.getElementById(
-                        "valor"
-                    )?.value
-                ) || 0;
-
-            const desconto =
-                parseFloat(
-                    document.getElementById(
-                        "desconto"
-                    )?.value
-                ) || 0;
-
-
-            const dados = {
-
-                cliente_id:
-                    clienteId,
-
-                equipamento_id:
-                    document.getElementById(
-                        "equipamento_id"
-                    )?.value || null,
-
-                orcamento_id:
-                    null,
-
-                tipo_servico:
-                    document.getElementById(
-                        "tipo_servico"
-                    )?.value.trim() || null,
-
-                aparelho:
-                    document.getElementById(
-                        "aparelho"
-                    )?.value.trim() || null,
-
-                marca:
-                    document.getElementById(
-                        "marca"
-                    )?.value.trim() || null,
-
-                modelo:
-                    document.getElementById(
-                        "modelo"
-                    )?.value.trim() || null,
-
-                defeito:
-                    document.getElementById(
-                        "defeito"
-                    )?.value.trim() || null,
-
-                diagnostico:
-                    document.getElementById(
-                        "diagnostico"
-                    )?.value.trim() || null,
-
-                servico_realizado:
-                    document.getElementById(
-                        "servico_realizado"
-                    )?.value.trim() || null,
-
-                valor,
-                desconto,
-
-                status:
-                    document.getElementById(
-                        "status"
-                    )?.value || "aberta",
-
-                prioridade:
-                    document.getElementById(
-                        "prioridade"
-                    )?.value || "normal",
-
-                data_entrada:
-                    document.getElementById(
-                        "data_entrada"
-                    )?.value || null,
-
-                data_conclusao:
-                    document.getElementById(
-                        "data_conclusao"
-                    )?.value || null,
-
-                observacoes:
-                    document.getElementById(
-                        "observacoes"
-                    )?.value.trim() || null
-            };
-
-
-            const osId =
-                document.getElementById(
-                    "osId"
-                )?.value;
-
-
-            let resultado;
-
-
-            if (osId) {
-
-                resultado =
-                    await supabaseClient
-                        .from("ordens_servico")
-                        .update(dados)
-                        .eq("id", osId)
-                        .select()
-                        .single();
-
-            } else {
-
-                resultado =
-                    await supabaseClient
-                        .from("ordens_servico")
-                        .insert(dados)
-                        .select()
-                        .single();
-            }
-
-
-            if (resultado.error) {
-
-                console.error(
-                    "Erro ao salvar OS:",
-                    resultado.error
-                );
-
-                mostrarToast(
-                    "Erro ao salvar OS: " +
-                    resultado.error.message
-                );
-
-                return;
-            }
-
-
-            mostrarToast(
-                osId
-                    ? "OS atualizada com sucesso!"
-                    : "OS criada com sucesso!"
-            );
-
-            fecharModalOS();
-
-            await carregarOS();
-
-        }
-    );
+        );
+    }
 
 
     /* =====================================================
-       CARREGAR OS
+       CARREGAR ORDENS
     ===================================================== */
 
     async function carregarOS() {
 
         if (!listaOS) return;
 
+        listaOS.innerHTML = `
+            <div class="loading">
+                Carregando ordens...
+            </div>
+        `;
+
+
         const { data, error } =
-            await supabaseClient
+            await supabase
                 .from("ordens_servico")
                 .select("*")
-                .order("criado_em", {
-                    ascending: false
-                });
+                .order(
+                    "criado_em",
+                    {
+                        ascending: false
+                    }
+                );
 
 
         if (error) {
@@ -896,10 +955,14 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
             listaOS.innerHTML = `
-                <div class="os-loading">
-                    Erro ao carregar ordens de serviço.
+                <div class="empty">
+                    Erro ao carregar ordens.
                 </div>
             `;
+
+            mostrarToast(
+                "Erro ao carregar ordens."
+            );
 
             return;
         }
@@ -907,17 +970,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
         ordens = data || [];
 
+
         if (totalOS) {
+
             totalOS.textContent =
                 ordens.length;
         }
+
 
         renderizarOS();
     }
 
 
     /* =====================================================
-       RENDERIZAR
+       RENDERIZAR OS
     ===================================================== */
 
     function renderizarOS() {
@@ -925,9 +991,11 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!listaOS) return;
 
         const termo =
-            (buscaOS?.value || "")
-                .toLowerCase()
-                .trim();
+            String(
+                buscaOS?.value || ""
+            )
+            .trim()
+            .toLowerCase();
 
 
         const filtradas =
@@ -935,33 +1003,62 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 const cliente =
                     clientes.find(
-                        c =>
-                            c.id ===
-                            os.cliente_id
+                        cliente =>
+                            String(
+                                cliente.id
+                            ) ===
+                            String(
+                                os.cliente_id
+                            )
                     );
+
+
+                const nomeCliente =
+                    cliente?.nome || "";
+
+
+                const codigoCliente =
+                    cliente?.codigo || "";
+
+
+                const status =
+                    statusNomes[
+                        os.status
+                    ] || os.status || "";
+
 
                 const texto = [
 
                     os.codigo,
-                    cliente?.nome,
+
+                    nomeCliente,
+
+                    codigoCliente,
+
                     os.aparelho,
+
                     os.marca,
+
                     os.modelo,
-                    textoStatus(os.status)
+
+                    status
 
                 ]
-                    .filter(Boolean)
-                    .join(" ")
-                    .toLowerCase();
+                .filter(Boolean)
+                .join(" ")
+                .toLowerCase();
 
-                return texto.includes(termo);
+
+                return texto.includes(
+                    termo
+                );
             });
 
 
         if (!filtradas.length) {
 
             listaOS.innerHTML = `
-                <div class="os-loading">
+                <div class="empty">
                     Nenhuma ordem de serviço encontrada.
                 </div>
             `;
@@ -970,205 +1067,308 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        listaOS.innerHTML = "";
+        listaOS.innerHTML =
+            filtradas
+                .map(os => {
+
+                    const cliente =
+                        clientes.find(
+                            cliente =>
+                                String(
+                                    cliente.id
+                                ) ===
+                                String(
+                                    os.cliente_id
+                                )
+                        );
 
 
-        filtradas.forEach(os => {
+                    const nomeCliente =
+                        cliente?.nome ||
+                        "Cliente não encontrado";
 
-            const cliente =
-                clientes.find(
-                    c =>
-                        c.id ===
-                        os.cliente_id
+
+                    const codigoCliente =
+                        cliente?.codigo ||
+                        "";
+
+
+                    const nomeStatus =
+                        statusNomes[
+                            os.status
+                        ] ||
+                        os.status ||
+                        "-";
+
+
+                    return `
+                        <div
+                            class="os-item"
+                            data-id="${os.id}"
+                        >
+
+                            <div class="os-info">
+
+                                <strong>
+                                    ${os.codigo || "-"}
+                                </strong>
+
+                                <span>
+                                    ${codigoCliente
+                                        ? codigoCliente + " - "
+                                        : ""
+                                    }${nomeCliente}
+                                </span>
+
+                                <small>
+                                    ${os.aparelho || "-"}
+                                    ${os.marca
+                                        ? " • " + os.marca
+                                        : ""
+                                    }
+                                    ${os.modelo
+                                        ? " • " + os.modelo
+                                        : ""
+                                    }
+                                </small>
+
+                            </div>
+
+
+                            <div class="os-status">
+
+                                <span class="status-badge">
+                                    ${nomeStatus}
+                                </span>
+
+                            </div>
+
+                        </div>
+                    `;
+                })
+                .join("");
+
+
+        document
+            .querySelectorAll(".os-item")
+            .forEach(item => {
+
+                item.addEventListener(
+                    "click",
+                    () => {
+
+                        const id =
+                            item.dataset.id;
+
+                        const os =
+                            ordens.find(
+                                os =>
+                                    String(
+                                        os.id
+                                    ) ===
+                                    String(id)
+                            );
+
+                        if (os) {
+                            abrirDetalhesOS(os);
+                        }
+                    }
                 );
-
-
-            const item =
-                document.createElement("div");
-
-            item.className = "os-item";
-
-
-            item.innerHTML = `
-
-                <div class="os-main">
-
-                    <strong class="os-code">
-                        ${os.codigo || "—"}
-                    </strong>
-
-                    <span class="os-client">
-                        ${
-                            cliente?.nome ||
-                            "Cliente não encontrado"
-                        }
-                    </span>
-
-                    <span class="os-device">
-                        ${
-                            [
-                                os.aparelho,
-                                os.marca,
-                                os.modelo
-                            ]
-                            .filter(Boolean)
-                            .join(" • ") ||
-                            "Sem equipamento"
-                        }
-                    </span>
-
-                </div>
-
-                <span class="os-status ${classeStatus(os.status)}">
-                    ${textoStatus(os.status)}
-                </span>
-            `;
-
-
-            item.addEventListener(
-                "click",
-                () => abrirDetalhesOS(os)
-            );
-
-
-            listaOS.appendChild(item);
-
-        });
+            });
     }
 
 
-    buscaOS?.addEventListener(
-        "input",
-        renderizarOS
-    );
+    /* =====================================================
+       BUSCA
+    ===================================================== */
+
+    if (buscaOS) {
+
+        buscaOS.addEventListener(
+            "input",
+            renderizarOS
+        );
+    }
 
 
     /* =====================================================
-       DETALHES
+       ABRIR DETALHES
     ===================================================== */
 
     function abrirDetalhesOS(os) {
 
         osSelecionada = os;
 
+
         const cliente =
             clientes.find(
-                c =>
-                    c.id ===
-                    os.cliente_id
+                cliente =>
+                    String(
+                        cliente.id
+                    ) ===
+                    String(
+                        os.cliente_id
+                    )
             );
 
 
-        const set = (id, valor) => {
-
-            const elemento =
-                document.getElementById(id);
-
-            if (elemento) {
-
-                elemento.textContent =
-                    valor ?? "—";
-            }
-        };
+        const nomeCliente =
+            cliente?.nome ||
+            "Cliente não encontrado";
 
 
-        set("detalheCodigo", os.codigo);
-        set(
-            "detalheCliente",
-            cliente?.nome || "—"
-        );
+        const codigoCliente =
+            cliente?.codigo || "";
 
-        set(
-            "detalheStatus",
-            textoStatus(os.status)
-        );
 
-        set(
-            "detalhePrioridade",
-            textoPrioridade(os.prioridade)
-        );
+        document.getElementById(
+            "detalheCodigo"
+        ).textContent =
+            os.codigo || "-";
 
-        set(
-            "detalheTipoServico",
-            os.tipo_servico
-        );
 
-        set(
-            "detalheAparelho",
-            os.aparelho
-        );
+        document.getElementById(
+            "detalheCliente"
+        ).textContent =
+            codigoCliente
+                ? `${codigoCliente} - ${nomeCliente}`
+                : nomeCliente;
 
-        set(
-            "detalheMarca",
-            os.marca
-        );
 
-        set(
-            "detalheModelo",
-            os.modelo
-        );
+        document.getElementById(
+            "detalheStatus"
+        ).textContent =
+            statusNomes[
+                os.status
+            ] ||
+            os.status ||
+            "-";
 
-        set(
-            "detalheDataEntrada",
-            formatarData(os.data_entrada)
-        );
 
-        set(
-            "detalheDataConclusao",
-            formatarData(os.data_conclusao)
-        );
+        document.getElementById(
+            "detalhePrioridade"
+        ).textContent =
+            prioridadeNomes[
+                os.prioridade
+            ] ||
+            os.prioridade ||
+            "-";
 
-        set(
-            "detalheValor",
-            formatarMoeda(os.valor)
-        );
 
-        set(
-            "detalheDesconto",
-            formatarMoeda(os.desconto)
-        );
+        document.getElementById(
+            "detalheTipoServico"
+        ).textContent =
+            os.tipo_servico ||
+            "-";
 
-        set(
-            "detalheValorTotal",
-            formatarMoeda(os.valor_total)
-        );
 
-        set(
-            "detalheDefeito",
-            os.defeito
-        );
+        document.getElementById(
+            "detalheAparelho"
+        ).textContent =
+            os.aparelho ||
+            "-";
 
-        set(
-            "detalheDiagnostico",
-            os.diagnostico
-        );
 
-        set(
-            "detalheServicoRealizado",
-            os.servico_realizado
-        );
+        document.getElementById(
+            "detalheMarca"
+        ).textContent =
+            os.marca ||
+            "-";
 
-        set(
-            "detalheObservacoes",
-            os.observacoes
-        );
+
+        document.getElementById(
+            "detalheModelo"
+        ).textContent =
+            os.modelo ||
+            "-";
+
+
+        document.getElementById(
+            "detalheDataEntrada"
+        ).textContent =
+            formatarData(
+                os.data_entrada
+            );
+
+
+        document.getElementById(
+            "detalheDataConclusao"
+        ).textContent =
+            formatarData(
+                os.data_conclusao
+            );
+
+
+        document.getElementById(
+            "detalheValor"
+        ).textContent =
+            formatarMoeda(
+                os.valor
+            );
+
+
+        document.getElementById(
+            "detalheDesconto"
+        ).textContent =
+            formatarMoeda(
+                os.desconto
+            );
+
+
+        document.getElementById(
+            "detalheValorTotal"
+        ).textContent =
+            formatarMoeda(
+                os.valor_total
+            );
+
+
+        document.getElementById(
+            "detalheDefeito"
+        ).textContent =
+            os.defeito ||
+            "-";
+
+
+        document.getElementById(
+            "detalheDiagnostico"
+        ).textContent =
+            os.diagnostico ||
+            "-";
+
+
+        document.getElementById(
+            "detalheServicoRealizado"
+        ).textContent =
+            os.servico_realizado ||
+            "-";
+
+
+        document.getElementById(
+            "detalheObservacoes"
+        ).textContent =
+            os.observacoes ||
+            "-";
 
 
         if (modalDetalhesOS) {
 
-            modalDetalhesOS.classList.add("show");
+            modalDetalhesOS.classList.add(
+                "show"
+            );
 
-            modalDetalhesOS.style.display = "flex";
+            modalDetalhesOS.style.display =
+                "flex";
 
             modalDetalhesOS.setAttribute(
                 "aria-hidden",
                 "false"
             );
-        }
 
-        document.body.classList.add(
-            "modal-aberto"
-        );
+            document.body.classList.add(
+                "modal-aberto"
+            );
+        }
     }
 
 
@@ -1176,22 +1376,21 @@ document.addEventListener("DOMContentLoaded", () => {
        FECHAR DETALHES
     ===================================================== */
 
-    function fecharDetalhes() {
+    function fecharDetalhesOS() {
 
-        if (modalDetalhesOS) {
+        if (!modalDetalhesOS) return;
 
-            modalDetalhesOS.classList.remove(
-                "show"
-            );
+        modalDetalhesOS.classList.remove(
+            "show"
+        );
 
-            modalDetalhesOS.style.display =
-                "none";
+        modalDetalhesOS.style.display =
+            "none";
 
-            modalDetalhesOS.setAttribute(
-                "aria-hidden",
-                "true"
-            );
-        }
+        modalDetalhesOS.setAttribute(
+            "aria-hidden",
+            "true"
+        );
 
         document.body.classList.remove(
             "modal-aberto"
@@ -1201,102 +1400,120 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    btnFecharDetalhes?.addEventListener(
-        "click",
-        fecharDetalhes
-    );
+    if (btnFecharDetalhes) {
+
+        btnFecharDetalhes.addEventListener(
+            "click",
+            fecharDetalhesOS
+        );
+    }
 
 
-    modalDetalhesOS?.addEventListener(
-        "click",
-        event => {
+    /* =====================================================
+       EDITAR PELOS DETALHES
+    ===================================================== */
 
-            if (
-                event.target ===
-                modalDetalhesOS.querySelector(
-                    ".modal-overlay"
-                )
-            ) {
+    if (btnEditarDetalhes) {
 
-                fecharDetalhes();
+        btnEditarDetalhes.addEventListener(
+            "click",
+            () => {
+
+                if (!osSelecionada) return;
+
+                const os =
+                    osSelecionada;
+
+                fecharDetalhesOS();
+
+                abrirModalOS(os);
             }
-        }
-    );
+        );
+    }
 
 
     /* =====================================================
-       EDITAR
+       EXCLUIR OS
     ===================================================== */
 
-    btnEditarDetalhes?.addEventListener(
-        "click",
-        async () => {
+    if (btnExcluirDetalhes) {
 
-            if (!osSelecionada) return;
+        btnExcluirDetalhes.addEventListener(
+            "click",
+            async () => {
 
-            const os =
-                osSelecionada;
-
-            fecharDetalhes();
-
-            await abrirModalOS(os);
-        }
-    );
+                if (!osSelecionada) return;
 
 
-    /* =====================================================
-       EXCLUIR
-    ===================================================== */
-
-    btnExcluirDetalhes?.addEventListener(
-        "click",
-        async () => {
-
-            if (!osSelecionada) return;
-
-            const confirmar =
-                confirm(
-                    `Deseja realmente excluir a OS ${osSelecionada.codigo}?`
-                );
-
-            if (!confirmar) return;
-
-
-            const { error } =
-                await supabaseClient
-                    .from("ordens_servico")
-                    .delete()
-                    .eq(
-                        "id",
-                        osSelecionada.id
+                const confirmar =
+                    confirm(
+                        `Deseja realmente excluir a OS ${osSelecionada.codigo}?`
                     );
 
 
-            if (error) {
+                if (!confirmar) return;
 
-                console.error(
-                    "Erro ao excluir OS:",
-                    error
-                );
+
+                const { error } =
+                    await supabase
+                        .from(
+                            "ordens_servico"
+                        )
+                        .delete()
+                        .eq(
+                            "id",
+                            osSelecionada.id
+                        );
+
+
+                if (error) {
+
+                    console.error(
+                        "Erro ao excluir OS:",
+                        error
+                    );
+
+                    mostrarToast(
+                        "Erro ao excluir OS."
+                    );
+
+                    return;
+                }
+
 
                 mostrarToast(
-                    "Erro ao excluir OS: " +
-                    error.message
+                    "OS excluída com sucesso!"
                 );
 
-                return;
+
+                fecharDetalhesOS();
+
+                await carregarOS();
             }
+        );
+    }
 
 
-            mostrarToast(
-                "OS excluída com sucesso!"
-            );
+    /* =====================================================
+       FECHAR MODAL CLICANDO FORA
+    ===================================================== */
 
-            fecharDetalhes();
+    if (modalDetalhesOS) {
 
-            await carregarOS();
-        }
-    );
+        modalDetalhesOS.addEventListener(
+            "click",
+            event => {
+
+                if (
+                    event.target ===
+                    modalDetalhesOS
+                ) {
+
+                    fecharDetalhesOS();
+                }
+            }
+        );
+    }
 
 
     /* =====================================================
@@ -1307,7 +1524,21 @@ document.addEventListener("DOMContentLoaded", () => {
         "keydown",
         event => {
 
-            if (event.key !== "Escape") return;
+            if (event.key !== "Escape") {
+                return;
+            }
+
+            if (
+                modalDetalhesOS?.classList.contains(
+                    "show"
+                )
+            ) {
+
+                fecharDetalhesOS();
+
+                return;
+            }
+
 
             if (
                 modalOS?.classList.contains(
@@ -1317,15 +1548,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 fecharModalOS();
             }
-
-            if (
-                modalDetalhesOS?.classList.contains(
-                    "show"
-                )
-            ) {
-
-                fecharDetalhes();
-            }
         }
     );
 
@@ -1334,32 +1556,22 @@ document.addEventListener("DOMContentLoaded", () => {
        INICIALIZAÇÃO
     ===================================================== */
 
-    async function iniciar() {
+    async function inicializar() {
 
-        try {
+        console.log(
+            "Inicializando módulo de OS..."
+        );
 
-            await carregarClientes();
+        await carregarClientes();
 
-            await carregarOS();
+        await carregarOS();
 
-            console.log(
-                "WS SOLUÇÕES — OS inicializada"
-            );
-
-        } catch (erro) {
-
-            console.error(
-                "Erro na inicialização:",
-                erro
-            );
-
-            mostrarToast(
-                "Erro ao iniciar módulo de OS."
-            );
-        }
+        console.log(
+            "Módulo de OS inicializado."
+        );
     }
 
 
-    iniciar();
+    inicializar();
 
 });
