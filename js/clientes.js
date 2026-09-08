@@ -877,6 +877,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
+       CORREÇÃO — FECHAR MODAL DE DETALHES
+    ===================================================== */
+
+    if (btnFecharDetalhes) {
+
+        btnFecharDetalhes.addEventListener(
+            "click",
+            fecharDetalhes
+        );
+
+    }
+
+
+    /* =====================================================
        EVENTOS DO MODAL DE CADASTRO
     ===================================================== */
 
