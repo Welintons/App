@@ -1,9 +1,11 @@
 // =====================================================
-// AGENDA — WS SOLUÇÕES
+// WS SOLUÇÕES — AGENDA
+// Integrado ao banco V1
 // =====================================================
 
 let agendamentos = [];
 let clientes = [];
+let ordensServico = [];
 
 let dataVisualizada = new Date();
 let dataSelecionada = new Date();
@@ -19,55 +21,115 @@ let modoEdicao = false;
 const btnVoltar = document.getElementById("btnVoltar");
 const themeToggle = document.getElementById("themeToggle");
 
-const btnNovoAgendamento = document.getElementById("btnNovoAgendamento");
-const btnNovoAgendamentoVazio = document.getElementById("btnNovoAgendamentoVazio");
+const btnNovoAgendamento =
+    document.getElementById("btnNovoAgendamento");
 
-const btnMesAnterior = document.getElementById("btnMesAnterior");
-const btnMesProximo = document.getElementById("btnMesProximo");
-const btnHoje = document.getElementById("btnHoje");
+const btnNovoAgendamentoVazio =
+    document.getElementById("btnNovoAgendamentoVazio");
 
-const mesAnoAtual = document.getElementById("mesAnoAtual");
-const gradeCalendario = document.getElementById("gradeCalendario");
+const btnMesAnterior =
+    document.getElementById("btnMesAnterior");
 
-const tituloAgendaDia = document.getElementById("tituloAgendaDia");
-const contadorAgenda = document.getElementById("contadorAgenda");
-const listaAgendamentos = document.getElementById("listaAgendamentos");
-const estadoVazio = document.getElementById("estadoVazio");
+const btnMesProximo =
+    document.getElementById("btnMesProximo");
 
-const modalAgenda = document.getElementById("modalAgenda");
-const btnFecharModal = document.getElementById("btnFecharModal");
-const btnCancelar = document.getElementById("btnCancelar");
-const formAgenda = document.getElementById("formAgenda");
+const btnHoje =
+    document.getElementById("btnHoje");
 
-const campoCliente = document.getElementById("cliente");
-const campoData = document.getElementById("data");
-const campoHora = document.getElementById("hora");
-const campoTipoServico = document.getElementById("tipoServico");
-const campoEndereco = document.getElementById("endereco");
-const campoObservacoes = document.getElementById("observacoes");
-const campoStatus = document.getElementById("status");
+const mesAnoAtual =
+    document.getElementById("mesAnoAtual");
 
-const modalDetalhes = document.getElementById("modalDetalhes");
+const gradeCalendario =
+    document.getElementById("gradeCalendario");
 
-const detalheCliente = document.getElementById("detalheCliente");
-const detalheData = document.getElementById("detalheData");
-const detalheHora = document.getElementById("detalheHora");
-const detalheServico = document.getElementById("detalheServico");
-const detalheStatus = document.getElementById("detalheStatus");
-const detalheEndereco = document.getElementById("detalheEndereco");
-const detalheObservacoes = document.getElementById("detalheObservacoes");
+const tituloAgendaDia =
+    document.getElementById("tituloAgendaDia");
 
-const btnEditarAgendamento = document.getElementById("btnEditarAgendamento");
-const btnExcluirAgendamento = document.getElementById("btnExcluirAgendamento");
+const contadorAgenda =
+    document.getElementById("contadorAgenda");
 
-const toast = document.getElementById("toast");
+const listaAgendamentos =
+    document.getElementById("listaAgendamentos");
+
+const estadoVazio =
+    document.getElementById("estadoVazio");
+
+
+// Modal Agenda
+const modalAgenda =
+    document.getElementById("modalAgenda");
+
+const btnFecharModal =
+    document.getElementById("btnFecharModal");
+
+const btnCancelar =
+    document.getElementById("btnCancelar");
+
+const formAgenda =
+    document.getElementById("formAgenda");
+
+const campoCliente =
+    document.getElementById("cliente");
+
+const campoData =
+    document.getElementById("data");
+
+const campoHora =
+    document.getElementById("hora");
+
+const campoTipoServico =
+    document.getElementById("tipoServico");
+
+const campoEndereco =
+    document.getElementById("endereco");
+
+const campoObservacoes =
+    document.getElementById("observacoes");
+
+const campoStatus =
+    document.getElementById("status");
+
+
+// Modal detalhes
+const modalDetalhes =
+    document.getElementById("modalDetalhes");
+
+const detalheCliente =
+    document.getElementById("detalheCliente");
+
+const detalheData =
+    document.getElementById("detalheData");
+
+const detalheHora =
+    document.getElementById("detalheHora");
+
+const detalheServico =
+    document.getElementById("detalheServico");
+
+const detalheStatus =
+    document.getElementById("detalheStatus");
+
+const detalheEndereco =
+    document.getElementById("detalheEndereco");
+
+const detalheObservacoes =
+    document.getElementById("detalheObservacoes");
+
+const btnEditarAgendamento =
+    document.getElementById("btnEditarAgendamento");
+
+const btnExcluirAgendamento =
+    document.getElementById("btnExcluirAgendamento");
+
+const toast =
+    document.getElementById("toast");
 
 
 // =====================================================
 // CONFIGURAÇÕES
 // =====================================================
 
-const nomesMeses = [
+const meses = [
     "Janeiro",
     "Fevereiro",
     "Março",
@@ -82,7 +144,7 @@ const nomesMeses = [
     "Dezembro"
 ];
 
-const nomesDias = [
+const diasSemana = [
     "Domingo",
     "Segunda-feira",
     "Terça-feira",
@@ -95,8 +157,10 @@ const nomesDias = [
 const statusLabels = {
     agendado: "Agendado",
     confirmado: "Confirmado",
+    em_atendimento: "Em atendimento",
     concluido: "Concluído",
-    cancelado: "Cancelado"
+    cancelado: "Cancelado",
+    faltou: "Faltou"
 };
 
 
@@ -104,18 +168,51 @@ const statusLabels = {
 // INICIALIZAÇÃO
 // =====================================================
 
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener(
+    "DOMContentLoaded",
+    iniciarAgenda
+);
+
+
+async function iniciarAgenda() {
 
     configurarTema();
     configurarEventos();
 
+    prepararDataInicial();
+
     renderizarCalendario();
 
     await carregarClientes();
+
+    await carregarOrdensServico();
+
     await carregarAgendamentos();
 
     selecionarDia(dataSelecionada);
-});
+}
+
+
+// =====================================================
+// DATA INICIAL
+// =====================================================
+
+function prepararDataInicial() {
+
+    const hoje = new Date();
+
+    dataVisualizada = new Date(
+        hoje.getFullYear(),
+        hoje.getMonth(),
+        1
+    );
+
+    dataSelecionada = new Date(
+        hoje.getFullYear(),
+        hoje.getMonth(),
+        hoje.getDate()
+    );
+}
 
 
 // =====================================================
@@ -125,61 +222,68 @@ document.addEventListener("DOMContentLoaded", async () => {
 function configurarEventos() {
 
     if (btnVoltar) {
-        btnVoltar.addEventListener("click", () => {
-            window.location.href = "index2.html";
-        });
+
+        btnVoltar.addEventListener(
+            "click",
+            () => {
+                window.location.href = "index2.html";
+            }
+        );
     }
 
 
     if (themeToggle) {
-        themeToggle.addEventListener("click", alternarTema);
+
+        themeToggle.addEventListener(
+            "click",
+            alternarTema
+        );
     }
 
 
     if (btnMesAnterior) {
-        btnMesAnterior.addEventListener("click", () => {
 
-            dataVisualizada.setMonth(
-                dataVisualizada.getMonth() - 1
-            );
+        btnMesAnterior.addEventListener(
+            "click",
+            () => {
 
-            renderizarCalendario();
-        });
+                dataVisualizada.setMonth(
+                    dataVisualizada.getMonth() - 1
+                );
+
+                renderizarCalendario();
+            }
+        );
     }
 
 
     if (btnMesProximo) {
-        btnMesProximo.addEventListener("click", () => {
 
-            dataVisualizada.setMonth(
-                dataVisualizada.getMonth() + 1
-            );
+        btnMesProximo.addEventListener(
+            "click",
+            () => {
 
-            renderizarCalendario();
-        });
+                dataVisualizada.setMonth(
+                    dataVisualizada.getMonth() + 1
+                );
+
+                renderizarCalendario();
+            }
+        );
     }
 
 
     if (btnHoje) {
-        btnHoje.addEventListener("click", () => {
 
-            const hoje = new Date();
-
-            dataVisualizada = new Date(
-                hoje.getFullYear(),
-                hoje.getMonth(),
-                1
-            );
-
-            dataSelecionada = hoje;
-
-            renderizarCalendario();
-            selecionarDia(hoje);
-        });
+        btnHoje.addEventListener(
+            "click",
+            irParaHoje
+        );
     }
 
 
     if (btnNovoAgendamento) {
+
         btnNovoAgendamento.addEventListener(
             "click",
             abrirNovoAgendamento
@@ -188,6 +292,7 @@ function configurarEventos() {
 
 
     if (btnNovoAgendamentoVazio) {
+
         btnNovoAgendamentoVazio.addEventListener(
             "click",
             abrirNovoAgendamento
@@ -196,6 +301,7 @@ function configurarEventos() {
 
 
     if (btnFecharModal) {
+
         btnFecharModal.addEventListener(
             "click",
             fecharModal
@@ -204,6 +310,7 @@ function configurarEventos() {
 
 
     if (btnCancelar) {
+
         btnCancelar.addEventListener(
             "click",
             fecharModal
@@ -212,6 +319,7 @@ function configurarEventos() {
 
 
     if (formAgenda) {
+
         formAgenda.addEventListener(
             "submit",
             salvarAgendamento
@@ -220,6 +328,7 @@ function configurarEventos() {
 
 
     if (btnEditarAgendamento) {
+
         btnEditarAgendamento.addEventListener(
             "click",
             editarAgendamentoSelecionado
@@ -228,6 +337,7 @@ function configurarEventos() {
 
 
     if (btnExcluirAgendamento) {
+
         btnExcluirAgendamento.addEventListener(
             "click",
             excluirAgendamentoSelecionado
@@ -235,48 +345,65 @@ function configurarEventos() {
     }
 
 
-    // Fechar modais clicando fora
     if (modalAgenda) {
 
-        modalAgenda.addEventListener("click", (e) => {
+        modalAgenda.addEventListener(
+            "click",
+            event => {
 
-            if (e.target === modalAgenda) {
-                fecharModal();
+                if (event.target === modalAgenda) {
+                    fecharModal();
+                }
+
             }
-
-        });
-
+        );
     }
 
 
     if (modalDetalhes) {
 
-        modalDetalhes.addEventListener("click", (e) => {
+        modalDetalhes.addEventListener(
+            "click",
+            event => {
 
-            if (e.target === modalDetalhes) {
-                fecharDetalhes();
+                if (event.target === modalDetalhes) {
+                    fecharDetalhes();
+                }
+
             }
-
-        });
-
+        );
     }
 }
 
 
 // =====================================================
-// CARREGAR CLIENTES
+// CLIENTES
 // =====================================================
 
 async function carregarClientes() {
 
     try {
 
-        const { data, error } = await supabaseClient
-            .from("clientes")
-            .select("*")
-            .order("nome", {
-                ascending: true
-            });
+        const { data, error } =
+            await supabaseClient
+                .from("clientes")
+                .select(`
+                    id,
+                    codigo,
+                    nome,
+                    whatsapp,
+                    endereco,
+                    numero,
+                    complemento,
+                    bairro,
+                    cidade,
+                    estado,
+                    cep,
+                    status
+                `)
+                .order("nome", {
+                    ascending: true
+                });
 
 
         if (error) {
@@ -304,12 +431,14 @@ async function carregarClientes() {
 
 
 // =====================================================
-// PREENCHER SELECT DE CLIENTES
+// PREENCHER CLIENTES
 // =====================================================
 
 function preencherClientes() {
 
-    if (!campoCliente) return;
+    if (!campoCliente) {
+        return;
+    }
 
 
     campoCliente.innerHTML =
@@ -324,31 +453,88 @@ function preencherClientes() {
         option.value = cliente.id;
 
         option.textContent =
-            cliente.nome || "Cliente sem nome";
+            `${cliente.nome}${cliente.codigo ? " • " + cliente.codigo : ""}`;
 
         campoCliente.appendChild(option);
-
     });
 }
 
 
 // =====================================================
-// CARREGAR AGENDAMENTOS
+// ORDENS DE SERVIÇO
+// =====================================================
+
+async function carregarOrdensServico() {
+
+    try {
+
+        const { data, error } =
+            await supabaseClient
+                .from("ordens_servico")
+                .select(`
+                    id,
+                    codigo,
+                    cliente_id,
+                    aparelho,
+                    tipo_servico,
+                    status
+                `)
+                .order("criado_em", {
+                    ascending: false
+                });
+
+
+        if (error) {
+            throw error;
+        }
+
+
+        ordensServico = data || [];
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao carregar OS:",
+            erro
+        );
+
+        // A Agenda continua funcionando mesmo
+        // se não houver OS disponíveis.
+        ordensServico = [];
+    }
+}
+
+
+// =====================================================
+// AGENDAMENTOS
 // =====================================================
 
 async function carregarAgendamentos() {
 
     try {
 
-        const { data, error } = await supabaseClient
-            .from("agendamentos")
-            .select("*")
-            .order("data", {
-                ascending: true
-            })
-            .order("hora", {
-                ascending: true
-            });
+        const { data, error } =
+            await supabaseClient
+                .from("agendamentos")
+                .select(`
+                    id,
+                    codigo,
+                    cliente_id,
+                    os_id,
+                    data,
+                    hora,
+                    servico,
+                    status,
+                    observacoes,
+                    criado_em,
+                    atualizado_em
+                `)
+                .order("data", {
+                    ascending: true
+                })
+                .order("hora", {
+                    ascending: true
+                });
 
 
         if (error) {
@@ -359,23 +545,11 @@ async function carregarAgendamentos() {
         agendamentos = data || [];
 
 
-        // Vincula o cliente manualmente
-        agendamentos.forEach(agendamento => {
-
-            const cliente =
-                clientes.find(
-                    c => c.id === agendamento.cliente_id
-                );
-
-            agendamento.clienteNome =
-                cliente?.nome || "Cliente não encontrado";
-
-        });
+        vincularDados();
 
 
         renderizarCalendario();
 
-        selecionarDia(dataSelecionada);
 
     } catch (erro) {
 
@@ -383,6 +557,8 @@ async function carregarAgendamentos() {
             "Erro ao carregar agendamentos:",
             erro
         );
+
+        agendamentos = [];
 
         mostrarToast(
             "Erro ao carregar agenda",
@@ -393,12 +569,57 @@ async function carregarAgendamentos() {
 
 
 // =====================================================
-// RENDERIZAR CALENDÁRIO
+// VINCULAR CLIENTE E OS
+// =====================================================
+
+function vincularDados() {
+
+    agendamentos.forEach(agendamento => {
+
+        const cliente =
+            clientes.find(
+                item =>
+                    item.id ===
+                    agendamento.cliente_id
+            );
+
+
+        const os =
+            ordensServico.find(
+                item =>
+                    item.id ===
+                    agendamento.os_id
+            );
+
+
+        agendamento.clienteDados =
+            cliente || null;
+
+
+        agendamento.clienteNome =
+            cliente?.nome ||
+            "Cliente não encontrado";
+
+
+        agendamento.osDados =
+            os || null;
+
+
+        agendamento.osCodigo =
+            os?.codigo || null;
+    });
+}
+
+
+// =====================================================
+// CALENDÁRIO
 // =====================================================
 
 function renderizarCalendario() {
 
-    if (!gradeCalendario) return;
+    if (!gradeCalendario) {
+        return;
+    }
 
 
     const ano =
@@ -409,44 +630,52 @@ function renderizarCalendario() {
 
 
     mesAnoAtual.textContent =
-        `${nomesMeses[mes]} ${ano}`;
+        `${meses[mes]} ${ano}`;
 
 
     gradeCalendario.innerHTML = "";
 
 
     const primeiroDia =
-        new Date(ano, mes, 1).getDay();
+        new Date(
+            ano,
+            mes,
+            1
+        ).getDay();
 
 
     const ultimoDia =
-        new Date(ano, mes + 1, 0).getDate();
+        new Date(
+            ano,
+            mes + 1,
+            0
+        ).getDate();
 
 
     const diasMesAnterior =
-        new Date(ano, mes, 0).getDate();
-
-
-    const totalCelulas = 42;
+        new Date(
+            ano,
+            mes,
+            0
+        ).getDate();
 
 
     for (
         let i = 0;
-        i < totalCelulas;
+        i < 42;
         i++
     ) {
 
-        let numeroDia;
+        let dia;
         let mesCelula = mes;
         let anoCelula = ano;
 
-        let classeExtra = "";
+        let outroMes = false;
 
 
-        // Dias do mês anterior
         if (i < primeiroDia) {
 
-            numeroDia =
+            dia =
                 diasMesAnterior -
                 primeiroDia +
                 i +
@@ -455,39 +684,37 @@ function renderizarCalendario() {
             mesCelula--;
 
             if (mesCelula < 0) {
+
                 mesCelula = 11;
                 anoCelula--;
             }
 
-            classeExtra = "dia-outro-mes";
+            outroMes = true;
 
-        }
-
-        // Dias do próximo mês
-        else if (
-            i >= primeiroDia + ultimoDia
+        } else if (
+            i >=
+            primeiroDia + ultimoDia
         ) {
 
-            numeroDia =
+            dia =
                 i -
-                (primeiroDia + ultimoDia) +
+                primeiroDia -
+                ultimoDia +
                 1;
 
             mesCelula++;
 
             if (mesCelula > 11) {
+
                 mesCelula = 0;
                 anoCelula++;
             }
 
-            classeExtra = "dia-outro-mes";
+            outroMes = true;
 
-        }
+        } else {
 
-        // Dias do mês atual
-        else {
-
-            numeroDia =
+            dia =
                 i -
                 primeiroDia +
                 1;
@@ -498,33 +725,42 @@ function renderizarCalendario() {
             new Date(
                 anoCelula,
                 mesCelula,
-                numeroDia
+                dia
             );
 
 
-        const divDia =
+        const elemento =
             document.createElement("div");
 
-        divDia.className =
-            `dia-calendario ${classeExtra}`;
+
+        elemento.className =
+            "dia-calendario";
 
 
-        // Hoje
+        if (outroMes) {
+
+            elemento.classList.add(
+                "dia-outro-mes"
+            );
+        }
+
+
         if (ehHoje(dataDia)) {
 
-            divDia.classList.add(
+            elemento.classList.add(
                 "dia-hoje"
             );
         }
 
 
-        // Selecionado
-        if (mesmoDia(
-            dataDia,
-            dataSelecionada
-        )) {
+        if (
+            mesmoDia(
+                dataDia,
+                dataSelecionada
+            )
+        ) {
 
-            divDia.classList.add(
+            elemento.classList.add(
                 "dia-selecionado"
             );
         }
@@ -533,106 +769,124 @@ function renderizarCalendario() {
         const numero =
             document.createElement("div");
 
+
         numero.className =
             "dia-numero";
 
+
         numero.textContent =
-            numeroDia;
+            dia;
 
 
-        divDia.appendChild(numero);
+        elemento.appendChild(
+            numero
+        );
 
 
-        const eventos =
+        const eventosContainer =
             document.createElement("div");
 
-        eventos.className =
+
+        eventosContainer.className =
             "dia-eventos";
 
 
-        const eventosDoDia =
-            agendamentos.filter(
-                ag => mesmaData(
-                    ag.data,
-                    dataDia
+        const eventos =
+            agendamentos
+                .filter(
+                    agendamento =>
+                        mesmaData(
+                            agendamento.data,
+                            dataDia
+                        )
                 )
+                .sort(
+                    ordenarPorHora
+                );
+
+
+        eventos
+            .slice(0, 3)
+            .forEach(
+                agendamento => {
+
+                    const evento =
+                        document.createElement("div");
+
+
+                    evento.className =
+                        "evento-mini";
+
+
+                    if (
+                        agendamento.status ===
+                        "cancelado"
+                    ) {
+
+                        evento.classList.add(
+                            "cancelado"
+                        );
+                    }
+
+
+                    if (
+                        agendamento.status ===
+                        "concluido"
+                    ) {
+
+                        evento.classList.add(
+                            "concluido"
+                        );
+                    }
+
+
+                    evento.textContent =
+                        `${agendamento.hora?.substring(0, 5) || "--:--"} ${
+                            agendamento.clienteNome
+                        }`;
+
+
+                    eventosContainer.appendChild(
+                        evento
+                    );
+                }
             );
 
 
-        eventosDoDia
-            .slice(0, 3)
-            .forEach(agendamento => {
-
-                const evento =
-                    document.createElement("div");
-
-                evento.className =
-                    "evento-mini";
-
-
-                if (
-                    agendamento.status ===
-                    "cancelado"
-                ) {
-
-                    evento.classList.add(
-                        "cancelado"
-                    );
-                }
-
-
-                if (
-                    agendamento.status ===
-                    "concluido"
-                ) {
-
-                    evento.classList.add(
-                        "concluido"
-                    );
-                }
-
-
-                evento.textContent =
-                    `${agendamento.hora || "--:--"} ${
-                        agendamento.clienteNome ||
-                        "Cliente"
-                    }`;
-
-
-                eventos.appendChild(evento);
-
-            });
-
-
-        if (eventosDoDia.length > 3) {
+        if (eventos.length > 3) {
 
             const mais =
                 document.createElement("div");
 
+
             mais.className =
                 "evento-mini";
 
-            mais.textContent =
-                `+${eventosDoDia.length - 3} mais`;
 
-            eventos.appendChild(mais);
+            mais.textContent =
+                `+${eventos.length - 3} mais`;
+
+
+            eventosContainer.appendChild(
+                mais
+            );
         }
 
 
-        divDia.appendChild(eventos);
+        elemento.appendChild(
+            eventosContainer
+        );
 
 
-        divDia.addEventListener(
+        elemento.addEventListener(
             "click",
             () => {
 
                 dataSelecionada =
                     new Date(dataDia);
 
-                if (
-                    dataDia.getMonth() !==
-                    dataVisualizada.getMonth()
-                ) {
+
+                if (outroMes) {
 
                     dataVisualizada =
                         new Date(
@@ -642,36 +896,45 @@ function renderizarCalendario() {
                         );
                 }
 
+
                 renderizarCalendario();
-                selecionarDia(dataDia);
+
+                selecionarDia(
+                    dataSelecionada
+                );
             }
         );
 
 
         gradeCalendario.appendChild(
-            divDia
+            elemento
         );
     }
 }
 
 
 // =====================================================
-// SELECIONAR DIA
+// AGENDA DO DIA
 // =====================================================
 
 function selecionarDia(data) {
 
     dataSelecionada =
-        new Date(data);
+        new Date(
+            data.getFullYear(),
+            data.getMonth(),
+            data.getDate()
+        );
 
 
-    const eventosDoDia =
+    const eventos =
         agendamentos
             .filter(
-                ag => mesmaData(
-                    ag.data,
-                    data
-                )
+                agendamento =>
+                    mesmaData(
+                        agendamento.data,
+                        data
+                    )
             )
             .sort(
                 ordenarPorHora
@@ -679,14 +942,12 @@ function selecionarDia(data) {
 
 
     tituloAgendaDia.textContent =
-        `${nomesDias[data.getDay()]}, ${
-            formatarData(data)
-        }`;
+        `${diasSemana[data.getDay()]}, ${formatarData(data)}`;
 
 
     contadorAgenda.textContent =
-        `${eventosDoDia.length} ${
-            eventosDoDia.length === 1
+        `${eventos.length} ${
+            eventos.length === 1
                 ? "agendamento"
                 : "agendamentos"
         }`;
@@ -695,7 +956,7 @@ function selecionarDia(data) {
     listaAgendamentos.innerHTML = "";
 
 
-    if (eventosDoDia.length === 0) {
+    if (eventos.length === 0) {
 
         estadoVazio.style.display =
             "flex";
@@ -714,14 +975,14 @@ function selecionarDia(data) {
         "flex";
 
 
-    eventosDoDia.forEach(
+    eventos.forEach(
         renderizarAgendamento
     );
 }
 
 
 // =====================================================
-// RENDERIZAR AGENDAMENTO
+// ITEM DA AGENDA
 // =====================================================
 
 function renderizarAgendamento(
@@ -731,6 +992,7 @@ function renderizarAgendamento(
     const item =
         document.createElement("div");
 
+
     item.className =
         "agendamento";
 
@@ -738,15 +1000,20 @@ function renderizarAgendamento(
     const hora =
         document.createElement("div");
 
+
     hora.className =
         "agendamento-hora";
 
+
     hora.textContent =
-        agendamento.hora || "--:--";
+        agendamento.hora
+            ? agendamento.hora.substring(0, 5)
+            : "--:--";
 
 
     const divisor =
         document.createElement("div");
+
 
     divisor.className =
         "agendamento-divisor";
@@ -755,6 +1022,7 @@ function renderizarAgendamento(
     const info =
         document.createElement("div");
 
+
     info.className =
         "agendamento-info";
 
@@ -762,25 +1030,28 @@ function renderizarAgendamento(
     const cliente =
         document.createElement("strong");
 
+
     cliente.textContent =
-        agendamento.clienteNome ||
-        "Cliente não encontrado";
+        agendamento.clienteNome;
 
 
     const servico =
         document.createElement("span");
 
+
     servico.textContent =
-        agendamento.tipo_servico ||
+        agendamento.servico ||
         "Serviço não informado";
 
 
     info.appendChild(cliente);
+
     info.appendChild(servico);
 
 
     const status =
         document.createElement("span");
+
 
     const statusAtual =
         agendamento.status ||
@@ -797,8 +1068,11 @@ function renderizarAgendamento(
 
 
     item.appendChild(hora);
+
     item.appendChild(divisor);
+
     item.appendChild(info);
+
     item.appendChild(status);
 
 
@@ -828,19 +1102,26 @@ function abrirNovoAgendamento() {
     formAgenda.reset();
 
 
-    if (campoData) {
-
-        campoData.value =
-            converterParaInputDate(
-                dataSelecionada
-            );
-    }
+    campoData.value =
+        converterParaInputDate(
+            dataSelecionada
+        );
 
 
-    if (campoStatus) {
+    campoStatus.value =
+        "agendado";
 
-        campoStatus.value =
-            "agendado";
+
+    // Endereço não faz parte do banco da Agenda.
+    // Ele será mostrado automaticamente pelo cliente.
+    if (campoEndereco) {
+
+        campoEndereco.value = "";
+
+        campoEndereco.readOnly = true;
+
+        campoEndereco.placeholder =
+            "Endereço cadastrado no cliente";
     }
 
 
@@ -849,7 +1130,7 @@ function abrirNovoAgendamento() {
 
 
 // =====================================================
-// EDITAR
+// EDITAR AGENDAMENTO
 // =====================================================
 
 function editarAgendamentoSelecionado() {
@@ -866,27 +1147,29 @@ function editarAgendamentoSelecionado() {
 
 
     campoCliente.value =
-        agendamentoSelecionado.cliente_id || "";
+        agendamentoSelecionado.cliente_id ||
+        "";
 
 
     campoData.value =
-        agendamentoSelecionado.data || "";
+        agendamentoSelecionado.data ||
+        "";
 
 
     campoHora.value =
-        agendamentoSelecionado.hora || "";
+        agendamentoSelecionado.hora
+            ? agendamentoSelecionado.hora.substring(0, 5)
+            : "";
 
 
     campoTipoServico.value =
-        agendamentoSelecionado.tipo_servico || "";
-
-
-    campoEndereco.value =
-        agendamentoSelecionado.endereco || "";
+        agendamentoSelecionado.servico ||
+        "";
 
 
     campoObservacoes.value =
-        agendamentoSelecionado.observacoes || "";
+        agendamentoSelecionado.observacoes ||
+        "";
 
 
     campoStatus.value =
@@ -894,7 +1177,133 @@ function editarAgendamentoSelecionado() {
         "agendado";
 
 
+    atualizarEnderecoCliente();
+
+
     abrirModal();
+}
+
+
+// =====================================================
+// ENDEREÇO DO CLIENTE
+// =====================================================
+
+if (campoCliente) {
+
+    campoCliente.addEventListener(
+        "change",
+        atualizarEnderecoCliente
+    );
+}
+
+
+function atualizarEnderecoCliente() {
+
+    if (!campoEndereco) {
+        return;
+    }
+
+
+    const cliente =
+        clientes.find(
+            item =>
+                item.id ===
+                campoCliente.value
+        );
+
+
+    if (!cliente) {
+
+        campoEndereco.value = "";
+
+        return;
+    }
+
+
+    campoEndereco.value =
+        montarEndereco(cliente);
+
+
+    campoEndereco.readOnly =
+        true;
+}
+
+
+// =====================================================
+// MONTAR ENDEREÇO
+// =====================================================
+
+function montarEndereco(cliente) {
+
+    const partes = [];
+
+
+    if (cliente.endereco) {
+
+        let endereco =
+            cliente.endereco;
+
+
+        if (cliente.numero) {
+
+            endereco +=
+                `, ${cliente.numero}`;
+        }
+
+
+        partes.push(
+            endereco
+        );
+    }
+
+
+    if (cliente.complemento) {
+
+        partes.push(
+            cliente.complemento
+        );
+    }
+
+
+    if (cliente.bairro) {
+
+        partes.push(
+            cliente.bairro
+        );
+    }
+
+
+    if (
+        cliente.cidade ||
+        cliente.estado
+    ) {
+
+        let cidadeEstado =
+            cliente.cidade || "";
+
+
+        if (cliente.estado) {
+
+            cidadeEstado +=
+                ` - ${cliente.estado}`;
+        }
+
+
+        partes.push(
+            cidadeEstado
+        );
+    }
+
+
+    if (cliente.cep) {
+
+        partes.push(
+            `CEP: ${cliente.cep}`
+        );
+    }
+
+
+    return partes.join(", ");
 }
 
 
@@ -902,9 +1311,9 @@ function editarAgendamentoSelecionado() {
 // SALVAR
 // =====================================================
 
-async function salvarAgendamento(e) {
+async function salvarAgendamento(event) {
 
-    e.preventDefault();
+    event.preventDefault();
 
 
     const dados = {
@@ -918,25 +1327,21 @@ async function salvarAgendamento(e) {
         hora:
             campoHora.value,
 
-        tipo_servico:
+        servico:
             campoTipoServico.value.trim(),
 
-        endereco:
-            campoEndereco.value.trim(),
+        status:
+            campoStatus.value,
 
         observacoes:
-            campoObservacoes.value.trim(),
-
-        status:
-            campoStatus.value
-
+            campoObservacoes.value.trim()
     };
 
 
     if (!dados.cliente_id) {
 
         mostrarToast(
-            "Selecione um cliente",
+            "Selecione o cliente",
             "erro"
         );
 
@@ -966,9 +1371,22 @@ async function salvarAgendamento(e) {
     }
 
 
+    if (!dados.servico) {
+
+        mostrarToast(
+            "Informe o serviço",
+            "erro"
+        );
+
+        return;
+    }
+
+
     try {
 
-        btnSalvarEstado(true);
+        alterarEstadoBotaoSalvar(
+            true
+        );
 
 
         let resposta;
@@ -990,11 +1408,14 @@ async function salvarAgendamento(e) {
             resposta =
                 await supabaseClient
                     .from("agendamentos")
-                    .insert([dados]);
+                    .insert([
+                        dados
+                    ]);
         }
 
 
         if (resposta.error) {
+
             throw resposta.error;
         }
 
@@ -1008,9 +1429,6 @@ async function salvarAgendamento(e) {
                 : "Agendamento criado!",
             "sucesso"
         );
-
-
-        await carregarAgendamentos();
 
 
         dataSelecionada =
@@ -1027,8 +1445,15 @@ async function salvarAgendamento(e) {
             );
 
 
+        await carregarAgendamentos();
+
+
         renderizarCalendario();
-        selecionarDia(dataSelecionada);
+
+
+        selecionarDia(
+            dataSelecionada
+        );
 
 
     } catch (erro) {
@@ -1040,14 +1465,91 @@ async function salvarAgendamento(e) {
 
 
         mostrarToast(
+            erro.message ||
             "Erro ao salvar agendamento",
             "erro"
         );
 
+
     } finally {
 
-        btnSalvarEstado(false);
+        alterarEstadoBotaoSalvar(
+            false
+        );
     }
+}
+
+
+// =====================================================
+// DETALHES
+// =====================================================
+
+function abrirDetalhes(
+    agendamento
+) {
+
+    agendamentoSelecionado =
+        agendamento;
+
+
+    detalheCliente.textContent =
+        agendamento.clienteNome ||
+        "Não informado";
+
+
+    detalheData.textContent =
+        formatarData(
+            converterDataInput(
+                agendamento.data
+            )
+        );
+
+
+    detalheHora.textContent =
+        agendamento.hora
+            ? agendamento.hora.substring(0, 5)
+            : "--:--";
+
+
+    detalheServico.textContent =
+        agendamento.servico ||
+        "Não informado";
+
+
+    const statusAtual =
+        agendamento.status ||
+        "agendado";
+
+
+    detalheStatus.textContent =
+        statusLabels[statusAtual] ||
+        statusAtual;
+
+
+    detalheStatus.className =
+        `agendamento-status status-${statusAtual}`;
+
+
+    // Endereço vem da tabela CLIENTES
+    detalheEndereco.textContent =
+        agendamento.clienteDados
+            ? montarEndereco(
+                agendamento.clienteDados
+            )
+            : "Endereço não cadastrado";
+
+
+    detalheObservacoes.textContent =
+        agendamento.observacoes ||
+        "Nenhuma observação";
+
+
+    modalDetalhes.classList.add(
+        "show"
+    );
+
+    modalDetalhes.style.display =
+        "flex";
 }
 
 
@@ -1064,7 +1566,7 @@ async function excluirAgendamentoSelecionado() {
 
     const confirmar =
         confirm(
-            "Deseja realmente excluir este agendamento?"
+            `Deseja realmente excluir o agendamento ${agendamentoSelecionado.codigo || ""}?`
         );
 
 
@@ -1086,6 +1588,7 @@ async function excluirAgendamentoSelecionado() {
 
 
         if (error) {
+
             throw error;
         }
 
@@ -1116,88 +1619,11 @@ async function excluirAgendamentoSelecionado() {
 
 
         mostrarToast(
+            erro.message ||
             "Erro ao excluir agendamento",
             "erro"
         );
     }
-}
-
-
-// =====================================================
-// DETALHES
-// =====================================================
-
-function abrirDetalhes(agendamento) {
-
-    agendamentoSelecionado =
-        agendamento;
-
-
-    detalheCliente.textContent =
-        agendamento.clienteNome ||
-        "Não informado";
-
-
-    detalheData.textContent =
-        formatarData(
-            converterDataInput(
-                agendamento.data
-            )
-        );
-
-
-    detalheHora.textContent =
-        agendamento.hora ||
-        "--:--";
-
-
-    detalheServico.textContent =
-        agendamento.tipo_servico ||
-        "Não informado";
-
-
-    const statusAtual =
-        agendamento.status ||
-        "agendado";
-
-
-    detalheStatus.textContent =
-        statusLabels[statusAtual] ||
-        statusAtual;
-
-
-    detalheStatus.className =
-        `agendamento-status status-${statusAtual}`;
-
-
-    detalheEndereco.textContent =
-        agendamento.endereco ||
-        "Não informado";
-
-
-    detalheObservacoes.textContent =
-        agendamento.observacoes ||
-        "Nenhuma observação";
-
-
-    modalDetalhes.classList.add("show");
-    modalDetalhes.style.display =
-        "flex";
-}
-
-
-// =====================================================
-// FECHAR DETALHES
-// =====================================================
-
-function fecharDetalhes() {
-
-    modalDetalhes.classList.remove(
-        "show"
-    );
-
-    modalDetalhes.style.display =
-        "none";
 }
 
 
@@ -1227,11 +1653,22 @@ function fecharModal() {
 }
 
 
+function fecharDetalhes() {
+
+    modalDetalhes.classList.remove(
+        "show"
+    );
+
+    modalDetalhes.style.display =
+        "none";
+}
+
+
 // =====================================================
 // BOTÃO SALVAR
 // =====================================================
 
-function btnSalvarEstado(
+function alterarEstadoBotaoSalvar(
     carregando
 ) {
 
@@ -1241,21 +1678,59 @@ function btnSalvarEstado(
         );
 
 
-    if (!botao) return;
+    if (!botao) {
+        return;
+    }
 
 
     if (carregando) {
 
         botao.disabled = true;
+
         botao.textContent =
             "Salvando...";
 
     } else {
 
         botao.disabled = false;
+
         botao.textContent =
             "Salvar";
     }
+}
+
+
+// =====================================================
+// HOJE
+// =====================================================
+
+function irParaHoje() {
+
+    const hoje =
+        new Date();
+
+
+    dataVisualizada =
+        new Date(
+            hoje.getFullYear(),
+            hoje.getMonth(),
+            1
+        );
+
+
+    dataSelecionada =
+        new Date(
+            hoje.getFullYear(),
+            hoje.getMonth(),
+            hoje.getDate()
+        );
+
+
+    renderizarCalendario();
+
+    selecionarDia(
+        dataSelecionada
+    );
 }
 
 
@@ -1277,7 +1752,9 @@ function configurarTema() {
             "dark"
         );
 
+
         if (themeToggle) {
+
             themeToggle.textContent =
                 "☀";
         }
@@ -1288,7 +1765,9 @@ function configurarTema() {
             "dark"
         );
 
+
         if (themeToggle) {
+
             themeToggle.textContent =
                 "☾";
         }
@@ -1306,20 +1785,24 @@ function alternarTema() {
 
     localStorage.setItem(
         "ws_modo_noturno",
-        dark ? "dark" : "light"
+        dark
+            ? "dark"
+            : "light"
     );
 
 
     if (themeToggle) {
 
         themeToggle.textContent =
-            dark ? "☀" : "☾";
+            dark
+                ? "☀"
+                : "☾";
     }
 }
 
 
 // =====================================================
-// UTILITÁRIOS DE DATA
+// DATAS
 // =====================================================
 
 function ehHoje(data) {
@@ -1329,9 +1812,14 @@ function ehHoje(data) {
 
 
     return (
-        data.getDate() === hoje.getDate() &&
-        data.getMonth() === hoje.getMonth() &&
-        data.getFullYear() === hoje.getFullYear()
+        data.getDate() ===
+            hoje.getDate() &&
+
+        data.getMonth() ===
+            hoje.getMonth() &&
+
+        data.getFullYear() ===
+            hoje.getFullYear()
     );
 }
 
@@ -1342,9 +1830,14 @@ function mesmoDia(
 ) {
 
     return (
-        data1.getDate() === data2.getDate() &&
-        data1.getMonth() === data2.getMonth() &&
-        data1.getFullYear() === data2.getFullYear()
+        data1.getDate() ===
+            data2.getDate() &&
+
+        data1.getMonth() ===
+            data2.getMonth() &&
+
+        data1.getFullYear() ===
+            data2.getFullYear()
     );
 }
 
@@ -1354,7 +1847,9 @@ function mesmaData(
     data
 ) {
 
-    if (!valor) return false;
+    if (!valor) {
+        return false;
+    }
 
 
     const partes =
@@ -1369,8 +1864,10 @@ function mesmaData(
     const ano =
         Number(partes[0]);
 
+
     const mes =
         Number(partes[1]) - 1;
+
 
     const dia =
         Number(
@@ -1379,9 +1876,14 @@ function mesmaData(
 
 
     return (
-        ano === data.getFullYear() &&
-        mes === data.getMonth() &&
-        dia === data.getDate()
+        ano ===
+            data.getFullYear() &&
+
+        mes ===
+            data.getMonth() &&
+
+        dia ===
+            data.getDate()
     );
 }
 
@@ -1441,6 +1943,10 @@ function formatarData(
 }
 
 
+// =====================================================
+// ORDENAR HORÁRIO
+// =====================================================
+
 function ordenarPorHora(
     a,
     b
@@ -1449,7 +1955,9 @@ function ordenarPorHora(
     return String(
         a.hora || ""
     ).localeCompare(
-        String(b.hora || "")
+        String(
+            b.hora || ""
+        )
     );
 }
 
@@ -1463,7 +1971,9 @@ function mostrarToast(
     tipo = "sucesso"
 ) {
 
-    if (!toast) return;
+    if (!toast) {
+        return;
+    }
 
 
     toast.textContent =
@@ -1483,16 +1993,19 @@ function mostrarToast(
 
 
     clearTimeout(
-        window.toastTimer
+        window.wsToastTimer
     );
 
 
-    window.toastTimer =
-        setTimeout(() => {
+    window.wsToastTimer =
+        setTimeout(
+            () => {
 
-            toast.classList.remove(
-                "show"
-            );
+                toast.classList.remove(
+                    "show"
+                );
 
-        }, 3000);
+            },
+            3000
+        );
 }
