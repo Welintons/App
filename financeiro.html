@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Financeiro — WS SOLUÇÕES</title>
+
+    <!-- CSS EXCLUSIVO DO FINANCEIRO -->
+    <link rel="stylesheet" href="css/financeiro.css">
+
+</head>
+
+<body>
+
+
+    <!-- =====================================================
+         TOPO
+    ====================================================== -->
+
+    <header class="topo">
+
+        <div class="topo-esquerda">
+
+            <button
+                id="btnVoltar"
+                class="btn-voltar"
+                type="button">
+
+                ←
+
+            </button>
+
+            <div>
+
+                <h1>Financeiro</h1>
+
+                <span>WS SOLUÇÕES</span>
+
+            </div>
+
+        </div>
+
+
+        <div class="topo-acoes">
+
+            <button
+                id="themeToggle"
+                class="btn-icone"
+                type="button"
+                aria-label="Alterar tema">
+
+                ☾
+
+            </button>
+
+            <button
+                id="btnNovaMovimentacao"
+                class="btn-principal"
+                type="button">
+
+                + Nova movimentação
+
+            </button>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         CONTEÚDO
+    ====================================================== -->
+
+    <main class="container">
+
+
+        <!-- =================================================
+             RESUMO FINANCEIRO
+        ================================================== -->
+
+        <section class="resumo-grid">
+
+
+            <div class="card-resumo entrada">
+
+                <div class="resumo-icone">
+                    ↑
+                </div>
+
+                <div>
+
+                    <span>Entradas</span>
+
+                    <strong id="totalEntradas">
+                        R$ 0,00
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="card-resumo saida">
+
+                <div class="resumo-icone">
+                    ↓
+                </div>
+
+                <div>
+
+                    <span>Saídas</span>
+
+                    <strong id="totalSaidas">
+                        R$ 0,00
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="card-resumo saldo">
+
+                <div class="resumo-icone">
+                    $
+                </div>
+
+                <div>
+
+                    <span>Saldo</span>
+
+                    <strong id="saldoAtual">
+                        R$ 0,00
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             FILTROS
+        ================================================== -->
+
+        <section class="filtros">
+
+            <div class="campo-busca">
+
+                <input
+                    type="search"
+                    id="campoBusca"
+                    placeholder="Buscar movimentação...">
+
+            </div>
+
+
+            <select id="filtroTipo">
+
+                <option value="">
+                    Todos os tipos
+                </option>
+
+                <option value="entrada">
+                    Entradas
+                </option>
+
+                <option value="saida">
+                    Saídas
+                </option>
+
+            </select>
+
+
+            <select id="filtroCategoria">
+
+                <option value="">
+                    Todas as categorias
+                </option>
+
+            </select>
+
+
+            <select id="filtroPeriodo">
+
+                <option value="todos">
+                    Todo período
+                </option>
+
+                <option value="hoje">
+                    Hoje
+                </option>
+
+                <option value="7">
+                    Últimos 7 dias
+                </option>
+
+                <option value="30">
+                    Últimos 30 dias
+                </option>
+
+                <option value="mes">
+                    Este mês
+                </option>
+
+                <option value="ano">
+                    Este ano
+                </option>
+
+            </select>
+
+        </section>
+
+
+
+        <!-- =================================================
+             TÍTULO DA LISTA
+        ================================================== -->
+
+        <section class="lista-topo">
+
+            <div>
+
+                <h2>
+                    Movimentações
+                </h2>
+
+                <span id="contadorMovimentacoes">
+                    0 movimentações
+                </span>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             LISTA FINANCEIRA
+        ================================================== -->
+
+        <section
+            id="listaFinanceiro"
+            class="lista-financeiro">
+
+            <!-- Preenchido pelo financeiro.js -->
+
+        </section>
+
+
+        <!-- =================================================
+             ESTADO VAZIO
+        ================================================== -->
+
+        <section
+            id="estadoVazio"
+            class="estado-vazio"
+            hidden>
+
+            <div class="vazio-icone">
+                $
+            </div>
+
+            <h3>
+                Nenhuma movimentação
+            </h3>
+
+            <p>
+                Adicione sua primeira entrada ou saída.
+            </p>
+
+            <button
+                id="btnNovaMovimentacaoVazio"
+                class="btn-principal"
+                type="button">
+
+                + Nova movimentação
+
+            </button>
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =====================================================
+         MODAL — NOVA / EDITAR MOVIMENTAÇÃO
+    ====================================================== -->
+
+    <div
+        id="modalFinanceiro"
+        class="modal"
+        aria-hidden="true">
+
+        <div
+            class="modal-overlay"
+            data-fechar-modal>
+
+        </div>
+
+
+        <div
+            class="modal-content modal-financeiro"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="tituloModalFinanceiro">
+
+
+            <div class="modal-header">
+
+                <div>
+
+                    <h2 id="tituloModalFinanceiro">
+                        Nova movimentação
+                    </h2>
+
+                    <p>
+                        Registre uma entrada ou saída.
+                    </p>
+
+                </div>
+
+
+                <button
+                    id="btnFecharModal"
+                    class="btn-fechar"
+                    type="button"
+                    aria-label="Fechar">
+
+                    ×
+
+                </button>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 FORMULÁRIO
+            ================================================== -->
+
+            <form id="formFinanceiro">
+
+
+                <div class="campo">
+
+                    <label for="tipo">
+                        Tipo
+                    </label>
+
+                    <select
+                        id="tipo"
+                        name="tipo"
+                        required>
+
+                        <option value="entrada">
+                            Entrada
+                        </option>
+
+                        <option value="saida">
+                            Saída
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <div class="campo">
+
+                    <label for="descricao">
+                        Descrição
+                    </label>
+
+                    <input
+                        type="text"
+                        id="descricao"
+                        name="descricao"
+                        placeholder="Ex.: Pagamento de OS"
+                        required>
+
+                </div>
+
+
+
+                <div class="linha-campos">
+
+
+                    <div class="campo">
+
+                        <label for="categoria">
+                            Categoria
+                        </label>
+
+                        <select
+                            id="categoria"
+                            name="categoria"
+                            required>
+
+                            <option value="">
+                                Selecione
+                            </option>
+
+                            <option value="servico">
+                                Serviço
+                            </option>
+
+                            <option value="venda">
+                                Venda
+                            </option>
+
+                            <option value="material">
+                                Material
+                            </option>
+
+                            <option value="ferramentas">
+                                Ferramentas
+                            </option>
+
+                            <option value="transporte">
+                                Transporte
+                            </option>
+
+                            <option value="contas">
+                                Contas
+                            </option>
+
+                            <option value="outros">
+                                Outros
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <div class="campo">
+
+                        <label for="valor">
+                            Valor
+                        </label>
+
+                        <input
+                            type="number"
+                            id="valor"
+                            name="valor"
+                            min="0"
+                            step="0.01"
+                            placeholder="0,00"
+                            required>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="linha-campos">
+
+
+                    <div class="campo">
+
+                        <label for="data">
+                            Data
+                        </label>
+
+                        <input
+                            type="date"
+                            id="data"
+                            name="data"
+                            required>
+
+                    </div>
+
+
+
+                    <div class="campo">
+
+                        <label for="formaPagamento">
+                            Forma de pagamento
+                        </label>
+
+                        <select
+                            id="formaPagamento"
+                            name="formaPagamento">
+
+                            <option value="">
+                                Selecione
+                            </option>
+
+                            <option value="dinheiro">
+                                Dinheiro
+                            </option>
+
+                            <option value="pix">
+                                PIX
+                            </option>
+
+                            <option value="cartao">
+                                Cartão
+                            </option>
+
+                            <option value="transferencia">
+                                Transferência
+                            </option>
+
+                            <option value="outro">
+                                Outro
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="campo">
+
+                    <label for="observacoes">
+                        Observações
+                    </label>
+
+                    <textarea
+                        id="observacoes"
+                        name="observacoes"
+                        rows="3"
+                        placeholder="Observações opcionais..."></textarea>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     BOTÕES
+                ================================================== -->
+
+                <div class="modal-acoes">
+
+                    <button
+                        type="button"
+                        id="btnCancelar"
+                        class="btn-secundario">
+
+                        Cancelar
+
+                    </button>
+
+                    <button
+                        type="submit"
+                        id="btnSalvar"
+                        class="btn-principal">
+
+                        Salvar movimentação
+
+                    </button>
+
+                </div>
+
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         MODAL — DETALHES
+    ====================================================== -->
+
+    <div
+        id="modalDetalhes"
+        class="modal"
+        aria-hidden="true">
+
+        <div
+            class="modal-overlay"
+            data-fechar-detalhes>
+
+        </div>
+
+
+        <div
+            class="modal-content modal-detalhes"
+            role="dialog"
+            aria-modal="true">
+
+
+            <div class="modal-header">
+
+                <div>
+
+                    <h2>
+                        Detalhes
+                    </h2>
+
+                    <p id="detalheDescricao">
+                        —
+                    </p>
+
+                </div>
+
+
+                <button
+                    id="btnFecharDetalhes"
+                    class="btn-fechar"
+                    type="button">
+
+                    ×
+
+                </button>
+
+            </div>
+
+
+
+            <div class="detalhes-conteudo">
+
+
+                <div class="detalhe-item">
+
+                    <span>Tipo</span>
+
+                    <strong id="detalheTipo">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="detalhe-item">
+
+                    <span>Categoria</span>
+
+                    <strong id="detalheCategoria">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="detalhe-item">
+
+                    <span>Valor</span>
+
+                    <strong id="detalheValor">
+                        R$ 0,00
+                    </strong>
+
+                </div>
+
+
+                <div class="detalhe-item">
+
+                    <span>Data</span>
+
+                    <strong id="detalheData">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="detalhe-item">
+
+                    <span>Pagamento</span>
+
+                    <strong id="detalhePagamento">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="detalhe-item detalhe-observacoes">
+
+                    <span>Observações</span>
+
+                    <p id="detalheObservacoes">
+                        —
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+
+            <div class="modal-acoes">
+
+
+                <button
+                    id="btnEditarMovimentacao"
+                    class="btn-principal"
+                    type="button">
+
+                    Editar
+
+                </button>
+
+
+                <button
+                    id="btnExcluirMovimentacao"
+                    class="btn-perigo"
+                    type="button">
+
+                    Excluir
+
+                </button>
+
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         TOAST
+    ====================================================== -->
+
+    <div
+        id="toast"
+        class="toast"
+        role="status"
+        aria-live="polite">
+
+    </div>
+
+
+
+    <!-- =====================================================
+         SUPABASE
+    ====================================================== -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="js/supabase.js"></script>
+
+    <script src="js/financeiro.js"></script>
+
+
+</body>
+
+</html>
