@@ -1,36 +1,20 @@
+/* =====================================================
+   AGENDA — WS SOLUÇÕES
+===================================================== */
+
 :root {
     --roxo: #7c3aed;
-    --roxo-hover: #6d28d9;
-
+    --roxo-escuro: #6d28d9;
     --fundo: #f5f5f7;
     --card: #ffffff;
-
     --texto: #18181b;
     --texto-secundario: #71717a;
-
     --borda: #e4e4e7;
-
-    --verde: #16a34a;
-    --verde-fundo: #dcfce7;
-
-    --vermelho: #dc2626;
-    --vermelho-fundo: #fee2e2;
-
-    --amarelo: #d97706;
-    --amarelo-fundo: #fef3c7;
-
-    --azul: #2563eb;
-    --azul-fundo: #dbeafe;
-
-    --sombra: 0 4px 20px rgba(0, 0, 0, 0.06);
-
-    --raio: 16px;
+    --hover: #f4f4f5;
+    --perigo: #dc2626;
+    --sucesso: #16a34a;
+    --sombra: 0 8px 30px rgba(0, 0, 0, 0.07);
 }
-
-
-/* =========================================================
-   RESET
-========================================================= */
 
 * {
     box-sizing: border-box;
@@ -38,310 +22,257 @@
     padding: 0;
 }
 
-
 body {
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
+    font-family: Arial, Helvetica, sans-serif;
     background: var(--fundo);
     color: var(--texto);
-
     min-height: 100vh;
-
-    transition:
-        background 0.25s ease,
-        color 0.25s ease;
+    transition: background 0.2s ease, color 0.2s ease;
 }
 
 
-button,
-input,
-select,
-textarea {
-    font: inherit;
-}
-
-
-/* =========================================================
+/* =====================================================
    TOPO
-========================================================= */
+===================================================== */
 
 .topo {
     width: 100%;
-
-    min-height: 74px;
-
-    padding: 14px 24px;
-
+    min-height: 72px;
     background: var(--card);
-
     border-bottom: 1px solid var(--borda);
 
     display: flex;
-
     align-items: center;
-
     justify-content: space-between;
 
-    gap: 20px;
-}
+    padding: 14px 24px;
 
+    position: sticky;
+    top: 0;
+    z-index: 20;
+}
 
 .topo-esquerda {
     display: flex;
-
     align-items: center;
-
     gap: 14px;
 }
 
-
-.topo h1 {
+.topo-esquerda h1 {
     font-size: 22px;
-
-    font-weight: 700;
+    line-height: 1.1;
 }
 
-
-.topo span {
+.topo-esquerda span {
     display: block;
-
     margin-top: 3px;
-
     font-size: 12px;
-
     color: var(--texto-secundario);
 }
 
-
 .topo-acoes {
     display: flex;
-
     align-items: center;
-
     gap: 10px;
 }
 
 
-/* =========================================================
+/* =====================================================
    BOTÕES
-========================================================= */
+===================================================== */
 
 button {
+    font-family: inherit;
     border: 0;
-
     cursor: pointer;
-
-    transition:
-        transform 0.15s ease,
-        opacity 0.15s ease,
-        background 0.15s ease;
 }
 
-
-button:active {
-    transform: scale(0.97);
-}
-
-
-.btn-voltar,
-.btn-icone,
-.btn-fechar {
-    width: 42px;
-
-    height: 42px;
+.btn-voltar {
+    width: 40px;
+    height: 40px;
 
     border-radius: 12px;
 
-    background: var(--fundo);
+    background: var(--hover);
+    color: var(--texto);
 
+    font-size: 22px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-voltar:hover {
+    background: var(--borda);
+}
+
+.btn-icone {
+    width: 40px;
+    height: 40px;
+
+    border-radius: 12px;
+
+    background: var(--hover);
     color: var(--texto);
 
     font-size: 20px;
 
     display: flex;
-
     align-items: center;
-
     justify-content: center;
 }
 
-
-.btn-voltar:hover,
-.btn-icone:hover,
-.btn-fechar:hover {
+.btn-icone:hover {
     background: var(--borda);
 }
 
-
 .btn-principal {
-    min-height: 42px;
+    background: var(--roxo);
+    color: #fff;
 
-    padding: 0 17px;
+    min-height: 40px;
+
+    padding: 0 16px;
 
     border-radius: 11px;
 
-    background: var(--roxo);
-
-    color: #ffffff;
-
-    font-weight: 600;
+    font-weight: 700;
 }
-
 
 .btn-principal:hover {
-    background: var(--roxo-hover);
+    background: var(--roxo-escuro);
 }
-
 
 .btn-secundario {
-    min-height: 42px;
+    min-height: 40px;
 
-    padding: 0 17px;
+    padding: 0 16px;
 
     border-radius: 11px;
 
-    background: var(--fundo);
-
+    background: var(--hover);
     color: var(--texto);
 
-    border: 1px solid var(--borda);
-
     font-weight: 600;
 }
 
+.btn-secundario:hover {
+    background: var(--borda);
+}
 
 .btn-perigo {
-    min-height: 42px;
+    min-height: 40px;
 
-    padding: 0 17px;
+    padding: 0 16px;
 
     border-radius: 11px;
 
-    background: var(--vermelho-fundo);
+    background: var(--perigo);
+    color: #fff;
 
-    color: var(--vermelho);
-
-    font-weight: 600;
+    font-weight: 700;
 }
 
 
-/* =========================================================
+/* =====================================================
    CONTAINER
-========================================================= */
+===================================================== */
 
 .container {
-    width: 100%;
-
-    max-width: 1200px;
-
-    margin: 0 auto;
-
-    padding: 25px;
+    width: min(1200px, calc(100% - 32px));
+    margin: 24px auto 50px;
 }
 
 
-/* =========================================================
-   CABEÇALHO DO CALENDÁRIO
-========================================================= */
+/* =====================================================
+   TOPO DO CALENDÁRIO
+===================================================== */
 
 .calendario-topo {
     display: flex;
-
     align-items: center;
-
     justify-content: center;
-
     gap: 18px;
 
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 }
-
-
-.mes-atual {
-    min-width: 220px;
-
-    text-align: center;
-}
-
 
 .mes-atual h2 {
+    min-width: 180px;
+
+    text-align: center;
+
     font-size: 21px;
-
-    text-transform: capitalize;
 }
-
 
 .btn-calendario {
     width: 42px;
-
     height: 42px;
 
-    border-radius: 11px;
+    border-radius: 12px;
 
     background: var(--card);
-
     color: var(--texto);
 
     border: 1px solid var(--borda);
 
-    font-size: 28px;
+    font-size: 27px;
 
-    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-
 
 .btn-calendario:hover {
-    background: var(--fundo);
+    background: var(--hover);
 }
-
 
 .acoes-calendario {
     display: flex;
+    justify-content: flex-end;
 
-    justify-content: center;
-
-    margin-bottom: 18px;
+    margin-bottom: 12px;
 }
 
 
-/* =========================================================
+/* =====================================================
    CALENDÁRIO
-========================================================= */
+===================================================== */
 
 .calendario {
     background: var(--card);
 
     border: 1px solid var(--borda);
 
-    border-radius: var(--raio);
+    border-radius: 16px;
 
     overflow: hidden;
 
     box-shadow: var(--sombra);
-
-    margin-bottom: 25px;
 }
 
+
+/* =====================================================
+   DIAS DA SEMANA
+===================================================== */
 
 .dias-semana {
     display: grid;
 
-    grid-template-columns:
-        repeat(7, 1fr);
+    grid-template-columns: repeat(7, 1fr);
 
-    background: var(--fundo);
+    background: var(--hover);
 
     border-bottom: 1px solid var(--borda);
 }
 
-
 .dias-semana div {
-    padding: 12px 5px;
+    height: 42px;
 
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     font-size: 12px;
 
@@ -351,49 +282,70 @@ button:active {
 }
 
 
+/* =====================================================
+   GRADE
+===================================================== */
+
 .grade-calendario {
     display: grid;
 
-    grid-template-columns:
-        repeat(7, 1fr);
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+
+    grid-auto-rows: 78px;
+
+    width: 100%;
 }
 
 
+/* =====================================================
+   QUADRADO DO DIA
+===================================================== */
+
 .dia-calendario {
-    min-height: 105px;
+    min-width: 0;
+
+    height: 78px;
+
+    overflow: hidden;
+
+    position: relative;
 
     padding: 9px;
 
-    border-right: 1px solid var(--borda);
+    background: var(--card);
 
+    border-right: 1px solid var(--borda);
     border-bottom: 1px solid var(--borda);
 
     cursor: pointer;
 
     transition:
-        background 0.15s ease;
+        background 0.15s ease,
+        transform 0.15s ease;
 }
 
+.dia-calendario:hover {
+    background: var(--hover);
+}
+
+
+/* Remove borda direita da última coluna */
 
 .dia-calendario:nth-child(7n) {
     border-right: 0;
 }
 
 
-.dia-calendario:hover {
-    background: var(--fundo);
-}
-
+/* =====================================================
+   NÚMERO DO DIA
+===================================================== */
 
 .dia-numero {
-    width: 30px;
-
-    height: 30px;
+    width: 28px;
+    height: 28px;
 
     display: flex;
-
     align-items: center;
-
     justify-content: center;
 
     border-radius: 50%;
@@ -404,199 +356,169 @@ button:active {
 }
 
 
-.dia-outro-mes {
-    color: var(--texto-secundario);
+/* =====================================================
+   DIAS DE OUTRO MÊS
+===================================================== */
 
-    opacity: 0.45;
+.dia-outro-mes {
+    opacity: 0.35;
 }
 
+
+/* =====================================================
+   HOJE
+===================================================== */
 
 .dia-hoje .dia-numero {
     background: var(--roxo);
 
-    color: #ffffff;
+    color: #fff;
 }
 
+
+/* =====================================================
+   DIA SELECIONADO
+===================================================== */
 
 .dia-selecionado {
-    background: rgba(124, 58, 237, 0.07);
+    box-shadow: inset 0 0 0 2px var(--roxo);
+
+    z-index: 2;
 }
 
 
-.dia-selecionado .dia-numero {
-    border: 2px solid var(--roxo);
+/* =====================================================
+   DIA COM AGENDAMENTO
+===================================================== */
 
-    color: var(--roxo);
+.dia-com-agendamento {
+    background: rgba(124, 58, 237, 0.13);
+
+    box-shadow:
+        inset 0 0 0 1px rgba(124, 58, 237, 0.25);
+}
+
+.dia-com-agendamento:hover {
+    background: rgba(124, 58, 237, 0.20);
 }
 
 
-.dia-hoje.dia-selecionado .dia-numero {
-    background: var(--roxo);
+/* =====================================================
+   IMPORTANTE:
+   NÃO DEIXAR EVENTOS INTERNOS ESTICAREM O DIA
+===================================================== */
 
-    color: #ffffff;
-
-    border: 0;
-}
-
-
-/* =========================================================
-   INDICADORES DE AGENDAMENTO
-========================================================= */
-
-.dia-eventos {
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 4px;
-
-    margin-top: 6px;
-}
-
-
+.dia-eventos,
 .evento-mini {
-    padding: 4px 6px;
-
-    border-radius: 6px;
-
-    background: var(--azul-fundo);
-
-    color: var(--azul);
-
-    font-size: 10px;
-
-    font-weight: 600;
-
-    white-space: nowrap;
-
-    overflow: hidden;
-
-    text-overflow: ellipsis;
+    display: none !important;
 }
 
 
-.evento-mini.cancelado {
-    background: var(--vermelho-fundo);
-
-    color: var(--vermelho);
-}
-
-
-.evento-mini.concluido {
-    background: var(--verde-fundo);
-
-    color: var(--verde);
-}
-
-
-/* =========================================================
+/* =====================================================
    AGENDA DO DIA
-========================================================= */
+===================================================== */
 
 .agenda-dia {
-    width: 100%;
-}
+    margin-top: 22px;
 
+    background: var(--card);
+
+    border: 1px solid var(--borda);
+
+    border-radius: 16px;
+
+    box-shadow: var(--sombra);
+
+    overflow: hidden;
+}
 
 .agenda-dia-topo {
-    margin-bottom: 13px;
-}
+    padding: 18px 20px;
 
+    border-bottom: 1px solid var(--borda);
+}
 
 .agenda-dia-topo h2 {
     font-size: 18px;
 }
-
 
 .agenda-dia-topo span {
     display: block;
 
     margin-top: 4px;
 
-    color: var(--texto-secundario);
+    font-size: 13px;
 
-    font-size: 12px;
+    color: var(--texto-secundario);
 }
 
+
+/* =====================================================
+   LISTA DE AGENDAMENTOS
+===================================================== */
 
 .lista-agendamentos {
     display: flex;
 
     flex-direction: column;
-
-    gap: 10px;
 }
 
-
-/* =========================================================
-   CARD DE AGENDAMENTO
-========================================================= */
-
 .agendamento {
-    padding: 16px;
+    min-height: 74px;
 
-    background: var(--card);
+    display: grid;
 
-    border: 1px solid var(--borda);
-
-    border-radius: 14px;
-
-    box-shadow: var(--sombra);
-
-    display: flex;
+    grid-template-columns: 70px 1px minmax(0, 1fr) auto;
 
     align-items: center;
 
-    gap: 15px;
+    gap: 14px;
+
+    padding: 12px 18px;
+
+    border-bottom: 1px solid var(--borda);
 
     cursor: pointer;
 
-    transition:
-        transform 0.15s ease,
-        border-color 0.15s ease;
+    transition: background 0.15s ease;
 }
 
+.agendamento:last-child {
+    border-bottom: 0;
+}
 
 .agendamento:hover {
-    transform: translateY(-1px);
-
-    border-color: #c4b5fd;
+    background: var(--hover);
 }
-
 
 .agendamento-hora {
-    width: 65px;
+    font-size: 18px;
 
-    flex-shrink: 0;
+    font-weight: 800;
 
     text-align: center;
-
-    font-size: 16px;
-
-    font-weight: 700;
-
-    color: var(--roxo);
 }
-
 
 .agendamento-divisor {
     width: 1px;
 
-    height: 42px;
+    height: 38px;
 
     background: var(--borda);
 }
 
-
 .agendamento-info {
-    flex: 1;
-
     min-width: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
 }
 
-
-.agendamento-info h3 {
-    font-size: 15px;
+.agendamento-info strong {
+    font-size: 14px;
 
     white-space: nowrap;
 
@@ -605,14 +527,11 @@ button:active {
     text-overflow: ellipsis;
 }
 
-
-.agendamento-info p {
-    margin-top: 5px;
+.agendamento-info span {
+    font-size: 13px;
 
     color: var(--texto-secundario);
 
-    font-size: 12px;
-
     white-space: nowrap;
 
     overflow: hidden;
@@ -621,191 +540,164 @@ button:active {
 }
 
 
+/* =====================================================
+   STATUS
+===================================================== */
+
 .agendamento-status {
-    flex-shrink: 0;
+    display: inline-flex;
 
-    padding: 6px 9px;
+    align-items: center;
+    justify-content: center;
 
-    border-radius: 8px;
+    min-height: 30px;
 
-    font-size: 10px;
+    padding: 0 10px;
+
+    border-radius: 999px;
+
+    font-size: 12px;
 
     font-weight: 700;
-}
 
+    white-space: nowrap;
+
+    background: var(--hover);
+
+    color: var(--texto);
+}
 
 .status-agendado {
-    background: var(--azul-fundo);
-
-    color: var(--azul);
-}
-
-
-.status-confirmado {
-    background: var(--amarelo-fundo);
-
-    color: var(--amarelo);
-}
-
-
-.status-concluido {
-    background: var(--verde-fundo);
-
-    color: var(--verde);
-}
-
-
-.status-cancelado {
-    background: var(--vermelho-fundo);
-
-    color: var(--vermelho);
-}
-
-
-/* =========================================================
-   ESTADO VAZIO
-========================================================= */
-
-.estado-vazio {
-    padding: 50px 20px;
-
-    text-align: center;
-
-    background: var(--card);
-
-    border: 1px dashed var(--borda);
-
-    border-radius: var(--raio);
-}
-
-
-.estado-vazio[hidden] {
-    display: none;
-}
-
-
-.vazio-icone {
-    width: 58px;
-
-    height: 58px;
-
-    margin: 0 auto 14px;
-
-    border-radius: 18px;
-
-    background: #ede9fe;
+    background: rgba(124, 58, 237, 0.12);
 
     color: var(--roxo);
+}
+
+.status-confirmado {
+    background: rgba(22, 163, 74, 0.12);
+
+    color: var(--sucesso);
+}
+
+.status-em_atendimento {
+    background: rgba(234, 179, 8, 0.15);
+
+    color: #a16207;
+}
+
+.status-concluido {
+    background: rgba(22, 163, 74, 0.12);
+
+    color: var(--sucesso);
+}
+
+.status-cancelado {
+    background: rgba(220, 38, 38, 0.12);
+
+    color: var(--perigo);
+}
+
+.status-faltou {
+    background: rgba(220, 38, 38, 0.12);
+
+    color: var(--perigo);
+}
+
+
+/* =====================================================
+   ESTADO VAZIO
+===================================================== */
+
+.estado-vazio {
+    padding: 45px 20px;
 
     display: flex;
+
+    flex-direction: column;
 
     align-items: center;
 
     justify-content: center;
 
-    font-size: 25px;
+    text-align: center;
 }
 
+.estado-vazio[hidden] {
+    display: none !important;
+}
+
+.vazio-icone {
+    font-size: 38px;
+
+    margin-bottom: 12px;
+}
 
 .estado-vazio h3 {
     font-size: 17px;
 }
 
-
 .estado-vazio p {
-    margin: 7px 0 18px;
+    margin-top: 6px;
 
-    color: var(--texto-secundario);
+    margin-bottom: 18px;
 
     font-size: 13px;
+
+    color: var(--texto-secundario);
 }
 
 
-/* =========================================================
-   MODAL
-========================================================= */
+/* =====================================================
+   MODAIS
+===================================================== */
 
 .modal {
+    display: none;
+
     position: fixed;
 
     inset: 0;
 
-    z-index: 1000;
-
-    display: none;
+    z-index: 100;
 
     align-items: center;
 
     justify-content: center;
-}
 
+    padding: 20px;
+}
 
 .modal.show {
     display: flex;
 }
-
 
 .modal-overlay {
     position: absolute;
 
     inset: 0;
 
-    background: rgba(0, 0, 0, 0.58);
+    background: rgba(0, 0, 0, 0.48);
 
-    backdrop-filter: blur(3px);
+    backdrop-filter: blur(4px);
 }
-
 
 .modal-content {
     position: relative;
 
-    z-index: 1;
+    z-index: 2;
 
-    width: calc(100% - 30px);
+    width: min(520px, 100%);
 
-    max-width: 560px;
-
-    max-height: calc(100vh - 30px);
+    max-height: calc(100vh - 40px);
 
     overflow-y: auto;
 
-    padding: 22px;
-
     background: var(--card);
-
-    color: var(--texto);
-
-    border: 1px solid var(--borda);
 
     border-radius: 18px;
 
-    box-shadow:
-        0 20px 60px rgba(0, 0, 0, 0.25);
-
-    animation: modalEntrada 0.18s ease;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.20);
 }
-
-
-@keyframes modalEntrada {
-
-    from {
-        opacity: 0;
-
-        transform:
-            translateY(8px)
-            scale(0.98);
-    }
-
-    to {
-        opacity: 1;
-
-        transform:
-            translateY(0)
-            scale(1);
-    }
-
-}
-
 
 .modal-header {
     display: flex;
@@ -816,32 +708,61 @@ button:active {
 
     gap: 15px;
 
-    margin-bottom: 22px;
-}
+    padding: 20px;
 
+    border-bottom: 1px solid var(--borda);
+}
 
 .modal-header h2 {
     font-size: 19px;
 }
 
-
 .modal-header p {
     margin-top: 5px;
 
-    color: var(--texto-secundario);
+    font-size: 13px;
 
-    font-size: 12px;
+    color: var(--texto-secundario);
+}
+
+.btn-fechar {
+    width: 36px;
+
+    height: 36px;
+
+    border-radius: 10px;
+
+    background: var(--hover);
+
+    color: var(--texto);
+
+    font-size: 24px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-shrink: 0;
+}
+
+.btn-fechar:hover {
+    background: var(--borda);
 }
 
 
-/* =========================================================
+/* =====================================================
    FORMULÁRIO
-========================================================= */
+===================================================== */
+
+#formAgenda {
+    padding: 20px;
+}
 
 .campo {
     margin-bottom: 15px;
 }
-
 
 .campo label {
     display: block;
@@ -850,9 +771,8 @@ button:active {
 
     font-size: 13px;
 
-    font-weight: 600;
+    font-weight: 700;
 }
-
 
 .campo input,
 .campo select,
@@ -863,30 +783,18 @@ button:active {
 
     border-radius: 10px;
 
-    outline: none;
-
     background: var(--card);
 
     color: var(--texto);
-}
-
-
-.campo input,
-.campo select {
-    height: 44px;
-
-    padding: 0 12px;
-}
-
-
-.campo textarea {
-    min-height: 90px;
 
     padding: 11px 12px;
 
-    resize: vertical;
-}
+    font-family: inherit;
 
+    font-size: 14px;
+
+    outline: none;
+}
 
 .campo input:focus,
 .campo select:focus,
@@ -894,20 +802,33 @@ button:active {
     border-color: var(--roxo);
 
     box-shadow:
-        0 0 0 3px
-        rgba(124, 58, 237, 0.10);
+        0 0 0 3px rgba(124, 58, 237, 0.10);
 }
 
+.campo textarea {
+    resize: vertical;
+
+    min-height: 80px;
+}
+
+.campo input[readonly] {
+    background: var(--hover);
+
+    cursor: default;
+}
 
 .linha-campos {
     display: grid;
 
-    grid-template-columns:
-        repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr 1fr;
 
     gap: 12px;
 }
 
+
+/* =====================================================
+   AÇÕES DO MODAL
+===================================================== */
 
 .modal-acoes {
     display: flex;
@@ -916,335 +837,239 @@ button:active {
 
     gap: 10px;
 
-    margin-top: 20px;
-
-    padding-top: 16px;
+    padding: 16px 20px;
 
     border-top: 1px solid var(--borda);
 }
 
 
-/* =========================================================
+/* =====================================================
    DETALHES
-========================================================= */
+===================================================== */
 
 .detalhes-conteudo {
-    display: grid;
-
-    grid-template-columns:
-        repeat(2, minmax(0, 1fr));
-
-    gap: 12px;
+    padding: 20px;
 }
-
 
 .detalhe-item {
-    padding: 13px;
+    padding: 13px 0;
 
-    background: var(--fundo);
-
-    border-radius: 11px;
+    border-bottom: 1px solid var(--borda);
 }
 
+.detalhe-item:last-child {
+    border-bottom: 0;
+}
 
-.detalhe-item span {
+.detalhe-item > span {
     display: block;
 
     margin-bottom: 5px;
 
+    font-size: 12px;
+
     color: var(--texto-secundario);
-
-    font-size: 11px;
 }
-
 
 .detalhe-item strong {
     font-size: 14px;
-}
-
-
-.detalhe-endereco,
-.detalhe-observacoes {
-    grid-column: 1 / -1;
-}
-
-
-.detalhe-observacoes p {
-    font-size: 13px;
 
     line-height: 1.5;
+}
 
-    white-space: pre-wrap;
+.detalhe-endereco strong {
+    display: block;
+}
+
+.detalhe-observacoes p {
+    font-size: 14px;
+
+    line-height: 1.5;
 }
 
 
-/* =========================================================
+/* =====================================================
    TOAST
-========================================================= */
+===================================================== */
 
 .toast {
     position: fixed;
 
     left: 50%;
 
-    bottom: 25px;
-
-    z-index: 3000;
+    bottom: 24px;
 
     transform:
-        translateX(-50%)
-        translateY(20px);
-
-    min-width: 220px;
-
-    max-width: calc(100% - 30px);
-
-    padding: 13px 17px;
-
-    border-radius: 11px;
-
-    background: #18181b;
-
-    color: #ffffff;
-
-    text-align: center;
-
-    font-size: 13px;
+        translate(-50%, 20px);
 
     opacity: 0;
 
     pointer-events: none;
+
+    z-index: 200;
+
+    padding: 12px 18px;
+
+    border-radius: 12px;
+
+    background: #18181b;
+
+    color: #fff;
+
+    font-size: 13px;
+
+    font-weight: 600;
 
     transition:
         opacity 0.2s ease,
         transform 0.2s ease;
 }
 
-
 .toast.show {
     opacity: 1;
 
     transform:
-        translateX(-50%)
-        translateY(0);
+        translate(-50%, 0);
+}
+
+.toast.erro {
+    background: var(--perigo);
 }
 
 
-/* =========================================================
+/* =====================================================
    MODO ESCURO
-========================================================= */
+===================================================== */
 
 body.dark {
-
     --fundo: #09090b;
-
     --card: #18181b;
-
     --texto: #f4f4f5;
-
     --texto-secundario: #a1a1aa;
-
     --borda: #27272a;
+    --hover: #27272a;
+}
 
-    --sombra:
-        0 4px 20px rgba(0, 0, 0, 0.25);
+body.dark .dia-com-agendamento {
+    background: rgba(139, 92, 246, 0.20);
 
+    box-shadow:
+        inset 0 0 0 1px rgba(167, 139, 250, 0.35);
+}
+
+body.dark .dia-com-agendamento:hover {
+    background: rgba(139, 92, 246, 0.28);
 }
 
 
-/* =========================================================
+/* =====================================================
    RESPONSIVO
-========================================================= */
+===================================================== */
 
-@media (max-width: 750px) {
-
-    .container {
-        padding: 18px 14px;
-    }
-
-
-    .dia-calendario {
-        min-height: 82px;
-
-        padding: 6px;
-    }
-
-
-    .evento-mini {
-        font-size: 9px;
-
-        padding: 3px 4px;
-    }
-
-
-    .agendamento {
-        padding: 13px;
-
-        gap: 10px;
-    }
-
-
-    .agendamento-hora {
-        width: 52px;
-
-        font-size: 14px;
-    }
-
-
-    .agendamento-status {
-        font-size: 9px;
-
-        padding: 5px 7px;
-    }
-
-}
-
-
-@media (max-width: 600px) {
+@media (max-width: 700px) {
 
     .topo {
-        padding: 12px 15px;
+        padding: 12px 14px;
     }
 
-
-    .topo h1 {
+    .topo-esquerda h1 {
         font-size: 19px;
     }
 
+    .topo-acoes .btn-principal {
+        padding: 0 11px;
 
-    .topo span {
-        font-size: 10px;
+        font-size: 12px;
     }
 
+    .container {
+        width: calc(100% - 20px);
 
-    .topo-acoes {
-        gap: 5px;
+        margin-top: 15px;
     }
 
-
-    .btn-icone {
-        width: 38px;
-
-        height: 38px;
+    .grade-calendario {
+        grid-auto-rows: 58px;
     }
-
-
-    .topo .btn-principal {
-        font-size: 0;
-
-        width: 42px;
-
-        padding: 0;
-    }
-
-
-    .topo .btn-principal::before {
-        content: "+";
-
-        font-size: 20px;
-    }
-
-
-    .mes-atual {
-        min-width: 170px;
-    }
-
-
-    .mes-atual h2 {
-        font-size: 18px;
-    }
-
-
-    .dias-semana div {
-        padding: 9px 2px;
-
-        font-size: 10px;
-    }
-
 
     .dia-calendario {
-        min-height: 65px;
+        height: 58px;
 
-        padding: 4px;
+        padding: 5px;
     }
-
 
     .dia-numero {
         width: 25px;
 
         height: 25px;
 
-        font-size: 11px;
+        font-size: 12px;
     }
 
+    .dias-semana div {
+        height: 36px;
 
-    .dia-eventos {
-        margin-top: 3px;
+        font-size: 10px;
     }
 
+    .agendamento {
+        grid-template-columns:
+            55px
+            1px
+            minmax(0, 1fr);
 
-    .evento-mini {
-        font-size: 8px;
-
-        padding: 2px 3px;
+        padding: 12px;
     }
-
-
-    .agendamento-info h3 {
-        font-size: 13px;
-    }
-
-
-    .agendamento-info p {
-        font-size: 11px;
-    }
-
 
     .agendamento-status {
-        display: none;
-    }
+        grid-column: 3;
 
+        justify-self: start;
+    }
 
     .linha-campos {
         grid-template-columns: 1fr;
-
-        gap: 0;
     }
-
-
-    .detalhes-conteudo {
-        grid-template-columns: 1fr;
-    }
-
-
-    .detalhe-endereco,
-    .detalhe-observacoes {
-        grid-column: auto;
-    }
-
-
-    .modal-content {
-        width: calc(100% - 20px);
-
-        padding: 18px;
-
-        border-radius: 16px;
-    }
-
 
     .modal-acoes {
-        flex-direction: column-reverse;
-    }
-
-
-    .modal-acoes button {
-        width: 100%;
+        flex-wrap: wrap;
     }
 
 }
 
 
-@media (max-width: 400px) {
+/* =====================================================
+   CELULARES PEQUENOS
+===================================================== */
+
+@media (max-width: 430px) {
+
+    .topo {
+        min-height: 64px;
+    }
+
+    .btn-voltar,
+    .btn-icone {
+        width: 36px;
+
+        height: 36px;
+    }
+
+    .topo-acoes {
+        gap: 6px;
+    }
+
+    .topo-acoes .btn-principal {
+        min-height: 36px;
+
+        font-size: 11px;
+    }
+
+    .mes-atual h2 {
+        min-width: 140px;
+
+        font-size: 17px;
+    }
 
     .btn-calendario {
         width: 36px;
@@ -1252,24 +1077,20 @@ body.dark {
         height: 36px;
     }
 
-
-    .calendario-topo {
-        gap: 8px;
+    .grade-calendario {
+        grid-auto-rows: 52px;
     }
-
-
-    .mes-atual {
-        min-width: 150px;
-    }
-
 
     .dia-calendario {
-        min-height: 57px;
+        height: 52px;
+
+        padding: 3px;
     }
 
+    .dia-numero {
+        width: 23px;
 
-    .evento-mini {
-        display: none;
+        height: 23px;
     }
 
 }
