@@ -1,6 +1,5 @@
 // =====================================================
 // WS SOLUÇÕES — AGENDA
-// Integrado ao banco V1
 // =====================================================
 
 let agendamentos = [];
@@ -54,8 +53,6 @@ const listaAgendamentos =
 const estadoVazio =
     document.getElementById("estadoVazio");
 
-
-// Modal Agenda
 const modalAgenda =
     document.getElementById("modalAgenda");
 
@@ -89,8 +86,6 @@ const campoObservacoes =
 const campoStatus =
     document.getElementById("status");
 
-
-// Modal detalhes
 const modalDetalhes =
     document.getElementById("modalDetalhes");
 
@@ -194,183 +189,101 @@ async function iniciarAgenda() {
 
 
 // =====================================================
-// DATA INICIAL
-// =====================================================
-
-function prepararDataInicial() {
-
-    const hoje = new Date();
-
-    dataVisualizada = new Date(
-        hoje.getFullYear(),
-        hoje.getMonth(),
-        1
-    );
-
-    dataSelecionada = new Date(
-        hoje.getFullYear(),
-        hoje.getMonth(),
-        hoje.getDate()
-    );
-}
-
-
-// =====================================================
 // EVENTOS
 // =====================================================
 
 function configurarEventos() {
 
     if (btnVoltar) {
-
-        btnVoltar.addEventListener(
-            "click",
-            () => {
-                window.location.href = "index2.html";
-            }
-        );
+        btnVoltar.onclick = () => {
+            window.location.href = "index2.html";
+        };
     }
 
 
     if (themeToggle) {
-
-        themeToggle.addEventListener(
-            "click",
-            alternarTema
-        );
+        themeToggle.onclick = alternarTema;
     }
 
 
     if (btnMesAnterior) {
+        btnMesAnterior.onclick = () => {
 
-        btnMesAnterior.addEventListener(
-            "click",
-            () => {
+            dataVisualizada.setMonth(
+                dataVisualizada.getMonth() - 1
+            );
 
-                dataVisualizada.setMonth(
-                    dataVisualizada.getMonth() - 1
-                );
-
-                renderizarCalendario();
-            }
-        );
+            renderizarCalendario();
+        };
     }
 
 
     if (btnMesProximo) {
+        btnMesProximo.onclick = () => {
 
-        btnMesProximo.addEventListener(
-            "click",
-            () => {
+            dataVisualizada.setMonth(
+                dataVisualizada.getMonth() + 1
+            );
 
-                dataVisualizada.setMonth(
-                    dataVisualizada.getMonth() + 1
-                );
-
-                renderizarCalendario();
-            }
-        );
+            renderizarCalendario();
+        };
     }
 
 
     if (btnHoje) {
-
-        btnHoje.addEventListener(
-            "click",
-            irParaHoje
-        );
+        btnHoje.onclick = irParaHoje;
     }
 
 
     if (btnNovoAgendamento) {
-
-        btnNovoAgendamento.addEventListener(
-            "click",
-            abrirNovoAgendamento
-        );
+        btnNovoAgendamento.onclick =
+            abrirNovoAgendamento;
     }
 
 
     if (btnNovoAgendamentoVazio) {
-
-        btnNovoAgendamentoVazio.addEventListener(
-            "click",
-            abrirNovoAgendamento
-        );
+        btnNovoAgendamentoVazio.onclick =
+            abrirNovoAgendamento;
     }
 
 
     if (btnFecharModal) {
-
-        btnFecharModal.addEventListener(
-            "click",
-            fecharModal
-        );
+        btnFecharModal.onclick =
+            fecharModal;
     }
 
 
     if (btnCancelar) {
-
-        btnCancelar.addEventListener(
-            "click",
-            fecharModal
-        );
+        btnCancelar.onclick =
+            fecharModal;
     }
 
 
     if (formAgenda) {
-
-        formAgenda.addEventListener(
-            "submit",
-            salvarAgendamento
-        );
+        formAgenda.onsubmit =
+            salvarAgendamento;
     }
 
 
     if (btnEditarAgendamento) {
-
-        btnEditarAgendamento.addEventListener(
-            "click",
-            editarAgendamentoSelecionado
-        );
+        btnEditarAgendamento.onclick =
+            editarAgendamentoSelecionado;
     }
 
 
     if (btnExcluirAgendamento) {
-
-        btnExcluirAgendamento.addEventListener(
-            "click",
-            excluirAgendamentoSelecionado
-        );
+        btnExcluirAgendamento.onclick =
+            excluirAgendamentoSelecionado;
     }
 
 
-    if (modalAgenda) {
+    // IMPORTANTE:
+    // Preenche o endereço assim que o cliente muda
+    if (campoCliente) {
 
-        modalAgenda.addEventListener(
-            "click",
-            event => {
-
-                if (event.target === modalAgenda) {
-                    fecharModal();
-                }
-
-            }
-        );
-    }
-
-
-    if (modalDetalhes) {
-
-        modalDetalhes.addEventListener(
-            "click",
-            event => {
-
-                if (event.target === modalDetalhes) {
-                    fecharDetalhes();
-                }
-
-            }
+        campoCliente.addEventListener(
+            "change",
+            atualizarEnderecoCliente
         );
     }
 }
@@ -413,6 +326,12 @@ async function carregarClientes() {
 
         clientes = data || [];
 
+        console.log(
+            "Clientes carregados:",
+            clientes
+        );
+
+
         preencherClientes();
 
     } catch (erro) {
@@ -431,7 +350,7 @@ async function carregarClientes() {
 
 
 // =====================================================
-// PREENCHER CLIENTES
+// SELECT CLIENTES
 // =====================================================
 
 function preencherClientes() {
@@ -450,13 +369,199 @@ function preencherClientes() {
         const option =
             document.createElement("option");
 
-        option.value = cliente.id;
+
+        option.value =
+            cliente.id;
+
 
         option.textContent =
             `${cliente.nome}${cliente.codigo ? " • " + cliente.codigo : ""}`;
 
-        campoCliente.appendChild(option);
+
+        campoCliente.appendChild(
+            option
+        );
     });
+}
+
+
+// =====================================================
+// ENDEREÇO AUTOMÁTICO
+// =====================================================
+
+function atualizarEnderecoCliente() {
+
+    if (!campoCliente || !campoEndereco) {
+        return;
+    }
+
+
+    const clienteId =
+        campoCliente.value;
+
+
+    console.log(
+        "Cliente selecionado:",
+        clienteId
+    );
+
+
+    if (!clienteId) {
+
+        campoEndereco.value = "";
+
+        return;
+    }
+
+
+    const cliente =
+        clientes.find(
+            item =>
+                String(item.id) ===
+                String(clienteId)
+        );
+
+
+    console.log(
+        "Dados do cliente:",
+        cliente
+    );
+
+
+    if (!cliente) {
+
+        campoEndereco.value =
+            "Cliente não encontrado";
+
+        return;
+    }
+
+
+    const endereco =
+        montarEndereco(cliente);
+
+
+    campoEndereco.value =
+        endereco ||
+        "Endereço não cadastrado";
+
+
+    // Campo apenas visual.
+    campoEndereco.readOnly = true;
+}
+
+
+// =====================================================
+// MONTAR ENDEREÇO
+// =====================================================
+
+function montarEndereco(cliente) {
+
+    const partes = [];
+
+
+    if (cliente.endereco) {
+
+        let endereco =
+            cliente.endereco.trim();
+
+
+        if (cliente.numero) {
+
+            endereco +=
+                `, ${cliente.numero}`;
+        }
+
+
+        partes.push(
+            endereco
+        );
+    }
+
+
+    if (cliente.complemento) {
+
+        partes.push(
+            cliente.complemento
+        );
+    }
+
+
+    if (cliente.bairro) {
+
+        partes.push(
+            cliente.bairro
+        );
+    }
+
+
+    if (cliente.cidade) {
+
+        let cidade =
+            cliente.cidade;
+
+
+        if (cliente.estado) {
+
+            cidade +=
+                ` - ${cliente.estado}`;
+        }
+
+
+        partes.push(
+            cidade
+        );
+    }
+
+
+    if (cliente.cep) {
+
+        partes.push(
+            `CEP: ${cliente.cep}`
+        );
+    }
+
+
+    return partes.join(", ");
+}
+
+
+// =====================================================
+// NOVO AGENDAMENTO
+// =====================================================
+
+function abrirNovoAgendamento() {
+
+    modoEdicao = false;
+
+    agendamentoSelecionado = null;
+
+
+    formAgenda.reset();
+
+
+    campoData.value =
+        converterParaInputDate(
+            dataSelecionada
+        );
+
+
+    campoStatus.value =
+        "agendado";
+
+
+    if (campoEndereco) {
+
+        campoEndereco.value = "";
+
+        campoEndereco.readOnly = true;
+
+        campoEndereco.placeholder =
+            "Selecione um cliente";
+    }
+
+
+    abrirModal();
 }
 
 
@@ -489,7 +594,8 @@ async function carregarOrdensServico() {
         }
 
 
-        ordensServico = data || [];
+        ordensServico =
+            data || [];
 
     } catch (erro) {
 
@@ -498,8 +604,6 @@ async function carregarOrdensServico() {
             erro
         );
 
-        // A Agenda continua funcionando mesmo
-        // se não houver OS disponíveis.
         ordensServico = [];
     }
 }
@@ -542,14 +646,14 @@ async function carregarAgendamentos() {
         }
 
 
-        agendamentos = data || [];
+        agendamentos =
+            data || [];
 
 
         vincularDados();
 
 
         renderizarCalendario();
-
 
     } catch (erro) {
 
@@ -569,45 +673,51 @@ async function carregarAgendamentos() {
 
 
 // =====================================================
-// VINCULAR CLIENTE E OS
+// VINCULAR CLIENTES / OS
 // =====================================================
 
 function vincularDados() {
 
-    agendamentos.forEach(agendamento => {
+    agendamentos.forEach(
+        agendamento => {
 
-        const cliente =
-            clientes.find(
-                item =>
-                    item.id ===
-                    agendamento.cliente_id
-            );
-
-
-        const os =
-            ordensServico.find(
-                item =>
-                    item.id ===
-                    agendamento.os_id
-            );
+            const cliente =
+                clientes.find(
+                    item =>
+                        String(item.id) ===
+                        String(
+                            agendamento.cliente_id
+                        )
+                );
 
 
-        agendamento.clienteDados =
-            cliente || null;
+            const os =
+                ordensServico.find(
+                    item =>
+                        String(item.id) ===
+                        String(
+                            agendamento.os_id
+                        )
+                );
 
 
-        agendamento.clienteNome =
-            cliente?.nome ||
-            "Cliente não encontrado";
+            agendamento.clienteDados =
+                cliente || null;
 
 
-        agendamento.osDados =
-            os || null;
+            agendamento.clienteNome =
+                cliente?.nome ||
+                "Cliente não encontrado";
 
 
-        agendamento.osCodigo =
-            os?.codigo || null;
-    });
+            agendamento.osDados =
+                os || null;
+
+
+            agendamento.osCodigo =
+                os?.codigo || null;
+        }
+    );
 }
 
 
@@ -624,6 +734,7 @@ function renderizarCalendario() {
 
     const ano =
         dataVisualizada.getFullYear();
+
 
     const mes =
         dataVisualizada.getMonth();
@@ -681,13 +792,16 @@ function renderizarCalendario() {
                 i +
                 1;
 
+
             mesCelula--;
+
 
             if (mesCelula < 0) {
 
                 mesCelula = 11;
                 anoCelula--;
             }
+
 
             outroMes = true;
 
@@ -702,13 +816,16 @@ function renderizarCalendario() {
                 ultimoDia +
                 1;
 
+
             mesCelula++;
+
 
             if (mesCelula > 11) {
 
                 mesCelula = 0;
                 anoCelula++;
             }
+
 
             outroMes = true;
 
@@ -811,7 +928,9 @@ function renderizarCalendario() {
                 agendamento => {
 
                     const evento =
-                        document.createElement("div");
+                        document.createElement(
+                            "div"
+                        );
 
 
                     evento.className =
@@ -841,9 +960,7 @@ function renderizarCalendario() {
 
 
                     evento.textContent =
-                        `${agendamento.hora?.substring(0, 5) || "--:--"} ${
-                            agendamento.clienteNome
-                        }`;
+                        `${agendamento.hora?.substring(0, 5) || "--:--"} ${agendamento.clienteNome}`;
 
 
                     eventosContainer.appendChild(
@@ -856,7 +973,9 @@ function renderizarCalendario() {
         if (eventos.length > 3) {
 
             const mais =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
 
             mais.className =
@@ -878,8 +997,7 @@ function renderizarCalendario() {
         );
 
 
-        elemento.addEventListener(
-            "click",
+        elemento.onclick =
             () => {
 
                 dataSelecionada =
@@ -902,8 +1020,7 @@ function renderizarCalendario() {
                 selecionarDia(
                     dataSelecionada
                 );
-            }
-        );
+            };
 
 
         gradeCalendario.appendChild(
@@ -971,6 +1088,7 @@ function selecionarDia(data) {
     estadoVazio.style.display =
         "none";
 
+
     listaAgendamentos.style.display =
         "flex";
 
@@ -990,7 +1108,9 @@ function renderizarAgendamento(
 ) {
 
     const item =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
 
     item.className =
@@ -998,7 +1118,9 @@ function renderizarAgendamento(
 
 
     const hora =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
 
     hora.className =
@@ -1012,7 +1134,9 @@ function renderizarAgendamento(
 
 
     const divisor =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
 
     divisor.className =
@@ -1020,7 +1144,9 @@ function renderizarAgendamento(
 
 
     const info =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
 
     info.className =
@@ -1028,7 +1154,9 @@ function renderizarAgendamento(
 
 
     const cliente =
-        document.createElement("strong");
+        document.createElement(
+            "strong"
+        );
 
 
     cliente.textContent =
@@ -1036,7 +1164,9 @@ function renderizarAgendamento(
 
 
     const servico =
-        document.createElement("span");
+        document.createElement(
+            "span"
+        );
 
 
     servico.textContent =
@@ -1045,12 +1175,13 @@ function renderizarAgendamento(
 
 
     info.appendChild(cliente);
-
     info.appendChild(servico);
 
 
     const status =
-        document.createElement("span");
+        document.createElement(
+            "span"
+        );
 
 
     const statusAtual =
@@ -1068,18 +1199,15 @@ function renderizarAgendamento(
 
 
     item.appendChild(hora);
-
     item.appendChild(divisor);
-
     item.appendChild(info);
-
     item.appendChild(status);
 
 
-    item.addEventListener(
-        "click",
-        () => abrirDetalhes(agendamento)
-    );
+    item.onclick =
+        () => abrirDetalhes(
+            agendamento
+        );
 
 
     listaAgendamentos.appendChild(
@@ -1089,48 +1217,7 @@ function renderizarAgendamento(
 
 
 // =====================================================
-// NOVO AGENDAMENTO
-// =====================================================
-
-function abrirNovoAgendamento() {
-
-    modoEdicao = false;
-
-    agendamentoSelecionado = null;
-
-
-    formAgenda.reset();
-
-
-    campoData.value =
-        converterParaInputDate(
-            dataSelecionada
-        );
-
-
-    campoStatus.value =
-        "agendado";
-
-
-    // Endereço não faz parte do banco da Agenda.
-    // Ele será mostrado automaticamente pelo cliente.
-    if (campoEndereco) {
-
-        campoEndereco.value = "";
-
-        campoEndereco.readOnly = true;
-
-        campoEndereco.placeholder =
-            "Endereço cadastrado no cliente";
-    }
-
-
-    abrirModal();
-}
-
-
-// =====================================================
-// EDITAR AGENDAMENTO
+// EDITAR
 // =====================================================
 
 function editarAgendamentoSelecionado() {
@@ -1185,129 +1272,6 @@ function editarAgendamentoSelecionado() {
 
 
 // =====================================================
-// ENDEREÇO DO CLIENTE
-// =====================================================
-
-if (campoCliente) {
-
-    campoCliente.addEventListener(
-        "change",
-        atualizarEnderecoCliente
-    );
-}
-
-
-function atualizarEnderecoCliente() {
-
-    if (!campoEndereco) {
-        return;
-    }
-
-
-    const cliente =
-        clientes.find(
-            item =>
-                item.id ===
-                campoCliente.value
-        );
-
-
-    if (!cliente) {
-
-        campoEndereco.value = "";
-
-        return;
-    }
-
-
-    campoEndereco.value =
-        montarEndereco(cliente);
-
-
-    campoEndereco.readOnly =
-        true;
-}
-
-
-// =====================================================
-// MONTAR ENDEREÇO
-// =====================================================
-
-function montarEndereco(cliente) {
-
-    const partes = [];
-
-
-    if (cliente.endereco) {
-
-        let endereco =
-            cliente.endereco;
-
-
-        if (cliente.numero) {
-
-            endereco +=
-                `, ${cliente.numero}`;
-        }
-
-
-        partes.push(
-            endereco
-        );
-    }
-
-
-    if (cliente.complemento) {
-
-        partes.push(
-            cliente.complemento
-        );
-    }
-
-
-    if (cliente.bairro) {
-
-        partes.push(
-            cliente.bairro
-        );
-    }
-
-
-    if (
-        cliente.cidade ||
-        cliente.estado
-    ) {
-
-        let cidadeEstado =
-            cliente.cidade || "";
-
-
-        if (cliente.estado) {
-
-            cidadeEstado +=
-                ` - ${cliente.estado}`;
-        }
-
-
-        partes.push(
-            cidadeEstado
-        );
-    }
-
-
-    if (cliente.cep) {
-
-        partes.push(
-            `CEP: ${cliente.cep}`
-        );
-    }
-
-
-    return partes.join(", ");
-}
-
-
-// =====================================================
 // SALVAR
 // =====================================================
 
@@ -1319,7 +1283,10 @@ async function salvarAgendamento(event) {
     const dados = {
 
         cliente_id:
-            campoCliente.value || null,
+            campoCliente.value,
+
+        os_id:
+            null,
 
         data:
             campoData.value,
@@ -1415,7 +1382,6 @@ async function salvarAgendamento(event) {
 
 
         if (resposta.error) {
-
             throw resposta.error;
         }
 
@@ -1459,7 +1425,7 @@ async function salvarAgendamento(event) {
     } catch (erro) {
 
         console.error(
-            "Erro ao salvar agendamento:",
+            "Erro ao salvar:",
             erro
         );
 
@@ -1469,7 +1435,6 @@ async function salvarAgendamento(event) {
             "Erro ao salvar agendamento",
             "erro"
         );
-
 
     } finally {
 
@@ -1530,7 +1495,6 @@ function abrirDetalhes(
         `agendamento-status status-${statusAtual}`;
 
 
-    // Endereço vem da tabela CLIENTES
     detalheEndereco.textContent =
         agendamento.clienteDados
             ? montarEndereco(
@@ -1548,6 +1512,7 @@ function abrirDetalhes(
         "show"
     );
 
+
     modalDetalhes.style.display =
         "flex";
 }
@@ -1564,13 +1529,11 @@ async function excluirAgendamentoSelecionado() {
     }
 
 
-    const confirmar =
-        confirm(
+    if (
+        !confirm(
             `Deseja realmente excluir o agendamento ${agendamentoSelecionado.codigo || ""}?`
-        );
-
-
-    if (!confirmar) {
+        )
+    ) {
         return;
     }
 
@@ -1588,7 +1551,6 @@ async function excluirAgendamentoSelecionado() {
 
 
         if (error) {
-
             throw error;
         }
 
@@ -1628,7 +1590,7 @@ async function excluirAgendamentoSelecionado() {
 
 
 // =====================================================
-// MODAL
+// MODAIS
 // =====================================================
 
 function abrirModal() {
@@ -1683,20 +1645,14 @@ function alterarEstadoBotaoSalvar(
     }
 
 
-    if (carregando) {
+    botao.disabled =
+        carregando;
 
-        botao.disabled = true;
 
-        botao.textContent =
-            "Salvando...";
-
-    } else {
-
-        botao.disabled = false;
-
-        botao.textContent =
-            "Salvar";
-    }
+    botao.textContent =
+        carregando
+            ? "Salvando..."
+            : "Salvar";
 }
 
 
@@ -1754,7 +1710,6 @@ function configurarTema() {
 
 
         if (themeToggle) {
-
             themeToggle.textContent =
                 "☀";
         }
@@ -1767,7 +1722,6 @@ function configurarTema() {
 
 
         if (themeToggle) {
-
             themeToggle.textContent =
                 "☾";
         }
@@ -1802,8 +1756,31 @@ function alternarTema() {
 
 
 // =====================================================
-// DATAS
+// UTILITÁRIOS
 // =====================================================
+
+function prepararDataInicial() {
+
+    const hoje =
+        new Date();
+
+
+    dataVisualizada =
+        new Date(
+            hoje.getFullYear(),
+            hoje.getMonth(),
+            1
+        );
+
+
+    dataSelecionada =
+        new Date(
+            hoje.getFullYear(),
+            hoje.getMonth(),
+            hoje.getDate()
+        );
+}
+
 
 function ehHoje(data) {
 
@@ -1812,32 +1789,22 @@ function ehHoje(data) {
 
 
     return (
-        data.getDate() ===
-            hoje.getDate() &&
-
-        data.getMonth() ===
-            hoje.getMonth() &&
-
-        data.getFullYear() ===
-            hoje.getFullYear()
+        data.getDate() === hoje.getDate() &&
+        data.getMonth() === hoje.getMonth() &&
+        data.getFullYear() === hoje.getFullYear()
     );
 }
 
 
 function mesmoDia(
-    data1,
-    data2
+    a,
+    b
 ) {
 
     return (
-        data1.getDate() ===
-            data2.getDate() &&
-
-        data1.getMonth() ===
-            data2.getMonth() &&
-
-        data1.getFullYear() ===
-            data2.getFullYear()
+        a.getDate() === b.getDate() &&
+        a.getMonth() === b.getMonth() &&
+        a.getFullYear() === b.getFullYear()
     );
 }
 
@@ -1861,28 +1828,16 @@ function mesmaData(
     }
 
 
-    const ano =
-        Number(partes[0]);
-
-
-    const mes =
-        Number(partes[1]) - 1;
-
-
-    const dia =
-        Number(
-            partes[2].substring(0, 2)
-        );
-
-
     return (
-        ano ===
+        Number(partes[0]) ===
             data.getFullYear() &&
 
-        mes ===
+        Number(partes[1]) - 1 ===
             data.getMonth() &&
 
-        dia ===
+        Number(
+            partes[2].substring(0, 2)
+        ) ===
             data.getDate()
     );
 }
@@ -1892,34 +1847,24 @@ function converterParaInputDate(
     data
 ) {
 
-    const ano =
-        data.getFullYear();
+    return [
+        data.getFullYear(),
 
-
-    const mes =
         String(
             data.getMonth() + 1
-        ).padStart(2, "0");
+        ).padStart(2, "0"),
 
-
-    const dia =
         String(
             data.getDate()
-        ).padStart(2, "0");
+        ).padStart(2, "0")
 
-
-    return `${ano}-${mes}-${dia}`;
+    ].join("-");
 }
 
 
 function converterDataInput(
     valor
 ) {
-
-    if (!valor) {
-        return new Date();
-    }
-
 
     const partes =
         String(valor).split("-");
@@ -1942,10 +1887,6 @@ function formatarData(
     );
 }
 
-
-// =====================================================
-// ORDENAR HORÁRIO
-// =====================================================
 
 function ordenarPorHora(
     a,
