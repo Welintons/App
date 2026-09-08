@@ -1,7 +1,3 @@
-// =====================================================
-// WS SOLUÇÕES — AGENDA
-// =====================================================
-
 let agendamentos = [];
 let clientes = [];
 let ordensServico = [];
@@ -53,6 +49,11 @@ const listaAgendamentos =
 const estadoVazio =
     document.getElementById("estadoVazio");
 
+
+// =====================================================
+// MODAL AGENDAMENTO
+// =====================================================
+
 const modalAgenda =
     document.getElementById("modalAgenda");
 
@@ -85,6 +86,11 @@ const campoObservacoes =
 
 const campoStatus =
     document.getElementById("status");
+
+
+// =====================================================
+// MODAL DETALHES
+// =====================================================
 
 const modalDetalhes =
     document.getElementById("modalDetalhes");
@@ -160,7 +166,7 @@ const statusLabels = {
 
 
 // =====================================================
-// INICIALIZAÇÃO
+// INÍCIO
 // =====================================================
 
 document.addEventListener(
@@ -172,6 +178,7 @@ document.addEventListener(
 async function iniciarAgenda() {
 
     configurarTema();
+
     configurarEventos();
 
     prepararDataInicial();
@@ -195,18 +202,24 @@ async function iniciarAgenda() {
 function configurarEventos() {
 
     if (btnVoltar) {
+
         btnVoltar.onclick = () => {
+
             window.location.href = "index2.html";
+
         };
     }
 
 
     if (themeToggle) {
+
         themeToggle.onclick = alternarTema;
+
     }
 
 
     if (btnMesAnterior) {
+
         btnMesAnterior.onclick = () => {
 
             dataVisualizada.setMonth(
@@ -214,11 +227,14 @@ function configurarEventos() {
             );
 
             renderizarCalendario();
+
         };
+
     }
 
 
     if (btnMesProximo) {
+
         btnMesProximo.onclick = () => {
 
             dataVisualizada.setMonth(
@@ -226,71 +242,90 @@ function configurarEventos() {
             );
 
             renderizarCalendario();
+
         };
+
     }
 
 
     if (btnHoje) {
+
         btnHoje.onclick = irParaHoje;
+
     }
 
 
     if (btnNovoAgendamento) {
+
         btnNovoAgendamento.onclick =
             abrirNovoAgendamento;
+
     }
 
 
     if (btnNovoAgendamentoVazio) {
+
         btnNovoAgendamentoVazio.onclick =
             abrirNovoAgendamento;
+
     }
 
 
     if (btnFecharModal) {
+
         btnFecharModal.onclick =
             fecharModal;
+
     }
 
 
     if (btnCancelar) {
+
         btnCancelar.onclick =
             fecharModal;
+
     }
 
 
     if (formAgenda) {
+
         formAgenda.onsubmit =
             salvarAgendamento;
+
     }
 
 
     if (btnEditarAgendamento) {
+
         btnEditarAgendamento.onclick =
             editarAgendamentoSelecionado;
+
     }
 
 
     if (btnExcluirAgendamento) {
+
         btnExcluirAgendamento.onclick =
             excluirAgendamentoSelecionado;
+
     }
 
 
-    // IMPORTANTE:
-    // Preenche o endereço assim que o cliente muda
+    // AO SELECIONAR CLIENTE
     if (campoCliente) {
 
         campoCliente.addEventListener(
             "change",
             atualizarEnderecoCliente
         );
+
     }
+
 }
 
 
 // =====================================================
-// CLIENTES
+// CARREGAR CLIENTES
 // =====================================================
 
 async function carregarClientes() {
@@ -314,17 +349,23 @@ async function carregarClientes() {
                     cep,
                     status
                 `)
-                .order("nome", {
-                    ascending: true
-                });
+                .order(
+                    "nome",
+                    {
+                        ascending: true
+                    }
+                );
 
 
         if (error) {
+
             throw error;
+
         }
 
 
         clientes = data || [];
+
 
         console.log(
             "Clientes carregados:",
@@ -333,6 +374,7 @@ async function carregarClientes() {
 
 
         preencherClientes();
+
 
     } catch (erro) {
 
@@ -345,23 +387,25 @@ async function carregarClientes() {
             "Erro ao carregar clientes",
             "erro"
         );
+
     }
+
 }
 
 
 // =====================================================
-// SELECT CLIENTES
+// PREENCHER CLIENTES
 // =====================================================
 
 function preencherClientes() {
 
-    if (!campoCliente) {
-        return;
-    }
+    if (!campoCliente) return;
 
 
     campoCliente.innerHTML =
-        `<option value="">Selecione o cliente</option>`;
+        `<option value="">
+            Selecione o cliente
+        </option>`;
 
 
     clientes.forEach(cliente => {
@@ -374,25 +418,33 @@ function preencherClientes() {
             cliente.id;
 
 
+        // =================================================
+        // CÓDIGO + NOME
+        // =================================================
+
         option.textContent =
-            `${cliente.nome}${cliente.codigo ? " • " + cliente.codigo : ""}`;
+            cliente.codigo
+                ? `${cliente.codigo} — ${cliente.nome}`
+                : cliente.nome;
 
 
-        campoCliente.appendChild(
-            option
-        );
+        campoCliente.appendChild(option);
+
     });
+
 }
 
 
 // =====================================================
-// ENDEREÇO AUTOMÁTICO
+// ATUALIZAR ENDEREÇO
 // =====================================================
 
 function atualizarEnderecoCliente() {
 
     if (!campoCliente || !campoEndereco) {
+
         return;
+
     }
 
 
@@ -411,6 +463,7 @@ function atualizarEnderecoCliente() {
         campoEndereco.value = "";
 
         return;
+
     }
 
 
@@ -434,6 +487,7 @@ function atualizarEnderecoCliente() {
             "Cliente não encontrado";
 
         return;
+
     }
 
 
@@ -446,8 +500,8 @@ function atualizarEnderecoCliente() {
         "Endereço não cadastrado";
 
 
-    // Campo apenas visual.
     campoEndereco.readOnly = true;
+
 }
 
 
@@ -470,12 +524,12 @@ function montarEndereco(cliente) {
 
             endereco +=
                 `, ${cliente.numero}`;
+
         }
 
 
-        partes.push(
-            endereco
-        );
+        partes.push(endereco);
+
     }
 
 
@@ -484,6 +538,7 @@ function montarEndereco(cliente) {
         partes.push(
             cliente.complemento
         );
+
     }
 
 
@@ -492,6 +547,7 @@ function montarEndereco(cliente) {
         partes.push(
             cliente.bairro
         );
+
     }
 
 
@@ -505,12 +561,12 @@ function montarEndereco(cliente) {
 
             cidade +=
                 ` - ${cliente.estado}`;
+
         }
 
 
-        partes.push(
-            cidade
-        );
+        partes.push(cidade);
+
     }
 
 
@@ -519,10 +575,12 @@ function montarEndereco(cliente) {
         partes.push(
             `CEP: ${cliente.cep}`
         );
+
     }
 
 
     return partes.join(", ");
+
 }
 
 
@@ -537,17 +595,29 @@ function abrirNovoAgendamento() {
     agendamentoSelecionado = null;
 
 
-    formAgenda.reset();
+    if (formAgenda) {
+
+        formAgenda.reset();
+
+    }
 
 
-    campoData.value =
-        converterParaInputDate(
-            dataSelecionada
-        );
+    if (campoData) {
+
+        campoData.value =
+            converterParaInputDate(
+                dataSelecionada
+            );
+
+    }
 
 
-    campoStatus.value =
-        "agendado";
+    if (campoStatus) {
+
+        campoStatus.value =
+            "agendado";
+
+    }
 
 
     if (campoEndereco) {
@@ -558,15 +628,17 @@ function abrirNovoAgendamento() {
 
         campoEndereco.placeholder =
             "Selecione um cliente";
+
     }
 
 
     abrirModal();
+
 }
 
 
 // =====================================================
-// ORDENS DE SERVIÇO
+// CARREGAR OS
 // =====================================================
 
 async function carregarOrdensServico() {
@@ -584,18 +656,24 @@ async function carregarOrdensServico() {
                     tipo_servico,
                     status
                 `)
-                .order("criado_em", {
-                    ascending: false
-                });
+                .order(
+                    "criado_em",
+                    {
+                        ascending: false
+                    }
+                );
 
 
         if (error) {
+
             throw error;
+
         }
 
 
         ordensServico =
             data || [];
+
 
     } catch (erro) {
 
@@ -604,13 +682,16 @@ async function carregarOrdensServico() {
             erro
         );
 
+
         ordensServico = [];
+
     }
+
 }
 
 
 // =====================================================
-// AGENDAMENTOS
+// CARREGAR AGENDAMENTOS
 // =====================================================
 
 async function carregarAgendamentos() {
@@ -633,16 +714,24 @@ async function carregarAgendamentos() {
                     criado_em,
                     atualizado_em
                 `)
-                .order("data", {
-                    ascending: true
-                })
-                .order("hora", {
-                    ascending: true
-                });
+                .order(
+                    "data",
+                    {
+                        ascending: true
+                    }
+                )
+                .order(
+                    "hora",
+                    {
+                        ascending: true
+                    }
+                );
 
 
         if (error) {
+
             throw error;
+
         }
 
 
@@ -652,8 +741,8 @@ async function carregarAgendamentos() {
 
         vincularDados();
 
-
         renderizarCalendario();
+
 
     } catch (erro) {
 
@@ -662,18 +751,22 @@ async function carregarAgendamentos() {
             erro
         );
 
+
         agendamentos = [];
+
 
         mostrarToast(
             "Erro ao carregar agenda",
             "erro"
         );
+
     }
+
 }
 
 
 // =====================================================
-// VINCULAR CLIENTES / OS
+// VINCULAR CLIENTE E OS
 // =====================================================
 
 function vincularDados() {
@@ -716,8 +809,10 @@ function vincularDados() {
 
             agendamento.osCodigo =
                 os?.codigo || null;
+
         }
     );
+
 }
 
 
@@ -727,9 +822,7 @@ function vincularDados() {
 
 function renderizarCalendario() {
 
-    if (!gradeCalendario) {
-        return;
-    }
+    if (!gradeCalendario) return;
 
 
     const ano =
@@ -778,7 +871,9 @@ function renderizarCalendario() {
     ) {
 
         let dia;
+
         let mesCelula = mes;
+
         let anoCelula = ano;
 
         let outroMes = false;
@@ -799,15 +894,21 @@ function renderizarCalendario() {
             if (mesCelula < 0) {
 
                 mesCelula = 11;
+
                 anoCelula--;
+
             }
 
 
             outroMes = true;
 
-        } else if (
+        }
+
+
+        else if (
             i >=
-            primeiroDia + ultimoDia
+            primeiroDia +
+            ultimoDia
         ) {
 
             dia =
@@ -823,18 +924,24 @@ function renderizarCalendario() {
             if (mesCelula > 11) {
 
                 mesCelula = 0;
+
                 anoCelula++;
+
             }
 
 
             outroMes = true;
 
-        } else {
+        }
+
+
+        else {
 
             dia =
                 i -
                 primeiroDia +
                 1;
+
         }
 
 
@@ -859,6 +966,7 @@ function renderizarCalendario() {
             elemento.classList.add(
                 "dia-outro-mes"
             );
+
         }
 
 
@@ -867,6 +975,7 @@ function renderizarCalendario() {
             elemento.classList.add(
                 "dia-hoje"
             );
+
         }
 
 
@@ -880,6 +989,7 @@ function renderizarCalendario() {
             elemento.classList.add(
                 "dia-selecionado"
             );
+
         }
 
 
@@ -895,9 +1005,7 @@ function renderizarCalendario() {
             dia;
 
 
-        elemento.appendChild(
-            numero
-        );
+        elemento.appendChild(numero);
 
 
         const eventosContainer =
@@ -911,9 +1019,9 @@ function renderizarCalendario() {
         const eventos =
             agendamentos
                 .filter(
-                    agendamento =>
+                    a =>
                         mesmaData(
-                            agendamento.data,
+                            a.data,
                             dataDia
                         )
                 )
@@ -945,6 +1053,7 @@ function renderizarCalendario() {
                         evento.classList.add(
                             "cancelado"
                         );
+
                     }
 
 
@@ -956,16 +1065,24 @@ function renderizarCalendario() {
                         evento.classList.add(
                             "concluido"
                         );
+
                     }
 
 
                     evento.textContent =
-                        `${agendamento.hora?.substring(0, 5) || "--:--"} ${agendamento.clienteNome}`;
+                        `${
+                            agendamento.hora
+                                ?.substring(0, 5) ||
+                            "--:--"
+                        } ${
+                            agendamento.clienteNome
+                        }`;
 
 
                     eventosContainer.appendChild(
                         evento
                     );
+
                 }
             );
 
@@ -973,9 +1090,7 @@ function renderizarCalendario() {
         if (eventos.length > 3) {
 
             const mais =
-                document.createElement(
-                    "div"
-                );
+                document.createElement("div");
 
 
             mais.className =
@@ -989,6 +1104,7 @@ function renderizarCalendario() {
             eventosContainer.appendChild(
                 mais
             );
+
         }
 
 
@@ -997,41 +1113,44 @@ function renderizarCalendario() {
         );
 
 
-        elemento.onclick =
-            () => {
+        elemento.onclick = () => {
 
-                dataSelecionada =
-                    new Date(dataDia);
-
-
-                if (outroMes) {
-
-                    dataVisualizada =
-                        new Date(
-                            dataDia.getFullYear(),
-                            dataDia.getMonth(),
-                            1
-                        );
-                }
+            dataSelecionada =
+                new Date(dataDia);
 
 
-                renderizarCalendario();
+            if (outroMes) {
 
-                selecionarDia(
-                    dataSelecionada
-                );
-            };
+                dataVisualizada =
+                    new Date(
+                        dataDia.getFullYear(),
+                        dataDia.getMonth(),
+                        1
+                    );
+
+            }
+
+
+            renderizarCalendario();
+
+            selecionarDia(
+                dataSelecionada
+            );
+
+        };
 
 
         gradeCalendario.appendChild(
             elemento
         );
+
     }
+
 }
 
 
 // =====================================================
-// AGENDA DO DIA
+// SELECIONAR DIA
 // =====================================================
 
 function selecionarDia(data) {
@@ -1047,9 +1166,9 @@ function selecionarDia(data) {
     const eventos =
         agendamentos
             .filter(
-                agendamento =>
+                a =>
                     mesmaData(
-                        agendamento.data,
+                        a.data,
                         data
                     )
             )
@@ -1059,18 +1178,25 @@ function selecionarDia(data) {
 
 
     tituloAgendaDia.textContent =
-        `${diasSemana[data.getDay()]}, ${formatarData(data)}`;
+        `${
+            diasSemana[data.getDay()]
+        }, ${
+            formatarData(data)
+        }`;
 
 
     contadorAgenda.textContent =
-        `${eventos.length} ${
+        `${
+            eventos.length
+        } ${
             eventos.length === 1
                 ? "agendamento"
                 : "agendamentos"
         }`;
 
 
-    listaAgendamentos.innerHTML = "";
+    listaAgendamentos.innerHTML =
+        "";
 
 
     if (eventos.length === 0) {
@@ -1078,10 +1204,13 @@ function selecionarDia(data) {
         estadoVazio.style.display =
             "flex";
 
+
         listaAgendamentos.style.display =
             "none";
 
+
         return;
+
     }
 
 
@@ -1096,11 +1225,12 @@ function selecionarDia(data) {
     eventos.forEach(
         renderizarAgendamento
     );
+
 }
 
 
 // =====================================================
-// ITEM DA AGENDA
+// RENDERIZAR AGENDAMENTO
 // =====================================================
 
 function renderizarAgendamento(
@@ -1108,9 +1238,7 @@ function renderizarAgendamento(
 ) {
 
     const item =
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
 
     item.className =
@@ -1118,9 +1246,7 @@ function renderizarAgendamento(
 
 
     const hora =
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
 
     hora.className =
@@ -1129,14 +1255,15 @@ function renderizarAgendamento(
 
     hora.textContent =
         agendamento.hora
-            ? agendamento.hora.substring(0, 5)
+            ? agendamento.hora.substring(
+                0,
+                5
+            )
             : "--:--";
 
 
     const divisor =
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
 
     divisor.className =
@@ -1144,9 +1271,7 @@ function renderizarAgendamento(
 
 
     const info =
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
 
     info.className =
@@ -1154,9 +1279,7 @@ function renderizarAgendamento(
 
 
     const cliente =
-        document.createElement(
-            "strong"
-        );
+        document.createElement("strong");
 
 
     cliente.textContent =
@@ -1164,9 +1287,7 @@ function renderizarAgendamento(
 
 
     const servico =
-        document.createElement(
-            "span"
-        );
+        document.createElement("span");
 
 
     servico.textContent =
@@ -1175,13 +1296,12 @@ function renderizarAgendamento(
 
 
     info.appendChild(cliente);
+
     info.appendChild(servico);
 
 
     const status =
-        document.createElement(
-            "span"
-        );
+        document.createElement("span");
 
 
     const statusAtual =
@@ -1199,20 +1319,22 @@ function renderizarAgendamento(
 
 
     item.appendChild(hora);
+
     item.appendChild(divisor);
+
     item.appendChild(info);
+
     item.appendChild(status);
 
 
-    item.onclick =
-        () => abrirDetalhes(
-            agendamento
-        );
+    item.onclick = () =>
+        abrirDetalhes(agendamento);
 
 
     listaAgendamentos.appendChild(
         item
     );
+
 }
 
 
@@ -1222,9 +1344,7 @@ function renderizarAgendamento(
 
 function editarAgendamentoSelecionado() {
 
-    if (!agendamentoSelecionado) {
-        return;
-    }
+    if (!agendamentoSelecionado) return;
 
 
     modoEdicao = true;
@@ -1245,7 +1365,10 @@ function editarAgendamentoSelecionado() {
 
     campoHora.value =
         agendamentoSelecionado.hora
-            ? agendamentoSelecionado.hora.substring(0, 5)
+            ? agendamentoSelecionado.hora.substring(
+                0,
+                5
+            )
             : "";
 
 
@@ -1268,6 +1391,7 @@ function editarAgendamentoSelecionado() {
 
 
     abrirModal();
+
 }
 
 
@@ -1302,50 +1426,47 @@ async function salvarAgendamento(event) {
 
         observacoes:
             campoObservacoes.value.trim()
+
     };
 
 
     if (!dados.cliente_id) {
 
-        mostrarToast(
+        return mostrarToast(
             "Selecione o cliente",
             "erro"
         );
 
-        return;
     }
 
 
     if (!dados.data) {
 
-        mostrarToast(
+        return mostrarToast(
             "Informe a data",
             "erro"
         );
 
-        return;
     }
 
 
     if (!dados.hora) {
 
-        mostrarToast(
+        return mostrarToast(
             "Informe o horário",
             "erro"
         );
 
-        return;
     }
 
 
     if (!dados.servico) {
 
-        mostrarToast(
+        return mostrarToast(
             "Informe o serviço",
             "erro"
         );
 
-        return;
     }
 
 
@@ -1370,7 +1491,10 @@ async function salvarAgendamento(event) {
                         agendamentoSelecionado.id
                     );
 
-        } else {
+        }
+
+
+        else {
 
             resposta =
                 await supabaseClient
@@ -1378,11 +1502,14 @@ async function salvarAgendamento(event) {
                     .insert([
                         dados
                     ]);
+
         }
 
 
         if (resposta.error) {
+
             throw resposta.error;
+
         }
 
 
@@ -1441,7 +1568,9 @@ async function salvarAgendamento(event) {
         alterarEstadoBotaoSalvar(
             false
         );
+
     }
+
 }
 
 
@@ -1472,7 +1601,10 @@ function abrirDetalhes(
 
     detalheHora.textContent =
         agendamento.hora
-            ? agendamento.hora.substring(0, 5)
+            ? agendamento.hora.substring(
+                0,
+                5
+            )
             : "--:--";
 
 
@@ -1515,6 +1647,7 @@ function abrirDetalhes(
 
     modalDetalhes.style.display =
         "flex";
+
 }
 
 
@@ -1524,17 +1657,19 @@ function abrirDetalhes(
 
 async function excluirAgendamentoSelecionado() {
 
-    if (!agendamentoSelecionado) {
-        return;
-    }
+    if (!agendamentoSelecionado) return;
 
 
     if (
         !confirm(
-            `Deseja realmente excluir o agendamento ${agendamentoSelecionado.codigo || ""}?`
+            `Deseja realmente excluir o agendamento ${
+                agendamentoSelecionado.codigo || ""
+            }?`
         )
     ) {
+
         return;
+
     }
 
 
@@ -1551,7 +1686,9 @@ async function excluirAgendamentoSelecionado() {
 
 
         if (error) {
+
             throw error;
+
         }
 
 
@@ -1585,7 +1722,9 @@ async function excluirAgendamentoSelecionado() {
             "Erro ao excluir agendamento",
             "erro"
         );
+
     }
+
 }
 
 
@@ -1599,8 +1738,10 @@ function abrirModal() {
         "show"
     );
 
+
     modalAgenda.style.display =
         "flex";
+
 }
 
 
@@ -1610,8 +1751,10 @@ function fecharModal() {
         "show"
     );
 
+
     modalAgenda.style.display =
         "none";
+
 }
 
 
@@ -1621,8 +1764,10 @@ function fecharDetalhes() {
         "show"
     );
 
+
     modalDetalhes.style.display =
         "none";
+
 }
 
 
@@ -1640,9 +1785,7 @@ function alterarEstadoBotaoSalvar(
         );
 
 
-    if (!botao) {
-        return;
-    }
+    if (!botao) return;
 
 
     botao.disabled =
@@ -1653,6 +1796,7 @@ function alterarEstadoBotaoSalvar(
         carregando
             ? "Salvando..."
             : "Salvar";
+
 }
 
 
@@ -1684,9 +1828,11 @@ function irParaHoje() {
 
     renderizarCalendario();
 
+
     selecionarDia(
         dataSelecionada
     );
+
 }
 
 
@@ -1710,11 +1856,16 @@ function configurarTema() {
 
 
         if (themeToggle) {
+
             themeToggle.textContent =
                 "☀";
+
         }
 
-    } else {
+    }
+
+
+    else {
 
         document.body.classList.remove(
             "dark"
@@ -1722,10 +1873,14 @@ function configurarTema() {
 
 
         if (themeToggle) {
+
             themeToggle.textContent =
                 "☾";
+
         }
+
     }
+
 }
 
 
@@ -1751,12 +1906,14 @@ function alternarTema() {
             dark
                 ? "☀"
                 : "☾";
+
     }
+
 }
 
 
 // =====================================================
-// UTILITÁRIOS
+// DATA INICIAL
 // =====================================================
 
 function prepararDataInicial() {
@@ -1779,8 +1936,13 @@ function prepararDataInicial() {
             hoje.getMonth(),
             hoje.getDate()
         );
+
 }
 
+
+// =====================================================
+// DATA / CALENDÁRIO
+// =====================================================
 
 function ehHoje(data) {
 
@@ -1789,23 +1951,32 @@ function ehHoje(data) {
 
 
     return (
-        data.getDate() === hoje.getDate() &&
-        data.getMonth() === hoje.getMonth() &&
-        data.getFullYear() === hoje.getFullYear()
+        data.getDate() ===
+        hoje.getDate() &&
+
+        data.getMonth() ===
+        hoje.getMonth() &&
+
+        data.getFullYear() ===
+        hoje.getFullYear()
     );
+
 }
 
 
-function mesmoDia(
-    a,
-    b
-) {
+function mesmoDia(a, b) {
 
     return (
-        a.getDate() === b.getDate() &&
-        a.getMonth() === b.getMonth() &&
-        a.getFullYear() === b.getFullYear()
+        a.getDate() ===
+        b.getDate() &&
+
+        a.getMonth() ===
+        b.getMonth() &&
+
+        a.getFullYear() ===
+        b.getFullYear()
     );
+
 }
 
 
@@ -1814,9 +1985,7 @@ function mesmaData(
     data
 ) {
 
-    if (!valor) {
-        return false;
-    }
+    if (!valor) return false;
 
 
     const partes =
@@ -1824,22 +1993,25 @@ function mesmaData(
 
 
     if (partes.length < 3) {
+
         return false;
+
     }
 
 
     return (
         Number(partes[0]) ===
-            data.getFullYear() &&
+        data.getFullYear() &&
 
         Number(partes[1]) - 1 ===
-            data.getMonth() &&
+        data.getMonth() &&
 
         Number(
             partes[2].substring(0, 2)
         ) ===
-            data.getDate()
+        data.getDate()
     );
+
 }
 
 
@@ -1848,6 +2020,7 @@ function converterParaInputDate(
 ) {
 
     return [
+
         data.getFullYear(),
 
         String(
@@ -1859,6 +2032,7 @@ function converterParaInputDate(
         ).padStart(2, "0")
 
     ].join("-");
+
 }
 
 
@@ -1875,16 +2049,16 @@ function converterDataInput(
         Number(partes[1]) - 1,
         Number(partes[2])
     );
+
 }
 
 
-function formatarData(
-    data
-) {
+function formatarData(data) {
 
     return data.toLocaleDateString(
         "pt-BR"
     );
+
 }
 
 
@@ -1900,6 +2074,7 @@ function ordenarPorHora(
             b.hora || ""
         )
     );
+
 }
 
 
@@ -1912,9 +2087,7 @@ function mostrarToast(
     tipo = "sucesso"
 ) {
 
-    if (!toast) {
-        return;
-    }
+    if (!toast) return;
 
 
     toast.textContent =
@@ -1930,6 +2103,7 @@ function mostrarToast(
         toast.classList.add(
             "erro"
         );
+
     }
 
 
@@ -1949,4 +2123,5 @@ function mostrarToast(
             },
             3000
         );
+
 }
