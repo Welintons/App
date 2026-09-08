@@ -1,1396 +1,986 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
 
-<head>
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
 
-    <meta charset="UTF-8">
+<title>WS SOLUÇÕES — Atendimento</title>
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0">
+<!-- SUPABASE -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <title>WS SOLUÇÕES</title>
+<!-- SUA CONEXÃO EXISTENTE -->
+<script src="js/supabase.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
 
-    <script src="js/supabase.js"></script>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
 
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        background: #f5f3ff;
+        color: #1f2937;
+    }
 
-    <style>
+    header {
+        background: linear-gradient(
+            135deg,
+            #7c3aed,
+            #4c1d95
+        );
+        color: white;
+        padding: 25px 20px;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(0,0,0,.15);
+    }
 
-        /* =====================================================
-           CONFIGURAÇÕES
-        ===================================================== */
+    header h1 {
+        font-size: 28px;
+        margin-bottom: 6px;
+    }
 
-        :root {
+    header p {
+        opacity: .9;
+        font-size: 14px;
+    }
 
-            --roxo: #7c3aed;
-            --roxo-hover: #6d28d9;
+    main {
+        width: 100%;
+        max-width: 700px;
+        margin: 30px auto;
+        padding: 0 15px 40px;
+    }
 
-            --fundo: #f5f7fb;
-            --card: #ffffff;
+    .card {
+        background: white;
+        border-radius: 18px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 5px 20px rgba(0,0,0,.08);
+    }
 
-            --texto: #171717;
-            --texto-secundario: #6b7280;
+    .card h2 {
+        color: #4c1d95;
+        margin-bottom: 18px;
+        font-size: 21px;
+    }
 
-            --borda: #e5e7eb;
+    /* CALENDÁRIO */
 
-            --ocupado: #ef4444;
-            --ocupado-fundo: #fee2e2;
+    .calendar-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 18px;
+    }
 
-            --disponivel: #16a34a;
-            --disponivel-fundo: #dcfce7;
+    .calendar-header h3 {
+        font-size: 19px;
+        color: #111827;
+    }
 
-            --sombra:
-                0 10px 30px rgba(0, 0, 0, 0.08);
+    .calendar-header button {
+        border: none;
+        background: #7c3aed;
+        color: white;
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 20px;
+    }
 
-            --raio: 18px;
-        }
+    .calendar-header button:hover {
+        background: #6d28d9;
+    }
 
+    .weekdays,
+    .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 5px;
+    }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+    .weekday {
+        text-align: center;
+        font-size: 12px;
+        font-weight: bold;
+        color: #6b7280;
+        padding: 8px 0;
+    }
 
+    .day {
+        min-height: 48px;
+        border-radius: 10px;
+        background: #f9fafb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        font-size: 14px;
+    }
 
-        body {
+    .day.empty {
+        background: transparent;
+    }
 
-            font-family:
-                system-ui,
-                -apple-system,
-                BlinkMacSystemFont,
-                "Segoe UI",
-                sans-serif;
+    .day.today {
+        outline: 2px solid #7c3aed;
+        outline-offset: -2px;
+    }
 
-            background: var(--fundo);
+    .day.occupied {
+        background: #fee2e2;
+        color: #991b1b;
+        font-weight: bold;
+    }
 
-            color: var(--texto);
+    .day.occupied::after {
+        content: "";
+        position: absolute;
+        bottom: 5px;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #dc2626;
+    }
 
-            min-height: 100vh;
-        }
+    .legend {
+        display: flex;
+        gap: 18px;
+        margin-top: 18px;
+        flex-wrap: wrap;
+        font-size: 13px;
+        color: #4b5563;
+    }
 
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+    }
 
-        /* =====================================================
-           TOPO
-        ===================================================== */
+    .legend-box {
+        width: 13px;
+        height: 13px;
+        border-radius: 4px;
+    }
 
-        .topo {
+    .legend-occupied {
+        background: #fee2e2;
+        border: 1px solid #dc2626;
+    }
 
-            width: 100%;
+    .legend-free {
+        background: #f9fafb;
+        border: 1px solid #d1d5db;
+    }
 
-            background: var(--card);
+    /* CONSULTA OS */
 
-            border-bottom:
-                1px solid var(--borda);
+    .search-box {
+        display: flex;
+        gap: 10px;
+    }
 
-            padding: 18px 20px;
+    .search-box input {
+        flex: 1;
+        min-width: 0;
+        border: 1px solid #d1d5db;
+        border-radius: 10px;
+        padding: 13px;
+        font-size: 15px;
+        outline: none;
+    }
 
-            position: sticky;
+    .search-box input:focus {
+        border-color: #7c3aed;
+        box-shadow: 0 0 0 3px rgba(124,58,237,.12);
+    }
 
-            top: 0;
+    .search-box button {
+        border: none;
+        background: #7c3aed;
+        color: white;
+        padding: 0 20px;
+        border-radius: 10px;
+        font-weight: bold;
+        cursor: pointer;
+    }
 
-            z-index: 10;
-        }
+    .search-box button:hover {
+        background: #6d28d9;
+    }
 
+    .message {
+        margin-top: 15px;
+        padding: 13px;
+        border-radius: 10px;
+        display: none;
+        font-size: 14px;
+    }
 
-        .topo-conteudo {
+    .message.error {
+        display: block;
+        background: #fee2e2;
+        color: #991b1b;
+    }
 
-            max-width: 650px;
+    .message.info {
+        display: block;
+        background: #ede9fe;
+        color: #5b21b6;
+    }
 
-            margin: auto;
+    .os-result {
+        display: none;
+        margin-top: 18px;
+        border: 1px solid #e5e7eb;
+        border-radius: 14px;
+        overflow: hidden;
+    }
 
-            display: flex;
+    .os-result-header {
+        background: #7c3aed;
+        color: white;
+        padding: 15px;
+    }
 
-            align-items: center;
+    .os-result-header strong {
+        font-size: 18px;
+    }
 
-            justify-content: center;
-        }
+    .os-info {
+        padding: 15px;
+    }
 
+    .info-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 11px 0;
+        border-bottom: 1px solid #eee;
+    }
 
-        .logo {
+    .info-row:last-child {
+        border-bottom: none;
+    }
 
-            text-align: center;
-        }
+    .info-label {
+        color: #6b7280;
+        font-size: 13px;
+    }
 
+    .info-value {
+        text-align: right;
+        font-weight: bold;
+        font-size: 14px;
+    }
 
-        .logo h1 {
+    .status {
+        display: inline-block;
+        padding: 6px 10px;
+        border-radius: 8px;
+        background: #ede9fe;
+        color: #5b21b6;
+        font-size: 12px;
+    }
 
-            font-size: 22px;
+    footer {
+        text-align: center;
+        color: #6b7280;
+        font-size: 12px;
+        padding: 10px 20px 30px;
+    }
 
-            font-weight: 800;
-
-            color: var(--roxo);
-
-            letter-spacing: -0.5px;
-        }
-
-
-        .logo span {
-
-            display: block;
-
-            margin-top: 2px;
-
-            font-size: 12px;
-
-            color: var(--texto-secundario);
-        }
-
-
-        /* =====================================================
-           CONTEÚDO
-        ===================================================== */
+    @media (max-width: 500px) {
 
         main {
-
-            width: 100%;
-
-            max-width: 650px;
-
-            margin: auto;
-
-            padding: 25px 15px 40px;
+            margin-top: 20px;
         }
-
-
-        .titulo {
-
-            text-align: center;
-
-            margin-bottom: 20px;
-        }
-
-
-        .titulo h2 {
-
-            font-size: 25px;
-
-            margin-bottom: 6px;
-        }
-
-
-        .titulo p {
-
-            color: var(--texto-secundario);
-
-            font-size: 14px;
-        }
-
-
-        /* =====================================================
-           CARDS
-        ===================================================== */
 
         .card {
-
-            background: var(--card);
-
-            border:
-                1px solid var(--borda);
-
-            border-radius: var(--raio);
-
-            box-shadow: var(--sombra);
-
-            padding: 20px;
-
-            margin-bottom: 20px;
+            padding: 15px;
         }
 
-
-        .card-titulo {
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: space-between;
-
-            margin-bottom: 18px;
+        .search-box {
+            flex-direction: column;
         }
 
-
-        .card-titulo h3 {
-
-            font-size: 18px;
+        .search-box button {
+            height: 46px;
         }
 
-
-        /* =====================================================
-           CALENDÁRIO
-        ===================================================== */
-
-        .calendario-cabecalho {
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: space-between;
-
-            gap: 10px;
-
-            margin-bottom: 18px;
+        .day {
+            min-height: 42px;
         }
 
-
-        .mes-atual {
-
-            flex: 1;
-
-            text-align: center;
-
-            font-size: 18px;
-
-            font-weight: 700;
-
-            text-transform: capitalize;
-        }
-
-
-        .btn-mes {
-
-            width: 42px;
-
-            height: 42px;
-
-            border: none;
-
-            border-radius: 12px;
-
-            background: #f3f4f6;
-
-            color: var(--texto);
-
-            font-size: 20px;
-
-            cursor: pointer;
-
-            transition: 0.2s;
-        }
-
-
-        .btn-mes:hover {
-
-            background: #e5e7eb;
-        }
-
-
-        .dias-semana {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(7, 1fr);
-
-            gap: 5px;
-
-            margin-bottom: 7px;
-        }
-
-
-        .dia-semana {
-
-            text-align: center;
-
+        .weekday {
             font-size: 11px;
-
-            font-weight: 700;
-
-            color: var(--texto-secundario);
-
-            padding: 5px 0;
         }
 
-
-        .dias {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(7, 1fr);
-
+        .info-row {
+            flex-direction: column;
             gap: 5px;
         }
 
-
-        .dia {
-
-            position: relative;
-
-            min-height: 48px;
-
-            border: 1px solid transparent;
-
-            border-radius: 12px;
-
-            background: #f9fafb;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            font-size: 14px;
-
-            font-weight: 600;
+        .info-value {
+            text-align: left;
         }
 
+    }
 
-        .dia.vazio {
+</style>
 
-            background: transparent;
+</head><body><header><h1>WS SOLUÇÕES</h1>
 
-            border: none;
-        }
+<p>Atendimento e acompanhamento de serviços</p>
 
+</header><main><!-- =====================================================
+     CALENDÁRIO
+====================================================== -->
 
-        .dia.hoje {
+<section class="card">
 
-            border:
-                2px solid var(--roxo);
+    <h2>Agenda de atendimento</h2>
 
-            color: var(--roxo);
+    <div class="calendar-header">
 
-            font-weight: 800;
-        }
+        <button id="btnAnterior">
+            ‹
+        </button>
 
+        <h3 id="mesAno">
+            Carregando...
+        </h3>
 
-        .dia.ocupado {
+        <button id="btnProximo">
+            ›
+        </button>
 
-            background: var(--ocupado-fundo);
+    </div>
 
-            color: var(--ocupado);
 
-            border-color:
-                #fecaca;
-        }
+    <div class="weekdays">
 
+        <div class="weekday">Dom</div>
+        <div class="weekday">Seg</div>
+        <div class="weekday">Ter</div>
+        <div class="weekday">Qua</div>
+        <div class="weekday">Qui</div>
+        <div class="weekday">Sex</div>
+        <div class="weekday">Sáb</div>
 
-        .dia.ocupado::after {
+    </div>
 
-            content: "";
 
-            position: absolute;
+    <div
+        id="calendarGrid"
+        class="calendar-grid">
+    </div>
 
-            width: 6px;
 
-            height: 6px;
+    <div class="legend">
 
-            border-radius: 50%;
+        <div class="legend-item">
 
-            background: var(--ocupado);
+            <span class="legend-box legend-occupied"></span>
 
-            bottom: 6px;
-        }
+            <span>Dia ocupado</span>
 
+        </div>
 
-        .legenda {
 
-            display: flex;
+        <div class="legend-item">
 
-            justify-content: center;
+            <span class="legend-box legend-free"></span>
 
-            gap: 18px;
+            <span>Dia disponível</span>
 
-            margin-top: 18px;
+        </div>
 
-            font-size: 12px;
+    </div>
 
-            color: var(--texto-secundario);
-        }
+</section>
 
 
-        .legenda-item {
 
-            display: flex;
+<!-- =====================================================
+     CONSULTAR OS
+====================================================== -->
 
-            align-items: center;
+<section class="card">
 
-            gap: 6px;
-        }
+    <h2>Consultar Ordem de Serviço</h2>
 
+    <div class="search-box">
 
-        .bolinha {
+        <input
+            type="text"
+            id="codigoOS"
+            placeholder="Ex.: WS-OS-000001"
+            autocomplete="off">
 
-            width: 9px;
+        <button id="btnConsultar">
+            Consultar
+        </button>
 
-            height: 9px;
+    </div>
 
-            border-radius: 50%;
-        }
 
+    <div
+        id="mensagem"
+        class="message">
+    </div>
 
-        .bolinha.ocupado {
 
-            background: var(--ocupado);
-        }
+    <div
+        id="resultadoOS"
+        class="os-result">
 
+        <div class="os-result-header">
 
-        .bolinha.livre {
+            <strong id="resultadoCodigo">
+                -
+            </strong>
 
-            background: #d1d5db;
-        }
+        </div>
 
 
-        /* =====================================================
-           PESQUISA OS
-        ===================================================== */
+        <div class="os-info">
 
-        .campo-label {
+            <div class="info-row">
 
-            display: block;
+                <span class="info-label">
+                    Aparelho
+                </span>
 
-            font-size: 13px;
+                <span
+                    class="info-value"
+                    id="resultadoAparelho">
+                    -
+                </span>
 
-            font-weight: 700;
+            </div>
 
-            margin-bottom: 8px;
-        }
 
+            <div class="info-row">
 
-        .campo-pesquisa {
+                <span class="info-label">
+                    Marca
+                </span>
 
-            display: flex;
+                <span
+                    class="info-value"
+                    id="resultadoMarca">
+                    -
+                </span>
 
-            gap: 10px;
-        }
+            </div>
 
 
-        .campo-pesquisa input {
+            <div class="info-row">
 
-            flex: 1;
+                <span class="info-label">
+                    Modelo
+                </span>
 
-            height: 50px;
+                <span
+                    class="info-value"
+                    id="resultadoModelo">
+                    -
+                </span>
 
-            border:
-                1px solid var(--borda);
+            </div>
 
-            border-radius: 12px;
 
-            padding: 0 14px;
+            <div class="info-row">
 
-            font-size: 15px;
+                <span class="info-label">
+                    Serviço
+                </span>
 
-            outline: none;
+                <span
+                    class="info-value"
+                    id="resultadoServico">
+                    -
+                </span>
 
-            background: #fff;
+            </div>
 
-            color: var(--texto);
-        }
 
+            <div class="info-row">
 
-        .campo-pesquisa input:focus {
+                <span class="info-label">
+                    Status
+                </span>
 
-            border-color: var(--roxo);
-
-            box-shadow:
-                0 0 0 3px
-                rgba(124, 58, 237, 0.10);
-        }
-
-
-        .btn-consultar {
-
-            height: 50px;
-
-            padding: 0 18px;
-
-            border: none;
-
-            border-radius: 12px;
-
-            background: var(--roxo);
-
-            color: white;
-
-            font-weight: 700;
-
-            cursor: pointer;
-
-            white-space: nowrap;
-
-            transition: 0.2s;
-        }
-
-
-        .btn-consultar:hover {
-
-            background: var(--roxo-hover);
-        }
-
-
-        /* =====================================================
-           RESULTADO OS
-        ===================================================== */
-
-        #resultadoOS {
-
-            margin-top: 18px;
-        }
-
-
-        .os-resultado {
-
-            border:
-                1px solid var(--borda);
-
-            border-radius: 14px;
-
-            padding: 18px;
-
-            background: #fafafa;
-        }
-
-
-        .os-codigo {
-
-            font-size: 19px;
-
-            font-weight: 800;
-
-            color: var(--roxo);
-
-            margin-bottom: 15px;
-        }
-
-
-        .os-info {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(2, 1fr);
-
-            gap: 12px;
-        }
-
-
-        .info-item {
-
-            background: white;
-
-            border:
-                1px solid var(--borda);
-
-            border-radius: 10px;
-
-            padding: 11px;
-        }
-
-
-        .info-item small {
-
-            display: block;
-
-            color: var(--texto-secundario);
-
-            font-size: 11px;
-
-            margin-bottom: 3px;
-        }
-
-
-        .info-item strong {
-
-            font-size: 14px;
-        }
-
-
-        /* =====================================================
-           STATUS
-        ===================================================== */
-
-        .status-area {
-
-            margin-top: 16px;
-
-            padding-top: 16px;
-
-            border-top:
-                1px solid var(--borda);
-        }
-
-
-        .status-label {
-
-            font-size: 12px;
-
-            color: var(--texto-secundario);
-
-            margin-bottom: 7px;
-        }
-
-
-        .status {
-
-            display: inline-flex;
-
-            align-items: center;
-
-            gap: 7px;
-
-            padding: 9px 13px;
-
-            border-radius: 999px;
-
-            font-size: 13px;
-
-            font-weight: 800;
-        }
-
-
-        .status::before {
-
-            content: "";
-
-            width: 8px;
-
-            height: 8px;
-
-            border-radius: 50%;
-
-            background: currentColor;
-        }
-
-
-        .status.aberta,
-        .status.aguardando {
-
-            background: #fef3c7;
-
-            color: #b45309;
-        }
-
-
-        .status.em_andamento,
-        .status.aguardando_peca {
-
-            background: #dbeafe;
-
-            color: #2563eb;
-        }
-
-
-        .status.concluida,
-        .status.entregue {
-
-            background: #dcfce7;
-
-            color: #15803d;
-        }
-
-
-        .status.cancelada {
-
-            background: #fee2e2;
-
-            color: #dc2626;
-        }
-
-
-        /* =====================================================
-           MENSAGENS
-        ===================================================== */
-
-        .mensagem {
-
-            text-align: center;
-
-            padding: 18px 10px;
-
-            color: var(--texto-secundario);
-
-            font-size: 14px;
-        }
-
-
-        .mensagem.erro {
-
-            color: #dc2626;
-        }
-
-
-        /* =====================================================
-           RODAPÉ
-        ===================================================== */
-
-        footer {
-
-            text-align: center;
-
-            color: var(--texto-secundario);
-
-            font-size: 12px;
-
-            padding: 5px 15px 25px;
-        }
-
-
-        /* =====================================================
-           RESPONSIVO
-        ===================================================== */
-
-        @media (max-width: 520px) {
-
-            main {
-
-                padding-top: 20px;
-            }
-
-
-            .card {
-
-                padding: 15px;
-            }
-
-
-            .campo-pesquisa {
-
-                flex-direction: column;
-            }
-
-
-            .btn-consultar {
-
-                width: 100%;
-            }
-
-
-            .os-info {
-
-                grid-template-columns: 1fr;
-            }
-
-
-            .dia {
-
-                min-height: 43px;
-
-                font-size: 13px;
-            }
-
-
-            .dia-semana {
-
-                font-size: 10px;
-            }
-        }
-
-    </style>
-
-</head>
-
-
-<body>
-
-
-    <!-- =====================================================
-         TOPO
-    ===================================================== -->
-
-    <header class="topo">
-
-        <div class="topo-conteudo">
-
-            <div class="logo">
-
-                <h1>WS SOLUÇÕES</h1>
-
-                <span>Atendimento e assistência técnica</span>
+                <span
+                    class="info-value"
+                    id="resultadoStatus">
+                    -
+                </span>
 
             </div>
 
         </div>
 
-    </header>
+    </div>
 
+</section>
 
+</main><footer>WS SOLUÇÕES © 2026
 
-    <!-- =====================================================
-         CONTEÚDO
-    ===================================================== -->
+</footer><script>
 
-    <main>
+document.addEventListener("DOMContentLoaded", () => {
 
+    /*
+    ========================================================
+    VERIFICAÇÃO DO SUPABASE
+    ========================================================
+    */
 
-        <div class="titulo">
+    if (typeof supabaseClient === "undefined") {
 
-            <h2>Atendimento</h2>
+        console.error(
+            "supabaseClient não foi encontrado."
+        );
 
-            <p>
-                Consulte nossa disponibilidade ou acompanhe sua OS.
-            </p>
+        mostrarMensagem(
+            "Erro na conexão com o sistema. Verifique o arquivo js/supabase.js.",
+            "error"
+        );
 
-        </div>
+        return;
 
+    }
 
 
-        <!-- =================================================
-             CALENDÁRIO
-        ================================================= -->
+    /*
+    ========================================================
+    ELEMENTOS
+    ========================================================
+    */
 
-        <section class="card">
+    const calendarGrid =
+        document.getElementById("calendarGrid");
 
-            <div class="card-titulo">
+    const mesAno =
+        document.getElementById("mesAno");
 
-                <h3>📅 Disponibilidade</h3>
+    const btnAnterior =
+        document.getElementById("btnAnterior");
 
-            </div>
+    const btnProximo =
+        document.getElementById("btnProximo");
 
+    const codigoOS =
+        document.getElementById("codigoOS");
 
-            <div class="calendario-cabecalho">
+    const btnConsultar =
+        document.getElementById("btnConsultar");
 
-                <button
-                    type="button"
-                    class="btn-mes"
-                    id="mesAnterior">
+    const resultadoOS =
+        document.getElementById("resultadoOS");
 
-                    ‹
+    const mensagem =
+        document.getElementById("mensagem");
 
-                </button>
 
+    /*
+    ========================================================
+    DATA ATUAL DO CALENDÁRIO
+    ========================================================
+    */
 
-                <div
-                    class="mes-atual"
-                    id="mesAtual">
+    let dataCalendario = new Date();
 
-                    Carregando...
 
-                </div>
+    /*
+    ========================================================
+    NOMES DOS MESES
+    ========================================================
+    */
 
+    const meses = [
+        "Janeiro",
+        "Fevereiro",
+        "Março",
+        "Abril",
+        "Maio",
+        "Junho",
+        "Julho",
+        "Agosto",
+        "Setembro",
+        "Outubro",
+        "Novembro",
+        "Dezembro"
+    ];
 
-                <button
-                    type="button"
-                    class="btn-mes"
-                    id="proximoMes">
 
-                    ›
+    /*
+    ========================================================
+    STATUS
+    ========================================================
+    */
 
-                </button>
+    const statusMap = {
 
-            </div>
+        aberta: "Aberta",
 
+        aguardando: "Aguardando",
 
-            <div class="dias-semana">
+        em_andamento: "Em andamento",
 
-                <div class="dia-semana">DOM</div>
-                <div class="dia-semana">SEG</div>
-                <div class="dia-semana">TER</div>
-                <div class="dia-semana">QUA</div>
-                <div class="dia-semana">QUI</div>
-                <div class="dia-semana">SEX</div>
-                <div class="dia-semana">SÁB</div>
+        aguardando_peca: "Aguardando peça",
 
-            </div>
+        concluida: "Concluída",
 
+        entregue: "Entregue",
 
-            <div
-                class="dias"
-                id="diasCalendario">
+        cancelada: "Cancelada"
 
-            </div>
+    };
 
 
-            <div class="legenda">
+    /*
+    ========================================================
+    ESCAPAR HTML
+    ========================================================
+    */
 
-                <div class="legenda-item">
+    function escaparHTML(valor) {
 
-                    <span class="bolinha ocupado"></span>
-
-                    Dia ocupado
-
-                </div>
-
-
-                <div class="legenda-item">
-
-                    <span class="bolinha livre"></span>
-
-                    Dia disponível
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             PESQUISA OS
-        ================================================= -->
-
-        <section class="card">
-
-            <div class="card-titulo">
-
-                <h3>🔎 Consultar OS</h3>
-
-            </div>
-
-
-            <label
-                class="campo-label"
-                for="codigoOS">
-
-                Código da Ordem de Serviço
-
-            </label>
-
-
-            <div class="campo-pesquisa">
-
-                <input
-                    type="text"
-                    id="codigoOS"
-                    placeholder="Ex.: WS-OS-000001"
-                    autocomplete="off">
-
-
-                <button
-                    type="button"
-                    class="btn-consultar"
-                    id="btnConsultar">
-
-                    Consultar
-
-                </button>
-
-            </div>
-
-
-            <div id="resultadoOS"></div>
-
-        </section>
-
-    </main>
-
-
-
-    <!-- =====================================================
-         RODAPÉ
-    ===================================================== -->
-
-    <footer>
-
-        WS SOLUÇÕES © 2026
-
-    </footer>
-
-
-
-    <script>
-
-        /* =====================================================
-           CONFIGURAÇÕES DO CALENDÁRIO
-        ===================================================== */
-
-        let dataCalendario = new Date();
-
-        let diasOcupados = new Set();
-
-
-        const nomesMeses = [
-
-            "janeiro",
-            "fevereiro",
-            "março",
-            "abril",
-            "maio",
-            "junho",
-            "julho",
-            "agosto",
-            "setembro",
-            "outubro",
-            "novembro",
-            "dezembro"
-
-        ];
-
-
-        /* =====================================================
-           ELEMENTOS
-        ===================================================== */
-
-        const mesAtual =
-            document.getElementById("mesAtual");
-
-        const diasCalendario =
-            document.getElementById("diasCalendario");
-
-        const mesAnterior =
-            document.getElementById("mesAnterior");
-
-        const proximoMes =
-            document.getElementById("proximoMes");
-
-        const codigoOS =
-            document.getElementById("codigoOS");
-
-        const btnConsultar =
-            document.getElementById("btnConsultar");
-
-        const resultadoOS =
-            document.getElementById("resultadoOS");
-
-
-        /* =====================================================
-           FORMATAR DATA PARA COMPARAÇÃO
-        ===================================================== */
-
-        function formatarDataBanco(data) {
-
-            const ano =
-                data.getFullYear();
-
-            const mes =
-                String(
-                    data.getMonth() + 1
-                ).padStart(2, "0");
-
-            const dia =
-                String(
-                    data.getDate()
-                ).padStart(2, "0");
-
-            return `${ano}-${mes}-${dia}`;
+        if (valor === null || valor === undefined) {
+            return "-";
         }
 
+        return String(valor)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
 
-        /* =====================================================
-           CARREGAR DIAS OCUPADOS
-        ===================================================== */
-
-        async function carregarDiasOcupados() {
-
-            diasOcupados.clear();
-
-            const primeiroDia =
-                new Date(
-                    dataCalendario.getFullYear(),
-                    dataCalendario.getMonth(),
-                    1
-                );
-
-            const ultimoDia =
-                new Date(
-                    dataCalendario.getFullYear(),
-                    dataCalendario.getMonth() + 1,
-                    0
-                );
+    }
 
 
-            const inicio =
-                formatarDataBanco(
-                    primeiroDia
-                );
+    /*
+    ========================================================
+    MENSAGEM
+    ========================================================
+    */
 
-            const fim =
-                formatarDataBanco(
-                    ultimoDia
-                );
+    function mostrarMensagem(texto, tipo = "info") {
 
+        mensagem.textContent = texto;
 
-            /*
-             * Busca somente os campos necessários
-             * dos agendamentos.
-             */
+        mensagem.className =
+            "message " + tipo;
 
-            const { data, error } =
-                await supabase
-                    .from("agendamentos")
-                    .select("data")
-                    .gte("data", inicio)
-                    .lte("data", fim);
+    }
 
 
-            if (error) {
+    function limparMensagem() {
 
-                console.error(
-                    "Erro ao carregar calendário:",
-                    error
-                );
+        mensagem.textContent = "";
 
-                return;
-            }
+        mensagem.className =
+            "message";
+
+    }
 
 
-            (data || []).forEach(
-                agendamento => {
+    /*
+    ========================================================
+    CARREGAR CALENDÁRIO
+    ========================================================
+    */
 
-                    if (
-                        agendamento.data
-                    ) {
+    async function carregarCalendario() {
 
-                        diasOcupados.add(
-                            String(
-                                agendamento.data
-                            ).substring(0, 10)
-                        );
-                    }
-                }
+        calendarGrid.innerHTML = "";
+
+        const ano =
+            dataCalendario.getFullYear();
+
+        const mes =
+            dataCalendario.getMonth();
+
+
+        mesAno.textContent =
+            `${meses[mes]} de ${ano}`;
+
+
+        /*
+        Primeiro e último dia do mês
+        */
+
+        const primeiroDia =
+            new Date(ano, mes, 1);
+
+        const ultimoDia =
+            new Date(ano, mes + 1, 0);
+
+
+        /*
+        Dia da semana do primeiro dia
+        */
+
+        const inicioSemana =
+            primeiroDia.getDay();
+
+
+        /*
+        Quantidade de dias
+        */
+
+        const quantidadeDias =
+            ultimoDia.getDate();
+
+
+        /*
+        Formato para consulta Supabase
+        */
+
+        const inicio =
+            `${ano}-${String(mes + 1).padStart(2, "0")}-01`;
+
+        const fim =
+            `${ano}-${String(mes + 1).padStart(2, "0")}-${String(quantidadeDias).padStart(2, "0")}`;
+
+
+        /*
+        Busca somente as datas.
+
+        NÃO busca nome,
+        telefone,
+        aparelho,
+        defeito etc.
+        */
+
+        const { data, error } =
+            await supabaseClient
+                .from("agendamentos")
+                .select("data")
+                .gte("data", inicio)
+                .lte("data", fim);
+
+
+        if (error) {
+
+            console.error(
+                "Erro ao carregar agenda:",
+                error
             );
+
+            calendarGrid.innerHTML = "";
+
+            mostrarMensagem(
+                "Não foi possível carregar a agenda.",
+                "error"
+            );
+
+            return;
+
         }
 
 
-        /* =====================================================
-           RENDERIZAR CALENDÁRIO
-        ===================================================== */
+        /*
+        Cria conjunto de dias ocupados
+        */
 
-        async function renderizarCalendario() {
-
-            mesAtual.textContent =
-                `${nomesMeses[
-                    dataCalendario.getMonth()
-                ]} ${dataCalendario.getFullYear()}`;
+        const diasOcupados =
+            new Set();
 
 
-            diasCalendario.innerHTML = `
-                <div class="mensagem">
-                    Carregando...
-                </div>
-            `;
+        if (data) {
 
+            data.forEach(item => {
 
-            await carregarDiasOcupados();
+                if (item.data) {
 
+                    /*
+                    Evita problemas com horário/timezone
+                    */
 
-            diasCalendario.innerHTML = "";
+                    const dia =
+                        String(item.data).substring(0, 10);
 
+                    diasOcupados.add(dia);
 
-            const ano =
-                dataCalendario.getFullYear();
-
-            const mes =
-                dataCalendario.getMonth();
-
-
-            const primeiroDiaSemana =
-                new Date(
-                    ano,
-                    mes,
-                    1
-                ).getDay();
-
-
-            const quantidadeDias =
-                new Date(
-                    ano,
-                    mes + 1,
-                    0
-                ).getDate();
-
-
-            for (
-                let i = 0;
-                i < primeiroDiaSemana;
-                i++
-            ) {
-
-                const vazio =
-                    document.createElement(
-                        "div"
-                    );
-
-                vazio.className =
-                    "dia vazio";
-
-                diasCalendario.appendChild(
-                    vazio
-                );
-            }
-
-
-            const hoje =
-                new Date();
-
-
-            for (
-                let dia = 1;
-                dia <= quantidadeDias;
-                dia++
-            ) {
-
-                const elemento =
-                    document.createElement(
-                        "div"
-                    );
-
-
-                elemento.className =
-                    "dia";
-
-
-                elemento.textContent =
-                    dia;
-
-
-                const dataDia =
-                    new Date(
-                        ano,
-                        mes,
-                        dia
-                    );
-
-
-                const dataFormatada =
-                    formatarDataBanco(
-                        dataDia
-                    );
-
-
-                const hojeFormatado =
-                    formatarDataBanco(
-                        hoje
-                    );
-
-
-                if (
-                    dataFormatada ===
-                    hojeFormatado
-                ) {
-
-                    elemento.classList.add(
-                        "hoje"
-                    );
                 }
 
+            });
 
-                if (
-                    diasOcupados.has(
-                        dataFormatada
-                    )
-                ) {
-
-                    elemento.classList.add(
-                        "ocupado"
-                    );
-
-                    elemento.title =
-                        "Dia ocupado";
-                }
-
-
-                diasCalendario.appendChild(
-                    elemento
-                );
-            }
         }
 
 
-        /* =====================================================
-           NAVEGAÇÃO DOS MESES
-        ===================================================== */
+        /*
+        Espaços antes do primeiro dia
+        */
 
-        mesAnterior.addEventListener(
-            "click",
-            () => {
+        for (
+            let i = 0;
+            i < inicioSemana;
+            i++
+        ) {
 
-                dataCalendario.setMonth(
-                    dataCalendario.getMonth() - 1
-                );
+            const vazio =
+                document.createElement("div");
 
-                renderizarCalendario();
-            }
-        );
+            vazio.className =
+                "day empty";
 
+            calendarGrid.appendChild(vazio);
 
-        proximoMes.addEventListener(
-            "click",
-            () => {
-
-                dataCalendario.setMonth(
-                    dataCalendario.getMonth() + 1
-                );
-
-                renderizarCalendario();
-            }
-        );
+        }
 
 
-        /* =====================================================
-           STATUS
-        ===================================================== */
+        /*
+        Cria os dias
+        */
 
-        const statusNomes = {
+        const hoje = new Date();
 
-            aberta: "Aberta",
+        for (
+            let dia = 1;
+            dia <= quantidadeDias;
+            dia++
+        ) {
 
-            aguardando:
-                "Aguardando",
+            const elemento =
+                document.createElement("div");
 
-            em_andamento:
-                "Em andamento",
-
-            aguardando_peca:
-                "Aguardando peça",
-
-            concluida:
-                "Concluída",
-
-            entregue:
-                "Entregue",
-
-            cancelada:
-                "Cancelada"
-        };
+            elemento.className =
+                "day";
 
 
-        /* =====================================================
-           CONSULTAR OS
-        ===================================================== */
-
-        async function consultarOS() {
-
-            const codigo =
-                codigoOS.value
-                    .trim()
-                    .toUpperCase();
-
-
-            if (!codigo) {
-
-                resultadoOS.innerHTML = `
-                    <div class="mensagem erro">
-                        Digite o código da OS.
-                    </div>
-                `;
-
-                return;
-            }
-
-
-            resultadoOS.innerHTML = `
-                <div class="mensagem">
-                    Consultando...
-                </div>
-            `;
+            const dataFormatada =
+                `${ano}-${String(mes + 1).padStart(2, "0")}-${String(dia).padStart(2, "0")}`;
 
 
             /*
-             * IMPORTANTE:
-             *
-             * Não buscamos a tabela clientes.
-             * Portanto, nenhum dado pessoal
-             * do cliente será exibido.
-             */
+            Dia ocupado
+            */
 
+            if (
+                diasOcupados.has(dataFormatada)
+            ) {
+
+                elemento.classList.add(
+                    "occupied"
+                );
+
+            }
+
+
+            /*
+            Dia atual
+            */
+
+            if (
+                dia === hoje.getDate() &&
+                mes === hoje.getMonth() &&
+                ano === hoje.getFullYear()
+            ) {
+
+                elemento.classList.add(
+                    "today"
+                );
+
+            }
+
+
+            elemento.textContent =
+                dia;
+
+
+            calendarGrid.appendChild(
+                elemento
+            );
+
+        }
+
+    }
+
+
+    /*
+    ========================================================
+    CONSULTAR ORDEM DE SERVIÇO
+    ========================================================
+    */
+
+    async function consultarOS() {
+
+        limparMensagem();
+
+        resultadoOS.style.display =
+            "none";
+
+
+        let codigo =
+            codigoOS.value.trim();
+
+
+        if (!codigo) {
+
+            mostrarMensagem(
+                "Digite o código da Ordem de Serviço.",
+                "error"
+            );
+
+            codigoOS.focus();
+
+            return;
+
+        }
+
+
+        /*
+        Aceita letras minúsculas digitadas
+        */
+
+        codigo =
+            codigo.toUpperCase();
+
+
+        btnConsultar.disabled =
+            true;
+
+        btnConsultar.textContent =
+            "Consultando...";
+
+
+        try {
+
+            /*
+            IMPORTANTE:
+
+            Busca SOMENTE dados públicos
+            da OS.
+
+            Não busca:
+            nome
+            whatsapp
+            cliente_id
+            endereço
+            valores
+            diagnóstico
+            observações
+            */
 
             const { data, error } =
-                await supabase
+                await supabaseClient
                     .from("ordens_servico")
-                    .select(`
-                        codigo,
-                        aparelho,
-                        marca,
-                        modelo,
-                        tipo_servico,
-                        status
-                    `)
+                    .select(
+                        "codigo,aparelho,marca,modelo,tipo_servico,status"
+                    )
                     .eq("codigo", codigo)
                     .maybeSingle();
 
@@ -1402,194 +992,78 @@
                     error
                 );
 
-                resultadoOS.innerHTML = `
-                    <div class="mensagem erro">
-                        Não foi possível consultar a OS.
-                    </div>
-                `;
+                mostrarMensagem(
+                    "Não foi possível consultar a Ordem de Serviço.",
+                    "error"
+                );
 
                 return;
+
             }
 
 
             if (!data) {
 
-                resultadoOS.innerHTML = `
-                    <div class="mensagem erro">
-                        OS não encontrada.
-                    </div>
-                `;
+                mostrarMensagem(
+                    "Ordem de Serviço não encontrada.",
+                    "error"
+                );
 
                 return;
+
             }
 
 
-            const status =
+            /*
+            Preenche resultado
+            */
+
+            document.getElementById(
+                "resultadoCodigo"
+            ).textContent =
+                escaparHTML(
+                    data.codigo
+                );
+
+
+            document.getElementById(
+                "resultadoAparelho"
+            ).textContent =
+                escaparHTML(
+                    data.aparelho
+                );
+
+
+            document.getElementById(
+                "resultadoMarca"
+            ).textContent =
+                escaparHTML(
+                    data.marca
+                );
+
+
+            document.getElementById(
+                "resultadoModelo"
+            ).textContent =
+                escaparHTML(
+                    data.modelo
+                );
+
+
+            document.getElementById(
+                "resultadoServico"
+            ).textContent =
+                escaparHTML(
+                    data.tipo_servico
+                );
+
+
+            document.getElementById(
+                "resultadoStatus"
+            ).textContent =
+                statusMap[data.status] ||
                 data.status ||
-                "aberta";
+                "-";
 
 
-            const nomeStatus =
-                statusNomes[
-                    status
-                ] ||
-                status;
-
-
-            resultadoOS.innerHTML = `
-
-                <div class="os-resultado">
-
-                    <div class="os-codigo">
-
-                        ${data.codigo}
-
-                    </div>
-
-
-                    <div class="os-info">
-
-                        <div class="info-item">
-
-                            <small>
-                                Aparelho
-                            </small>
-
-                            <strong>
-                                ${escaparHTML(
-                                    data.aparelho ||
-                                    "-"
-                                )}
-                            </strong>
-
-                        </div>
-
-
-                        <div class="info-item">
-
-                            <small>
-                                Marca
-                            </small>
-
-                            <strong>
-                                ${escaparHTML(
-                                    data.marca ||
-                                    "-"
-                                )}
-                            </strong>
-
-                        </div>
-
-
-                        <div class="info-item">
-
-                            <small>
-                                Modelo
-                            </small>
-
-                            <strong>
-                                ${escaparHTML(
-                                    data.modelo ||
-                                    "-"
-                                )}
-                            </strong>
-
-                        </div>
-
-
-                        <div class="info-item">
-
-                            <small>
-                                Serviço
-                            </small>
-
-                            <strong>
-                                ${escaparHTML(
-                                    data.tipo_servico ||
-                                    "-"
-                                )}
-                            </strong>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="status-area">
-
-                        <div class="status-label">
-
-                            Status atual
-
-                        </div>
-
-
-                        <span
-                            class="status ${status}">
-
-                            ${nomeStatus}
-
-                        </span>
-
-                    </div>
-
-                </div>
-
-            `;
-        }
-
-
-        /* =====================================================
-           PROTEÇÃO CONTRA HTML
-        ===================================================== */
-
-        function escaparHTML(valor) {
-
-            return String(valor)
-                .replaceAll("&", "&amp;")
-                .replaceAll("<", "&lt;")
-                .replaceAll(">", "&gt;")
-                .replaceAll('"', "&quot;")
-                .replaceAll("'", "&#039;");
-        }
-
-
-        /* =====================================================
-           BOTÃO CONSULTAR
-        ===================================================== */
-
-        btnConsultar.addEventListener(
-            "click",
-            consultarOS
-        );
-
-
-        /* =====================================================
-           ENTER NA PESQUISA
-        ===================================================== */
-
-        codigoOS.addEventListener(
-            "keydown",
-            event => {
-
-                if (
-                    event.key === "Enter"
-                ) {
-
-                    consultarOS();
-                }
-            }
-        );
-
-
-        /* =====================================================
-           INICIALIZAÇÃO
-        ===================================================== */
-
-        renderizarCalendario();
-
-    </script>
-
-</body>
-
-</html>
+        
