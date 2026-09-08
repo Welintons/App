@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* =====================================================
        ELEMENTOS
-    ====================================================== */
+    ===================================================== */
 
     const btnNovaOS = document.getElementById("btnNovaOS");
     const btnFecharModal = document.getElementById("btnFecharModal");
@@ -30,8 +30,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
+       VERIFICAÇÃO
+    ===================================================== */
+
+    console.log("WS SOLUÇÕES — OS.JS carregado");
+
+    console.log("Botão Nova OS:", btnNovaOS);
+    console.log("Modal OS:", modalOS);
+    console.log("Botão Tema:", themeToggle);
+
+
+    /* =====================================================
        ESTADO
-    ====================================================== */
+    ===================================================== */
 
     let ordens = [];
     let clientes = [];
@@ -40,15 +51,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* =====================================================
        TOAST
-    ====================================================== */
+    ===================================================== */
 
     function mostrarToast(mensagem) {
 
-        const toast = document.getElementById("toast");
+        const toast =
+            document.getElementById("toast");
+
         const toastMessage =
             document.getElementById("toastMessage");
 
-        if (!toast || !toastMessage) return;
+        if (!toast || !toastMessage) {
+            console.warn(mensagem);
+            return;
+        }
 
         toastMessage.textContent = mensagem;
 
@@ -61,8 +77,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       TEMA
-    ====================================================== */
+       MODO ESCURO
+    ===================================================== */
 
     function aplicarTema() {
 
@@ -88,35 +104,26 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    themeToggle?.addEventListener("click", () => {
+    if (themeToggle) {
 
-        const estaDark =
-            document.body.classList.contains("dark");
+        themeToggle.addEventListener("click", () => {
 
-        if (estaDark) {
+            document.body.classList.toggle("dark");
 
-            document.body.classList.remove("dark");
-
-            localStorage.setItem(
-                "ws_modo_noturno",
-                "light"
-            );
-
-            themeToggle.textContent = "☾";
-
-        } else {
-
-            document.body.classList.add("dark");
+            const ativado =
+                document.body.classList.contains("dark");
 
             localStorage.setItem(
                 "ws_modo_noturno",
-                "dark"
+                ativado ? "dark" : "light"
             );
 
-            themeToggle.textContent = "☀";
-        }
+            themeToggle.textContent =
+                ativado ? "☀" : "☾";
 
-    });
+        });
+
+    }
 
 
     aplicarTema();
@@ -124,24 +131,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* =====================================================
        STATUS
-    ====================================================== */
+    ===================================================== */
 
     function textoStatus(status) {
 
         const mapa = {
 
             aberta: "Aberta",
-
             aguardando: "Aguardando",
-
             em_andamento: "Em andamento",
-
             aguardando_peca: "Aguardando peça",
-
             concluida: "Concluída",
-
             entregue: "Entregue",
-
             cancelada: "Cancelada"
 
         };
@@ -164,11 +165,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const mapa = {
 
             baixa: "Baixa",
-
             normal: "Normal",
-
             alta: "Alta",
-
             urgente: "Urgente"
 
         };
@@ -181,7 +179,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* =====================================================
        FORMATAÇÃO
-    ====================================================== */
+    ===================================================== */
 
     function formatarMoeda(valor) {
 
@@ -215,7 +213,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* =====================================================
        CLIENTES
-    ====================================================== */
+    ===================================================== */
 
     async function carregarClientes() {
 
@@ -272,7 +270,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* =====================================================
        EQUIPAMENTOS
-    ====================================================== */
+    ===================================================== */
 
     async function carregarEquipamentos(clienteId = null) {
 
@@ -288,11 +286,6 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
 
         if (!clienteId) return;
-
-        /*
-         * Só tenta carregar equipamentos se
-         * a tabela existir no banco.
-         */
 
         const { data, error } =
             await supabaseClient
@@ -318,7 +311,8 @@ document.addEventListener("DOMContentLoaded", () => {
             const option =
                 document.createElement("option");
 
-            option.value = equipamento.id;
+            option.value =
+                equipamento.id;
 
             const nome =
                 equipamento.nome ||
@@ -357,8 +351,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       CÓDIGO DA OS
-    ====================================================== */
+       CÓDIGO
+    ===================================================== */
 
     function gerarProximoCodigo() {
 
@@ -381,7 +375,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     maior = numero;
                 }
             }
-
         });
 
         return "WS-OS-" +
@@ -390,18 +383,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       ABRIR MODAL
-    ====================================================== */
+       ABRIR NOVA OS
+    ===================================================== */
 
     async function abrirModalOS(os = null) {
 
-        if (!modalOS || !formOS) return;
+        if (!modalOS || !formOS) {
+
+            console.error(
+                "Modal ou formulário da OS não encontrado."
+            );
+
+            return;
+        }
 
         await carregarClientes();
 
         osSelecionada = os;
 
         modalOS.classList.add("show");
+
+        modalOS.style.display = "flex";
+
         modalOS.setAttribute(
             "aria-hidden",
             "false"
@@ -410,6 +413,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.body.classList.add(
             "modal-aberto"
         );
+
 
         if (!os) {
 
@@ -421,7 +425,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
             document.getElementById(
                 "codigo"
-            ).value = gerarProximoCodigo();
+            ).value =
+                gerarProximoCodigo();
 
             document.getElementById(
                 "status"
@@ -440,33 +445,44 @@ document.addEventListener("DOMContentLoaded", () => {
             ).value = "0.00";
 
             const hoje =
-                new Date().toISOString().split("T")[0];
+                new Date()
+                    .toISOString()
+                    .split("T")[0];
 
             document.getElementById(
                 "data_entrada"
             ).value = hoje;
 
-            carregarEquipamentos(null);
+            await carregarEquipamentos(null);
 
-            document.getElementById(
-                "modalTitulo"
-            ).textContent = "Nova OS";
+            const titulo =
+                document.getElementById(
+                    "modalTitulo"
+                );
+
+            if (titulo) {
+                titulo.textContent = "Nova OS";
+            }
 
         } else {
 
-            preencherFormulario(os);
+            await preencherFormulario(os);
 
-            document.getElementById(
-                "modalTitulo"
-            ).textContent = "Editar OS";
+            const titulo =
+                document.getElementById(
+                    "modalTitulo"
+                );
 
+            if (titulo) {
+                titulo.textContent = "Editar OS";
+            }
         }
     }
 
 
     /* =====================================================
-       PREENCHER FORMULÁRIO
-    ====================================================== */
+       PREENCHER
+    ===================================================== */
 
     async function preencherFormulario(os) {
 
@@ -484,7 +500,15 @@ document.addEventListener("DOMContentLoaded", () => {
         set("osId", os.id);
         set("codigo", os.codigo);
         set("cliente_id", os.cliente_id);
-        set("equipamento_id", os.equipamento_id);
+
+        await carregarEquipamentos(
+            os.cliente_id
+        );
+
+        set(
+            "equipamento_id",
+            os.equipamento_id
+        );
 
         set("tipo_servico", os.tipo_servico);
         set("aparelho", os.aparelho);
@@ -500,21 +524,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         set("valor", os.valor);
         set("desconto", os.desconto);
+        set("valor_total", os.valor_total);
 
-        set(
-            "valor_total",
-            os.valor_total
-        );
-
-        set(
-            "status",
-            os.status
-        );
-
-        set(
-            "prioridade",
-            os.prioridade
-        );
+        set("status", os.status);
+        set("prioridade", os.prioridade);
 
         set(
             "data_entrada",
@@ -536,27 +549,20 @@ document.addEventListener("DOMContentLoaded", () => {
             "observacoes",
             os.observacoes
         );
-
-        await carregarEquipamentos(
-            os.cliente_id
-        );
-
-        set(
-            "equipamento_id",
-            os.equipamento_id
-        );
     }
 
 
     /* =====================================================
        FECHAR MODAL
-    ====================================================== */
+    ===================================================== */
 
     function fecharModalOS() {
 
         if (!modalOS) return;
 
         modalOS.classList.remove("show");
+
+        modalOS.style.display = "none";
 
         modalOS.setAttribute(
             "aria-hidden",
@@ -571,38 +577,63 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    btnNovaOS?.addEventListener(
-        "click",
-        () => abrirModalOS()
-    );
+    /* =====================================================
+       BOTÃO NOVA OS
+    ===================================================== */
 
-    btnFecharModal?.addEventListener(
-        "click",
-        fecharModalOS
-    );
+    if (btnNovaOS) {
 
-    btnCancelar?.addEventListener(
-        "click",
-        fecharModalOS
-    );
+        btnNovaOS.addEventListener(
+            "click",
+            () => {
+                abrirModalOS();
+            }
+        );
+
+    } else {
+
+        console.error(
+            "btnNovaOS não encontrado."
+        );
+    }
+
+
+    if (btnFecharModal) {
+
+        btnFecharModal.addEventListener(
+            "click",
+            fecharModalOS
+        );
+
+    }
+
+
+    if (btnCancelar) {
+
+        btnCancelar.addEventListener(
+            "click",
+            fecharModalOS
+        );
+
+    }
 
 
     /* =====================================================
-       CLIQUE NO FUNDO DO MODAL
-    ====================================================== */
+       FUNDO DO MODAL
+    ===================================================== */
 
     modalOS?.addEventListener(
         "click",
         event => {
 
             if (
-                event.target.classList.contains(
-                    "modal-overlay"
+                event.target ===
+                modalOS.querySelector(
+                    ".modal-overlay"
                 )
             ) {
 
                 fecharModalOS();
-
             }
 
         }
@@ -611,7 +642,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* =====================================================
        VALOR TOTAL
-    ====================================================== */
+    ===================================================== */
 
     function calcularValorTotal() {
 
@@ -644,7 +675,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             campo.value =
                 total.toFixed(2);
-
         }
     }
 
@@ -665,8 +695,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       SALVAR OS
-    ====================================================== */
+       SALVAR
+    ===================================================== */
 
     formOS?.addEventListener(
         "submit",
@@ -688,14 +718,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-
             const valor =
                 parseFloat(
                     document.getElementById(
                         "valor"
                     )?.value
                 ) || 0;
-
 
             const desconto =
                 parseFloat(
@@ -705,26 +733,18 @@ document.addEventListener("DOMContentLoaded", () => {
                 ) || 0;
 
 
-            /*
-             * IMPORTANTE:
-             *
-             * valor_total NÃO é enviado.
-             *
-             * Ele é uma coluna GENERATED
-             * no banco de dados.
-             */
-
-
             const dados = {
 
-                cliente_id: clienteId,
+                cliente_id:
+                    clienteId,
 
                 equipamento_id:
                     document.getElementById(
                         "equipamento_id"
                     )?.value || null,
 
-                orcamento_id: null,
+                orcamento_id:
+                    null,
 
                 tipo_servico:
                     document.getElementById(
@@ -761,9 +781,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         "servico_realizado"
                     )?.value.trim() || null,
 
-                valor: valor,
-
-                desconto: desconto,
+                valor,
+                desconto,
 
                 status:
                     document.getElementById(
@@ -789,18 +808,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     document.getElementById(
                         "observacoes"
                     )?.value.trim() || null
-
             };
 
-
-            /*
-             * Código:
-             *
-             * Se for uma OS nova, deixamos o
-             * banco gerar o código.
-             *
-             * Se for edição, mantemos o código.
-             */
 
             const osId =
                 document.getElementById(
@@ -829,7 +838,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         .insert(dados)
                         .select()
                         .single();
-
             }
 
 
@@ -855,7 +863,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     : "OS criada com sucesso!"
             );
 
-
             fecharModalOS();
 
             await carregarOS();
@@ -865,481 +872,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       CARREGAR ORDENS
-    ====================================================== */
+       CARREGAR OS
+    ===================================================== */
 
     async function carregarOS() {
+
+        if (!listaOS) return;
 
         const { data, error } =
             await supabaseClient
                 .from("ordens_servico")
                 .select("*")
-                .order("criado_em", {
-                    ascending: false
-                });
-
-
-        if (error) {
-
-            console.error(
-                "Erro ao carregar OS:",
-                error
-            );
-
-            listaOS.innerHTML = `
-                <div class="os-loading">
-                    Erro ao carregar ordens de serviço.
-                </div>
-            `;
-
-            mostrarToast(
-                "Erro ao carregar ordens de serviço."
-            );
-
-            return;
-        }
-
-
-        ordens = data || [];
-
-        totalOS.textContent =
-            ordens.length;
-
-        renderizarOS();
-
-    }
-
-
-    /* =====================================================
-       RENDERIZAR LISTA
-    ====================================================== */
-
-    function renderizarOS() {
-
-        const termo =
-            (buscaOS?.value || "")
-                .toLowerCase()
-                .trim();
-
-
-        const filtradas =
-            ordens.filter(os => {
-
-                const cliente =
-                    clientes.find(
-                        c => c.id === os.cliente_id
-                    );
-
-                const texto = [
-
-                    os.codigo,
-
-                    cliente?.nome,
-
-                    os.aparelho,
-
-                    os.marca,
-
-                    os.modelo,
-
-                    textoStatus(os.status)
-
-                ]
-                    .filter(Boolean)
-                    .join(" ")
-                    .toLowerCase();
-
-                return texto.includes(termo);
-
-            });
-
-
-        if (!filtradas.length) {
-
-            listaOS.innerHTML = `
-                <div class="os-loading">
-                    Nenhuma ordem de serviço encontrada.
-                </div>
-            `;
-
-            return;
-        }
-
-
-        listaOS.innerHTML = "";
-
-
-        filtradas.forEach(os => {
-
-            const cliente =
-                clientes.find(
-                    c => c.id === os.cliente_id
-                );
-
-
-            const item =
-                document.createElement("div");
-
-            item.className = "os-item";
-
-
-            item.innerHTML = `
-
-                <div class="os-item-main">
-
-                    <strong class="os-code">
-                        ${os.codigo || "—"}
-                    </strong>
-
-                    <span class="os-client">
-                        ${cliente?.nome || "Cliente não encontrado"}
-                    </span>
-
-                    <span class="os-device">
-                        ${
-                            [
-                                os.aparelho,
-                                os.marca,
-                                os.modelo
-                            ]
-                            .filter(Boolean)
-                            .join(" • ") || "Sem equipamento"
-                        }
-                    </span>
-
-                </div>
-
-                <span class="os-status ${classeStatus(os.status)}">
-                    ${textoStatus(os.status)}
-                </span>
-
-            `;
-
-
-            item.addEventListener(
-                "click",
-                () => abrirDetalhesOS(os)
-            );
-
-
-            listaOS.appendChild(item);
-
-        });
-
-    }
-
-
-    buscaOS?.addEventListener(
-        "input",
-        renderizarOS
-    );
-
-
-    /* =====================================================
-       MODAL DETALHES
-    ====================================================== */
-
-    function abrirDetalhesOS(os) {
-
-        osSelecionada = os;
-
-
-        const cliente =
-            clientes.find(
-                c => c.id === os.cliente_id
-            );
-
-
-        const set = (id, valor) => {
-
-            const elemento =
-                document.getElementById(id);
-
-            if (elemento) {
-
-                elemento.textContent =
-                    valor ?? "—";
-
-            }
-
-        };
-
-
-        set(
-            "detalheCodigo",
-            os.codigo
-        );
-
-        set(
-            "detalheCliente",
-            cliente?.nome || "—"
-        );
-
-        set(
-            "detalheStatus",
-            textoStatus(os.status)
-        );
-
-        set(
-            "detalhePrioridade",
-            textoPrioridade(os.prioridade)
-        );
-
-        set(
-            "detalheTipoServico",
-            os.tipo_servico
-        );
-
-        set(
-            "detalheAparelho",
-            os.aparelho
-        );
-
-        set(
-            "detalheMarca",
-            os.marca
-        );
-
-        set(
-            "detalheModelo",
-            os.modelo
-        );
-
-        set(
-            "detalheDataEntrada",
-            formatarData(os.data_entrada)
-        );
-
-        set(
-            "detalheDataConclusao",
-            formatarData(os.data_conclusao)
-        );
-
-        set(
-            "detalheValor",
-            formatarMoeda(os.valor)
-        );
-
-        set(
-            "detalheDesconto",
-            formatarMoeda(os.desconto)
-        );
-
-        set(
-            "detalheValorTotal",
-            formatarMoeda(os.valor_total)
-        );
-
-        set(
-            "detalheDefeito",
-            os.defeito
-        );
-
-        set(
-            "detalheDiagnostico",
-            os.diagnostico
-        );
-
-        set(
-            "detalheServicoRealizado",
-            os.servico_realizado
-        );
-
-        set(
-            "detalheObservacoes",
-            os.observacoes
-        );
-
-
-        modalDetalhesOS?.classList.add(
-            "show"
-        );
-
-        modalDetalhesOS?.setAttribute(
-            "aria-hidden",
-            "false"
-        );
-
-        document.body.classList.add(
-            "modal-aberto"
-        );
-
-    }
-
-
-    /* =====================================================
-       FECHAR DETALHES
-    ====================================================== */
-
-    function fecharDetalhes() {
-
-        modalDetalhesOS?.classList.remove(
-            "show"
-        );
-
-        modalDetalhesOS?.setAttribute(
-            "aria-hidden",
-            "true"
-        );
-
-        document.body.classList.remove(
-            "modal-aberto"
-        );
-
-        osSelecionada = null;
-
-    }
-
-
-    btnFecharDetalhes?.addEventListener(
-        "click",
-        fecharDetalhes
-    );
-
-
-    modalDetalhesOS?.addEventListener(
-        "click",
-        event => {
-
-            if (
-                event.target.classList.contains(
-                    "modal-overlay"
-                )
-            ) {
-
-                fecharDetalhes();
-
-            }
-
-        }
-    );
-
-
-    /* =====================================================
-       EDITAR
-    ====================================================== */
-
-    btnEditarDetalhes?.addEventListener(
-        "click",
-        async () => {
-
-            if (!osSelecionada) return;
-
-            const os =
-                osSelecionada;
-
-            fecharDetalhes();
-
-            await abrirModalOS(os);
-
-        }
-    );
-
-
-    /* =====================================================
-       EXCLUIR
-    ====================================================== */
-
-    btnExcluirDetalhes?.addEventListener(
-        "click",
-        async () => {
-
-            if (!osSelecionada) return;
-
-            const confirmar =
-                confirm(
-                    `Deseja realmente excluir a OS ${osSelecionada.codigo}?`
-                );
-
-            if (!confirmar) return;
-
-
-            const { error } =
-                await supabaseClient
-                    .from("ordens_servico")
-                    .delete()
-                    .eq(
-                        "id",
-                        osSelecionada.id
-                    );
-
-
-            if (error) {
-
-                console.error(
-                    "Erro ao excluir OS:",
-                    error
-                );
-
-                mostrarToast(
-                    "Erro ao excluir OS: " +
-                    error.message
-                );
-
-                return;
-            }
-
-
-            mostrarToast(
-                "OS excluída com sucesso!"
-            );
-
-
-            fecharDetalhes();
-
-            await carregarOS();
-
-        }
-    );
-
-
-    /* =====================================================
-       ESC
-    ====================================================== */
-
-    document.addEventListener(
-        "keydown",
-        event => {
-
-            if (event.key !== "Escape") return;
-
-            if (
-                modalOS?.classList.contains(
-                    "show"
-                )
-            ) {
-
-                fecharModalOS();
-
-            }
-
-            if (
-                modalDetalhesOS?.classList.contains(
-                    "show"
-                )
-            ) {
-
-                fecharDetalhes();
-
-            }
-
-        }
-    );
-
-
-    /* =====================================================
-       INICIALIZAÇÃO
-    ====================================================== */
-
-    async function iniciar() {
-
-        await carregarClientes();
-
-        await carregarOS();
-
-    }
-
-
-    iniciar();
-
-});
+                .
