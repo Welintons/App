@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Agenda — WS SOLUÇÕES</title>
+
+    <!-- CSS EXCLUSIVO DA AGENDA -->
+    <link rel="stylesheet" href="css/agenda.css">
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         TOPO
+    ====================================================== -->
+
+    <header class="topo">
+
+        <div class="topo-esquerda">
+
+            <button
+                id="btnVoltar"
+                class="btn-voltar"
+                type="button">
+
+                ←
+
+            </button>
+
+
+            <div>
+
+                <h1>Agenda</h1>
+
+                <span>WS SOLUÇÕES</span>
+
+            </div>
+
+        </div>
+
+
+        <div class="topo-acoes">
+
+            <button
+                id="themeToggle"
+                class="btn-icone"
+                type="button"
+                aria-label="Alterar tema">
+
+                ☾
+
+            </button>
+
+
+            <button
+                id="btnNovoAgendamento"
+                class="btn-principal"
+                type="button">
+
+                + Novo agendamento
+
+            </button>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         CONTEÚDO
+    ====================================================== -->
+
+    <main class="container">
+
+
+        <!-- =================================================
+             NAVEGAÇÃO DO CALENDÁRIO
+        ================================================== -->
+
+        <section class="calendario-topo">
+
+            <button
+                id="btnMesAnterior"
+                class="btn-calendario"
+                type="button">
+
+                ‹
+
+            </button>
+
+
+            <div class="mes-atual">
+
+                <h2 id="mesAnoAtual">
+                    Setembro 2026
+                </h2>
+
+            </div>
+
+
+            <button
+                id="btnMesProximo"
+                class="btn-calendario"
+                type="button">
+
+                ›
+
+            </button>
+
+        </section>
+
+
+
+        <!-- =================================================
+             BOTÃO HOJE
+        ================================================== -->
+
+        <div class="acoes-calendario">
+
+            <button
+                id="btnHoje"
+                class="btn-secundario"
+                type="button">
+
+                Hoje
+
+            </button>
+
+        </div>
+
+
+
+        <!-- =================================================
+             CALENDÁRIO
+        ================================================== -->
+
+        <section class="calendario">
+
+            <div class="dias-semana">
+
+                <div>Dom</div>
+                <div>Seg</div>
+                <div>Ter</div>
+                <div>Qua</div>
+                <div>Qui</div>
+                <div>Sex</div>
+                <div>Sáb</div>
+
+            </div>
+
+
+            <div
+                id="gradeCalendario"
+                class="grade-calendario">
+
+                <!-- Preenchido pelo agenda.js -->
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             AGENDA DO DIA
+        ================================================== -->
+
+        <section class="agenda-dia">
+
+            <div class="agenda-dia-topo">
+
+                <div>
+
+                    <h2 id="tituloAgendaDia">
+                        Agendamentos
+                    </h2>
+
+                    <span id="contadorAgenda">
+                        0 agendamentos
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="listaAgendamentos"
+                class="lista-agendamentos">
+
+                <!-- Preenchido pelo agenda.js -->
+
+            </div>
+
+
+            <div
+                id="estadoVazio"
+                class="estado-vazio"
+                hidden>
+
+                <div class="vazio-icone">
+                    📅
+                </div>
+
+                <h3>
+                    Nenhum agendamento
+                </h3>
+
+                <p>
+                    Não há agendamentos para este dia.
+                </p>
+
+                <button
+                    id="btnNovoAgendamentoVazio"
+                    class="btn-principal"
+                    type="button">
+
+                    + Novo agendamento
+
+                </button>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =====================================================
+         MODAL — NOVO / EDITAR AGENDAMENTO
+    ====================================================== -->
+
+    <div
+        id="modalAgenda"
+        class="modal"
+        aria-hidden="true">
+
+        <div
+            class="modal-overlay"
+            data-fechar-modal>
+        </div>
+
+
+        <div
+            class="modal-content modal-agenda"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="tituloModalAgenda">
+
+
+            <div class="modal-header">
+
+                <div>
+
+                    <h2 id="tituloModalAgenda">
+                        Novo agendamento
+                    </h2>
+
+                    <p>
+                        Agende um atendimento.
+                    </p>
+
+                </div>
+
+
+                <button
+                    id="btnFecharModal"
+                    class="btn-fechar"
+                    type="button"
+                    aria-label="Fechar">
+
+                    ×
+
+                </button>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 FORMULÁRIO
+            ================================================== -->
+
+            <form id="formAgenda">
+
+
+                <div class="campo">
+
+                    <label for="cliente">
+                        Cliente
+                    </label>
+
+                    <select
+                        id="cliente"
+                        name="cliente"
+                        required>
+
+                        <option value="">
+                            Selecione o cliente
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <div class="linha-campos">
+
+
+                    <div class="campo">
+
+                        <label for="data">
+                            Data
+                        </label>
+
+                        <input
+                            type="date"
+                            id="data"
+                            name="data"
+                            required>
+
+                    </div>
+
+
+                    <div class="campo">
+
+                        <label for="hora">
+                            Horário
+                        </label>
+
+                        <input
+                            type="time"
+                            id="hora"
+                            name="hora"
+                            required>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="campo">
+
+                    <label for="tipoServico">
+                        Tipo de serviço
+                    </label>
+
+                    <input
+                        type="text"
+                        id="tipoServico"
+                        name="tipoServico"
+                        placeholder="Ex.: Conserto de micro-ondas">
+
+                </div>
+
+
+
+                <div class="campo">
+
+                    <label for="endereco">
+                        Endereço
+                    </label>
+
+                    <input
+                        type="text"
+                        id="endereco"
+                        name="endereco"
+                        placeholder="Endereço do atendimento">
+
+                </div>
+
+
+
+                <div class="campo">
+
+                    <label for="observacoes">
+                        Observações
+                    </label>
+
+                    <textarea
+                        id="observacoes"
+                        name="observacoes"
+                        rows="3"
+                        placeholder="Detalhes do atendimento..."></textarea>
+
+                </div>
+
+
+
+                <div class="campo">
+
+                    <label for="status">
+                        Status
+                    </label>
+
+                    <select
+                        id="status"
+                        name="status">
+
+                        <option value="agendado">
+                            Agendado
+                        </option>
+
+                        <option value="confirmado">
+                            Confirmado
+                        </option>
+
+                        <option value="concluido">
+                            Concluído
+                        </option>
+
+                        <option value="cancelado">
+                            Cancelado
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     BOTÕES
+                ================================================== -->
+
+                <div class="modal-acoes">
+
+                    <button
+                        type="button"
+                        id="btnCancelar"
+                        class="btn-secundario">
+
+                        Cancelar
+
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        id="btnSalvar"
+                        class="btn-principal">
+
+                        Salvar agendamento
+
+                    </button>
+
+                </div>
+
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         MODAL — DETALHES DO AGENDAMENTO
+    ====================================================== -->
+
+    <div
+        id="modalDetalhes"
+        class="modal"
+        aria-hidden="true">
+
+        <div
+            class="modal-overlay"
+            data-fechar-detalhes>
+        </div>
+
+
+        <div
+            class="modal-content modal-detalhes"
+            role="dialog"
+            aria-modal="true">
+
+
+            <div class="modal-header">
+
+                <div>
+
+                    <h2>
+                        Agendamento
+                    </h2>
+
+                    <p id="detalheCliente">
+                        —
+                    </p>
+
+                </div>
+
+
+                <button
+                    id="btnFecharDetalhes"
+                    class="btn-fechar"
+                    type="button">
+
+                    ×
+
+                </button>
+
+            </div>
+
+
+
+            <div class="detalhes-conteudo">
+
+
+                <div class="detalhe-item">
+
+                    <span>Data</span>
+
+                    <strong id="detalheData">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="detalhe-item">
+
+                    <span>Horário</span>
+
+                    <strong id="detalheHora">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="detalhe-item">
+
+                    <span>Serviço</span>
+
+                    <strong id="detalheServico">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="detalhe-item">
+
+                    <span>Status</span>
+
+                    <strong id="detalheStatus">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="detalhe-item detalhe-endereco">
+
+                    <span>Endereço</span>
+
+                    <strong id="detalheEndereco">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="detalhe-item detalhe-observacoes">
+
+                    <span>Observações</span>
+
+                    <p id="detalheObservacoes">
+                        —
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+
+            <div class="modal-acoes">
+
+                <button
+                    id="btnEditarAgendamento"
+                    class="btn-principal"
+                    type="button">
+
+                    Editar
+
+                </button>
+
+
+                <button
+                    id="btnExcluirAgendamento"
+                    class="btn-perigo"
+                    type="button">
+
+                    Excluir
+
+                </button>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         TOAST
+    ====================================================== -->
+
+    <div
+        id="toast"
+        class="toast"
+        role="status"
+        aria-live="polite">
+    </div>
+
+
+
+    <!-- =====================================================
+         SUPABASE
+    ====================================================== -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="js/supabase.js"></script>
+
+    <script src="js/agenda.js"></script>
+
+
+</body>
+
+</html>
