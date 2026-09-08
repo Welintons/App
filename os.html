@@ -761,3 +761,368 @@
                     <div>
 
                         <span class="modal-kicker">
+                            Ordem de serviço
+                        </span>
+
+                        <h2 id="detalhesTitulo">
+                            Detalhes da OS
+                        </h2>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="btn-fechar"
+                        id="btnFecharDetalhes"
+                        aria-label="Fechar">
+
+                        ×
+
+                    </button>
+
+                </div>
+
+
+
+                <!-- =========================================
+                     CÓDIGO
+                ========================================== -->
+
+                <div class="detail-highlight">
+
+                    <span>
+                        Código
+                    </span>
+
+                    <strong id="detalheCodigo">
+                        —
+                    </strong>
+
+                </div>
+
+
+
+                <!-- =========================================
+                     DETALHES
+                ========================================== -->
+
+                <div class="details-grid">
+
+
+                    <div class="detail-item">
+
+                        <span>
+                            Cliente
+                        </span>
+
+                        <strong id="detalheCliente">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="detail-item">
+
+                        <span>
+                            Status
+                        </span>
+
+                        <strong id="detalheStatus">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="detail-item">
+
+                        <span>
+                            Prioridade
+                        </span>
+
+                        <strong id="detalhePrioridade">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="detail-item">
+
+                        <span>
+                            Tipo de serviço
+                        </span>
+
+                        <strong id="detalheTipoServico">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="detail-item">
+
+                        <span>
+                            Aparelho
+                        </span>
+
+                        <strong id="detalheAparelho">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="detail-item">
+
+                        <span>
+                            Marca
+                        </span>
+
+                        <strong id="detalheMarca">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="detail-item">
+
+                        <span>
+                            Modelo
+                        </span>
+
+                        <strong id="detalheModelo">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="detail-item">
+
+                        <span>
+                            Data de entrada
+                        </span>
+
+                        <strong id="detalheDataEntrada">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="detail-item">
+
+                        <span>
+                            Data de conclusão
+                        </span>
+
+                        <strong id="detalheDataConclusao">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="detail-item">
+
+                        <span>
+                            Valor
+                        </span>
+
+                        <strong id="detalheValor">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="detail-item">
+
+                        <span>
+                            Desconto
+                        </span>
+
+                        <strong id="detalheDesconto">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="detail-item">
+
+                        <span>
+                            Valor total
+                        </span>
+
+                        <strong id="detalheValorTotal">
+                            —
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =========================================
+                     TEXTOS
+                ========================================== -->
+
+                <div class="detail-text-section">
+
+                    <div class="detail-text">
+
+                        <span>
+                            Defeito informado
+                        </span>
+
+                        <p id="detalheDefeito">
+                            —
+                        </p>
+
+                    </div>
+
+
+                    <div class="detail-text">
+
+                        <span>
+                            Diagnóstico
+                        </span>
+
+                        <p id="detalheDiagnostico">
+                            —
+                        </p>
+
+                    </div>
+
+
+                    <div class="detail-text">
+
+                        <span>
+                            Serviço realizado
+                        </span>
+
+                        <p id="detalheServicoRealizado">
+                            —
+                        </p>
+
+                    </div>
+
+
+                    <div class="detail-text">
+
+                        <span>
+                            Observações
+                        </span>
+
+                        <p id="detalheObservacoes">
+                            —
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =========================================
+                     AÇÕES
+                ========================================== -->
+
+                <div class="modal-actions">
+
+                    <button
+                        type="button"
+                        class="btn-danger"
+                        id="btnExcluirDetalhes">
+
+                        Excluir
+
+                    </button>
+
+
+                    <div class="modal-actions-right">
+
+                        <button
+                            type="button"
+                            class="btn-secondary"
+                            id="btnEditarDetalhes">
+
+                            Editar
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         TOAST
+    ====================================================== -->
+
+    <div
+        id="toast"
+        class="toast"
+        role="status"
+        aria-live="polite">
+
+        <span id="toastMessage">
+            Mensagem
+        </span>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         SCRIPTS
+    ====================================================== -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+    </script>
+
+
+    <script src="js/supabase.js"></script>
+
+    <script src="js/os.js"></script>
+
+
+    <!-- =====================================================
+         VOLTAR
+    ====================================================== -->
+
+    <script>
+
+        document
+            .getElementById("btnVoltar")
+            ?.addEventListener(
+                "click",
+                () => {
+
+                    window.location.href =
+                        "index2.html";
+
+                }
+            );
+
+    </script>
+
+
+</body>
+
+</html>
