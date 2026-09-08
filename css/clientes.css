@@ -356,6 +356,42 @@ textarea {
 
 
 /* =========================================================
+   BOTÃO PERIGO
+========================================================= */
+
+.btn-danger {
+    min-height: 44px;
+
+    padding: 0 18px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid rgba(220, 38, 38, 0.25);
+
+    border-radius: 12px;
+
+    background: rgba(220, 38, 38, 0.08);
+
+    color: var(--perigo);
+
+    font-size: 13px;
+    font-weight: 800;
+
+    transition: var(--transicao);
+}
+
+.btn-danger:hover {
+    background: var(--perigo);
+
+    color: #ffffff;
+
+    transform: translateY(-2px);
+}
+
+
+/* =========================================================
    CARD
 ========================================================= */
 
@@ -430,8 +466,7 @@ textarea {
 .stats-grid {
     display: grid;
 
-    grid-template-columns:
-        repeat(3, minmax(0, 1fr));
+    grid-template-columns: 1fr;
 
     gap: 16px;
 
@@ -508,115 +543,101 @@ textarea {
     display: flex;
     flex-direction: column;
 
-    gap: 10px;
+    gap: 8px;
 }
 
 
 /* =========================================================
-   CLIENTE
+   ITEM DO CLIENTE
 ========================================================= */
 
 .client-item {
+    width: 100%;
+
     display: flex;
     align-items: center;
-    justify-content: space-between;
 
-    gap: 15px;
-
-    padding: 16px;
+    padding: 13px 15px;
 
     border: 1px solid var(--borda);
 
-    border-radius: 14px;
+    border-radius: 13px;
 
     background: var(--fundo);
 
-    transition: var(--transicao);
+    cursor: pointer;
+
+    transition:
+        background var(--transicao),
+        border-color var(--transicao),
+        transform var(--transicao),
+        box-shadow var(--transicao);
 }
 
-.client-item:hover {
+
+/* ITEM CLICÁVEL */
+
+.client-clickable:hover {
     border-color:
-        rgba(124, 58, 237, 0.35);
+        rgba(124, 58, 237, 0.40);
 
-    transform: translateY(-2px);
+    background: var(--card);
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 5px 15px rgba(0, 0, 0, 0.05);
 }
+
+.client-clickable:active {
+    transform: translateY(0);
+}
+
+
+/* =========================================================
+   CONTEÚDO DO CLIENTE
+========================================================= */
 
 .client-main {
     min-width: 0;
 
-    flex: 1;
+    width: 100%;
 }
 
-.client-code {
-    display: inline-block;
 
-    margin-bottom: 5px;
+/* CÓDIGO */
+
+.client-code {
+    display: block;
+
+    margin-bottom: 3px;
 
     color: var(--roxo);
 
     font-size: 10px;
+
     font-weight: 900;
 
     letter-spacing: 0.8px;
 }
 
+
+/* NOME */
+
 .client-name {
-    margin-bottom: 5px;
-
-    color: var(--texto);
-
-    font-size: 15px;
-    font-weight: 800;
-
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.client-info {
-    color: var(--texto-secundario);
-
-    font-size: 12px;
-
-    line-height: 1.5;
-}
-
-.client-actions {
-    display: flex;
-    align-items: center;
-
-    gap: 7px;
-
-    flex-shrink: 0;
-}
-
-.client-action {
-    min-width: 38px;
-    height: 38px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border: 1px solid var(--borda);
-
-    border-radius: 10px;
-
-    background: var(--card);
+    width: 100%;
 
     color: var(--texto);
 
     font-size: 14px;
 
-    transition: var(--transicao);
-}
+    font-weight: 750;
 
-.client-action:hover {
-    border-color: var(--roxo);
+    overflow: hidden;
 
-    color: var(--roxo);
+    text-overflow: ellipsis;
 
-    transform: translateY(-2px);
+    white-space: nowrap;
 }
 
 
@@ -706,7 +727,7 @@ textarea {
 }
 
 
-/* CORRIGIDO: o JS usa a classe "show" */
+/* JS UTILIZA "SHOW" */
 
 .modal.show {
     display: flex;
@@ -752,15 +773,36 @@ textarea {
 
 
 @keyframes modalEntrada {
+
     from {
+
         opacity: 0;
-        transform: translateY(10px) scale(0.98);
+
+        transform:
+            translateY(10px)
+            scale(0.98);
+
     }
 
     to {
+
         opacity: 1;
-        transform: translateY(0) scale(1);
+
+        transform:
+            translateY(0)
+            scale(1);
+
     }
+
+}
+
+
+/* =========================================================
+   MODAL DETALHES
+========================================================= */
+
+.modal-detalhes {
+    width: min(560px, 100%);
 }
 
 
@@ -770,7 +812,9 @@ textarea {
 
 .modal-header {
     display: flex;
+
     align-items: flex-start;
+
     justify-content: space-between;
 
     gap: 15px;
@@ -782,6 +826,7 @@ textarea {
     color: var(--texto);
 
     font-size: 21px;
+
     font-weight: 800;
 }
 
@@ -792,7 +837,9 @@ textarea {
     flex-shrink: 0;
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
 
     border: 1px solid var(--borda);
@@ -804,17 +851,84 @@ textarea {
     color: var(--texto-secundario);
 
     font-size: 24px;
+
     line-height: 1;
 
     transition: var(--transicao);
 }
 
 .modal-close:hover {
+
     border-color: var(--perigo);
 
     color: var(--perigo);
 
     transform: rotate(90deg);
+
+}
+
+
+/* =========================================================
+   DETALHES DO CLIENTE
+========================================================= */
+
+.detail-item {
+
+    padding: 13px 0;
+
+    border-bottom: 1px solid var(--borda);
+}
+
+.detail-item:last-of-type {
+    border-bottom: 0;
+}
+
+.detail-item span {
+
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: var(--texto-secundario);
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.8px;
+}
+
+.detail-item strong {
+
+    display: block;
+
+    color: var(--texto);
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    line-height: 1.5;
+
+    word-break: break-word;
+}
+
+
+/* OBSERVAÇÕES */
+
+.detail-observacoes p {
+
+    color: var(--texto);
+
+    font-size: 13px;
+
+    line-height: 1.6;
+
+    white-space: pre-wrap;
+
+    word-break: break-word;
 }
 
 
@@ -834,6 +948,7 @@ textarea {
     color: var(--texto);
 
     font-size: 12px;
+
     font-weight: 700;
 }
 
@@ -857,12 +972,15 @@ textarea {
 }
 
 .form-group input {
+
     height: 44px;
 
     padding: 0 13px;
+
 }
 
 .form-group textarea {
+
     min-height: 100px;
 
     padding: 12px 13px;
@@ -870,21 +988,26 @@ textarea {
     resize: vertical;
 
     line-height: 1.5;
+
 }
 
 .form-group input::placeholder,
 .form-group textarea::placeholder {
+
     color: var(--texto-secundario);
 
     opacity: 0.75;
+
 }
 
 .form-group input:focus,
 .form-group textarea:focus {
+
     border-color: var(--roxo);
 
     box-shadow:
         0 0 0 3px rgba(124, 58, 237, 0.10);
+
 }
 
 
@@ -893,6 +1016,7 @@ textarea {
 ========================================================= */
 
 .client-code-field input {
+
     background: var(--roxo-claro);
 
     color: var(--roxo);
@@ -903,9 +1027,11 @@ textarea {
     font-weight: 800;
 
     letter-spacing: 0.5px;
+
 }
 
 .client-code-field small {
+
     display: block;
 
     margin-top: 6px;
@@ -913,6 +1039,7 @@ textarea {
     color: var(--texto-secundario);
 
     font-size: 10px;
+
 }
 
 
@@ -921,16 +1048,20 @@ textarea {
 ========================================================= */
 
 .form-row {
+
     display: grid;
 
     grid-template-columns:
         1fr 2fr;
 
     gap: 14px;
+
 }
 
 .form-small {
+
     min-width: 0;
+
 }
 
 
@@ -939,19 +1070,28 @@ textarea {
 ========================================================= */
 
 .modal-actions {
+
     display: flex;
+
     justify-content: flex-end;
 
     gap: 10px;
 
-    padding-top: 7px;
+    padding-top: 15px;
 
-    margin-top: 8px;
+    margin-top: 14px;
 
     border-top: 1px solid var(--borda);
+
 }
 
+
+/* =========================================================
+   BOTÃO SECUNDÁRIO
+========================================================= */
+
 .btn-secondary {
+
     min-height: 44px;
 
     padding: 0 18px;
@@ -965,17 +1105,21 @@ textarea {
     color: var(--texto);
 
     font-size: 13px;
+
     font-weight: 700;
 
     transition: var(--transicao);
+
 }
 
 .btn-secondary:hover {
+
     border-color: var(--roxo);
 
     color: var(--roxo);
 
     transform: translateY(-2px);
+
 }
 
 
@@ -984,6 +1128,7 @@ textarea {
 ========================================================= */
 
 .toast {
+
     position: fixed;
 
     left: 50%;
@@ -992,7 +1137,9 @@ textarea {
     z-index: 9999;
 
     min-width: 220px;
-    max-width: calc(100% - 30px);
+
+    max-width:
+        calc(100% - 30px);
 
     padding: 13px 18px;
 
@@ -1010,6 +1157,7 @@ textarea {
     border-radius: 12px;
 
     font-size: 13px;
+
     font-weight: 600;
 
     text-align: center;
@@ -1020,13 +1168,16 @@ textarea {
     transition:
         opacity 0.25s ease,
         transform 0.25s ease;
+
 }
 
 .toast.show {
+
     opacity: 1;
 
     transform:
         translate(-50%, 0);
+
 }
 
 
@@ -1037,17 +1188,24 @@ textarea {
 @media (max-width: 800px) {
 
     .topbar {
+
         padding: 0 20px;
+
     }
 
     .container {
-        width: min(100% - 30px, 700px);
+
+        width:
+            min(100% - 30px, 700px);
 
         padding-top: 32px;
+
     }
 
     .page-header {
+
         align-items: flex-start;
+
     }
 
 }
@@ -1056,114 +1214,139 @@ textarea {
 @media (max-width: 600px) {
 
     .topbar {
+
         min-height: 68px;
 
         padding: 0 15px;
+
     }
 
     .brand-logo {
+
         width: 39px;
+
         height: 39px;
 
         border-radius: 11px;
+
     }
 
     .brand-info strong {
+
         font-size: 13px;
+
     }
 
     .brand-info span {
+
         font-size: 10px;
+
     }
 
     .theme-btn,
     .btn-back {
+
         min-height: 39px;
+
         height: 39px;
+
     }
 
     .theme-btn {
+
         width: 39px;
+
     }
 
     .btn-back {
+
         padding: 0 11px;
 
         font-size: 12px;
+
     }
 
     .container {
-        width: calc(100% - 24px);
 
-        padding: 28px 0 45px;
+        width:
+            calc(100% - 24px);
+
+        padding:
+            28px 0 45px;
+
     }
 
     .page-header {
+
         flex-direction: column;
 
         gap: 18px;
 
         margin-bottom: 22px;
+
     }
 
     .page-header .btn-primary {
+
         width: 100%;
-    }
 
-    .stats-grid {
-        grid-template-columns: 1fr;
-
-        gap: 10px;
-    }
-
-    .stat-card {
-        padding: 16px;
     }
 
     .card {
+
         padding: 16px;
 
         border-radius: 16px;
+
+    }
+
+    .stat-card {
+
+        padding: 16px;
+
     }
 
     .client-item {
-        align-items: flex-start;
 
-        padding: 14px;
-    }
+        padding: 13px;
 
-    .client-actions {
-        gap: 5px;
-    }
-
-    .client-action {
-        min-width: 36px;
-        height: 36px;
     }
 
     .modal {
+
         padding: 12px;
+
     }
 
     .modal-content {
-        max-height: calc(100vh - 24px);
+
+        max-height:
+            calc(100vh - 24px);
 
         padding: 20px;
 
         border-radius: 18px;
+
     }
 
     .form-row {
+
         grid-template-columns: 1fr;
+
         gap: 0;
+
     }
 
     .modal-actions {
+
         flex-direction: column-reverse;
+
     }
 
     .modal-actions button {
+
         width: 100%;
+
     }
 
 }
@@ -1172,19 +1355,27 @@ textarea {
 @media (max-width: 360px) {
 
     .brand-info span {
+
         display: none;
+
     }
 
     .page-header h1 {
+
         font-size: 24px;
+
     }
 
     .topbar-actions {
+
         gap: 6px;
+
     }
 
     .btn-back {
+
         padding: 0 9px;
+
     }
 
 }
@@ -1197,9 +1388,22 @@ textarea {
 button:focus-visible,
 input:focus-visible,
 textarea:focus-visible {
-    outline: 2px solid var(--roxo);
+
+    outline:
+        2px solid var(--roxo);
 
     outline-offset: 2px;
+
+}
+
+
+.client-clickable:focus-visible {
+
+    outline:
+        2px solid var(--roxo);
+
+    outline-offset: 2px;
+
 }
 
 
@@ -1208,12 +1412,18 @@ textarea:focus-visible {
     *,
     *::before,
     *::after {
+
         scroll-behavior: auto !important;
 
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
+        animation-duration:
+            0.01ms !important;
 
-        transition-duration: 0.01ms !important;
+        animation-iteration-count:
+            1 !important;
+
+        transition-duration:
+            0.01ms !important;
+
     }
 
 }
