@@ -11,7 +11,6 @@
 
     <title>Ordens de Serviço — WS SOLUÇÕES</title>
 
-    <!-- CSS EXCLUSIVO DA PÁGINA -->
     <link
         rel="stylesheet"
         href="css/os.css">
@@ -75,10 +74,6 @@
 
     <main class="page-container">
 
-
-        <!-- =================================================
-             CABEÇALHO
-        ================================================== -->
 
         <section class="page-header">
 
@@ -219,10 +214,6 @@
                 aria-labelledby="modalTitulo">
 
 
-                <!-- =========================================
-                     CABEÇALHO DO MODAL
-                ========================================== -->
-
                 <div class="modal-header">
 
                     <div>
@@ -252,18 +243,16 @@
 
 
 
-                <!-- =========================================
+                <!-- =================================================
                      FORMULÁRIO
-                ========================================== -->
+                ================================================== -->
 
                 <form
                     id="formOS"
                     autocomplete="off">
 
 
-                    <!-- =====================================
-                         IDENTIFICAÇÃO
-                    ====================================== -->
+                    <!-- IDENTIFICAÇÃO -->
 
                     <div class="form-section">
 
@@ -278,6 +267,7 @@
 
 
                         <div class="form-grid">
+
 
                             <div class="form-group">
 
@@ -294,6 +284,7 @@
                             </div>
 
 
+
                             <div class="form-group">
 
                                 <label for="status">
@@ -306,12 +297,12 @@
                                         Aberta
                                     </option>
 
-                                    <option value="em_andamento">
-                                        Em andamento
+                                    <option value="aguardando">
+                                        Aguardando
                                     </option>
 
-                                    <option value="aguardando_aprovacao">
-                                        Aguardando aprovação
+                                    <option value="em_andamento">
+                                        Em andamento
                                     </option>
 
                                     <option value="aguardando_peca">
@@ -322,6 +313,10 @@
                                         Concluída
                                     </option>
 
+                                    <option value="entregue">
+                                        Entregue
+                                    </option>
+
                                     <option value="cancelada">
                                         Cancelada
                                     </option>
@@ -329,6 +324,7 @@
                                 </select>
 
                             </div>
+
 
 
                             <div class="form-group">
@@ -359,15 +355,14 @@
 
                             </div>
 
+
                         </div>
 
                     </div>
 
 
 
-                    <!-- =====================================
-                         CLIENTE
-                    ====================================== -->
+                    <!-- CLIENTE -->
 
                     <div class="form-section">
 
@@ -401,9 +396,7 @@
 
 
 
-                    <!-- =====================================
-                         EQUIPAMENTO
-                    ====================================== -->
+                    <!-- EQUIPAMENTO -->
 
                     <div class="form-section">
 
@@ -413,6 +406,7 @@
 
 
                         <div class="form-grid">
+
 
                             <div class="form-group">
 
@@ -431,6 +425,7 @@
                             </div>
 
 
+
                             <div class="form-group">
 
                                 <label for="tipo_servico">
@@ -443,6 +438,7 @@
                                     placeholder="Ex.: Manutenção">
 
                             </div>
+
 
 
                             <div class="form-group">
@@ -459,6 +455,7 @@
                             </div>
 
 
+
                             <div class="form-group">
 
                                 <label for="marca">
@@ -471,6 +468,7 @@
                                     placeholder="Ex.: LG">
 
                             </div>
+
 
 
                             <div class="form-group">
@@ -486,15 +484,14 @@
 
                             </div>
 
+
                         </div>
 
                     </div>
 
 
 
-                    <!-- =====================================
-                         DEFEITO
-                    ====================================== -->
+                    <!-- DIAGNÓSTICO -->
 
                     <div class="form-section">
 
@@ -504,6 +501,7 @@
 
 
                         <div class="form-grid">
+
 
                             <div
                                 class="form-group form-group-full">
@@ -518,6 +516,7 @@
                                     placeholder="Descreva o problema informado pelo cliente..."></textarea>
 
                             </div>
+
 
 
                             <div
@@ -535,6 +534,7 @@
                             </div>
 
 
+
                             <div
                                 class="form-group form-group-full">
 
@@ -549,15 +549,14 @@
 
                             </div>
 
+
                         </div>
 
                     </div>
 
 
 
-                    <!-- =====================================
-                         VALORES
-                    ====================================== -->
+                    <!-- VALORES -->
 
                     <div class="form-section">
 
@@ -567,6 +566,7 @@
 
 
                         <div class="form-grid">
+
 
                             <div class="form-group">
 
@@ -582,6 +582,7 @@
                                     placeholder="0,00">
 
                             </div>
+
 
 
                             <div class="form-group">
@@ -601,6 +602,7 @@
                             </div>
 
 
+
                             <div class="form-group">
 
                                 <label for="valor_total">
@@ -616,15 +618,14 @@
 
                             </div>
 
+
                         </div>
 
                     </div>
 
 
 
-                    <!-- =====================================
-                         DATAS
-                    ====================================== -->
+                    <!-- DATAS -->
 
                     <div class="form-section">
 
@@ -634,6 +635,7 @@
 
 
                         <div class="form-grid">
+
 
                             <div class="form-group">
 
@@ -648,6 +650,7 @@
                             </div>
 
 
+
                             <div class="form-group">
 
                                 <label for="data_conclusao">
@@ -660,15 +663,14 @@
 
                             </div>
 
+
                         </div>
 
                     </div>
 
 
 
-                    <!-- =====================================
-                         OBSERVAÇÕES
-                    ====================================== -->
+                    <!-- OBSERVAÇÕES -->
 
                     <div class="form-section">
 
@@ -678,6 +680,7 @@
 
 
                         <div class="form-grid">
+
 
                             <div
                                 class="form-group form-group-full">
@@ -689,15 +692,14 @@
 
                             </div>
 
+
                         </div>
 
                     </div>
 
 
 
-                    <!-- =====================================
-                         AÇÕES
-                    ====================================== -->
+                    <!-- AÇÕES -->
 
                     <div class="modal-actions">
 
@@ -734,7 +736,7 @@
 
 
     <!-- =====================================================
-         MODAL — DETALHES DA OS
+         MODAL — DETALHES
     ====================================================== -->
 
     <div
@@ -751,10 +753,6 @@
                 aria-modal="true"
                 aria-labelledby="detalhesTitulo">
 
-
-                <!-- =========================================
-                     CABEÇALHO
-                ========================================== -->
 
                 <div class="modal-header">
 
@@ -785,9 +783,7 @@
 
 
 
-                <!-- =========================================
-                     CÓDIGO
-                ========================================== -->
+                <!-- CÓDIGO -->
 
                 <div class="detail-highlight">
 
@@ -803,9 +799,7 @@
 
 
 
-                <!-- =========================================
-                     DETALHES
-                ========================================== -->
+                <!-- DETALHES -->
 
                 <div class="details-grid">
 
@@ -823,6 +817,7 @@
                     </div>
 
 
+
                     <div class="detail-item">
 
                         <span>
@@ -834,6 +829,7 @@
                         </strong>
 
                     </div>
+
 
 
                     <div class="detail-item">
@@ -849,6 +845,7 @@
                     </div>
 
 
+
                     <div class="detail-item">
 
                         <span>
@@ -860,6 +857,7 @@
                         </strong>
 
                     </div>
+
 
 
                     <div class="detail-item">
@@ -875,6 +873,7 @@
                     </div>
 
 
+
                     <div class="detail-item">
 
                         <span>
@@ -886,6 +885,7 @@
                         </strong>
 
                     </div>
+
 
 
                     <div class="detail-item">
@@ -901,6 +901,7 @@
                     </div>
 
 
+
                     <div class="detail-item">
 
                         <span>
@@ -912,6 +913,7 @@
                         </strong>
 
                     </div>
+
 
 
                     <div class="detail-item">
@@ -927,6 +929,7 @@
                     </div>
 
 
+
                     <div class="detail-item">
 
                         <span>
@@ -938,6 +941,7 @@
                         </strong>
 
                     </div>
+
 
 
                     <div class="detail-item">
@@ -953,6 +957,7 @@
                     </div>
 
 
+
                     <div class="detail-item">
 
                         <span>
@@ -965,15 +970,15 @@
 
                     </div>
 
+
                 </div>
 
 
 
-                <!-- =========================================
-                     TEXTOS
-                ========================================== -->
+                <!-- TEXTOS -->
 
                 <div class="detail-text-section">
+
 
                     <div class="detail-text">
 
@@ -986,6 +991,7 @@
                         </p>
 
                     </div>
+
 
 
                     <div class="detail-text">
@@ -1001,6 +1007,7 @@
                     </div>
 
 
+
                     <div class="detail-text">
 
                         <span>
@@ -1012,6 +1019,7 @@
                         </p>
 
                     </div>
+
 
 
                     <div class="detail-text">
@@ -1026,13 +1034,12 @@
 
                     </div>
 
+
                 </div>
 
 
 
-                <!-- =========================================
-                     AÇÕES
-                ========================================== -->
+                <!-- AÇÕES -->
 
                 <div class="modal-actions">
 
