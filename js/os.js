@@ -883,4 +883,483 @@ document.addEventListener("DOMContentLoaded", () => {
             await supabaseClient
                 .from("ordens_servico")
                 .select("*")
-                .
+                .order("criado_em", {
+                    ascending: false
+                });
+
+
+        if (error) {
+
+            console.error(
+                "Erro ao carregar OS:",
+                error
+            );
+
+            listaOS.innerHTML = `
+                <div class="os-loading">
+                    Erro ao carregar ordens de serviço.
+                </div>
+            `;
+
+            return;
+        }
+
+
+        ordens = data || [];
+
+        if (totalOS) {
+            totalOS.textContent =
+                ordens.length;
+        }
+
+        renderizarOS();
+    }
+
+
+    /* =====================================================
+       RENDERIZAR
+    ===================================================== */
+
+    function renderizarOS() {
+
+        if (!listaOS) return;
+
+        const termo =
+            (buscaOS?.value || "")
+                .toLowerCase()
+                .trim();
+
+
+        const filtradas =
+            ordens.filter(os => {
+
+                const cliente =
+                    clientes.find(
+                        c =>
+                            c.id ===
+                            os.cliente_id
+                    );
+
+                const texto = [
+
+                    os.codigo,
+                    cliente?.nome,
+                    os.aparelho,
+                    os.marca,
+                    os.modelo,
+                    textoStatus(os.status)
+
+                ]
+                    .filter(Boolean)
+                    .join(" ")
+                    .toLowerCase();
+
+                return texto.includes(termo);
+            });
+
+
+        if (!filtradas.length) {
+
+            listaOS.innerHTML = `
+                <div class="os-loading">
+                    Nenhuma ordem de serviço encontrada.
+                </div>
+            `;
+
+            return;
+        }
+
+
+        listaOS.innerHTML = "";
+
+
+        filtradas.forEach(os => {
+
+            const cliente =
+                clientes.find(
+                    c =>
+                        c.id ===
+                        os.cliente_id
+                );
+
+
+            const item =
+                document.createElement("div");
+
+            item.className = "os-item";
+
+
+            item.innerHTML = `
+
+                <div class="os-main">
+
+                    <strong class="os-code">
+                        ${os.codigo || "—"}
+                    </strong>
+
+                    <span class="os-client">
+                        ${
+                            cliente?.nome ||
+                            "Cliente não encontrado"
+                        }
+                    </span>
+
+                    <span class="os-device">
+                        ${
+                            [
+                                os.aparelho,
+                                os.marca,
+                                os.modelo
+                            ]
+                            .filter(Boolean)
+                            .join(" • ") ||
+                            "Sem equipamento"
+                        }
+                    </span>
+
+                </div>
+
+                <span class="os-status ${classeStatus(os.status)}">
+                    ${textoStatus(os.status)}
+                </span>
+            `;
+
+
+            item.addEventListener(
+                "click",
+                () => abrirDetalhesOS(os)
+            );
+
+
+            listaOS.appendChild(item);
+
+        });
+    }
+
+
+    buscaOS?.addEventListener(
+        "input",
+        renderizarOS
+    );
+
+
+    /* =====================================================
+       DETALHES
+    ===================================================== */
+
+    function abrirDetalhesOS(os) {
+
+        osSelecionada = os;
+
+        const cliente =
+            clientes.find(
+                c =>
+                    c.id ===
+                    os.cliente_id
+            );
+
+
+        const set = (id, valor) => {
+
+            const elemento =
+                document.getElementById(id);
+
+            if (elemento) {
+
+                elemento.textContent =
+                    valor ?? "—";
+            }
+        };
+
+
+        set("detalheCodigo", os.codigo);
+        set(
+            "detalheCliente",
+            cliente?.nome || "—"
+        );
+
+        set(
+            "detalheStatus",
+            textoStatus(os.status)
+        );
+
+        set(
+            "detalhePrioridade",
+            textoPrioridade(os.prioridade)
+        );
+
+        set(
+            "detalheTipoServico",
+            os.tipo_servico
+        );
+
+        set(
+            "detalheAparelho",
+            os.aparelho
+        );
+
+        set(
+            "detalheMarca",
+            os.marca
+        );
+
+        set(
+            "detalheModelo",
+            os.modelo
+        );
+
+        set(
+            "detalheDataEntrada",
+            formatarData(os.data_entrada)
+        );
+
+        set(
+            "detalheDataConclusao",
+            formatarData(os.data_conclusao)
+        );
+
+        set(
+            "detalheValor",
+            formatarMoeda(os.valor)
+        );
+
+        set(
+            "detalheDesconto",
+            formatarMoeda(os.desconto)
+        );
+
+        set(
+            "detalheValorTotal",
+            formatarMoeda(os.valor_total)
+        );
+
+        set(
+            "detalheDefeito",
+            os.defeito
+        );
+
+        set(
+            "detalheDiagnostico",
+            os.diagnostico
+        );
+
+        set(
+            "detalheServicoRealizado",
+            os.servico_realizado
+        );
+
+        set(
+            "detalheObservacoes",
+            os.observacoes
+        );
+
+
+        if (modalDetalhesOS) {
+
+            modalDetalhesOS.classList.add("show");
+
+            modalDetalhesOS.style.display = "flex";
+
+            modalDetalhesOS.setAttribute(
+                "aria-hidden",
+                "false"
+            );
+        }
+
+        document.body.classList.add(
+            "modal-aberto"
+        );
+    }
+
+
+    /* =====================================================
+       FECHAR DETALHES
+    ===================================================== */
+
+    function fecharDetalhes() {
+
+        if (modalDetalhesOS) {
+
+            modalDetalhesOS.classList.remove(
+                "show"
+            );
+
+            modalDetalhesOS.style.display =
+                "none";
+
+            modalDetalhesOS.setAttribute(
+                "aria-hidden",
+                "true"
+            );
+        }
+
+        document.body.classList.remove(
+            "modal-aberto"
+        );
+
+        osSelecionada = null;
+    }
+
+
+    btnFecharDetalhes?.addEventListener(
+        "click",
+        fecharDetalhes
+    );
+
+
+    modalDetalhesOS?.addEventListener(
+        "click",
+        event => {
+
+            if (
+                event.target ===
+                modalDetalhesOS.querySelector(
+                    ".modal-overlay"
+                )
+            ) {
+
+                fecharDetalhes();
+            }
+        }
+    );
+
+
+    /* =====================================================
+       EDITAR
+    ===================================================== */
+
+    btnEditarDetalhes?.addEventListener(
+        "click",
+        async () => {
+
+            if (!osSelecionada) return;
+
+            const os =
+                osSelecionada;
+
+            fecharDetalhes();
+
+            await abrirModalOS(os);
+        }
+    );
+
+
+    /* =====================================================
+       EXCLUIR
+    ===================================================== */
+
+    btnExcluirDetalhes?.addEventListener(
+        "click",
+        async () => {
+
+            if (!osSelecionada) return;
+
+            const confirmar =
+                confirm(
+                    `Deseja realmente excluir a OS ${osSelecionada.codigo}?`
+                );
+
+            if (!confirmar) return;
+
+
+            const { error } =
+                await supabaseClient
+                    .from("ordens_servico")
+                    .delete()
+                    .eq(
+                        "id",
+                        osSelecionada.id
+                    );
+
+
+            if (error) {
+
+                console.error(
+                    "Erro ao excluir OS:",
+                    error
+                );
+
+                mostrarToast(
+                    "Erro ao excluir OS: " +
+                    error.message
+                );
+
+                return;
+            }
+
+
+            mostrarToast(
+                "OS excluída com sucesso!"
+            );
+
+            fecharDetalhes();
+
+            await carregarOS();
+        }
+    );
+
+
+    /* =====================================================
+       ESC
+    ===================================================== */
+
+    document.addEventListener(
+        "keydown",
+        event => {
+
+            if (event.key !== "Escape") return;
+
+            if (
+                modalOS?.classList.contains(
+                    "show"
+                )
+            ) {
+
+                fecharModalOS();
+            }
+
+            if (
+                modalDetalhesOS?.classList.contains(
+                    "show"
+                )
+            ) {
+
+                fecharDetalhes();
+            }
+        }
+    );
+
+
+    /* =====================================================
+       INICIALIZAÇÃO
+    ===================================================== */
+
+    async function iniciar() {
+
+        try {
+
+            await carregarClientes();
+
+            await carregarOS();
+
+            console.log(
+                "WS SOLUÇÕES — OS inicializada"
+            );
+
+        } catch (erro) {
+
+            console.error(
+                "Erro na inicialização:",
+                erro
+            );
+
+            mostrarToast(
+                "Erro ao iniciar módulo de OS."
+            );
+        }
+    }
+
+
+    iniciar();
+
+});
