@@ -11,7 +11,6 @@
 
     <title>Clientes — WS SOLUÇÕES</title>
 
-    <!-- CSS EXCLUSIVO DA PÁGINA -->
     <link rel="stylesheet" href="css/clientes.css">
 
 </head>
@@ -49,8 +48,6 @@
 
         <div class="topbar-actions">
 
-            <!-- VOLTAR PARA A TELA INICIAL -->
-
             <button
                 type="button"
                 class="btn-back"
@@ -61,8 +58,6 @@
 
             </button>
 
-
-            <!-- MODO NOTURNO -->
 
             <button
                 id="themeToggle"
@@ -155,32 +150,6 @@
 
             </div>
 
-
-            <div class="stat-card">
-
-                <span>
-                    Ativos
-                </span>
-
-                <strong id="clientesAtivos">
-                    0
-                </strong>
-
-            </div>
-
-
-            <div class="stat-card">
-
-                <span>
-                    Inativos
-                </span>
-
-                <strong id="clientesInativos">
-                    0
-                </strong>
-
-            </div>
-
         </section>
 
 
@@ -236,7 +205,7 @@
 
 
     <!-- =====================================================
-         MODAL CLIENTE
+         MODAL NOVO / EDITAR CLIENTE
     ====================================================== -->
 
     <div
@@ -254,8 +223,6 @@
             aria-modal="true"
             aria-labelledby="modalTitulo">
 
-
-            <!-- CABEÇALHO DO MODAL -->
 
             <div class="modal-header">
 
@@ -286,22 +253,15 @@
 
 
 
-            <!-- FORMULÁRIO -->
-
             <form id="formCliente">
 
-
-                <!-- ID INTERNO DO BANCO -->
 
                 <input
                     type="hidden"
                     id="clienteId">
 
 
-
-                <!-- =================================================
-                     CÓDIGO DO CLIENTE
-                ================================================== -->
+                <!-- CÓDIGO -->
 
                 <div class="form-group client-code-field">
 
@@ -324,9 +284,7 @@
 
 
 
-                <!-- =================================================
-                     NOME
-                ================================================== -->
+                <!-- NOME -->
 
                 <div class="form-group">
 
@@ -346,9 +304,7 @@
 
 
 
-                <!-- =================================================
-                     WHATSAPP
-                ================================================== -->
+                <!-- WHATSAPP -->
 
                 <div class="form-group">
 
@@ -367,9 +323,7 @@
 
 
 
-                <!-- =================================================
-                     ENDEREÇO
-                ================================================== -->
+                <!-- CEP / ENDEREÇO -->
 
                 <div class="form-row">
 
@@ -408,9 +362,7 @@
 
 
 
-                <!-- =================================================
-                     NÚMERO / COMPLEMENTO
-                ================================================== -->
+                <!-- NÚMERO / COMPLEMENTO -->
 
                 <div class="form-row">
 
@@ -447,9 +399,7 @@
 
 
 
-                <!-- =================================================
-                     BAIRRO
-                ================================================== -->
+                <!-- BAIRRO -->
 
                 <div class="form-group">
 
@@ -468,9 +418,7 @@
 
 
 
-                <!-- =================================================
-                     OBSERVAÇÕES
-                ================================================== -->
+                <!-- OBSERVAÇÕES -->
 
                 <div class="form-group">
 
@@ -488,9 +436,7 @@
 
 
 
-                <!-- =================================================
-                     AÇÕES
-                ================================================== -->
+                <!-- AÇÕES -->
 
                 <div class="modal-actions">
 
@@ -526,6 +472,231 @@
 
 
     <!-- =====================================================
+         NOVO MODAL — DETALHES DO CLIENTE
+    ====================================================== -->
+
+    <div
+        id="modalDetalhesCliente"
+        class="modal"
+        aria-hidden="true">
+
+
+        <div class="modal-overlay"></div>
+
+
+        <div
+            class="modal-content modal-detalhes"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="detalhesClienteTitulo">
+
+
+            <div class="modal-header">
+
+                <div>
+
+                    <span class="section-label">
+                        CLIENTE
+                    </span>
+
+                    <h2 id="detalhesClienteTitulo">
+                        Detalhes do cliente
+                    </h2>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="btnFecharDetalhes"
+                    class="modal-close"
+                    aria-label="Fechar">
+
+                    ×
+
+                </button>
+
+            </div>
+
+
+
+            <!-- CÓDIGO -->
+
+            <div class="detail-item">
+
+                <span>
+                    Código
+                </span>
+
+                <strong id="detalheCodigo">
+                    —
+                </strong>
+
+            </div>
+
+
+
+            <!-- NOME -->
+
+            <div class="detail-item">
+
+                <span>
+                    Nome
+                </span>
+
+                <strong id="detalheNome">
+                    —
+                </strong>
+
+            </div>
+
+
+
+            <!-- WHATSAPP -->
+
+            <div class="detail-item">
+
+                <span>
+                    WhatsApp
+                </span>
+
+                <strong id="detalheWhatsapp">
+                    —
+                </strong>
+
+            </div>
+
+
+
+            <!-- CEP -->
+
+            <div class="detail-item">
+
+                <span>
+                    CEP
+                </span>
+
+                <strong id="detalheCep">
+                    —
+                </strong>
+
+            </div>
+
+
+
+            <!-- ENDEREÇO -->
+
+            <div class="detail-item">
+
+                <span>
+                    Endereço
+                </span>
+
+                <strong id="detalheEndereco">
+                    —
+                </strong>
+
+            </div>
+
+
+
+            <!-- NÚMERO -->
+
+            <div class="detail-item">
+
+                <span>
+                    Número
+                </span>
+
+                <strong id="detalheNumero">
+                    —
+                </strong>
+
+            </div>
+
+
+
+            <!-- COMPLEMENTO -->
+
+            <div class="detail-item">
+
+                <span>
+                    Complemento
+                </span>
+
+                <strong id="detalheComplemento">
+                    —
+                </strong>
+
+            </div>
+
+
+
+            <!-- BAIRRO -->
+
+            <div class="detail-item">
+
+                <span>
+                    Bairro
+                </span>
+
+                <strong id="detalheBairro">
+                    —
+                </strong>
+
+            </div>
+
+
+
+            <!-- OBSERVAÇÕES -->
+
+            <div class="detail-item detail-observacoes">
+
+                <span>
+                    Observações
+                </span>
+
+                <p id="detalheObservacoes">
+                    —
+                </p>
+
+            </div>
+
+
+
+            <!-- AÇÕES -->
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    id="btnExcluirDetalhes"
+                    class="btn-danger">
+
+                    Excluir
+
+                </button>
+
+
+                <button
+                    type="button"
+                    id="btnEditarDetalhes"
+                    class="btn-primary">
+
+                    Editar
+
+                </button>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
          TOAST
     ====================================================== -->
 
@@ -543,17 +714,14 @@
          JAVASCRIPT
     ====================================================== -->
 
-    <!-- Biblioteca Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <!-- Conexão Supabase -->
     <script src="js/supabase.js"></script>
 
-    <!-- Lógica da página Clientes -->
     <script src="js/clientes.js"></script>
 
 
-    <!-- VOLTAR PARA A TELA INICIAL -->
+    <!-- VOLTAR -->
 
     <script>
 
