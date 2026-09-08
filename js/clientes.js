@@ -2,6 +2,7 @@
    WS SOLUÇÕES — CLIENTES
    CRUD COMPLETO
    Código automático
+   Lista compacta + Modal de detalhes
 ========================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -22,11 +23,30 @@ document.addEventListener("DOMContentLoaded", () => {
     const busca = document.getElementById("buscaCliente");
     const lista = document.getElementById("listaClientes");
 
-    const totalClientes = document.getElementById("totalClientes");
-    const clientesAtivos = document.getElementById("clientesAtivos");
-    const clientesInativos = document.getElementById("clientesInativos");
+    const totalClientes =
+        document.getElementById("totalClientes");
+
+
+    /* =====================================================
+       MODAL DE DETALHES
+    ===================================================== */
+
+    const modalDetalhes =
+        document.getElementById("modalDetalhesCliente");
+
+    const btnFecharDetalhes =
+        document.getElementById("btnFecharDetalhes");
+
+    const btnEditarDetalhes =
+        document.getElementById("btnEditarDetalhes");
+
+    const btnExcluirDetalhes =
+        document.getElementById("btnExcluirDetalhes");
+
 
     let clientes = [];
+
+    let clienteSelecionado = null;
 
 
     /* =====================================================
@@ -35,12 +55,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function mostrarMensagem(mensagem) {
 
-        const toast = document.getElementById("toast");
-        const toastMessage = document.getElementById("toastMessage");
+        const toast =
+            document.getElementById("toast");
+
+        const toastMessage =
+            document.getElementById("toastMessage");
 
         if (!toast || !toastMessage) {
+
             alert(mensagem);
+
             return;
+
         }
 
         toastMessage.textContent = mensagem;
@@ -48,7 +74,9 @@ document.addEventListener("DOMContentLoaded", () => {
         toast.classList.add("show");
 
         setTimeout(() => {
+
             toast.classList.remove("show");
+
         }, 2500);
 
     }
@@ -64,7 +92,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         clientes.forEach(cliente => {
 
-            const codigo = String(cliente.codigo || "");
+            const codigo =
+                String(cliente.codigo || "");
 
             const resultado =
                 codigo.match(/^CLI-(\d+)$/i);
@@ -74,15 +103,21 @@ document.addEventListener("DOMContentLoaded", () => {
                 const numero =
                     parseInt(resultado[1], 10);
 
-                if (!isNaN(numero) && numero > maiorNumero) {
+                if (
+                    !isNaN(numero) &&
+                    numero > maiorNumero
+                ) {
+
                     maiorNumero = numero;
+
                 }
 
             }
 
         });
 
-        const proximoNumero = maiorNumero + 1;
+        const proximoNumero =
+            maiorNumero + 1;
 
         return `CLI-${String(proximoNumero).padStart(6, "0")}`;
 
@@ -90,7 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       MODAL
+       ABRIR MODAL DE CADASTRO / EDIÇÃO
     ===================================================== */
 
     function abrirModal(cliente = null) {
@@ -98,60 +133,75 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!modal || !form) return;
 
         modal.classList.add("show");
-        modal.setAttribute("aria-hidden", "false");
+
+        modal.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
 
         if (cliente) {
 
-            /* =============================================
-               EDITAR CLIENTE
-            ============================================= */
+            modalTitulo.textContent =
+                "Editar cliente";
 
-            modalTitulo.textContent = "Editar cliente";
 
             document.getElementById("clienteId").value =
                 cliente.id || "";
 
+
             document.getElementById("codigo").value =
                 cliente.codigo || "";
+
 
             document.getElementById("nome").value =
                 cliente.nome || "";
 
+
             document.getElementById("whatsapp").value =
                 cliente.whatsapp || "";
+
 
             document.getElementById("cep").value =
                 cliente.cep || "";
 
+
             document.getElementById("endereco").value =
                 cliente.endereco || "";
+
 
             document.getElementById("numero").value =
                 cliente.numero || "";
 
+
             document.getElementById("complemento").value =
                 cliente.complemento || "";
+
 
             document.getElementById("bairro").value =
                 cliente.bairro || "";
 
+
             document.getElementById("observacoes").value =
                 cliente.observacoes || "";
 
+
         } else {
 
-            /* =============================================
-               NOVO CLIENTE
-            ============================================= */
+            modalTitulo.textContent =
+                "Novo cliente";
 
-            modalTitulo.textContent = "Novo cliente";
 
             form.reset();
 
-            document.getElementById("clienteId").value = "";
+
+            document.getElementById("clienteId").value =
+                "";
+
 
             document.getElementById("codigo").value =
                 gerarProximoCodigo();
+
 
             document.getElementById("nome").focus();
 
@@ -160,12 +210,98 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
+    /* =====================================================
+       FECHAR MODAL DE CADASTRO
+    ===================================================== */
+
     function fecharModal() {
 
         if (!modal) return;
 
         modal.classList.remove("show");
-        modal.setAttribute("aria-hidden", "true");
+
+        modal.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+    }
+
+
+    /* =====================================================
+       ABRIR MODAL DE DETALHES
+    ===================================================== */
+
+    function abrirDetalhes(cliente) {
+
+        if (!modalDetalhes || !cliente) return;
+
+
+        clienteSelecionado = cliente;
+
+
+        document.getElementById("detalheCodigo").textContent =
+            cliente.codigo || "—";
+
+
+        document.getElementById("detalheNome").textContent =
+            cliente.nome || "—";
+
+
+        document.getElementById("detalheWhatsapp").textContent =
+            cliente.whatsapp || "—";
+
+
+        document.getElementById("detalheCep").textContent =
+            cliente.cep || "—";
+
+
+        document.getElementById("detalheEndereco").textContent =
+            cliente.endereco || "—";
+
+
+        document.getElementById("detalheNumero").textContent =
+            cliente.numero || "—";
+
+
+        document.getElementById("detalheComplemento").textContent =
+            cliente.complemento || "—";
+
+
+        document.getElementById("detalheBairro").textContent =
+            cliente.bairro || "—";
+
+
+        document.getElementById("detalheObservacoes").textContent =
+            cliente.observacoes || "—";
+
+
+        modalDetalhes.classList.add("show");
+
+        modalDetalhes.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+    }
+
+
+    /* =====================================================
+       FECHAR MODAL DE DETALHES
+    ===================================================== */
+
+    function fecharDetalhes() {
+
+        if (!modalDetalhes) return;
+
+        modalDetalhes.classList.remove("show");
+
+        modalDetalhes.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+        clienteSelecionado = null;
 
     }
 
@@ -178,28 +314,42 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!lista) return;
 
+
         lista.innerHTML = `
             <div class="clients-loading">
                 Carregando clientes...
             </div>
         `;
 
+
         try {
 
-            const { data, error } = await supabaseClient
-                .from("clientes")
-                .select("*")
-                .order("nome", { ascending: true });
+            const { data, error } =
+                await supabaseClient
+                    .from("clientes")
+                    .select("*")
+                    .order(
+                        "nome",
+                        {
+                            ascending: true
+                        }
+                    );
+
 
             if (error) {
+
                 throw error;
+
             }
 
+
             clientes = data || [];
+
 
             atualizarEstatisticas();
 
             renderizarClientes();
+
 
         } catch (erro) {
 
@@ -207,6 +357,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 "Erro ao carregar clientes:",
                 erro
             );
+
 
             lista.innerHTML = `
                 <div class="clients-empty">
@@ -225,6 +376,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 </div>
             `;
+
 
             mostrarMensagem(
                 "Erro ao carregar clientes."
@@ -248,22 +400,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }
 
-        /*
-         * Os campos Ativos/Inativos podem ser removidos
-         * posteriormente do HTML.
-         *
-         * Mantemos esta proteção para que o JS não quebre
-         * caso esses elementos ainda existam.
-         */
-
-        if (clientesAtivos) {
-            clientesAtivos.textContent = "";
-        }
-
-        if (clientesInativos) {
-            clientesInativos.textContent = "";
-        }
-
     }
 
 
@@ -274,6 +410,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function renderizarClientes() {
 
         if (!lista) return;
+
 
         const termo =
             (busca?.value || "")
@@ -288,13 +425,16 @@ document.addEventListener("DOMContentLoaded", () => {
                     String(cliente.nome || "")
                         .toLowerCase();
 
+
                 const whatsapp =
                     String(cliente.whatsapp || "")
                         .toLowerCase();
 
+
                 const codigo =
                     String(cliente.codigo || "")
                         .toLowerCase();
+
 
                 return (
                     nome.includes(termo) ||
@@ -334,15 +474,22 @@ document.addEventListener("DOMContentLoaded", () => {
             `;
 
             return;
+
         }
 
+
+        /* =================================================
+           LISTA COMPACTA
+        ================================================= */
 
         lista.innerHTML =
             filtrados.map(cliente => {
 
                 return `
 
-                    <div class="client-item">
+                    <div
+                        class="client-item client-clickable"
+                        data-client-id="${escapar(cliente.id)}">
 
                         <div class="client-main">
 
@@ -353,47 +500,6 @@ document.addEventListener("DOMContentLoaded", () => {
                             <div class="client-name">
                                 ${escapar(cliente.nome)}
                             </div>
-
-                            <div class="client-info">
-
-                                ${
-                                    cliente.whatsapp
-                                        ? `
-                                            <span>
-                                                📱
-                                                ${escapar(cliente.whatsapp)}
-                                            </span>
-                                          `
-                                        : ""
-                                }
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="client-actions">
-
-                            <button
-                                type="button"
-                                class="client-action"
-                                data-action="edit"
-                                data-id="${escapar(cliente.id)}">
-
-                                ✏️ Editar
-
-                            </button>
-
-
-                            <button
-                                type="button"
-                                class="client-action"
-                                data-action="delete"
-                                data-id="${escapar(cliente.id)}">
-
-                                🗑️ Excluir
-
-                            </button>
 
                         </div>
 
@@ -432,15 +538,9 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
             return;
+
         }
 
-
-        /*
-         * Código:
-         *
-         * - Novo cliente → gera automaticamente.
-         * - Edição → mantém o código existente.
-         */
 
         let codigo =
             document.getElementById("codigo")
@@ -501,7 +601,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         const botao =
-            document.getElementById("btnSalvarCliente");
+            document.getElementById(
+                "btnSalvarCliente"
+            );
 
 
         if (botao) {
@@ -530,7 +632,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                 if (error) {
+
                     throw error;
+
                 }
 
 
@@ -540,8 +644,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
             }
 
+
             /* =============================================
-               NOVO CLIENTE
+               NOVO
             ============================================= */
 
             else {
@@ -553,7 +658,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                 if (error) {
+
                     throw error;
+
                 }
 
 
@@ -568,6 +675,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             await carregarClientes();
 
+
         } catch (erro) {
 
             console.error(
@@ -575,9 +683,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 erro
             );
 
+
             mostrarMensagem(
                 "Não foi possível salvar o cliente."
             );
+
 
         } finally {
 
@@ -603,7 +713,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const cliente =
             clientes.find(
-                item => String(item.id) === String(id)
+                item =>
+                    String(item.id) ===
+                    String(id)
             );
 
 
@@ -629,7 +741,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
             if (error) {
+
                 throw error;
+
+            }
+
+
+            if (
+                clienteSelecionado &&
+                String(clienteSelecionado.id) ===
+                String(id)
+            ) {
+
+                fecharDetalhes();
+
             }
 
 
@@ -640,12 +765,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
             await carregarClientes();
 
+
         } catch (erro) {
 
             console.error(
                 "Erro ao excluir cliente:",
                 erro
             );
+
 
             mostrarMensagem(
                 "Não foi possível excluir o cliente. Ele pode possuir registros vinculados."
@@ -657,7 +784,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       EVENTOS DA LISTA
+       EVENTO — CLIQUE NO CLIENTE
     ===================================================== */
 
     if (lista) {
@@ -666,45 +793,30 @@ document.addEventListener("DOMContentLoaded", () => {
             "click",
             event => {
 
-                const botao =
+                const item =
                     event.target.closest(
-                        "[data-action]"
+                        "[data-client-id]"
                     );
 
 
-                if (!botao) return;
+                if (!item) return;
 
 
                 const id =
-                    botao.dataset.id;
+                    item.dataset.clientId;
 
 
-                const acao =
-                    botao.dataset.action;
+                const cliente =
+                    clientes.find(
+                        item =>
+                            String(item.id) ===
+                            String(id)
+                    );
 
 
-                if (acao === "edit") {
+                if (cliente) {
 
-                    const cliente =
-                        clientes.find(
-                            item =>
-                                String(item.id) ===
-                                String(id)
-                        );
-
-
-                    if (cliente) {
-
-                        abrirModal(cliente);
-
-                    }
-
-                }
-
-
-                if (acao === "delete") {
-
-                    excluirCliente(id);
+                    abrirDetalhes(cliente);
 
                 }
 
@@ -715,7 +827,57 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       EVENTOS DO MODAL
+       EDITAR PELO MODAL DE DETALHES
+    ===================================================== */
+
+    if (btnEditarDetalhes) {
+
+        btnEditarDetalhes.addEventListener(
+            "click",
+            () => {
+
+                if (!clienteSelecionado) return;
+
+
+                const cliente =
+                    clienteSelecionado;
+
+
+                fecharDetalhes();
+
+                abrirModal(cliente);
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       EXCLUIR PELO MODAL DE DETALHES
+    ===================================================== */
+
+    if (btnExcluirDetalhes) {
+
+        btnExcluirDetalhes.addEventListener(
+            "click",
+            () => {
+
+                if (!clienteSelecionado) return;
+
+
+                excluirCliente(
+                    clienteSelecionado.id
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       EVENTOS DO MODAL DE CADASTRO
     ===================================================== */
 
     if (btnNovo) {
@@ -769,7 +931,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       FECHAR MODAL CLICANDO FORA
+       FECHAR MODAL DE CADASTRO CLICANDO FORA
     ===================================================== */
 
     if (modal) {
@@ -795,6 +957,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
+       FECHAR MODAL DE DETALHES CLICANDO FORA
+    ===================================================== */
+
+    if (modalDetalhes) {
+
+        modalDetalhes.addEventListener(
+            "click",
+            event => {
+
+                if (
+                    event.target.classList.contains(
+                        "modal-overlay"
+                    )
+                ) {
+
+                    fecharDetalhes();
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
        TECLA ESC
     ===================================================== */
 
@@ -802,12 +990,29 @@ document.addEventListener("DOMContentLoaded", () => {
         "keydown",
         event => {
 
+            if (event.key !== "Escape") return;
+
+
             if (
-                event.key === "Escape" &&
-                modal?.classList.contains("show")
+                modal?.classList.contains(
+                    "show"
+                )
             ) {
 
                 fecharModal();
+
+                return;
+
+            }
+
+
+            if (
+                modalDetalhes?.classList.contains(
+                    "show"
+                )
+            ) {
+
+                fecharDetalhes();
 
             }
 
@@ -866,7 +1071,9 @@ document.addEventListener("DOMContentLoaded", () => {
     ===================================================== */
 
     const themeToggle =
-        document.getElementById("themeToggle");
+        document.getElementById(
+            "themeToggle"
+        );
 
 
     function atualizarBotaoTema() {
@@ -875,7 +1082,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         if (
-            document.body.classList.contains("dark")
+            document.body.classList.contains(
+                "dark"
+            )
         ) {
 
             themeToggle.textContent = "☀";
@@ -897,7 +1106,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (modoSalvo === "true") {
 
-        document.body.classList.add("dark");
+        document.body.classList.add(
+            "dark"
+        );
 
     }
 
