@@ -1,0 +1,1595 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>WS SOLUÇÕES</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="js/supabase.js"></script>
+
+
+    <style>
+
+        /* =====================================================
+           CONFIGURAÇÕES
+        ===================================================== */
+
+        :root {
+
+            --roxo: #7c3aed;
+            --roxo-hover: #6d28d9;
+
+            --fundo: #f5f7fb;
+            --card: #ffffff;
+
+            --texto: #171717;
+            --texto-secundario: #6b7280;
+
+            --borda: #e5e7eb;
+
+            --ocupado: #ef4444;
+            --ocupado-fundo: #fee2e2;
+
+            --disponivel: #16a34a;
+            --disponivel-fundo: #dcfce7;
+
+            --sombra:
+                0 10px 30px rgba(0, 0, 0, 0.08);
+
+            --raio: 18px;
+        }
+
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        body {
+
+            font-family:
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+
+            background: var(--fundo);
+
+            color: var(--texto);
+
+            min-height: 100vh;
+        }
+
+
+        /* =====================================================
+           TOPO
+        ===================================================== */
+
+        .topo {
+
+            width: 100%;
+
+            background: var(--card);
+
+            border-bottom:
+                1px solid var(--borda);
+
+            padding: 18px 20px;
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 10;
+        }
+
+
+        .topo-conteudo {
+
+            max-width: 650px;
+
+            margin: auto;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+        }
+
+
+        .logo {
+
+            text-align: center;
+        }
+
+
+        .logo h1 {
+
+            font-size: 22px;
+
+            font-weight: 800;
+
+            color: var(--roxo);
+
+            letter-spacing: -0.5px;
+        }
+
+
+        .logo span {
+
+            display: block;
+
+            margin-top: 2px;
+
+            font-size: 12px;
+
+            color: var(--texto-secundario);
+        }
+
+
+        /* =====================================================
+           CONTEÚDO
+        ===================================================== */
+
+        main {
+
+            width: 100%;
+
+            max-width: 650px;
+
+            margin: auto;
+
+            padding: 25px 15px 40px;
+        }
+
+
+        .titulo {
+
+            text-align: center;
+
+            margin-bottom: 20px;
+        }
+
+
+        .titulo h2 {
+
+            font-size: 25px;
+
+            margin-bottom: 6px;
+        }
+
+
+        .titulo p {
+
+            color: var(--texto-secundario);
+
+            font-size: 14px;
+        }
+
+
+        /* =====================================================
+           CARDS
+        ===================================================== */
+
+        .card {
+
+            background: var(--card);
+
+            border:
+                1px solid var(--borda);
+
+            border-radius: var(--raio);
+
+            box-shadow: var(--sombra);
+
+            padding: 20px;
+
+            margin-bottom: 20px;
+        }
+
+
+        .card-titulo {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 18px;
+        }
+
+
+        .card-titulo h3 {
+
+            font-size: 18px;
+        }
+
+
+        /* =====================================================
+           CALENDÁRIO
+        ===================================================== */
+
+        .calendario-cabecalho {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 10px;
+
+            margin-bottom: 18px;
+        }
+
+
+        .mes-atual {
+
+            flex: 1;
+
+            text-align: center;
+
+            font-size: 18px;
+
+            font-weight: 700;
+
+            text-transform: capitalize;
+        }
+
+
+        .btn-mes {
+
+            width: 42px;
+
+            height: 42px;
+
+            border: none;
+
+            border-radius: 12px;
+
+            background: #f3f4f6;
+
+            color: var(--texto);
+
+            font-size: 20px;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+
+        .btn-mes:hover {
+
+            background: #e5e7eb;
+        }
+
+
+        .dias-semana {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(7, 1fr);
+
+            gap: 5px;
+
+            margin-bottom: 7px;
+        }
+
+
+        .dia-semana {
+
+            text-align: center;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            color: var(--texto-secundario);
+
+            padding: 5px 0;
+        }
+
+
+        .dias {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(7, 1fr);
+
+            gap: 5px;
+        }
+
+
+        .dia {
+
+            position: relative;
+
+            min-height: 48px;
+
+            border: 1px solid transparent;
+
+            border-radius: 12px;
+
+            background: #f9fafb;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 14px;
+
+            font-weight: 600;
+        }
+
+
+        .dia.vazio {
+
+            background: transparent;
+
+            border: none;
+        }
+
+
+        .dia.hoje {
+
+            border:
+                2px solid var(--roxo);
+
+            color: var(--roxo);
+
+            font-weight: 800;
+        }
+
+
+        .dia.ocupado {
+
+            background: var(--ocupado-fundo);
+
+            color: var(--ocupado);
+
+            border-color:
+                #fecaca;
+        }
+
+
+        .dia.ocupado::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 6px;
+
+            height: 6px;
+
+            border-radius: 50%;
+
+            background: var(--ocupado);
+
+            bottom: 6px;
+        }
+
+
+        .legenda {
+
+            display: flex;
+
+            justify-content: center;
+
+            gap: 18px;
+
+            margin-top: 18px;
+
+            font-size: 12px;
+
+            color: var(--texto-secundario);
+        }
+
+
+        .legenda-item {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 6px;
+        }
+
+
+        .bolinha {
+
+            width: 9px;
+
+            height: 9px;
+
+            border-radius: 50%;
+        }
+
+
+        .bolinha.ocupado {
+
+            background: var(--ocupado);
+        }
+
+
+        .bolinha.livre {
+
+            background: #d1d5db;
+        }
+
+
+        /* =====================================================
+           PESQUISA OS
+        ===================================================== */
+
+        .campo-label {
+
+            display: block;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            margin-bottom: 8px;
+        }
+
+
+        .campo-pesquisa {
+
+            display: flex;
+
+            gap: 10px;
+        }
+
+
+        .campo-pesquisa input {
+
+            flex: 1;
+
+            height: 50px;
+
+            border:
+                1px solid var(--borda);
+
+            border-radius: 12px;
+
+            padding: 0 14px;
+
+            font-size: 15px;
+
+            outline: none;
+
+            background: #fff;
+
+            color: var(--texto);
+        }
+
+
+        .campo-pesquisa input:focus {
+
+            border-color: var(--roxo);
+
+            box-shadow:
+                0 0 0 3px
+                rgba(124, 58, 237, 0.10);
+        }
+
+
+        .btn-consultar {
+
+            height: 50px;
+
+            padding: 0 18px;
+
+            border: none;
+
+            border-radius: 12px;
+
+            background: var(--roxo);
+
+            color: white;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            white-space: nowrap;
+
+            transition: 0.2s;
+        }
+
+
+        .btn-consultar:hover {
+
+            background: var(--roxo-hover);
+        }
+
+
+        /* =====================================================
+           RESULTADO OS
+        ===================================================== */
+
+        #resultadoOS {
+
+            margin-top: 18px;
+        }
+
+
+        .os-resultado {
+
+            border:
+                1px solid var(--borda);
+
+            border-radius: 14px;
+
+            padding: 18px;
+
+            background: #fafafa;
+        }
+
+
+        .os-codigo {
+
+            font-size: 19px;
+
+            font-weight: 800;
+
+            color: var(--roxo);
+
+            margin-bottom: 15px;
+        }
+
+
+        .os-info {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 12px;
+        }
+
+
+        .info-item {
+
+            background: white;
+
+            border:
+                1px solid var(--borda);
+
+            border-radius: 10px;
+
+            padding: 11px;
+        }
+
+
+        .info-item small {
+
+            display: block;
+
+            color: var(--texto-secundario);
+
+            font-size: 11px;
+
+            margin-bottom: 3px;
+        }
+
+
+        .info-item strong {
+
+            font-size: 14px;
+        }
+
+
+        /* =====================================================
+           STATUS
+        ===================================================== */
+
+        .status-area {
+
+            margin-top: 16px;
+
+            padding-top: 16px;
+
+            border-top:
+                1px solid var(--borda);
+        }
+
+
+        .status-label {
+
+            font-size: 12px;
+
+            color: var(--texto-secundario);
+
+            margin-bottom: 7px;
+        }
+
+
+        .status {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            padding: 9px 13px;
+
+            border-radius: 999px;
+
+            font-size: 13px;
+
+            font-weight: 800;
+        }
+
+
+        .status::before {
+
+            content: "";
+
+            width: 8px;
+
+            height: 8px;
+
+            border-radius: 50%;
+
+            background: currentColor;
+        }
+
+
+        .status.aberta,
+        .status.aguardando {
+
+            background: #fef3c7;
+
+            color: #b45309;
+        }
+
+
+        .status.em_andamento,
+        .status.aguardando_peca {
+
+            background: #dbeafe;
+
+            color: #2563eb;
+        }
+
+
+        .status.concluida,
+        .status.entregue {
+
+            background: #dcfce7;
+
+            color: #15803d;
+        }
+
+
+        .status.cancelada {
+
+            background: #fee2e2;
+
+            color: #dc2626;
+        }
+
+
+        /* =====================================================
+           MENSAGENS
+        ===================================================== */
+
+        .mensagem {
+
+            text-align: center;
+
+            padding: 18px 10px;
+
+            color: var(--texto-secundario);
+
+            font-size: 14px;
+        }
+
+
+        .mensagem.erro {
+
+            color: #dc2626;
+        }
+
+
+        /* =====================================================
+           RODAPÉ
+        ===================================================== */
+
+        footer {
+
+            text-align: center;
+
+            color: var(--texto-secundario);
+
+            font-size: 12px;
+
+            padding: 5px 15px 25px;
+        }
+
+
+        /* =====================================================
+           RESPONSIVO
+        ===================================================== */
+
+        @media (max-width: 520px) {
+
+            main {
+
+                padding-top: 20px;
+            }
+
+
+            .card {
+
+                padding: 15px;
+            }
+
+
+            .campo-pesquisa {
+
+                flex-direction: column;
+            }
+
+
+            .btn-consultar {
+
+                width: 100%;
+            }
+
+
+            .os-info {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .dia {
+
+                min-height: 43px;
+
+                font-size: 13px;
+            }
+
+
+            .dia-semana {
+
+                font-size: 10px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         TOPO
+    ===================================================== -->
+
+    <header class="topo">
+
+        <div class="topo-conteudo">
+
+            <div class="logo">
+
+                <h1>WS SOLUÇÕES</h1>
+
+                <span>Atendimento e assistência técnica</span>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         CONTEÚDO
+    ===================================================== -->
+
+    <main>
+
+
+        <div class="titulo">
+
+            <h2>Atendimento</h2>
+
+            <p>
+                Consulte nossa disponibilidade ou acompanhe sua OS.
+            </p>
+
+        </div>
+
+
+
+        <!-- =================================================
+             CALENDÁRIO
+        ================================================= -->
+
+        <section class="card">
+
+            <div class="card-titulo">
+
+                <h3>📅 Disponibilidade</h3>
+
+            </div>
+
+
+            <div class="calendario-cabecalho">
+
+                <button
+                    type="button"
+                    class="btn-mes"
+                    id="mesAnterior">
+
+                    ‹
+
+                </button>
+
+
+                <div
+                    class="mes-atual"
+                    id="mesAtual">
+
+                    Carregando...
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="btn-mes"
+                    id="proximoMes">
+
+                    ›
+
+                </button>
+
+            </div>
+
+
+            <div class="dias-semana">
+
+                <div class="dia-semana">DOM</div>
+                <div class="dia-semana">SEG</div>
+                <div class="dia-semana">TER</div>
+                <div class="dia-semana">QUA</div>
+                <div class="dia-semana">QUI</div>
+                <div class="dia-semana">SEX</div>
+                <div class="dia-semana">SÁB</div>
+
+            </div>
+
+
+            <div
+                class="dias"
+                id="diasCalendario">
+
+            </div>
+
+
+            <div class="legenda">
+
+                <div class="legenda-item">
+
+                    <span class="bolinha ocupado"></span>
+
+                    Dia ocupado
+
+                </div>
+
+
+                <div class="legenda-item">
+
+                    <span class="bolinha livre"></span>
+
+                    Dia disponível
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             PESQUISA OS
+        ================================================= -->
+
+        <section class="card">
+
+            <div class="card-titulo">
+
+                <h3>🔎 Consultar OS</h3>
+
+            </div>
+
+
+            <label
+                class="campo-label"
+                for="codigoOS">
+
+                Código da Ordem de Serviço
+
+            </label>
+
+
+            <div class="campo-pesquisa">
+
+                <input
+                    type="text"
+                    id="codigoOS"
+                    placeholder="Ex.: WS-OS-000001"
+                    autocomplete="off">
+
+
+                <button
+                    type="button"
+                    class="btn-consultar"
+                    id="btnConsultar">
+
+                    Consultar
+
+                </button>
+
+            </div>
+
+
+            <div id="resultadoOS"></div>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         RODAPÉ
+    ===================================================== -->
+
+    <footer>
+
+        WS SOLUÇÕES © 2026
+
+    </footer>
+
+
+
+    <script>
+
+        /* =====================================================
+           CONFIGURAÇÕES DO CALENDÁRIO
+        ===================================================== */
+
+        let dataCalendario = new Date();
+
+        let diasOcupados = new Set();
+
+
+        const nomesMeses = [
+
+            "janeiro",
+            "fevereiro",
+            "março",
+            "abril",
+            "maio",
+            "junho",
+            "julho",
+            "agosto",
+            "setembro",
+            "outubro",
+            "novembro",
+            "dezembro"
+
+        ];
+
+
+        /* =====================================================
+           ELEMENTOS
+        ===================================================== */
+
+        const mesAtual =
+            document.getElementById("mesAtual");
+
+        const diasCalendario =
+            document.getElementById("diasCalendario");
+
+        const mesAnterior =
+            document.getElementById("mesAnterior");
+
+        const proximoMes =
+            document.getElementById("proximoMes");
+
+        const codigoOS =
+            document.getElementById("codigoOS");
+
+        const btnConsultar =
+            document.getElementById("btnConsultar");
+
+        const resultadoOS =
+            document.getElementById("resultadoOS");
+
+
+        /* =====================================================
+           FORMATAR DATA PARA COMPARAÇÃO
+        ===================================================== */
+
+        function formatarDataBanco(data) {
+
+            const ano =
+                data.getFullYear();
+
+            const mes =
+                String(
+                    data.getMonth() + 1
+                ).padStart(2, "0");
+
+            const dia =
+                String(
+                    data.getDate()
+                ).padStart(2, "0");
+
+            return `${ano}-${mes}-${dia}`;
+        }
+
+
+        /* =====================================================
+           CARREGAR DIAS OCUPADOS
+        ===================================================== */
+
+        async function carregarDiasOcupados() {
+
+            diasOcupados.clear();
+
+            const primeiroDia =
+                new Date(
+                    dataCalendario.getFullYear(),
+                    dataCalendario.getMonth(),
+                    1
+                );
+
+            const ultimoDia =
+                new Date(
+                    dataCalendario.getFullYear(),
+                    dataCalendario.getMonth() + 1,
+                    0
+                );
+
+
+            const inicio =
+                formatarDataBanco(
+                    primeiroDia
+                );
+
+            const fim =
+                formatarDataBanco(
+                    ultimoDia
+                );
+
+
+            /*
+             * Busca somente os campos necessários
+             * dos agendamentos.
+             */
+
+            const { data, error } =
+                await supabase
+                    .from("agendamentos")
+                    .select("data")
+                    .gte("data", inicio)
+                    .lte("data", fim);
+
+
+            if (error) {
+
+                console.error(
+                    "Erro ao carregar calendário:",
+                    error
+                );
+
+                return;
+            }
+
+
+            (data || []).forEach(
+                agendamento => {
+
+                    if (
+                        agendamento.data
+                    ) {
+
+                        diasOcupados.add(
+                            String(
+                                agendamento.data
+                            ).substring(0, 10)
+                        );
+                    }
+                }
+            );
+        }
+
+
+        /* =====================================================
+           RENDERIZAR CALENDÁRIO
+        ===================================================== */
+
+        async function renderizarCalendario() {
+
+            mesAtual.textContent =
+                `${nomesMeses[
+                    dataCalendario.getMonth()
+                ]} ${dataCalendario.getFullYear()}`;
+
+
+            diasCalendario.innerHTML = `
+                <div class="mensagem">
+                    Carregando...
+                </div>
+            `;
+
+
+            await carregarDiasOcupados();
+
+
+            diasCalendario.innerHTML = "";
+
+
+            const ano =
+                dataCalendario.getFullYear();
+
+            const mes =
+                dataCalendario.getMonth();
+
+
+            const primeiroDiaSemana =
+                new Date(
+                    ano,
+                    mes,
+                    1
+                ).getDay();
+
+
+            const quantidadeDias =
+                new Date(
+                    ano,
+                    mes + 1,
+                    0
+                ).getDate();
+
+
+            for (
+                let i = 0;
+                i < primeiroDiaSemana;
+                i++
+            ) {
+
+                const vazio =
+                    document.createElement(
+                        "div"
+                    );
+
+                vazio.className =
+                    "dia vazio";
+
+                diasCalendario.appendChild(
+                    vazio
+                );
+            }
+
+
+            const hoje =
+                new Date();
+
+
+            for (
+                let dia = 1;
+                dia <= quantidadeDias;
+                dia++
+            ) {
+
+                const elemento =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                elemento.className =
+                    "dia";
+
+
+                elemento.textContent =
+                    dia;
+
+
+                const dataDia =
+                    new Date(
+                        ano,
+                        mes,
+                        dia
+                    );
+
+
+                const dataFormatada =
+                    formatarDataBanco(
+                        dataDia
+                    );
+
+
+                const hojeFormatado =
+                    formatarDataBanco(
+                        hoje
+                    );
+
+
+                if (
+                    dataFormatada ===
+                    hojeFormatado
+                ) {
+
+                    elemento.classList.add(
+                        "hoje"
+                    );
+                }
+
+
+                if (
+                    diasOcupados.has(
+                        dataFormatada
+                    )
+                ) {
+
+                    elemento.classList.add(
+                        "ocupado"
+                    );
+
+                    elemento.title =
+                        "Dia ocupado";
+                }
+
+
+                diasCalendario.appendChild(
+                    elemento
+                );
+            }
+        }
+
+
+        /* =====================================================
+           NAVEGAÇÃO DOS MESES
+        ===================================================== */
+
+        mesAnterior.addEventListener(
+            "click",
+            () => {
+
+                dataCalendario.setMonth(
+                    dataCalendario.getMonth() - 1
+                );
+
+                renderizarCalendario();
+            }
+        );
+
+
+        proximoMes.addEventListener(
+            "click",
+            () => {
+
+                dataCalendario.setMonth(
+                    dataCalendario.getMonth() + 1
+                );
+
+                renderizarCalendario();
+            }
+        );
+
+
+        /* =====================================================
+           STATUS
+        ===================================================== */
+
+        const statusNomes = {
+
+            aberta: "Aberta",
+
+            aguardando:
+                "Aguardando",
+
+            em_andamento:
+                "Em andamento",
+
+            aguardando_peca:
+                "Aguardando peça",
+
+            concluida:
+                "Concluída",
+
+            entregue:
+                "Entregue",
+
+            cancelada:
+                "Cancelada"
+        };
+
+
+        /* =====================================================
+           CONSULTAR OS
+        ===================================================== */
+
+        async function consultarOS() {
+
+            const codigo =
+                codigoOS.value
+                    .trim()
+                    .toUpperCase();
+
+
+            if (!codigo) {
+
+                resultadoOS.innerHTML = `
+                    <div class="mensagem erro">
+                        Digite o código da OS.
+                    </div>
+                `;
+
+                return;
+            }
+
+
+            resultadoOS.innerHTML = `
+                <div class="mensagem">
+                    Consultando...
+                </div>
+            `;
+
+
+            /*
+             * IMPORTANTE:
+             *
+             * Não buscamos a tabela clientes.
+             * Portanto, nenhum dado pessoal
+             * do cliente será exibido.
+             */
+
+
+            const { data, error } =
+                await supabase
+                    .from("ordens_servico")
+                    .select(`
+                        codigo,
+                        aparelho,
+                        marca,
+                        modelo,
+                        tipo_servico,
+                        status
+                    `)
+                    .eq("codigo", codigo)
+                    .maybeSingle();
+
+
+            if (error) {
+
+                console.error(
+                    "Erro ao consultar OS:",
+                    error
+                );
+
+                resultadoOS.innerHTML = `
+                    <div class="mensagem erro">
+                        Não foi possível consultar a OS.
+                    </div>
+                `;
+
+                return;
+            }
+
+
+            if (!data) {
+
+                resultadoOS.innerHTML = `
+                    <div class="mensagem erro">
+                        OS não encontrada.
+                    </div>
+                `;
+
+                return;
+            }
+
+
+            const status =
+                data.status ||
+                "aberta";
+
+
+            const nomeStatus =
+                statusNomes[
+                    status
+                ] ||
+                status;
+
+
+            resultadoOS.innerHTML = `
+
+                <div class="os-resultado">
+
+                    <div class="os-codigo">
+
+                        ${data.codigo}
+
+                    </div>
+
+
+                    <div class="os-info">
+
+                        <div class="info-item">
+
+                            <small>
+                                Aparelho
+                            </small>
+
+                            <strong>
+                                ${escaparHTML(
+                                    data.aparelho ||
+                                    "-"
+                                )}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="info-item">
+
+                            <small>
+                                Marca
+                            </small>
+
+                            <strong>
+                                ${escaparHTML(
+                                    data.marca ||
+                                    "-"
+                                )}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="info-item">
+
+                            <small>
+                                Modelo
+                            </small>
+
+                            <strong>
+                                ${escaparHTML(
+                                    data.modelo ||
+                                    "-"
+                                )}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="info-item">
+
+                            <small>
+                                Serviço
+                            </small>
+
+                            <strong>
+                                ${escaparHTML(
+                                    data.tipo_servico ||
+                                    "-"
+                                )}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="status-area">
+
+                        <div class="status-label">
+
+                            Status atual
+
+                        </div>
+
+
+                        <span
+                            class="status ${status}">
+
+                            ${nomeStatus}
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            `;
+        }
+
+
+        /* =====================================================
+           PROTEÇÃO CONTRA HTML
+        ===================================================== */
+
+        function escaparHTML(valor) {
+
+            return String(valor)
+                .replaceAll("&", "&amp;")
+                .replaceAll("<", "&lt;")
+                .replaceAll(">", "&gt;")
+                .replaceAll('"', "&quot;")
+                .replaceAll("'", "&#039;");
+        }
+
+
+        /* =====================================================
+           BOTÃO CONSULTAR
+        ===================================================== */
+
+        btnConsultar.addEventListener(
+            "click",
+            consultarOS
+        );
+
+
+        /* =====================================================
+           ENTER NA PESQUISA
+        ===================================================== */
+
+        codigoOS.addEventListener(
+            "keydown",
+            event => {
+
+                if (
+                    event.key === "Enter"
+                ) {
+
+                    consultarOS();
+                }
+            }
+        );
+
+
+        /* =====================================================
+           INICIALIZAÇÃO
+        ===================================================== */
+
+        renderizarCalendario();
+
+    </script>
+
+</body>
+
+</html>
