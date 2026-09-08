@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Área do Cliente — WS SOLUÇÕES</title>
+
+    <link
+        rel="stylesheet"
+        href="css/area-cliente.css">
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         CABEÇALHO
+    ====================================================== -->
+
+    <header class="topbar">
+
+        <div class="brand">
+
+            <strong>
+                WS SOLUÇÕES
+            </strong>
+
+            <span>
+                Área do Cliente
+            </span>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         CONTEÚDO
+    ====================================================== -->
+
+    <main class="page-container">
+
+
+        <!-- =================================================
+             CALENDÁRIO
+        ================================================== -->
+
+        <section class="card calendario-card">
+
+
+            <div class="section-header">
+
+                <div>
+
+                    <span class="section-kicker">
+                        Agendamentos
+                    </span>
+
+                    <h1>
+                        Calendário
+                    </h1>
+
+                </div>
+
+
+                <div class="calendar-controls">
+
+                    <button
+                        type="button"
+                        id="btnMesAnterior"
+                        aria-label="Mês anterior">
+
+                        ‹
+
+                    </button>
+
+
+                    <strong id="mesAnoAtual">
+                        —
+                    </strong>
+
+
+                    <button
+                        type="button"
+                        id="btnMesProximo"
+                        aria-label="Próximo mês">
+
+                        ›
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- DIAS DA SEMANA -->
+
+            <div class="dias-semana">
+
+                <span>Dom</span>
+                <span>Seg</span>
+                <span>Ter</span>
+                <span>Qua</span>
+                <span>Qui</span>
+                <span>Sex</span>
+                <span>Sáb</span>
+
+            </div>
+
+
+
+            <!-- GRADE -->
+
+            <div
+                id="gradeCalendario"
+                class="grade-calendario">
+
+            </div>
+
+
+
+            <!-- LEGENDA -->
+
+            <div class="legenda">
+
+                <span class="legenda-ponto"></span>
+
+                <span>
+                    Dia com agendamento
+                </span>
+
+            </div>
+
+
+
+            <!-- AGENDA DO DIA -->
+
+            <div
+                id="agendaDia"
+                class="agenda-dia"
+                hidden>
+
+                <div class="agenda-dia-header">
+
+                    <strong id="tituloAgendaDia">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div
+                    id="listaAgendamentos"
+                    class="lista-agendamentos">
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             CONSULTAR OS
+        ================================================== -->
+
+        <section class="card consulta-os-card">
+
+
+            <div class="section-header">
+
+                <div>
+
+                    <span class="section-kicker">
+                        Atendimento
+                    </span>
+
+                    <h2>
+                        Acompanhar OS
+                    </h2>
+
+                    <p>
+                        Digite o código da sua ordem de serviço.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <form
+                id="formBuscaOS"
+                class="busca-os">
+
+                <input
+                    type="search"
+                    id="codigoOS"
+                    placeholder="Ex.: WS-OS-000001"
+                    autocomplete="off"
+                    required>
+
+
+                <button
+                    type="submit"
+                    id="btnBuscarOS">
+
+                    🔎
+
+                </button>
+
+            </form>
+
+
+
+            <!-- RESULTADO -->
+
+            <div
+                id="resultadoOS"
+                class="resultado-os"
+                hidden>
+
+
+                <div class="resultado-header">
+
+                    <div>
+
+                        <span>
+                            Ordem de Serviço
+                        </span>
+
+                        <strong id="resultadoCodigo">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <span
+                        id="resultadoStatus"
+                        class="status">
+
+                        —
+
+                    </span>
+
+                </div>
+
+
+
+                <div class="resultado-grid">
+
+
+                    <div class="resultado-item">
+
+                        <span>
+                            Aparelho
+                        </span>
+
+                        <strong id="resultadoAparelho">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="resultado-item">
+
+                        <span>
+                            Marca
+                        </span>
+
+                        <strong id="resultadoMarca">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="resultado-item">
+
+                        <span>
+                            Modelo
+                        </span>
+
+                        <strong id="resultadoModelo">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="resultado-item">
+
+                        <span>
+                            Data de entrada
+                        </span>
+
+                        <strong id="resultadoData">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="resultado-item">
+
+                        <span>
+                            Valor total
+                        </span>
+
+                        <strong id="resultadoValor">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <div
+                    class="resultado-servico"
+                    id="resultadoServicoContainer">
+
+                    <span>
+                        Serviço realizado
+                    </span>
+
+                    <p id="resultadoServico">
+                        —
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- OS NÃO ENCONTRADA -->
+
+            <div
+                id="osNaoEncontrada"
+                class="estado-vazio"
+                hidden>
+
+                <div class="estado-icone">
+                    🔎
+                </div>
+
+                <strong>
+                    OS não encontrada
+                </strong>
+
+                <p>
+                    Confira o código informado e tente novamente.
+                </p>
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =====================================================
+         TOAST
+    ====================================================== -->
+
+    <div
+        id="toast"
+        class="toast"
+        role="status"
+        aria-live="polite">
+
+        <span id="toastMessage">
+            Mensagem
+        </span>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         SUPABASE
+    ====================================================== -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+    </script>
+
+
+    <script src="js/supabase.js"></script>
+
+    <script src="js/area-cliente.js"></script>
+
+
+</body>
+
+</html>
