@@ -1,51 +1,23 @@
-/* =========================================================
-   WS SOLUÇÕES — ORDENS DE SERVIÇO
-   CRUD COMPLETO
-   Código automático
-   Clientes vinculados
-   Lista compacta + Modal de detalhes
-========================================================= */
-
 document.addEventListener("DOMContentLoaded", () => {
 
     /* =====================================================
        ELEMENTOS
-    ===================================================== */
+    ====================================================== */
 
-    const btnNovaOS =
-        document.getElementById("btnNovaOS");
+    const btnNovaOS = document.getElementById("btnNovaOS");
+    const btnFecharModal = document.getElementById("btnFecharModal");
+    const btnCancelar = document.getElementById("btnCancelar");
 
-    const btnFecharModal =
-        document.getElementById("btnFecharModal");
+    const modalOS = document.getElementById("modalOS");
+    const modalDetalhesOS = document.getElementById("modalDetalhesOS");
 
-    const btnCancelar =
-        document.getElementById("btnCancelar");
+    const formOS = document.getElementById("formOS");
 
-    const modalOS =
-        document.getElementById("modalOS");
+    const buscaOS = document.getElementById("buscaOS");
+    const listaOS = document.getElementById("listaOS");
+    const totalOS = document.getElementById("totalOS");
 
-    const formOS =
-        document.getElementById("formOS");
-
-    const modalTitulo =
-        document.getElementById("modalTitulo");
-
-    const buscaOS =
-        document.getElementById("buscaOS");
-
-    const listaOS =
-        document.getElementById("listaOS");
-
-    const totalOS =
-        document.getElementById("totalOS");
-
-
-    /* =====================================================
-       MODAL DE DETALHES
-    ===================================================== */
-
-    const modalDetalhesOS =
-        document.getElementById("modalDetalhesOS");
+    const themeToggle = document.getElementById("themeToggle");
 
     const btnFecharDetalhes =
         document.getElementById("btnFecharDetalhes");
@@ -58,122 +30,168 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       DADOS
-    ===================================================== */
+       ESTADO
+    ====================================================== */
 
     let ordens = [];
-
     let clientes = [];
-
     let osSelecionada = null;
 
 
     /* =====================================================
        TOAST
-    ===================================================== */
+    ====================================================== */
 
-    function mostrarMensagem(mensagem) {
+    function mostrarToast(mensagem) {
 
-        const toast =
-            document.getElementById("toast");
-
+        const toast = document.getElementById("toast");
         const toastMessage =
             document.getElementById("toastMessage");
 
+        if (!toast || !toastMessage) return;
 
-        if (!toast || !toastMessage) {
-
-            alert(mensagem);
-
-            return;
-
-        }
-
-
-        toastMessage.textContent =
-            mensagem;
+        toastMessage.textContent = mensagem;
 
         toast.classList.add("show");
 
-
         setTimeout(() => {
-
             toast.classList.remove("show");
-
-        }, 2500);
-
+        }, 3000);
     }
 
 
     /* =====================================================
-       GERAR CÓDIGO DA OS
-    ===================================================== */
+       TEMA
+    ====================================================== */
 
-    function gerarProximoCodigo() {
+    function aplicarTema() {
 
-        let maiorNumero = 0;
+        const modo =
+            localStorage.getItem("ws_modo_noturno");
 
+        if (modo === "dark") {
 
-        ordens.forEach(os => {
+            document.body.classList.add("dark");
 
-            const codigo =
-                String(os.codigo || "");
-
-
-            const resultado =
-                codigo.match(
-                    /^(?:WS-)?OS-(\d+)$/i
-                );
-
-
-            if (resultado) {
-
-                const numero =
-                    parseInt(
-                        resultado[1],
-                        10
-                    );
-
-
-                if (
-                    !isNaN(numero) &&
-                    numero > maiorNumero
-                ) {
-
-                    maiorNumero = numero;
-
-                }
-
+            if (themeToggle) {
+                themeToggle.textContent = "☀";
             }
 
-        });
+        } else {
+
+            document.body.classList.remove("dark");
+
+            if (themeToggle) {
+                themeToggle.textContent = "☾";
+            }
+        }
+    }
 
 
-        return `WS-OS-${String(
-            maiorNumero + 1
-        ).padStart(6, "0")}`;
+    themeToggle?.addEventListener("click", () => {
 
+        const estaDark =
+            document.body.classList.contains("dark");
+
+        if (estaDark) {
+
+            document.body.classList.remove("dark");
+
+            localStorage.setItem(
+                "ws_modo_noturno",
+                "light"
+            );
+
+            themeToggle.textContent = "☾";
+
+        } else {
+
+            document.body.classList.add("dark");
+
+            localStorage.setItem(
+                "ws_modo_noturno",
+                "dark"
+            );
+
+            themeToggle.textContent = "☀";
+        }
+
+    });
+
+
+    aplicarTema();
+
+
+    /* =====================================================
+       STATUS
+    ====================================================== */
+
+    function textoStatus(status) {
+
+        const mapa = {
+
+            aberta: "Aberta",
+
+            aguardando: "Aguardando",
+
+            em_andamento: "Em andamento",
+
+            aguardando_peca: "Aguardando peça",
+
+            concluida: "Concluída",
+
+            entregue: "Entregue",
+
+            cancelada: "Cancelada"
+
+        };
+
+        return mapa[status] || status || "—";
+    }
+
+
+    function classeStatus(status) {
+
+        return "os-status-" +
+            String(status || "")
+                .toLowerCase()
+                .replace(/_/g, "-");
+    }
+
+
+    function textoPrioridade(prioridade) {
+
+        const mapa = {
+
+            baixa: "Baixa",
+
+            normal: "Normal",
+
+            alta: "Alta",
+
+            urgente: "Urgente"
+
+        };
+
+        return mapa[prioridade] ||
+            prioridade ||
+            "—";
     }
 
 
     /* =====================================================
        FORMATAÇÃO
-    ===================================================== */
+    ====================================================== */
 
     function formatarMoeda(valor) {
 
-        const numero =
-            Number(valor || 0);
-
-
-        return numero.toLocaleString(
+        return Number(valor || 0).toLocaleString(
             "pt-BR",
             {
                 style: "currency",
                 currency: "BRL"
             }
         );
-
     }
 
 
@@ -181,713 +199,727 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!data) return "—";
 
+        const somenteData =
+            String(data).substring(0, 10);
 
         const partes =
-            String(data).split("-");
+            somenteData.split("-");
 
-
-        if (partes.length === 3) {
-
-            return `${partes[2]}/${partes[1]}/${partes[0]}`;
-
+        if (partes.length !== 3) {
+            return data;
         }
 
-
-        return data;
-
-    }
-
-
-    function textoStatus(status) {
-
-        const nomes = {
-
-            aberta:
-                "Aberta",
-
-            em_andamento:
-                "Em andamento",
-
-            aguardando_aprovacao:
-                "Aguardando aprovação",
-
-            aguardando_peca:
-                "Aguardando peça",
-
-            concluida:
-                "Concluída",
-
-            cancelada:
-                "Cancelada"
-
-        };
-
-
-        return nomes[status] ||
-            status ||
-            "—";
-
-    }
-
-
-    function textoPrioridade(prioridade) {
-
-        const nomes = {
-
-            baixa:
-                "Baixa",
-
-            normal:
-                "Normal",
-
-            alta:
-                "Alta",
-
-            urgente:
-                "Urgente"
-
-        };
-
-
-        return nomes[prioridade] ||
-            prioridade ||
-            "—";
-
-    }
-
-
-    function classeStatus(status) {
-
-        return String(status || "")
-            .toLowerCase()
-            .replace(
-                /[^a-z0-9]+/g,
-                "-"
-            );
-
+        return `${partes[2]}/${partes[1]}/${partes[0]}`;
     }
 
 
     /* =====================================================
-       CARREGAR CLIENTES
-    ===================================================== */
+       CLIENTES
+    ====================================================== */
 
     async function carregarClientes() {
 
         const selectCliente =
-            document.getElementById(
-                "cliente_id"
-            );
-
+            document.getElementById("cliente_id");
 
         if (!selectCliente) return;
 
+        const { data, error } =
+            await supabaseClient
+                .from("clientes")
+                .select("id,codigo,nome")
+                .order("nome", {
+                    ascending: true
+                });
 
-        try {
-
-            const { data, error } =
-                await supabaseClient
-                    .from("clientes")
-                    .select(
-                        "id, codigo, nome"
-                    )
-                    .order(
-                        "nome",
-                        {
-                            ascending: true
-                        }
-                    );
-
-
-            if (error) {
-
-                throw error;
-
-            }
-
-
-            clientes =
-                data || [];
-
-
-            selectCliente.innerHTML = `
-                <option value="">
-                    Selecione o cliente
-                </option>
-            `;
-
-
-            clientes.forEach(cliente => {
-
-                const option =
-                    document.createElement(
-                        "option"
-                    );
-
-
-                option.value =
-                    cliente.id;
-
-
-                option.textContent =
-                    `${cliente.codigo || ""} — ${cliente.nome}`;
-
-
-                selectCliente.appendChild(
-                    option
-                );
-
-            });
-
-
-        } catch (erro) {
+        if (error) {
 
             console.error(
                 "Erro ao carregar clientes:",
-                erro
+                error
             );
 
-
-            mostrarMensagem(
+            mostrarToast(
                 "Erro ao carregar clientes."
             );
 
+            return;
         }
 
+        clientes = data || [];
+
+        selectCliente.innerHTML = `
+            <option value="">
+                Selecione o cliente
+            </option>
+        `;
+
+        clientes.forEach(cliente => {
+
+            const option =
+                document.createElement("option");
+
+            option.value = cliente.id;
+
+            option.textContent =
+                `${cliente.codigo || ""} - ${cliente.nome}`;
+
+            selectCliente.appendChild(option);
+
+        });
     }
 
 
     /* =====================================================
-       ABRIR MODAL DE OS
-    ===================================================== */
+       EQUIPAMENTOS
+    ====================================================== */
 
-    function abrirModalOS(os = null) {
+    async function carregarEquipamentos(clienteId = null) {
+
+        const select =
+            document.getElementById("equipamento_id");
+
+        if (!select) return;
+
+        select.innerHTML = `
+            <option value="">
+                Selecione o equipamento
+            </option>
+        `;
+
+        if (!clienteId) return;
+
+        /*
+         * Só tenta carregar equipamentos se
+         * a tabela existir no banco.
+         */
+
+        const { data, error } =
+            await supabaseClient
+                .from("equipamentos")
+                .select("id,nome,aparelho,marca,modelo")
+                .eq("cliente_id", clienteId)
+                .order("nome", {
+                    ascending: true
+                });
+
+        if (error) {
+
+            console.warn(
+                "Equipamentos não carregados:",
+                error
+            );
+
+            return;
+        }
+
+        (data || []).forEach(equipamento => {
+
+            const option =
+                document.createElement("option");
+
+            option.value = equipamento.id;
+
+            const nome =
+                equipamento.nome ||
+                equipamento.aparelho ||
+                "Equipamento";
+
+            const marca =
+                equipamento.marca || "";
+
+            const modelo =
+                equipamento.modelo || "";
+
+            option.textContent =
+                [nome, marca, modelo]
+                    .filter(Boolean)
+                    .join(" - ");
+
+            select.appendChild(option);
+
+        });
+    }
+
+
+    document
+        .getElementById("cliente_id")
+        ?.addEventListener(
+            "change",
+            event => {
+
+                carregarEquipamentos(
+                    event.target.value || null
+                );
+
+            }
+        );
+
+
+    /* =====================================================
+       CÓDIGO DA OS
+    ====================================================== */
+
+    function gerarProximoCodigo() {
+
+        let maior = 0;
+
+        ordens.forEach(os => {
+
+            const codigo =
+                String(os.codigo || "");
+
+            const match =
+                codigo.match(/OS-(\d+)/i);
+
+            if (match) {
+
+                const numero =
+                    parseInt(match[1], 10);
+
+                if (numero > maior) {
+                    maior = numero;
+                }
+            }
+
+        });
+
+        return "WS-OS-" +
+            String(maior + 1).padStart(6, "0");
+    }
+
+
+    /* =====================================================
+       ABRIR MODAL
+    ====================================================== */
+
+    async function abrirModalOS(os = null) {
 
         if (!modalOS || !formOS) return;
 
+        await carregarClientes();
+
+        osSelecionada = os;
 
         modalOS.classList.add("show");
-
         modalOS.setAttribute(
             "aria-hidden",
             "false"
         );
 
+        document.body.classList.add(
+            "modal-aberto"
+        );
 
-        if (os) {
-
-            modalTitulo.textContent =
-                "Editar OS";
-
-
-            preencherFormulario(os);
-
-        } else {
-
-            modalTitulo.textContent =
-                "Nova OS";
-
+        if (!os) {
 
             formOS.reset();
-
 
             document.getElementById(
                 "osId"
             ).value = "";
 
-
             document.getElementById(
                 "codigo"
-            ).value =
-                gerarProximoCodigo();
-
+            ).value = gerarProximoCodigo();
 
             document.getElementById(
                 "status"
-            ).value =
-                "aberta";
-
+            ).value = "aberta";
 
             document.getElementById(
                 "prioridade"
-            ).value =
-                "normal";
-
+            ).value = "normal";
 
             document.getElementById(
                 "desconto"
-            ).value =
-                "0";
-
+            ).value = "0";
 
             document.getElementById(
                 "valor_total"
-            ).value =
-                "0.00";
+            ).value = "0.00";
 
-
-            const dataHoje =
-                new Date()
-                    .toISOString()
-                    .split("T")[0];
-
+            const hoje =
+                new Date().toISOString().split("T")[0];
 
             document.getElementById(
                 "data_entrada"
-            ).value =
-                dataHoje;
+            ).value = hoje;
 
+            carregarEquipamentos(null);
 
-            setTimeout(() => {
+            document.getElementById(
+                "modalTitulo"
+            ).textContent = "Nova OS";
 
-                document.getElementById(
-                    "cliente_id"
-                )?.focus();
+        } else {
 
-            }, 100);
+            preencherFormulario(os);
+
+            document.getElementById(
+                "modalTitulo"
+            ).textContent = "Editar OS";
 
         }
-
     }
 
 
     /* =====================================================
        PREENCHER FORMULÁRIO
-    ===================================================== */
+    ====================================================== */
 
-    function preencherFormulario(os) {
+    async function preencherFormulario(os) {
 
-        document.getElementById(
-            "osId"
-        ).value =
-            os.id || "";
+        const set = (id, valor) => {
 
+            const elemento =
+                document.getElementById(id);
 
-        document.getElementById(
-            "codigo"
-        ).value =
-            os.codigo || "";
+            if (elemento) {
+                elemento.value =
+                    valor ?? "";
+            }
+        };
 
+        set("osId", os.id);
+        set("codigo", os.codigo);
+        set("cliente_id", os.cliente_id);
+        set("equipamento_id", os.equipamento_id);
 
-        document.getElementById(
-            "cliente_id"
-        ).value =
-            os.cliente_id || "";
+        set("tipo_servico", os.tipo_servico);
+        set("aparelho", os.aparelho);
+        set("marca", os.marca);
+        set("modelo", os.modelo);
 
+        set("defeito", os.defeito);
+        set("diagnostico", os.diagnostico);
+        set(
+            "servico_realizado",
+            os.servico_realizado
+        );
 
-        document.getElementById(
-            "equipamento_id"
-        ).value =
-            os.equipamento_id || "";
+        set("valor", os.valor);
+        set("desconto", os.desconto);
 
+        set(
+            "valor_total",
+            os.valor_total
+        );
 
-        document.getElementById(
-            "tipo_servico"
-        ).value =
-            os.tipo_servico || "";
+        set(
+            "status",
+            os.status
+        );
 
+        set(
+            "prioridade",
+            os.prioridade
+        );
 
-        document.getElementById(
-            "aparelho"
-        ).value =
-            os.aparelho || "";
+        set(
+            "data_entrada",
+            os.data_entrada
+                ? String(os.data_entrada)
+                    .substring(0, 10)
+                : ""
+        );
 
+        set(
+            "data_conclusao",
+            os.data_conclusao
+                ? String(os.data_conclusao)
+                    .substring(0, 10)
+                : ""
+        );
 
-        document.getElementById(
-            "marca"
-        ).value =
-            os.marca || "";
+        set(
+            "observacoes",
+            os.observacoes
+        );
 
+        await carregarEquipamentos(
+            os.cliente_id
+        );
 
-        document.getElementById(
-            "modelo"
-        ).value =
-            os.modelo || "";
-
-
-        document.getElementById(
-            "defeito"
-        ).value =
-            os.defeito || "";
-
-
-        document.getElementById(
-            "diagnostico"
-        ).value =
-            os.diagnostico || "";
-
-
-        document.getElementById(
-            "servico_realizado"
-        ).value =
-            os.servico_realizado || "";
-
-
-        document.getElementById(
-            "valor"
-        ).value =
-            os.valor ?? "";
-
-
-        document.getElementById(
-            "desconto"
-        ).value =
-            os.desconto ?? 0;
-
-
-        document.getElementById(
-            "valor_total"
-        ).value =
-            os.valor_total ?? 0;
-
-
-        document.getElementById(
-            "status"
-        ).value =
-            os.status || "aberta";
-
-
-        document.getElementById(
-            "prioridade"
-        ).value =
-            os.prioridade || "normal";
-
-
-        document.getElementById(
-            "data_entrada"
-        ).value =
-            os.data_entrada || "";
-
-
-        document.getElementById(
-            "data_conclusao"
-        ).value =
-            os.data_conclusao || "";
-
-
-        document.getElementById(
-            "observacoes"
-        ).value =
-            os.observacoes || "";
-
+        set(
+            "equipamento_id",
+            os.equipamento_id
+        );
     }
 
 
     /* =====================================================
-       FECHAR MODAL DE OS
-    ===================================================== */
+       FECHAR MODAL
+    ====================================================== */
 
     function fecharModalOS() {
 
         if (!modalOS) return;
 
-
         modalOS.classList.remove("show");
-
 
         modalOS.setAttribute(
             "aria-hidden",
             "true"
         );
 
+        document.body.classList.remove(
+            "modal-aberto"
+        );
+
+        osSelecionada = null;
     }
 
 
+    btnNovaOS?.addEventListener(
+        "click",
+        () => abrirModalOS()
+    );
+
+    btnFecharModal?.addEventListener(
+        "click",
+        fecharModalOS
+    );
+
+    btnCancelar?.addEventListener(
+        "click",
+        fecharModalOS
+    );
+
+
     /* =====================================================
-       ABRIR DETALHES
-    ===================================================== */
+       CLIQUE NO FUNDO DO MODAL
+    ====================================================== */
 
-    function abrirDetalhesOS(os) {
+    modalOS?.addEventListener(
+        "click",
+        event => {
 
-        if (
-            !modalDetalhesOS ||
-            !os
-        ) return;
+            if (
+                event.target.classList.contains(
+                    "modal-overlay"
+                )
+            ) {
+
+                fecharModalOS();
+
+            }
+
+        }
+    );
 
 
-        osSelecionada =
-            os;
+    /* =====================================================
+       VALOR TOTAL
+    ====================================================== */
 
+    function calcularValorTotal() {
 
-        const cliente =
-            clientes.find(
-                item =>
-                    String(item.id) ===
-                    String(os.cliente_id)
+        const valor =
+            parseFloat(
+                document.getElementById(
+                    "valor"
+                )?.value
+            ) || 0;
+
+        const desconto =
+            parseFloat(
+                document.getElementById(
+                    "desconto"
+                )?.value
+            ) || 0;
+
+        const total =
+            Math.max(
+                valor - desconto,
+                0
             );
 
-
-        document.getElementById(
-            "detalheCodigo"
-        ).textContent =
-            os.codigo || "—";
-
-
-        document.getElementById(
-            "detalheCliente"
-        ).textContent =
-            cliente?.nome ||
-            os.cliente_nome ||
-            "—";
-
-
-        document.getElementById(
-            "detalheStatus"
-        ).textContent =
-            textoStatus(
-                os.status
+        const campo =
+            document.getElementById(
+                "valor_total"
             );
 
+        if (campo) {
 
-        document.getElementById(
-            "detalhePrioridade"
-        ).textContent =
-            textoPrioridade(
-                os.prioridade
-            );
+            campo.value =
+                total.toFixed(2);
 
-
-        document.getElementById(
-            "detalheTipoServico"
-        ).textContent =
-            os.tipo_servico || "—";
-
-
-        document.getElementById(
-            "detalheAparelho"
-        ).textContent =
-            os.aparelho || "—";
-
-
-        document.getElementById(
-            "detalheMarca"
-        ).textContent =
-            os.marca || "—";
-
-
-        document.getElementById(
-            "detalheModelo"
-        ).textContent =
-            os.modelo || "—";
-
-
-        document.getElementById(
-            "detalheDataEntrada"
-        ).textContent =
-            formatarData(
-                os.data_entrada
-            );
-
-
-        document.getElementById(
-            "detalheDataConclusao"
-        ).textContent =
-            formatarData(
-                os.data_conclusao
-            );
-
-
-        document.getElementById(
-            "detalheValor"
-        ).textContent =
-            formatarMoeda(
-                os.valor
-            );
-
-
-        document.getElementById(
-            "detalheDesconto"
-        ).textContent =
-            formatarMoeda(
-                os.desconto
-            );
-
-
-        document.getElementById(
-            "detalheValorTotal"
-        ).textContent =
-            formatarMoeda(
-                os.valor_total
-            );
-
-
-        document.getElementById(
-            "detalheDefeito"
-        ).textContent =
-            os.defeito || "—";
-
-
-        document.getElementById(
-            "detalheDiagnostico"
-        ).textContent =
-            os.diagnostico || "—";
-
-
-        document.getElementById(
-            "detalheServicoRealizado"
-        ).textContent =
-            os.servico_realizado || "—";
-
-
-        document.getElementById(
-            "detalheObservacoes"
-        ).textContent =
-            os.observacoes || "—";
-
-
-        modalDetalhesOS.classList.add(
-            "show"
-        );
-
-
-        modalDetalhesOS.setAttribute(
-            "aria-hidden",
-            "false"
-        );
-
+        }
     }
 
 
-    /* =====================================================
-       FECHAR DETALHES
-    ===================================================== */
+    document
+        .getElementById("valor")
+        ?.addEventListener(
+            "input",
+            calcularValorTotal
+        );
 
-    function fecharDetalhesOS() {
-
-        if (!modalDetalhesOS) return;
-
-
-        modalDetalhesOS.classList.remove(
-            "show"
+    document
+        .getElementById("desconto")
+        ?.addEventListener(
+            "input",
+            calcularValorTotal
         );
 
 
-        modalDetalhesOS.setAttribute(
-            "aria-hidden",
-            "true"
-        );
-
-
-        osSelecionada =
-            null;
-
-    }
-
-
     /* =====================================================
-       CARREGAR ORDENS
-    ===================================================== */
+       SALVAR OS
+    ====================================================== */
 
-    async function carregarOS() {
+    formOS?.addEventListener(
+        "submit",
+        async event => {
 
-        if (!listaOS) return;
+            event.preventDefault();
 
+            const clienteId =
+                document.getElementById(
+                    "cliente_id"
+                )?.value || null;
 
-        listaOS.innerHTML = `
-            <div class="os-loading">
-                Carregando ordens de serviço...
-            </div>
-        `;
+            if (!clienteId) {
 
+                mostrarToast(
+                    "Selecione um cliente."
+                );
 
-        try {
-
-            const { data, error } =
-                await supabaseClient
-                    .from("ordens_servico")
-                    .select("*")
-                    .order(
-                        "criado_em",
-                        {
-                            ascending: false
-                        }
-                    );
+                return;
+            }
 
 
-            if (error) {
+            const valor =
+                parseFloat(
+                    document.getElementById(
+                        "valor"
+                    )?.value
+                ) || 0;
 
-                throw error;
+
+            const desconto =
+                parseFloat(
+                    document.getElementById(
+                        "desconto"
+                    )?.value
+                ) || 0;
+
+
+            /*
+             * IMPORTANTE:
+             *
+             * valor_total NÃO é enviado.
+             *
+             * Ele é uma coluna GENERATED
+             * no banco de dados.
+             */
+
+
+            const dados = {
+
+                cliente_id: clienteId,
+
+                equipamento_id:
+                    document.getElementById(
+                        "equipamento_id"
+                    )?.value || null,
+
+                orcamento_id: null,
+
+                tipo_servico:
+                    document.getElementById(
+                        "tipo_servico"
+                    )?.value.trim() || null,
+
+                aparelho:
+                    document.getElementById(
+                        "aparelho"
+                    )?.value.trim() || null,
+
+                marca:
+                    document.getElementById(
+                        "marca"
+                    )?.value.trim() || null,
+
+                modelo:
+                    document.getElementById(
+                        "modelo"
+                    )?.value.trim() || null,
+
+                defeito:
+                    document.getElementById(
+                        "defeito"
+                    )?.value.trim() || null,
+
+                diagnostico:
+                    document.getElementById(
+                        "diagnostico"
+                    )?.value.trim() || null,
+
+                servico_realizado:
+                    document.getElementById(
+                        "servico_realizado"
+                    )?.value.trim() || null,
+
+                valor: valor,
+
+                desconto: desconto,
+
+                status:
+                    document.getElementById(
+                        "status"
+                    )?.value || "aberta",
+
+                prioridade:
+                    document.getElementById(
+                        "prioridade"
+                    )?.value || "normal",
+
+                data_entrada:
+                    document.getElementById(
+                        "data_entrada"
+                    )?.value || null,
+
+                data_conclusao:
+                    document.getElementById(
+                        "data_conclusao"
+                    )?.value || null,
+
+                observacoes:
+                    document.getElementById(
+                        "observacoes"
+                    )?.value.trim() || null
+
+            };
+
+
+            /*
+             * Código:
+             *
+             * Se for uma OS nova, deixamos o
+             * banco gerar o código.
+             *
+             * Se for edição, mantemos o código.
+             */
+
+            const osId =
+                document.getElementById(
+                    "osId"
+                )?.value;
+
+
+            let resultado;
+
+
+            if (osId) {
+
+                resultado =
+                    await supabaseClient
+                        .from("ordens_servico")
+                        .update(dados)
+                        .eq("id", osId)
+                        .select()
+                        .single();
+
+            } else {
+
+                resultado =
+                    await supabaseClient
+                        .from("ordens_servico")
+                        .insert(dados)
+                        .select()
+                        .single();
 
             }
 
 
-            ordens =
-                data || [];
+            if (resultado.error) {
+
+                console.error(
+                    "Erro ao salvar OS:",
+                    resultado.error
+                );
+
+                mostrarToast(
+                    "Erro ao salvar OS: " +
+                    resultado.error.message
+                );
+
+                return;
+            }
 
 
-            atualizarTotal();
-
-            renderizarOS();
-
-
-        } catch (erro) {
-
-            console.error(
-                "Erro ao carregar OS:",
-                erro
+            mostrarToast(
+                osId
+                    ? "OS atualizada com sucesso!"
+                    : "OS criada com sucesso!"
             );
 
 
-            listaOS.innerHTML = `
-                <div class="os-empty">
+            fecharModalOS();
 
-                    <div class="os-empty-icon">
-                        ⚠️
-                    </div>
-
-                    <strong>
-                        Erro ao carregar as OS
-                    </strong>
-
-                    <p>
-                        Verifique a conexão com o Supabase.
-                    </p>
-
-                </div>
-            `;
-
-
-            mostrarMensagem(
-                "Erro ao carregar ordens de serviço."
-            );
+            await carregarOS();
 
         }
-
-    }
+    );
 
 
     /* =====================================================
-       TOTAL
-    ===================================================== */
+       CARREGAR ORDENS
+    ====================================================== */
 
-    function atualizarTotal() {
+    async function carregarOS() {
 
-        if (totalOS) {
+        const { data, error } =
+            await supabaseClient
+                .from("ordens_servico")
+                .select("*")
+                .order("criado_em", {
+                    ascending: false
+                });
 
-            totalOS.textContent =
-                ordens.length;
 
+        if (error) {
+
+            console.error(
+                "Erro ao carregar OS:",
+                error
+            );
+
+            listaOS.innerHTML = `
+                <div class="os-loading">
+                    Erro ao carregar ordens de serviço.
+                </div>
+            `;
+
+            mostrarToast(
+                "Erro ao carregar ordens de serviço."
+            );
+
+            return;
         }
+
+
+        ordens = data || [];
+
+        totalOS.textContent =
+            ordens.length;
+
+        renderizarOS();
 
     }
 
 
     /* =====================================================
        RENDERIZAR LISTA
-    ===================================================== */
+    ====================================================== */
 
     function renderizarOS() {
 
-        if (!listaOS) return;
-
-
         const termo =
-            (
-                buscaOS?.value ||
-                ""
-            )
-                .trim()
-                .toLowerCase();
+            (buscaOS?.value || "")
+                .toLowerCase()
+                .trim();
 
 
         const filtradas =
@@ -895,50 +927,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 const cliente =
                     clientes.find(
-                        item =>
-                            String(item.id) ===
-                            String(os.cliente_id)
+                        c => c.id === os.cliente_id
                     );
 
+                const texto = [
 
-                const nomeCliente =
-                    String(
-                        cliente?.nome ||
-                        os.cliente_nome ||
-                        ""
-                    )
-                        .toLowerCase();
+                    os.codigo,
 
+                    cliente?.nome,
 
-                const codigo =
-                    String(
-                        os.codigo || ""
-                    )
-                        .toLowerCase();
+                    os.aparelho,
 
+                    os.marca,
 
-                const aparelho =
-                    String(
-                        os.aparelho || ""
-                    )
-                        .toLowerCase();
+                    os.modelo,
 
+                    textoStatus(os.status)
 
-                const status =
-                    String(
-                        textoStatus(
-                            os.status
-                        )
-                    )
-                        .toLowerCase();
+                ]
+                    .filter(Boolean)
+                    .join(" ")
+                    .toLowerCase();
 
-
-                return (
-                    codigo.includes(termo) ||
-                    nomeCliente.includes(termo) ||
-                    aparelho.includes(termo) ||
-                    status.includes(termo)
-                );
+                return texto.includes(termo);
 
             });
 
@@ -946,70 +957,389 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!filtradas.length) {
 
             listaOS.innerHTML = `
-                <div class="os-empty">
-
-                    <div class="os-empty-icon">
-                        🛠️
-                    </div>
-
-                    <strong>
-                        ${
-                            termo
-                                ? "Nenhuma OS encontrada"
-                                : "Nenhuma ordem de serviço cadastrada"
-                        }
-                    </strong>
-
-                    <p>
-                        ${
-                            termo
-                                ? "Tente outro código, cliente, aparelho ou status."
-                                : 'Clique em "Nova OS" para começar.'
-                        }
-                    </p>
-
+                <div class="os-loading">
+                    Nenhuma ordem de serviço encontrada.
                 </div>
             `;
 
             return;
-
         }
 
 
-        listaOS.innerHTML =
-            filtradas.map(os => {
+        listaOS.innerHTML = "";
 
-                const cliente =
-                    clientes.find(
-                        item =>
-                            String(item.id) ===
-                            String(os.cliente_id)
+
+        filtradas.forEach(os => {
+
+            const cliente =
+                clientes.find(
+                    c => c.id === os.cliente_id
+                );
+
+
+            const item =
+                document.createElement("div");
+
+            item.className = "os-item";
+
+
+            item.innerHTML = `
+
+                <div class="os-item-main">
+
+                    <strong class="os-code">
+                        ${os.codigo || "—"}
+                    </strong>
+
+                    <span class="os-client">
+                        ${cliente?.nome || "Cliente não encontrado"}
+                    </span>
+
+                    <span class="os-device">
+                        ${
+                            [
+                                os.aparelho,
+                                os.marca,
+                                os.modelo
+                            ]
+                            .filter(Boolean)
+                            .join(" • ") || "Sem equipamento"
+                        }
+                    </span>
+
+                </div>
+
+                <span class="os-status ${classeStatus(os.status)}">
+                    ${textoStatus(os.status)}
+                </span>
+
+            `;
+
+
+            item.addEventListener(
+                "click",
+                () => abrirDetalhesOS(os)
+            );
+
+
+            listaOS.appendChild(item);
+
+        });
+
+    }
+
+
+    buscaOS?.addEventListener(
+        "input",
+        renderizarOS
+    );
+
+
+    /* =====================================================
+       MODAL DETALHES
+    ====================================================== */
+
+    function abrirDetalhesOS(os) {
+
+        osSelecionada = os;
+
+
+        const cliente =
+            clientes.find(
+                c => c.id === os.cliente_id
+            );
+
+
+        const set = (id, valor) => {
+
+            const elemento =
+                document.getElementById(id);
+
+            if (elemento) {
+
+                elemento.textContent =
+                    valor ?? "—";
+
+            }
+
+        };
+
+
+        set(
+            "detalheCodigo",
+            os.codigo
+        );
+
+        set(
+            "detalheCliente",
+            cliente?.nome || "—"
+        );
+
+        set(
+            "detalheStatus",
+            textoStatus(os.status)
+        );
+
+        set(
+            "detalhePrioridade",
+            textoPrioridade(os.prioridade)
+        );
+
+        set(
+            "detalheTipoServico",
+            os.tipo_servico
+        );
+
+        set(
+            "detalheAparelho",
+            os.aparelho
+        );
+
+        set(
+            "detalheMarca",
+            os.marca
+        );
+
+        set(
+            "detalheModelo",
+            os.modelo
+        );
+
+        set(
+            "detalheDataEntrada",
+            formatarData(os.data_entrada)
+        );
+
+        set(
+            "detalheDataConclusao",
+            formatarData(os.data_conclusao)
+        );
+
+        set(
+            "detalheValor",
+            formatarMoeda(os.valor)
+        );
+
+        set(
+            "detalheDesconto",
+            formatarMoeda(os.desconto)
+        );
+
+        set(
+            "detalheValorTotal",
+            formatarMoeda(os.valor_total)
+        );
+
+        set(
+            "detalheDefeito",
+            os.defeito
+        );
+
+        set(
+            "detalheDiagnostico",
+            os.diagnostico
+        );
+
+        set(
+            "detalheServicoRealizado",
+            os.servico_realizado
+        );
+
+        set(
+            "detalheObservacoes",
+            os.observacoes
+        );
+
+
+        modalDetalhesOS?.classList.add(
+            "show"
+        );
+
+        modalDetalhesOS?.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+        document.body.classList.add(
+            "modal-aberto"
+        );
+
+    }
+
+
+    /* =====================================================
+       FECHAR DETALHES
+    ====================================================== */
+
+    function fecharDetalhes() {
+
+        modalDetalhesOS?.classList.remove(
+            "show"
+        );
+
+        modalDetalhesOS?.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+        document.body.classList.remove(
+            "modal-aberto"
+        );
+
+        osSelecionada = null;
+
+    }
+
+
+    btnFecharDetalhes?.addEventListener(
+        "click",
+        fecharDetalhes
+    );
+
+
+    modalDetalhesOS?.addEventListener(
+        "click",
+        event => {
+
+            if (
+                event.target.classList.contains(
+                    "modal-overlay"
+                )
+            ) {
+
+                fecharDetalhes();
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       EDITAR
+    ====================================================== */
+
+    btnEditarDetalhes?.addEventListener(
+        "click",
+        async () => {
+
+            if (!osSelecionada) return;
+
+            const os =
+                osSelecionada;
+
+            fecharDetalhes();
+
+            await abrirModalOS(os);
+
+        }
+    );
+
+
+    /* =====================================================
+       EXCLUIR
+    ====================================================== */
+
+    btnExcluirDetalhes?.addEventListener(
+        "click",
+        async () => {
+
+            if (!osSelecionada) return;
+
+            const confirmar =
+                confirm(
+                    `Deseja realmente excluir a OS ${osSelecionada.codigo}?`
+                );
+
+            if (!confirmar) return;
+
+
+            const { error } =
+                await supabaseClient
+                    .from("ordens_servico")
+                    .delete()
+                    .eq(
+                        "id",
+                        osSelecionada.id
                     );
 
 
-                const nomeCliente =
-                    cliente?.nome ||
-                    os.cliente_nome ||
-                    "Cliente não informado";
+            if (error) {
+
+                console.error(
+                    "Erro ao excluir OS:",
+                    error
+                );
+
+                mostrarToast(
+                    "Erro ao excluir OS: " +
+                    error.message
+                );
+
+                return;
+            }
 
 
-                const classe =
-                    classeStatus(
-                        os.status
-                    );
+            mostrarToast(
+                "OS excluída com sucesso!"
+            );
 
 
-                return `
+            fecharDetalhes();
 
-                    <div
-                        class="os-item"
-                        data-os-id="${escapar(os.id)}">
+            await carregarOS();
 
-                        <div class="os-main">
+        }
+    );
 
-                            <span class="os-code">
-                                ${escapar(os.codigo)}
-                            </span>
 
-                            <div class="os-client">
-             
+    /* =====================================================
+       ESC
+    ====================================================== */
+
+    document.addEventListener(
+        "keydown",
+        event => {
+
+            if (event.key !== "Escape") return;
+
+            if (
+                modalOS?.classList.contains(
+                    "show"
+                )
+            ) {
+
+                fecharModalOS();
+
+            }
+
+            if (
+                modalDetalhesOS?.classList.contains(
+                    "show"
+                )
+            ) {
+
+                fecharDetalhes();
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       INICIALIZAÇÃO
+    ====================================================== */
+
+    async function iniciar() {
+
+        await carregarClientes();
+
+        await carregarOS();
+
+    }
+
+
+    iniciar();
+
+});
